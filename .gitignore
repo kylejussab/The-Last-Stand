@@ -1,0 +1,31 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+# Godot-specific
+.import/
+export.cfg
+export_presets.cfg
+
+# OS-generated
+.DS_Store
+Thumbs.db
+
+# macOS system files
+.AppleDouble
+.LSOverride
+Icon?
+._*
+
+# Backup files
+*.tmp
+*.bak
+*.old
+*.orig
+
+# Logs
+*.log
+
+# Build artifacts (if you export builds into a subfolder)
+build/
+exports/
