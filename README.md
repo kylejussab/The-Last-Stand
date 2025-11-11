@@ -7,6 +7,6 @@ This game is a **fan work** based on *The Last of Us*, a property of **Naughty D
 I do **not claim ownership** of any characters, names, or concepts associated with *The Last of Us*.  
 This project is **not for sale** and is **not affiliated with or endorsed by Sony or Naughty Dog**.
 
-## 📄 License
+## License
 This project is released under the [MIT License](./LICENSE) for its original code and assets **created by me**.  
 All *The Last of Us*-related material remains the property of their respective owners.
