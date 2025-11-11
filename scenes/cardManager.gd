@@ -1,13 +1,16 @@
 extends Node2D
 
 const COLLISION_MASK_CARD = 1
+const COLLISION_MASK_CARD_SLOT = 2
 
-var draggedCard
-var screenSize
-var isHoveringOnCard
+var draggedCard: Node2D
+var screenSize: Vector2
+var isHoveringOnCard: bool
+var playerHandReference: Node
 
 func _ready() -> void:
 	screenSize = get_viewport_rect().size
+	playerHandReference = $"../playerHand"
 
 func _process(_delta: float) -> void:
 	if draggedCard:
@@ -30,6 +33,18 @@ func start_drag(card):
 
 func finish_drag():
 	draggedCard.scale = Vector2(1.05, 1.05)
+	
+	var cardSlot = get_card_slot()
+	
+	if cardSlot and not cardSlot.occupied:
+		playerHandReference.remove_card_from_hand(draggedCard)
+		
+		draggedCard.position = cardSlot.position
+		draggedCard.get_node("Area2D/CollisionShape2D").disabled = true
+		cardSlot.occupied = true
+	else:
+		playerHandReference.add_card_to_hand(draggedCard)
+
 	draggedCard = null
 
 func get_card():
@@ -44,10 +59,22 @@ func get_card():
 		return get_top_card(cards)
 	return null
 
-func connect_card_signals(card):
-	card.connect("on", on_card_hover_enter)
-	card.connect("off", on_card_hover_exit)
+func get_card_slot():
+	var space_state = get_world_2d().direct_space_state
+	var parameters = PhysicsPointQueryParameters2D.new()
+	parameters.position = get_global_mouse_position()
+	parameters.collide_with_areas = true
+	parameters.collision_mask = COLLISION_MASK_CARD_SLOT
+	var slots = space_state.intersect_point(parameters)
 	
+	if slots.size() > 0:
+		return slots[0].collider.get_parent()
+	return null
+
+func connect_card_signals(card):
+	card.connect("hoverEntered", on_card_hover_enter)
+	card.connect("hoverExited", on_card_hover_exit)
+
 func on_card_hover_enter(card):
 	if !isHoveringOnCard:
 		highlight_card(card, true)
