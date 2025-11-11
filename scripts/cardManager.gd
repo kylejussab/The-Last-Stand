@@ -2,6 +2,7 @@ extends Node2D
 
 const COLLISION_MASK_CARD = 1
 const COLLISION_MASK_CARD_SLOT = 2
+const DEFAULT_CARD_MOVE_SPEED = 0.1
 
 var draggedCard: Node2D
 var screenSize: Vector2
@@ -11,21 +12,12 @@ var playerHandReference: Node
 func _ready() -> void:
 	screenSize = get_viewport_rect().size
 	playerHandReference = $"../playerHand"
+	$"../inputManager".connect("leftMouseButtonReleased", on_left_click_released)
 
 func _process(_delta: float) -> void:
 	if draggedCard:
 		var mousePosition = get_global_mouse_position()
 		draggedCard.position = Vector2(clamp(mousePosition.x, 0, screenSize.x), clamp(mousePosition.y, 0, screenSize.y))
-
-func _input(event):
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-		if event.pressed:
-			var card = get_card()
-			if card:
-				start_drag(card)
-		else:
-			if draggedCard:
-				finish_drag()
 
 func start_drag(card):
 	draggedCard = card
@@ -43,7 +35,7 @@ func finish_drag():
 		draggedCard.get_node("Area2D/CollisionShape2D").disabled = true
 		cardSlot.occupied = true
 	else:
-		playerHandReference.add_card_to_hand(draggedCard)
+		playerHandReference.add_card_to_hand(draggedCard, DEFAULT_CARD_MOVE_SPEED)
 
 	draggedCard = null
 
@@ -108,3 +100,7 @@ func get_top_card(cards):
 			topCard = currentCard
 			topCardZIndex = currentCard.z_index
 	return topCard
+
+func on_left_click_released():
+	if draggedCard:
+		finish_drag()
