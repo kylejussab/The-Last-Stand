@@ -7,7 +7,31 @@ const CARD_DRAW_SPEED = 0.2
 const SUPPORT_DECK_Y_POSITION = 600
 const DECK_X_POSITION = 150
 
-var deck = ["Clicker", "Runner", "Stalker", "Bloater", "Clicker", "Runner", "Stalker", "Bloater", "Clicker", "Runner", "Stalker", "Bloater", "Clicker", "Runner", "Stalker", "Bloater"]
+var deck = [
+	"SmokeBombRare",
+	"SmokeBomb",
+	"RageRare",
+	"Rage",
+	"TrapMine",
+	"Silencer",
+	"ResilienceRare",
+	"Resilience",
+	"AdrenalineRare",
+	"ShotgunShells",
+	"PoisonDart",
+	"CloakRare",
+	"Cloak",
+	"ScavengedPartsRare",
+	"ScavengedParts",
+	"Barricade",
+	"MedKitRare",
+	"MedKit",
+	"Armor",
+	"MolotovRare",
+	"Molotov",
+	"SupplyCacheRare",
+	"Shield"
+]
 
 var cardDatabaseReference
 
@@ -40,9 +64,9 @@ func draw_card():
 	newCard.position = Vector2(DECK_X_POSITION, SUPPORT_DECK_Y_POSITION)
 	
 	newCard.get_node("image").texture = load(cardImagePath)
-	newCard.get_node("value").text = str(cardDatabaseReference.CARDS[cardDrawn][0])
-	newCard.value = cardDatabaseReference.CARDS[cardDrawn][0]
-	newCard.type = cardDatabaseReference.CARDS[cardDrawn][1]
+	newCard.get_node("value").text = str(cardDatabaseReference.SUPPORTS[cardDrawn][0])
+	newCard.value = cardDatabaseReference.SUPPORTS[cardDrawn][0]
+	newCard.type = cardDatabaseReference.SUPPORTS[cardDrawn][1]
 	
 	$"../cardManager".add_child(newCard)
 	newCard.name = "Card"
@@ -64,13 +88,14 @@ func draw_opponent_card():
 	newCard.position = Vector2(DECK_X_POSITION, SUPPORT_DECK_Y_POSITION)
 	
 	newCard.get_node("image").texture = load(cardImagePath)
-	newCard.get_node("value").text = str(cardDatabaseReference.CARDS[cardDrawn][0])
-	newCard.value = cardDatabaseReference.CARDS[cardDrawn][0]
-	newCard.type = cardDatabaseReference.CARDS[cardDrawn][1]
+	newCard.get_node("value").text = str(cardDatabaseReference.SUPPORTS[cardDrawn][0])
+	newCard.value = cardDatabaseReference.SUPPORTS[cardDrawn][0]
+	newCard.type = cardDatabaseReference.SUPPORTS[cardDrawn][1]
 	
 	$"../cardManager".add_child(newCard)
 	newCard.name = "Card"
 	$"../opponentHand".add_card_to_hand(newCard, CARD_DRAW_SPEED)
 	
 	# Delete this line later to hide the opponents cards / on for now for debugging
-	newCard.get_node("AnimationPlayer").play("cardFlip")
+	#newCard.get_node("AnimationPlayer").play("cardFlip")
+	newCard.get_node("image").visible = false

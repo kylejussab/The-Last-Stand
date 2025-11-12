@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cfqdygwf05t5v"
-path="res://.godot/imported/EllieCard.png-ecff42cc9f8ccde1892a6a058f89d49f.ctex"
+uid="uid://ys3nskfb0a5t"
+path="res://.godot/imported/MannyCard.png-3fedf98c0fb41d2d6b21c9f92df2d65f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/EllieCard.png"
-dest_files=["res://.godot/imported/EllieCard.png-ecff42cc9f8ccde1892a6a058f89d49f.ctex"]
+source_file="res://assets/MannyCard.png"
+dest_files=["res://.godot/imported/MannyCard.png-3fedf98c0fb41d2d6b21c9f92df2d65f.ctex"]
 
 [params]
 

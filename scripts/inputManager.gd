@@ -35,6 +35,3 @@ func get_card_from_cursor():
 			var card = result[0].collider.get_parent()
 			if card:
 				cardManagerReference.start_drag(card)
-		elif collisionMask == COLLISION_MASK_DECK:
-			# Dont want this to be clickable in the future
-			deckReference.draw_card()

@@ -176,6 +176,7 @@ func play_card_with_highest_value():
 	
 	# Comment this out when we hide opponent cards
 	highestValueCard.get_node("AnimationPlayer").play("cardFlip")
+	highestValueCard.get_node("image").visible = true
 	
 	$"../opponentHand".remove_card_from_hand(highestValueCard)
 
@@ -213,6 +214,7 @@ func play_equalling_support():
 		
 		# Comment this out when we hide opponent cards
 		opponentSupportCard.get_node("AnimationPlayer").play("cardFlip")
+		opponentSupportCard.get_node("image").visible = true
 		
 		$"../opponentHand".remove_card_from_hand(opponentSupportCard)
 	else:
@@ -258,6 +260,7 @@ func attempt_winning_support():
 		
 		# Comment this out when we hide opponent cards
 		opponentSupportCard.get_node("AnimationPlayer").play("cardFlip")
+		opponentSupportCard.get_node("image").visible = true
 		
 		$"../opponentHand".remove_card_from_hand(opponentSupportCard)
 		

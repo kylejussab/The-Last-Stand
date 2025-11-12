@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://df6vntpyt6v25" path="res://scripts/opponentCard.gd" id="1_6ngam"]
 [ext_resource type="Texture2D" uid="uid://ch1o67f7pph2o" path="res://assets/Temp Card Back.png" id="2_4jfu0"]
-[ext_resource type="Texture2D" uid="uid://cfqdygwf05t5v" path="res://assets/EllieCard.png" id="3_uqoa2"]
+[ext_resource type="Texture2D" uid="uid://cgcss8mjj2at4" path="res://assets/JoelCard.png" id="3_uqoa2"]
 
 [sub_resource type="Animation" id="Animation_sy11y"]
 length = 0.001
@@ -141,7 +141,6 @@ position = Vector2(150, 920)
 script = ExtResource("1_6ngam")
 
 [node name="imageBack" type="Sprite2D" parent="."]
-visible = false
 scale = Vector2(0.389, 0.389)
 texture = ExtResource("2_4jfu0")
 

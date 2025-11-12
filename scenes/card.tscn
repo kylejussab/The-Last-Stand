@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://ucr1vk8xoov" path="res://scripts/card.gd" id="1_6u4wf"]
 [ext_resource type="Texture2D" uid="uid://ch1o67f7pph2o" path="res://assets/Temp Card Back.png" id="2_ktuci"]
-[ext_resource type="Texture2D" uid="uid://cfqdygwf05t5v" path="res://assets/EllieCard.png" id="3_ktuci"]
+[ext_resource type="Texture2D" uid="uid://cgcss8mjj2at4" path="res://assets/JoelCard.png" id="3_ktuci"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
 size = Vector2(146, 204)
