@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://cedct6rr8lclv"]
+
+[ext_resource type="Texture2D" uid="uid://cpbwscn42j35u" path="res://assets/Temp Card Slot.png" id="1_hkvyg"]
+
+[node name="cardSlot" type="Node2D"]
+
+[node name="image" type="Sprite2D" parent="."]
+scale = Vector2(0.392, 0.39199993)
+texture = ExtResource("1_hkvyg")

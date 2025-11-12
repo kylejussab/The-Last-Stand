@@ -11,7 +11,7 @@ var deckReference
 
 func _ready() -> void:
 	cardManagerReference = $"../cardManager"
-	deckReference = $"../deck"
+	deckReference = $"../characterDeck"
 
 func _input(event):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
@@ -36,4 +36,5 @@ func get_card_from_cursor():
 			if card:
 				cardManagerReference.start_drag(card)
 		elif collisionMask == COLLISION_MASK_DECK:
+			# Dont want this to be clickable in the future
 			deckReference.draw_card()

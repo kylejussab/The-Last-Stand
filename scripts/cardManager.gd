@@ -1,5 +1,8 @@
 extends Node2D
 
+signal characterPlayed(card)
+signal supportPlayed(card)
+
 const COLLISION_MASK_CARD = 1
 const COLLISION_MASK_CARD_SLOT = 2
 const DEFAULT_CARD_MOVE_SPEED = 0.1
@@ -10,7 +13,9 @@ var isHoveringOnCard: bool
 var playerHandReference: Node
 
 func _ready() -> void:
-	screenSize = get_viewport_rect().size
+	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+	screenSize = get_viewport().get_visible_rect().size
+
 	playerHandReference = $"../playerHand"
 	$"../inputManager".connect("leftMouseButtonReleased", on_left_click_released)
 
@@ -29,14 +34,29 @@ func finish_drag():
 	var cardSlot = get_card_slot()
 	
 	if cardSlot and not cardSlot.occupied:
-		playerHandReference.remove_card_from_hand(draggedCard)
-		
-		draggedCard.position = cardSlot.position
-		draggedCard.get_node("Area2D/CollisionShape2D").disabled = true
-		cardSlot.occupied = true
-	else:
-		playerHandReference.add_card_to_hand(draggedCard, DEFAULT_CARD_MOVE_SPEED)
-
+		if draggedCard.type == cardSlot.type:
+			# Only allow a support card play after a character card
+			if draggedCard.type == "Support" && !$"../battleManager".playerHasPlayedCharacter:
+				pass
+			else:
+				playerHandReference.remove_card_from_hand(draggedCard)
+				
+				draggedCard.z_index = -1
+				draggedCard.position = cardSlot.position
+				draggedCard.get_node("Area2D/CollisionShape2D").disabled = true
+				cardSlot.occupied = true
+				draggedCard.cardSlot = cardSlot
+				
+				# Update player turn variable
+				if draggedCard.type == "Character":
+					emit_signal("characterPlayed", draggedCard)
+				else:
+					emit_signal("supportPlayed", draggedCard)
+				
+				draggedCard = null
+				return
+	
+	playerHandReference.add_card_to_hand(draggedCard, DEFAULT_CARD_MOVE_SPEED)
 	draggedCard = null
 
 func get_card():
@@ -73,7 +93,7 @@ func on_card_hover_enter(card):
 		isHoveringOnCard = true
 
 func on_card_hover_exit(card):
-	if !draggedCard:
+	if !draggedCard && !card.cardSlot:
 		highlight_card(card, false)
 		
 		var newCardHovered = get_card()

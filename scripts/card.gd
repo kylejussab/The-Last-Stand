@@ -3,6 +3,10 @@ extends Node2D
 signal hoverEntered(card)
 signal hoverExited(card)
 
+var cardSlot
+var type
+var value: int
+
 var handPosition: Vector2
 
 func _ready() -> void:
