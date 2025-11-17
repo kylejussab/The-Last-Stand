@@ -4,6 +4,7 @@ signal hoverEntered(card)
 signal hoverExited(card)
 
 var cardSlot
+var cardKey: String
 var type
 var value: int
 

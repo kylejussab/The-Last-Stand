@@ -7,6 +7,8 @@ const CARD_MOVE_SPEED = 0.2
 const MAX_CHARACTER_CARDS = 4
 const MAX_SUPPORT_CARDS = 4
 
+const MIN_CARDS_FOR_RESHUFFLE = 3
+
 var opponentCharacterCardSlot
 var opponentSupportCardSlot
 
@@ -14,6 +16,10 @@ var playerCharacterCard
 var playerSupportCard
 var opponentCharacterCard
 var opponentSupportCard
+
+var opponentPlayedSupport = false
+
+var lockPlayerInput = false
 
 var turnNumber = 1
 
@@ -31,9 +37,11 @@ var opponentAI: OpponentAI
 
 var discardedCards = []
 
+var showOpponentsCards = true
+
 func _ready() -> void:
 	$"../battleTimer".one_shot = true
-	$"../battleTimer".battleTimer.wait_time = OPPONENT_THINKING_TIME
+	$"../battleTimer".wait_time = OPPONENT_THINKING_TIME
 	
 	$"../cardManager".connect("characterPlayed", Callable(self, "on_player_character_played"))
 	$"../cardManager".connect("supportPlayed", Callable(self, "on_player_support_played"))
@@ -52,12 +60,18 @@ func resetTurn():
 	opponentCharacterCard = null
 	opponentSupportCard = null
 	
+	opponentPlayedSupport = false
+	
 	hide_end_turn_button()
+	
+	# Shuffle cards from discard back into decks if needed
+	await repopulate_decks()
 	
 	if turnNumber % 2 == 0:
 		whoStartedRound = "opponent"
 	else:
 		whoStartedRound = "player"
+		lockPlayerInput = false
 	
 	if whoStartedRound == "opponent":
 		opponent_character_turn()
@@ -73,6 +87,7 @@ func on_player_character_played(card):
 		opponent_character_turn()
 
 func opponent_character_turn():
+	lockPlayerInput = true
 	await wait_for(OPPONENT_THINKING_TIME)
 	
 	# Get the card from the AI and play it
@@ -88,9 +103,11 @@ func opponent_character_turn():
 		show_end_turn_button()
 		init_support_round()
 	else:
+		lockPlayerInput = false
 		roundStage = RoundStage.PLAYER_CHARACTER
 
 func init_support_round():
+	lockPlayerInput = false
 	if whoStartedRound == "player":
 		roundStage = RoundStage.PLAYER_SUPPORT
 	else:
@@ -111,6 +128,7 @@ func on_player_support_played(card):
 		end_turn()
 
 func opponent_support_turn():
+	lockPlayerInput = true
 	await wait_for(OPPONENT_THINKING_TIME)
 	
 	# Get the card from the AI and play it
@@ -128,10 +146,16 @@ func opponent_support_turn():
 		end_turn()
 	else:
 		# Always give the player the option of playing a support
+		lockPlayerInput = false
 		roundStage = RoundStage.PLAYER_SUPPORT
 		show_end_turn_button()
+	
+	opponentPlayedSupport = true
 
 func end_turn():
+	roundStage = RoundStage.END_CALCULATION
+	# Apply any perks and do the calculation
+	
 	var cardsToDiscard = []
 	var playerHand = $"../playerHand".playerHand
 	var opponentHand = $"../opponentHand".opponentHand
@@ -147,7 +171,6 @@ func end_turn():
 	
 	await move_cards_to_discard(cardsToDiscard)
 	hide_end_turn_button()
-	await wait_for(CARD_MOVE_SPEED)
 	
 	await repopolate_hand(playerHand, "player")
 	await repopolate_hand(opponentHand, "opponent")
@@ -161,10 +184,9 @@ func _on_end_turn_button_pressed() -> void:
 	hide_end_turn_button()
 	
 	# If player played support, let the AI choose to play support, otherwise end
-	if playerSupportCard == null:
-		if opponentSupportCard == null:
-			opponent_support_turn()
-			return
+	if !opponentPlayedSupport:
+		opponent_support_turn()
+		return
 
 	await wait_for(END_ROUND_TIME)
 	end_turn()
@@ -233,3 +255,23 @@ func repopolate_hand(hand, handToUpdate):
 			supportDeckReference.draw_opponent_card()
 		supportCount += 1
 		await wait_for(CARD_MOVE_SPEED)
+
+func repopulate_decks():
+	var discardedCharacters := []
+	var discardedSupports := []
+
+	for card in discardedCards:
+		if card.type == "Character":
+			discardedCharacters.append(card)
+		elif card.type == "Support":
+			discardedSupports.append(card)
+
+	if $"../characterDeck".deck.size() < MIN_CARDS_FOR_RESHUFFLE:
+		await $"../characterDeck".reshuffle_from_discards(discardedCharacters)
+		for card in discardedCharacters:
+			discardedCards.erase(card)
+
+	if $"../supportDeck".deck.size() < MIN_CARDS_FOR_RESHUFFLE:
+		await $"../supportDeck".reshuffle_from_discards(discardedSupports)
+		for card in discardedSupports:
+			discardedCards.erase(card)

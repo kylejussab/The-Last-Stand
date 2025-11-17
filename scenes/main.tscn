@@ -21,6 +21,9 @@ size = Vector2(140, 196)
 [node name="inputManager" type="Node2D" parent="."]
 script = ExtResource("1_o6xl0")
 
+[node name="Timer" type="Timer" parent="inputManager"]
+one_shot = true
+
 [node name="cardManager" type="Node2D" parent="."]
 script = ExtResource("1_0wfyh")
 
@@ -114,4 +117,5 @@ offset_right = 378.0
 offset_bottom = 601.0
 text = "End Turn"
 
+[connection signal="timeout" from="inputManager/Timer" to="inputManager" method="_on_timer_timeout"]
 [connection signal="pressed" from="EndTurnButton" to="battleManager" method="_on_end_turn_button_pressed"]

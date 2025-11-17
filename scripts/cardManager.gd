@@ -25,8 +25,9 @@ func _process(_delta: float) -> void:
 		draggedCard.position = Vector2(clamp(mousePosition.x, 0, screenSize.x), clamp(mousePosition.y, 0, screenSize.y))
 
 func start_drag(card):
-	draggedCard = card
-	card.scale = Vector2(1, 1)
+	if !$"../battleManager".lockPlayerInput:
+		draggedCard = card
+		card.scale = Vector2(1, 1)
 
 func finish_drag():
 	draggedCard.scale = Vector2(1.05, 1.05)
@@ -36,7 +37,7 @@ func finish_drag():
 	if cardSlot and not cardSlot.occupied:
 		if draggedCard.type == cardSlot.type:
 			# Only allow a support card play after a character card
-			if draggedCard.type == "Support" && !$"../battleManager".playerHasPlayedCharacter:
+			if draggedCard.type == "Support" && !$"../battleManager".playerCharacterCard:
 				pass
 			else:
 				playerHandReference.remove_card_from_hand(draggedCard)
@@ -124,3 +125,38 @@ func get_top_card(cards):
 func on_left_click_released():
 	if draggedCard:
 		finish_drag()
+
+# Double Click functionality
+func auto_play_card(card):
+	if !$"../battleManager".lockPlayerInput:
+		var characterSlot = $"../cardSlots/cardSlotCharacter"
+		var supportSlot = $"../cardSlots/cardSlotSupport"
+		
+		if card.type == "Character" && !characterSlot.occupied:
+			move_card_on_double_click(card, characterSlot)
+		elif card.type == "Support" && $"../battleManager".playerCharacterCard:
+			move_card_on_double_click(card, supportSlot)
+
+func move_card_on_double_click(card, cardSlot):
+	if !cardSlot.occupied:
+		var tween = get_tree().create_tween()
+		tween.tween_property(card, "position", cardSlot.position, 0.1)
+		
+		playerHandReference.remove_card_from_hand(draggedCard)
+		
+		card.z_index = -1
+		card.position = cardSlot.position
+		card.get_node("Area2D/CollisionShape2D").disabled = true
+		cardSlot.occupied = true
+		card.cardSlot = cardSlot
+		
+		draggedCard = card
+		
+		# Update player turn variable
+		if draggedCard.type == "Character":
+			emit_signal("characterPlayed", draggedCard)
+		else:
+			emit_signal("supportPlayed", draggedCard)
+		
+		playerHandReference.remove_card_from_hand(draggedCard)
+		draggedCard = null

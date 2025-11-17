@@ -61,6 +61,7 @@ func draw_card():
 	var cardScene = preload(PLAYER_CARD_SCENE_PATH)
 	var newCard = cardScene.instantiate()
 	var cardImagePath = str("res://assets/" + cardDrawn + "Card.png")
+	newCard.cardKey = cardDrawn
 	newCard.position = Vector2(DECK_X_POSITION, CHARACTER_DECK_Y_POSITION)
 	
 	newCard.get_node("image").texture = load(cardImagePath)
@@ -85,6 +86,7 @@ func draw_opponent_card():
 	var cardScene = preload(OPPONENT_CARD_SCENE_PATH)
 	var newCard = cardScene.instantiate()
 	var cardImagePath = str("res://assets/" + cardDrawn + "Card.png")
+	newCard.cardKey = cardDrawn
 	newCard.position = Vector2(DECK_X_POSITION, CHARACTER_DECK_Y_POSITION)
 	
 	newCard.get_node("image").texture = load(cardImagePath)
@@ -96,7 +98,25 @@ func draw_opponent_card():
 	newCard.name = "Card"
 	$"../opponentHand".add_card_to_hand(newCard, CARD_DRAW_SPEED)
 	
-	# Delete this line later to hide the opponents cards / on for now for debugging
+	# This if statement hides and shows the cards (In place for now, for debugging)
+	if $"../battleManager".showOpponentsCards:
+		newCard.get_node("AnimationPlayer").play("cardFlip")
+	else:
+		newCard.get_node("image").visible = false
+
+func reshuffle_from_discards(discardedCards):
+	for card in discardedCards:
+		deck.append(card.cardKey)
+		
+		await move_card_back_to_deck(card)
+		
+		card.queue_free()
+
+	deck.shuffle()
 	
-	newCard.get_node("AnimationPlayer").play("cardFlip")
-	#newCard.get_node("image").visible = false
+	$RichTextLabel.text = str(deck.size())
+
+func move_card_back_to_deck(card):
+	var tween = get_tree().create_tween()
+	tween.tween_property(card, "position", Vector2(DECK_X_POSITION, CHARACTER_DECK_Y_POSITION), 0.1)
+	await tween.finished
