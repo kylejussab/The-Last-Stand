@@ -97,5 +97,5 @@ func draw_opponent_card():
 	$"../opponentHand".add_card_to_hand(newCard, CARD_DRAW_SPEED)
 	
 	# Delete this line later to hide the opponents cards / on for now for debugging
-	#newCard.get_node("AnimationPlayer").play("cardFlip")
-	newCard.get_node("image").visible = false
+	newCard.get_node("AnimationPlayer").play("cardFlip")
+	#newCard.get_node("image").visible = false

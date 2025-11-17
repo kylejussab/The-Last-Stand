@@ -1,10 +1,12 @@
 extends Node
 
+const OPPONENT_THINKING_TIME = 1
+const END_ROUND_TIME = 1.2
 const CARD_MOVE_SPEED = 0.2
+
 const MAX_CHARACTER_CARDS = 4
 const MAX_SUPPORT_CARDS = 4
 
-var battleTimer
 var opponentCharacterCardSlot
 var opponentSupportCardSlot
 
@@ -13,268 +15,183 @@ var playerSupportCard
 var opponentCharacterCard
 var opponentSupportCard
 
-var playerHasPlayedCharacter = false
-var opponentHasPlayedCharacter = false
-var playerHasPlayedSupport = false
-var opponentHasPlayedSupport = false
 var turnNumber = 1
 
-var playerStartsTurn = true
+enum RoundStage {
+	PLAYER_CHARACTER,
+	OPPONENT_CHARACTER,
+	PLAYER_SUPPORT,
+	OPPONENT_SUPPORT,
+	END_CALCULATION}
+
+var whoStartedRound
+var roundStage: RoundStage
+
+var opponentAI: OpponentAI
 
 var discardedCards = []
 
 func _ready() -> void:
-	battleTimer = $"../battleTimer"
-	battleTimer.one_shot = true
-	battleTimer.wait_time = 1.0
-	
-	opponentCharacterCardSlot = $"../cardSlots/opponentCardSlotCharacter"
-	opponentSupportCardSlot = $"../cardSlots/opponentCardSlotSupport"
+	$"../battleTimer".one_shot = true
+	$"../battleTimer".battleTimer.wait_time = OPPONENT_THINKING_TIME
 	
 	$"../cardManager".connect("characterPlayed", Callable(self, "on_player_character_played"))
 	$"../cardManager".connect("supportPlayed", Callable(self, "on_player_support_played"))
 	
-	$"../EndTurnButton".disabled = true
-	$"../EndTurnButton".visible = false
+	hide_end_turn_button()
+	
+	opponentAI = OpponentAIHighestValue.new()
+	
+	# Player always starts
+	whoStartedRound = "player"
+	roundStage = RoundStage.PLAYER_CHARACTER
 
 func resetTurn():
-	playerHasPlayedCharacter = false
-	opponentHasPlayedCharacter = false
-	playerHasPlayedSupport = false
-	opponentHasPlayedSupport = false
-	
 	playerCharacterCard = null
 	playerSupportCard = null
 	opponentCharacterCard = null
 	opponentSupportCard = null
 	
-	$"../EndTurnButton".disabled = true
-	$"../EndTurnButton".visible = false
+	hide_end_turn_button()
 	
 	if turnNumber % 2 == 0:
-		playerStartsTurn = false
+		whoStartedRound = "opponent"
 	else:
-		playerStartsTurn = true
+		whoStartedRound = "player"
 	
-	if !playerStartsTurn:
-		battleTimer.start()
-		await battleTimer.timeout
+	if whoStartedRound == "opponent":
 		opponent_character_turn()
 
 func on_player_character_played(card):
-	playerHasPlayedCharacter = true
 	playerCharacterCard = card
 	
-	if playerStartsTurn:
-		await opponent_character_turn()
+	# If the opponent started the round
+	if opponentCharacterCard != null:
+		init_support_round()
 	else:
-		attempt_winning_support()
+		roundStage = RoundStage.OPPONENT_CHARACTER
+		opponent_character_turn()
+
+func opponent_character_turn():
+	await wait_for(OPPONENT_THINKING_TIME)
+	
+	# Get the card from the AI and play it
+	var opponentHand = $"../opponentHand".opponentHand
+	var playerHand = $"../playerHand".playerHand
+	var card = opponentAI.play_character_card(opponentHand, playerHand)
+	
+	animate_opponent_playing_card(card, $"../cardSlots/opponentCardSlotCharacter")
+	opponentCharacterCard = card
+	
+	# If the player started the round
+	if playerCharacterCard != null:
+		show_end_turn_button()
+		init_support_round()
+	else:
+		roundStage = RoundStage.PLAYER_CHARACTER
+
+func init_support_round():
+	if whoStartedRound == "player":
+		roundStage = RoundStage.PLAYER_SUPPORT
+	else:
+		roundStage = RoundStage.OPPONENT_SUPPORT
+		opponent_support_turn()
 
 func on_player_support_played(card):
-	$"../EndTurnButton".disabled = true
-	$"../EndTurnButton".visible = false
-	
-	playerHasPlayedSupport = true
+	hide_end_turn_button()
 	
 	playerSupportCard = card
 	
-#	Opponent must calculate if a win is possible with support play
-#	For now the opponent will just play the first support available to win (if one exists)
-	if playerStartsTurn:
-		await play_equalling_support()
-		$"../EndTurnButton".disabled = false
-		$"../EndTurnButton".visible = true
+	if whoStartedRound == "player":
+		opponent_support_turn()
 	else:
-		# Wait
-		battleTimer.start()
-		await battleTimer.timeout
-		_on_end_turn_button_pressed()
+		# Calculate the reward values (this is where health would be subtracted)
+		
+		await wait_for(END_ROUND_TIME)
+		end_turn()
 
-func opponent_character_turn():
-	# Wait
-	battleTimer.start()
-	await battleTimer.timeout
+func opponent_support_turn():
+	await wait_for(OPPONENT_THINKING_TIME)
 	
-	await play_card_with_highest_value()
-	
-	opponentHasPlayedCharacter = true
-	
-	if playerStartsTurn:
-		$"../EndTurnButton".disabled = false
-		$"../EndTurnButton".visible = true
-
-func update_opponent_hand():
-	var characterDeckReference = $"../characterDeck"
-	var supportDeckReference = $"../supportDeck"
+	# Get the card from the AI and play it
 	var opponentHand = $"../opponentHand".opponentHand
-
-	var characterCount = 0
-	var supportCount = 0
-
-	for card in opponentHand:
-		if card.type == "Character":
-			characterCount += 1
-		elif card.type == "Support":
-			supportCount += 1
+	var card = opponentAI.choose_support_card(opponentHand, opponentCharacterCard, playerCharacterCard)
 	
-	while characterCount < MAX_CHARACTER_CARDS:
-		characterDeckReference.draw_opponent_card()
-		characterCount += 1
-		battleTimer.start()
-		await battleTimer.timeout
+	if card != null:
+		animate_opponent_playing_card(card, $"../cardSlots/opponentCardSlotSupport")
+		opponentSupportCard = card
 	
-	while supportCount < MAX_SUPPORT_CARDS:
-		supportDeckReference.draw_opponent_card()
-		supportCount += 1
-		battleTimer.start()
-		await battleTimer.timeout
+	if whoStartedRound == "player":
+		# Calculate the reward values (this is where health would be subtracted)
+		
+		await wait_for(END_ROUND_TIME)
+		end_turn()
+	else:
+		# Always give the player the option of playing a support
+		roundStage = RoundStage.PLAYER_SUPPORT
+		show_end_turn_button()
 
-func update_player_hand():
-	var characterDeckReference = $"../characterDeck"
-	var supportDeckReference = $"../supportDeck"
+func end_turn():
+	var cardsToDiscard = []
 	var playerHand = $"../playerHand".playerHand
-
-	var characterCount = 0
-	var supportCount = 0
-
-	for card in playerHand:
-		if card.type == "Character":
-			characterCount += 1
-		elif card.type == "Support":
-			supportCount += 1
-	
-	while characterCount < MAX_CHARACTER_CARDS:
-		characterDeckReference.draw_card()
-		characterCount += 1
-		battleTimer.start()
-		await battleTimer.timeout
-	
-	while supportCount < MAX_SUPPORT_CARDS:
-		supportDeckReference.draw_card()
-		supportCount += 1
-		battleTimer.start()
-		await battleTimer.timeout
-
-func play_card_with_highest_value():
-	# Opponent AI, for now it plays the highest value card.
 	var opponentHand = $"../opponentHand".opponentHand
 	
-	var highestValueCard: Node = null
-
-	for card in opponentHand:
-		if card.type != "Character":
-			continue
-
-		if highestValueCard == null or card.value > highestValueCard.value:
-			highestValueCard = card
-	
-	# Animate the card
-	var tween = get_tree().create_tween()
-	tween.tween_property(highestValueCard, "position", opponentCharacterCardSlot.position, CARD_MOVE_SPEED)
-	
-	opponentCharacterCard = highestValueCard
-	
-	# Comment this out when we hide opponent cards
-	highestValueCard.get_node("AnimationPlayer").play("cardFlip")
-	highestValueCard.get_node("image").visible = true
-	
-	$"../opponentHand".remove_card_from_hand(highestValueCard)
-
-func play_equalling_support():
-	var opponentHand = $"../opponentHand".opponentHand
-	
-#	For now we are just adding the raw values. Not worrying about perks
-	var playerTotalPower
 	if playerSupportCard:
-		playerTotalPower = playerCharacterCard.value + playerSupportCard.value
-	else:
-		playerTotalPower = playerCharacterCard.value
-	
-	var opponentTotalPower = opponentCharacterCard.value
-	
-	if opponentTotalPower > playerTotalPower:
-		return
-	
-	for support in opponentHand:
-		if support.type == "Support":
-			if opponentTotalPower + support.value > playerTotalPower:
-				opponentSupportCard = support
-				break
-			elif opponentTotalPower + support.value == playerTotalPower && !opponentSupportCard:
-				opponentSupportCard = support
+		cardsToDiscard.append(playerSupportCard)
+
+	cardsToDiscard.append(playerCharacterCard)
+	cardsToDiscard.append(opponentCharacterCard)
 	
 	if opponentSupportCard:
-		opponentHasPlayedSupport = true
-		battleTimer.start()
-		await battleTimer.timeout
-		
-		# Animate the card
-		var tween = get_tree().create_tween()
-		tween.tween_property(opponentSupportCard, "position", opponentSupportCardSlot.position, CARD_MOVE_SPEED)
-		
-		# Comment this out when we hide opponent cards
-		opponentSupportCard.get_node("AnimationPlayer").play("cardFlip")
-		opponentSupportCard.get_node("image").visible = true
-		
-		$"../opponentHand".remove_card_from_hand(opponentSupportCard)
-	else:
-		battleTimer.start()
-		await battleTimer.timeout
-
-func attempt_winning_support():
-	$"../EndTurnButton".disabled = true
-	$"../EndTurnButton".visible = false
+		cardsToDiscard.append(opponentSupportCard)
 	
-	var opponentHand = $"../opponentHand".opponentHand
+	await move_cards_to_discard(cardsToDiscard)
+	hide_end_turn_button()
+	await wait_for(CARD_MOVE_SPEED)
 	
-#	For now we are just adding the raw values. Not worrying about perks
-	var playerTotalPower
-	if playerSupportCard:
-		playerTotalPower = playerCharacterCard.value + playerSupportCard.value
-	else:
-		playerTotalPower = playerCharacterCard.value
+	await repopolate_hand(playerHand, "player")
+	await repopolate_hand(opponentHand, "opponent")
 	
-	var opponentTotalPower = opponentCharacterCard.value
+	turnNumber += 1
+	cardsToDiscard = []
 	
-	if opponentTotalPower > playerTotalPower:
-		if !playerStartsTurn:
-			battleTimer.start()
-			await battleTimer.timeout
-			await end_turn_sequence()
-		return
-	
-	for support in opponentHand:
-		if support.type == "Support":
-			if opponentTotalPower + support.value > playerTotalPower:
-				opponentSupportCard = support
-				opponentHasPlayedSupport = true
-				break
-	
-	if opponentSupportCard:
-		battleTimer.start()
-		await battleTimer.timeout
-		
-		# Animate the card
-		var tween = get_tree().create_tween()
-		tween.tween_property(opponentSupportCard, "position", opponentSupportCardSlot.position, CARD_MOVE_SPEED)
-		
-		# Comment this out when we hide opponent cards
-		opponentSupportCard.get_node("AnimationPlayer").play("cardFlip")
-		opponentSupportCard.get_node("image").visible = true
-		
-		$"../opponentHand".remove_card_from_hand(opponentSupportCard)
-		
-	if playerStartsTurn:
-		battleTimer.wait_time = 1.5
-		battleTimer.start()
-		await battleTimer.timeout
-		battleTimer.wait_time = 1
-	else:
-		$"../EndTurnButton".disabled = false
-		$"../EndTurnButton".visible = true
+	resetTurn()
 
 func _on_end_turn_button_pressed() -> void:
-	end_turn_sequence()
+	hide_end_turn_button()
+	
+	# If player played support, let the AI choose to play support, otherwise end
+	if playerSupportCard == null:
+		if opponentSupportCard == null:
+			opponent_support_turn()
+			return
+
+	await wait_for(END_ROUND_TIME)
+	end_turn()
+
+# Helper functions
+func wait_for(duration):
+	$"../battleTimer".wait_time = duration
+	$"../battleTimer".start()
+	await $"../battleTimer".timeout
+
+func animate_opponent_playing_card(opponentCard, opponentCardSlot):
+	var tween = get_tree().create_tween()
+	tween.tween_property(opponentCard, "position", opponentCardSlot.position, CARD_MOVE_SPEED)
+	
+	# Comment this out when we hide opponent cards
+	opponentCard.get_node("AnimationPlayer").play("cardFlip")
+	opponentCard.get_node("image").visible = true
+	
+	$"../opponentHand".remove_card_from_hand(opponentCard)
+
+func show_end_turn_button():
+	$"../EndTurnButton".disabled = false
+	$"../EndTurnButton".visible = true
+
+func hide_end_turn_button():
+	$"../EndTurnButton".disabled = true
+	$"../EndTurnButton".visible = false
 
 func move_cards_to_discard(cards):
 	for card in cards:
@@ -287,36 +204,32 @@ func move_cards_to_discard(cards):
 	$"../cardSlots/cardSlotSupport".occupied = false
 	$"../cardSlots/cardSlotCharacter".occupied = false
 
-func end_turn_sequence():
-	var cardsToDiscard = []
+func repopolate_hand(hand, handToUpdate):
+	var characterDeckReference = $"../characterDeck"
+	var supportDeckReference = $"../supportDeck"
 	
-	if playerSupportCard:
-		cardsToDiscard.append(playerSupportCard)
-	else:
-		if playerStartsTurn:
-			await attempt_winning_support()
+	var characterCount = 0
+	var supportCount = 0
 
-	cardsToDiscard.append(playerCharacterCard)
-	cardsToDiscard.append(opponentCharacterCard)
+	for card in hand:
+		if card.type == "Character":
+			characterCount += 1
+		elif card.type == "Support":
+			supportCount += 1
 	
-	if opponentSupportCard:
-		cardsToDiscard.append(opponentSupportCard)
+	while characterCount < MAX_CHARACTER_CARDS:
+		if handToUpdate == "player":
+			characterDeckReference.draw_card()
+		else:
+			characterDeckReference.draw_opponent_card()
+		
+		characterCount += 1
+		await wait_for(CARD_MOVE_SPEED)
 	
-	move_cards_to_discard(cardsToDiscard)
-	
-	$"../EndTurnButton".disabled = true
-	$"../EndTurnButton".visible = false
-	
-	# Wait
-	battleTimer.wait_time = 0.5
-	battleTimer.start()
-	await battleTimer.timeout
-	
-	update_player_hand()
-	update_opponent_hand()
-	battleTimer.wait_time = 1
-	
-	turnNumber += 1
-	cardsToDiscard = []
-	
-	resetTurn()
+	while supportCount < MAX_SUPPORT_CARDS:
+		if handToUpdate == "player":
+			supportDeckReference.draw_card()
+		else:
+			supportDeckReference.draw_opponent_card()
+		supportCount += 1
+		await wait_for(CARD_MOVE_SPEED)
