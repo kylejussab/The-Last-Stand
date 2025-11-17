@@ -37,7 +37,7 @@ var opponentAI: OpponentAI
 
 var discardedCards = []
 
-var showOpponentsCards = true
+var showOpponentsCards = false
 
 func _ready() -> void:
 	$"../battleTimer".one_shot = true

@@ -1,7 +1,7 @@
 extends Node2D
 
 const CARD_WIDTH = 180
-const HAND_Y_POSITION = 120 #It was 120 to see the opponents cards
+const HAND_Y_POSITION = 0 #It was 120 to see the opponents cards
 const DEFAULT_CARD_MOVE_SPEED = 0.1
 
 var opponentHand: Array = []

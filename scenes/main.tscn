@@ -8,8 +8,8 @@
 [ext_resource type="Script" uid="uid://do1wqhx54kv7s" path="res://scripts/playerHand.gd" id="5_tbgi4"]
 [ext_resource type="Script" uid="uid://b0yx32b2u0wb1" path="res://scripts/characterDeck.gd" id="5_tefeu"]
 [ext_resource type="PackedScene" uid="uid://cedct6rr8lclv" path="res://scenes/opponentCardSlot.tscn" id="6_85g3d"]
-[ext_resource type="Texture2D" uid="uid://ch1o67f7pph2o" path="res://assets/Temp Card Back.png" id="6_o6xl0"]
 [ext_resource type="Script" uid="uid://dwr382qynby8f" path="res://scripts/battleManager.gd" id="10_choun"]
+[ext_resource type="Texture2D" uid="uid://ymoqjcc5xbj2" path="res://assets/CardBack.png" id="11_eb6dy"]
 [ext_resource type="Script" uid="uid://conm4253y3tth" path="res://scripts/oppponentHand.gd" id="11_ya4ey"]
 [ext_resource type="Script" uid="uid://che0dt2kvp0wy" path="res://scripts/supportDeck.gd" id="12_eb6dy"]
 
@@ -65,8 +65,8 @@ script = ExtResource("5_tefeu")
 
 [node name="image" type="Sprite2D" parent="characterDeck"]
 position = Vector2(0, 3.8146973e-06)
-scale = Vector2(0.37533346, 0.3753334)
-texture = ExtResource("6_o6xl0")
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("11_eb6dy")
 
 [node name="Area2D" type="Area2D" parent="characterDeck"]
 collision_layer = 3
@@ -91,8 +91,8 @@ script = ExtResource("12_eb6dy")
 
 [node name="image" type="Sprite2D" parent="supportDeck"]
 position = Vector2(0, 3.8146973e-06)
-scale = Vector2(0.37533346, 0.3753334)
-texture = ExtResource("6_o6xl0")
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("11_eb6dy")
 
 [node name="Area2D" type="Area2D" parent="supportDeck"]
 collision_layer = 3
