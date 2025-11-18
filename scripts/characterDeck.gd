@@ -67,6 +67,9 @@ func draw_card():
 	newCard.get_node("value").text = str(cardDatabaseReference.CHARACTERS[cardDrawn][0])
 	newCard.value = cardDatabaseReference.CHARACTERS[cardDrawn][0]
 	newCard.type = cardDatabaseReference.CHARACTERS[cardDrawn][1]
+	newCard.faction = cardDatabaseReference.CHARACTERS[cardDrawn][2]
+	newCard.role = cardDatabaseReference.CHARACTERS[cardDrawn][3]
+	newCard.canBePlayed = true
 	
 	$"../cardManager".add_child(newCard)
 	newCard.name = "Card"
@@ -92,6 +95,9 @@ func draw_opponent_card():
 	newCard.get_node("value").text = str(cardDatabaseReference.CHARACTERS[cardDrawn][0])
 	newCard.value = cardDatabaseReference.CHARACTERS[cardDrawn][0]
 	newCard.type = cardDatabaseReference.CHARACTERS[cardDrawn][1]
+	newCard.faction = cardDatabaseReference.CHARACTERS[cardDrawn][2]
+	newCard.role = cardDatabaseReference.CHARACTERS[cardDrawn][3]
+	newCard.canBePlayed = true
 	
 	$"../cardManager".add_child(newCard)
 	newCard.name = "Card"

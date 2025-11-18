@@ -14,7 +14,7 @@ func choose_support_card(opponent_hand, opponent_character, player_character):
 	var opponent_total = opponent_character.value
 	
 	for support in opponent_hand:
-		if support.type == "Support":
+		if support.type == "Support" && support.canBePlayed:
 			var new_total = opponent_total + support.value
 			
 			if new_total > player_character.value:

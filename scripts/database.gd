@@ -30,12 +30,12 @@ const CHARACTERS = { # Value, Type, Faction, Class
 
 const SUPPORTS = { # Value, Type, Class
 	"SmokeBomb": [2, "Support", "Crafty"],
-	"SmokeBombRare": [2, "Support", "Stealth/Crafty"],
+	"SmokeBombRare": [2, "Support", "Stealthy/Crafty"],
 
 	"Rage": [2, "Support", "Aggressive"],
 	"RageRare": [3, "Support", "Aggressive"],
 
-	"TrapMine": [2, "Support", "Crafty"],
+	"TrapMine": [2, "Support", "Crafty/Defensive"],
 	"Silencer": [2, "Support", "Stealthy"],
 
 	"Resilience": [1, "Support", "Survivor"],
@@ -45,17 +45,17 @@ const SUPPORTS = { # Value, Type, Class
 
 	"ShotgunShells": [3, "Support", "Aggressive"],
 
-	"PoisonDart": [1, "Support", "Stealth"],
-	"Cloak": [2, "Support", "Stealth"],
-	"CloakRare": [2, "Support", "Stealth"],
+	"PoisonDart": [1, "Support", "Stealthy"],
+	"Cloak": [2, "Support", "Stealthy"],
+	"CloakRare": [2, "Support", "Stealthy"],
 
 	"ScavengedParts": [1, "Support", "Survivor"],
-	"ScavengedPartsRare": [1, "Support", "Survivor"],
+	"ScavengedPartsRare": [1, "Support", "Survivor/Defensive"],
 
-	"Barricade": [3, "Support", "Stealth/Defensive"],
+	"Barricade": [3, "Support", "Stealthy/Defensive"],
 
 	"MedKit": [3, "Support", "Crafty"],
-	"MedKitRare": [3, "Support", "Crafty"],
+	"MedKitRare": [3, "Support", "Crafty/Defensive"],
 
 	"Armor": [2, "Support", "Defensive"],
 
@@ -64,5 +64,6 @@ const SUPPORTS = { # Value, Type, Class
 
 	"SupplyCacheRare": [0, "Support", "Crafty/Defensive"],
 
-	"Shield": [1, "Support", "Defensive"]
+	"Shield": [1, "Support", "Defensive"],
+	"Fortify": [2, "Support", "Defensive"]
 }

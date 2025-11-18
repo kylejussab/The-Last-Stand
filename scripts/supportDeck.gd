@@ -29,7 +29,8 @@ var deck = [
 	"MolotovRare",
 	"Molotov",
 	"SupplyCacheRare",
-	"Shield"
+	"Shield",
+	"Fortify"
 ]
 
 var cardDatabaseReference
@@ -67,6 +68,8 @@ func draw_card():
 	newCard.get_node("value").text = str(cardDatabaseReference.SUPPORTS[cardDrawn][0])
 	newCard.value = cardDatabaseReference.SUPPORTS[cardDrawn][0]
 	newCard.type = cardDatabaseReference.SUPPORTS[cardDrawn][1]
+	newCard.role = cardDatabaseReference.SUPPORTS[cardDrawn][2]
+	newCard.canBePlayed = false
 	
 	$"../cardManager".add_child(newCard)
 	newCard.name = "Card"
@@ -92,6 +95,8 @@ func draw_opponent_card():
 	newCard.get_node("value").text = str(cardDatabaseReference.SUPPORTS[cardDrawn][0])
 	newCard.value = cardDatabaseReference.SUPPORTS[cardDrawn][0]
 	newCard.type = cardDatabaseReference.SUPPORTS[cardDrawn][1]
+	newCard.role = cardDatabaseReference.SUPPORTS[cardDrawn][2]
+	newCard.canBePlayed = false
 	
 	$"../cardManager".add_child(newCard)
 	newCard.name = "Card"

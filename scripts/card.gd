@@ -7,6 +7,9 @@ var cardSlot
 var cardKey: String
 var type
 var value: int
+var role: String
+var faction: String
+var canBePlayed: bool
 
 var handPosition: Vector2
 

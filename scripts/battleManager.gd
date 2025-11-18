@@ -127,6 +127,9 @@ func opponent_character_turn():
 
 func init_support_round():
 	lockPlayerInput = false
+	
+	allow_support_cards()
+	
 	if whoStartedRound == "player":
 		roundStage = RoundStage.PLAYER_SUPPORT
 	else:
@@ -245,7 +248,41 @@ func hide_end_turn_button():
 	$"../EndTurnButton".disabled = true
 	$"../EndTurnButton".visible = false
 
+func allow_support_cards():
+	var playerCharacterCardRoles = playerCharacterCard.role.split("/")
+	for card in $"../playerHand".playerHand:
+		if card.type == "Support":
+			var playerSupportCardRoles = card.role.split("/")
+			for role in playerCharacterCardRoles:
+				if role in playerSupportCardRoles:
+					card.canBePlayed = true
+	
+	var opponentCharacterCardRoles = opponentCharacterCard.role.split("/")
+	for card in $"../opponentHand".opponentHand:
+		if card.type == "Support":
+			var opponentSupportCardRoles = card.role.split("/")
+			for role in opponentCharacterCardRoles:
+				if role in opponentSupportCardRoles:
+					card.canBePlayed = true
+
+func reset_allowed_support_cards():
+	if playerSupportCard:
+		playerSupportCard.canBePlayed = false
+	
+	for card in $"../playerHand".playerHand:
+		if card.type == "Support":
+			card.canBePlayed = false
+	
+	if opponentSupportCard:
+		opponentSupportCard.canBePlayed = false
+	
+	for card in $"../opponentHand".opponentHand:
+		if card.type == "Support":
+			card.canBePlayed = false
+
 func move_cards_to_discard(cards):
+	reset_allowed_support_cards()
+	
 	for card in cards:
 		discardedCards.append(card)
 		card.scale = Vector2(1, 1)

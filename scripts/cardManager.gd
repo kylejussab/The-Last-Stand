@@ -34,7 +34,7 @@ func finish_drag():
 	
 	var cardSlot = get_card_slot()
 	
-	if cardSlot and not cardSlot.occupied:
+	if cardSlot and not cardSlot.occupied and draggedCard.canBePlayed:
 		if draggedCard.type == cardSlot.type:
 			# Only allow a support card play after a character card
 			if draggedCard.type == "Support" && !$"../battleManager".playerCharacterCard:
@@ -134,7 +134,7 @@ func auto_play_card(card):
 		
 		if card.type == "Character" && !characterSlot.occupied:
 			move_card_on_double_click(card, characterSlot)
-		elif card.type == "Support" && $"../battleManager".playerCharacterCard:
+		elif card.type == "Support" && $"../battleManager".playerCharacterCard && card.canBePlayed:
 			move_card_on_double_click(card, supportSlot)
 
 func move_card_on_double_click(card, cardSlot):
