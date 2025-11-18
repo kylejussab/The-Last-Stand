@@ -4,6 +4,8 @@ const OPPONENT_THINKING_TIME = 1
 const END_ROUND_TIME = 1.2
 const CARD_MOVE_SPEED = 0.2
 
+const DISCARD_PILE_POSITION = Vector2(135, 300)
+
 const MAX_CHARACTER_CARDS = 4
 const MAX_SUPPORT_CARDS = 4
 
@@ -53,6 +55,17 @@ func _ready() -> void:
 	# Player always starts
 	whoStartedRound = "player"
 	roundStage = RoundStage.PLAYER_CHARACTER
+	$"../arena/player/indicator".visible = true
+	$"../arena/opponent/indicator".visible = false
+	
+	# For now we are hard coding the player and enemy names (will be randomized later)
+	$"../arena/opponent/name".text = "Dr. Leda Mire"
+	$"../arena/opponent/description".text = "Deranged Researcher"
+	$"../arena/opponent/value".text = "30"
+	
+	$"../arena/player/name".text = "June Ravel"
+	$"../arena/player/description".text = "Former Firefly"
+	$"../arena/player/value".text = "30"
 
 func resetTurn():
 	playerCharacterCard = null
@@ -71,6 +84,8 @@ func resetTurn():
 		whoStartedRound = "opponent"
 	else:
 		whoStartedRound = "player"
+		$"../arena/player/indicator".visible = true
+		$"../arena/opponent/indicator".visible = false
 		lockPlayerInput = false
 	
 	if whoStartedRound == "opponent":
@@ -87,6 +102,8 @@ func on_player_character_played(card):
 		opponent_character_turn()
 
 func opponent_character_turn():
+	$"../arena/player/indicator".visible = false
+	$"../arena/opponent/indicator".visible = true
 	lockPlayerInput = true
 	await wait_for(OPPONENT_THINKING_TIME)
 	
@@ -98,6 +115,8 @@ func opponent_character_turn():
 	animate_opponent_playing_card(card, $"../cardSlots/opponentCardSlotCharacter")
 	opponentCharacterCard = card
 	
+	$"../arena/player/indicator".visible = true
+	$"../arena/opponent/indicator".visible = false
 	# If the player started the round
 	if playerCharacterCard != null:
 		show_end_turn_button()
@@ -124,10 +143,14 @@ func on_player_support_played(card):
 	else:
 		# Calculate the reward values (this is where health would be subtracted)
 		
+		$"../arena/player/indicator".visible = false
+		$"../arena/opponent/indicator".visible = false
 		await wait_for(END_ROUND_TIME)
 		end_turn()
 
 func opponent_support_turn():
+	$"../arena/player/indicator".visible = false
+	$"../arena/opponent/indicator".visible = true
 	lockPlayerInput = true
 	await wait_for(OPPONENT_THINKING_TIME)
 	
@@ -142,10 +165,14 @@ func opponent_support_turn():
 	if whoStartedRound == "player":
 		# Calculate the reward values (this is where health would be subtracted)
 		
+		$"../arena/player/indicator".visible = false
+		$"../arena/opponent/indicator".visible = false
 		await wait_for(END_ROUND_TIME)
 		end_turn()
 	else:
 		# Always give the player the option of playing a support
+		$"../arena/player/indicator".visible = true
+		$"../arena/opponent/indicator".visible = false
 		lockPlayerInput = false
 		roundStage = RoundStage.PLAYER_SUPPORT
 		show_end_turn_button()
@@ -155,6 +182,7 @@ func opponent_support_turn():
 func end_turn():
 	roundStage = RoundStage.END_CALCULATION
 	# Apply any perks and do the calculation
+	await calculate_damage()
 	
 	var cardsToDiscard = []
 	var playerHand = $"../playerHand".playerHand
@@ -188,6 +216,8 @@ func _on_end_turn_button_pressed() -> void:
 		opponent_support_turn()
 		return
 
+	$"../arena/player/indicator".visible = false
+	$"../arena/opponent/indicator".visible = false
 	await wait_for(END_ROUND_TIME)
 	end_turn()
 
@@ -221,7 +251,7 @@ func move_cards_to_discard(cards):
 		card.scale = Vector2(1, 1)
 		
 		var tween = get_tree().create_tween()
-		tween.tween_property(card, "position", Vector2(150, 280), CARD_MOVE_SPEED)
+		tween.tween_property(card, "position", DISCARD_PILE_POSITION, CARD_MOVE_SPEED)
 	
 	$"../cardSlots/cardSlotSupport".occupied = false
 	$"../cardSlots/cardSlotCharacter".occupied = false
@@ -275,3 +305,28 @@ func repopulate_decks():
 		await $"../supportDeck".reshuffle_from_discards(discardedSupports)
 		for card in discardedSupports:
 			discardedCards.erase(card)
+
+func calculate_damage():
+	var playerTotal = playerCharacterCard.value
+	var opponentTotal = opponentCharacterCard.value
+	
+	if playerSupportCard:
+		playerTotal += playerSupportCard.value
+	
+	if opponentSupportCard:
+		opponentTotal += opponentSupportCard.value
+	
+	var damage = 0
+	
+	if playerTotal > opponentTotal:
+		var opponentHealth = int($"../arena/opponent/value".text)
+		damage = playerTotal - opponentTotal
+		
+		opponentHealth -= damage
+		$"../arena/opponent/value".text = str(opponentHealth)
+	elif opponentTotal > playerTotal:
+		var playerHealth = int($"../arena/player/value".text)
+		damage = opponentTotal - playerTotal
+		
+		playerHealth -= damage
+		$"../arena/player/value".text = str(playerHealth)

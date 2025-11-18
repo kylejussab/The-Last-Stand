@@ -4,8 +4,7 @@ const PLAYER_CARD_SCENE_PATH = "res://scenes/card.tscn"
 const OPPONENT_CARD_SCENE_PATH = "res://scenes/opponentCard.tscn"
 const CARD_DRAW_SPEED = 0.2
 
-const CHARACTER_DECK_Y_POSITION = 920
-const DECK_X_POSITION = 150
+const CHARACTER_DECK_POSITION = Vector2(135, 796)
 
 var deck = [
 	"JoelRare",
@@ -62,7 +61,7 @@ func draw_card():
 	var newCard = cardScene.instantiate()
 	var cardImagePath = str("res://assets/" + cardDrawn + "Card.png")
 	newCard.cardKey = cardDrawn
-	newCard.position = Vector2(DECK_X_POSITION, CHARACTER_DECK_Y_POSITION)
+	newCard.position = CHARACTER_DECK_POSITION
 	
 	newCard.get_node("image").texture = load(cardImagePath)
 	newCard.get_node("value").text = str(cardDatabaseReference.CHARACTERS[cardDrawn][0])
@@ -87,7 +86,7 @@ func draw_opponent_card():
 	var newCard = cardScene.instantiate()
 	var cardImagePath = str("res://assets/" + cardDrawn + "Card.png")
 	newCard.cardKey = cardDrawn
-	newCard.position = Vector2(DECK_X_POSITION, CHARACTER_DECK_Y_POSITION)
+	newCard.position = CHARACTER_DECK_POSITION
 	
 	newCard.get_node("image").texture = load(cardImagePath)
 	newCard.get_node("value").text = str(cardDatabaseReference.CHARACTERS[cardDrawn][0])
@@ -118,5 +117,5 @@ func reshuffle_from_discards(discardedCards):
 
 func move_card_back_to_deck(card):
 	var tween = get_tree().create_tween()
-	tween.tween_property(card, "position", Vector2(DECK_X_POSITION, CHARACTER_DECK_Y_POSITION), 0.1)
+	tween.tween_property(card, "position", CHARACTER_DECK_POSITION, 0.1)
 	await tween.finished

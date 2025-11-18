@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://b1ue0o8lsverh"]
+[gd_scene load_steps=9 format=3 uid="uid://b1ue0o8lsverh"]
 
 [ext_resource type="Script" uid="uid://ucr1vk8xoov" path="res://scripts/card.gd" id="1_6u4wf"]
 [ext_resource type="Texture2D" uid="uid://ymoqjcc5xbj2" path="res://assets/CardBack.png" id="2_ktuci"]
 [ext_resource type="Texture2D" uid="uid://cgcss8mjj2at4" path="res://assets/JoelCard.png" id="3_ktuci"]
+[ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://assets/fonts/SF-Pro-Display-Black.otf" id="4_kg30u"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
 size = Vector2(146, 204)
@@ -121,11 +122,13 @@ texture = ExtResource("3_ktuci")
 shape = SubResource("RectangleShape2D_rjlel")
 
 [node name="value" type="RichTextLabel" parent="."]
-offset_left = -64.0
-offset_top = -105.0
-offset_right = -41.0
+offset_left = -73.0
+offset_top = -101.0
+offset_right = -35.0
 offset_bottom = -78.0
-text = "0"
+theme_override_fonts/normal_font = ExtResource("4_kg30u")
+theme_override_font_sizes/normal_font_size = 16
+text = "+99"
 horizontal_alignment = 1
 vertical_alignment = 1
 

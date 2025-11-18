@@ -1,14 +1,15 @@
 [gd_scene load_steps=3 format=3 uid="uid://ekswpxuouhg1"]
 
-[ext_resource type="Texture2D" uid="uid://cpbwscn42j35u" path="res://assets/Temp Card Slot.png" id="1_fe304"]
+[ext_resource type="Texture2D" uid="uid://bly7ibb15l6cs" path="res://assets/AbbyCard.png" id="1_fe304"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sugp2"]
-size = Vector2(142, 196)
+size = Vector2(150, 210)
 
 [node name="cardSlot" type="Node2D"]
 
 [node name="image" type="Sprite2D" parent="."]
-scale = Vector2(0.392, 0.39199993)
+visible = false
+scale = Vector2(0.2, 0.2)
 texture = ExtResource("1_fe304")
 
 [node name="Area2D" type="Area2D" parent="."]
