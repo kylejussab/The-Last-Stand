@@ -7,11 +7,11 @@ const CARD_DRAW_SPEED = 0.2
 const SUPPORT_DECK_POSITION = Vector2(135, 548)
 
 var deck = [
+	"TrapMine",
 	"SmokeBombRare",
 	"SmokeBomb",
 	"RageRare",
 	"Rage",
-	"TrapMine",
 	"Silencer",
 	"ResilienceRare",
 	"Resilience",

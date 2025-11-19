@@ -7,29 +7,36 @@ const CARD_DRAW_SPEED = 0.2
 const CHARACTER_DECK_POSITION = Vector2(135, 796)
 
 var deck = [
-	"JoelRare",
-	"Joel",
-	"EllieRare",
-	"TommyRare",
-	"Tommy",
-	"Dina",
 	"Bill",
-	"Marlene",
-	"FireflySoldier",
-	"Nora",
-	"Tess",
-	"Manny",
-	"Abby",
-	"WLFSoldier",
-	"Li",
 	"Runner",
+	"Tommy",
+	"Nora",
+	
+	"LevRare",
+	"RatKingRare",
 	"Stalker",
 	"Clicker",
+	
+	"Stalker",
+	"Yara",
+	"Dina",
 	"Bloater",
-	"RatKingRare",
+	"Joel",
+	"Marlene",
 	"Malik",
-	"LevRare",
-	"Yara"
+	"JoelRare",
+	"EllieRare",
+	"Abby",
+	"FireflySoldier",
+	"FireflySoldier",
+	"Tess",
+	"WLFSoldier",
+	"TommyRare",
+	"Manny",
+	"Li",
+	"Runner",
+	"Runner",
+	"Stalker",
 ]
 
 var cardDatabaseReference
@@ -63,6 +70,10 @@ func draw_card():
 	newCard.cardKey = cardDrawn
 	newCard.position = CHARACTER_DECK_POSITION
 	
+	# Add the perk
+	if cardDatabaseReference.PERKS.has(cardDrawn):
+		newCard.perk = load(cardDatabaseReference.PERKS[cardDrawn]).new()
+	
 	newCard.get_node("image").texture = load(cardImagePath)
 	newCard.get_node("value").text = str(cardDatabaseReference.CHARACTERS[cardDrawn][0])
 	newCard.value = cardDatabaseReference.CHARACTERS[cardDrawn][0]
@@ -90,6 +101,10 @@ func draw_opponent_card():
 	var cardImagePath = str("res://assets/" + cardDrawn + "Card.png")
 	newCard.cardKey = cardDrawn
 	newCard.position = CHARACTER_DECK_POSITION
+	
+	# Add the perk
+	if cardDatabaseReference.PERKS.has(cardDrawn):
+		newCard.perk = load(cardDatabaseReference.PERKS[cardDrawn]).new()
 	
 	newCard.get_node("image").texture = load(cardImagePath)
 	newCard.get_node("value").text = str(cardDatabaseReference.CHARACTERS[cardDrawn][0])

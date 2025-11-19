@@ -2,8 +2,8 @@ const CHARACTERS = { # Value, Type, Faction, Class
 	"JoelRare": [6, "Character", "Jackson", "Crafty/Defensive"],
 	"Joel": [5, "Character", "Jackson", "Defensive"],
 	"EllieRare": [5, "Character", "Jackson", "Stealthy/Crafty"],
-	"TommyRare": [5, "Character", "Jackson", "Survivor/Aggressive"],
-	"Tommy": [4, "Character", "Jackson", "Survivor"],
+	"TommyRare": [4, "Character", "Jackson", "Survivor/Aggressive"],
+	"Tommy": [5, "Character", "Jackson", "Survivor"],
 	"Dina": [3, "Character", "Jackson", "Stealthy"],
 	"Bill": [4, "Character", "Jackson", "Crafty"],
 	
@@ -66,4 +66,27 @@ const SUPPORTS = { # Value, Type, Class
 
 	"Shield": [1, "Support", "Defensive"],
 	"Fortify": [2, "Support", "Defensive"]
+}
+
+const PERKS = {
+	"JoelRare": "res://scripts/perks/joelRarePerk.gd",
+	"Marlene": "res://scripts/perks/marlenePerk.gd",
+	"TommyRare": "res://scripts/perks/tommyRarePerk.gd",
+	"Manny": "res://scripts/perks/mannyPerk.gd",
+	"Joel": "res://scripts/perks/joelPerk.gd",
+	"Runner": "res://scripts/perks/runnerPerk.gd",
+	"Abby": "res://scripts/perks/abbyPerk.gd",
+	"Tess": "res://scripts/perks/tessPerk.gd",
+	"WLFSoldier": "res://scripts/perks/wlfSoldierPerk.gd",
+	"EllieRare": "res://scripts/perks/ellieRarePerk.gd",
+	"FireflySoldier": "res://scripts/perks/fireflySoldierPerk.gd",
+	"Nora": "res://scripts/perks/noraPerk.gd",
+	"Malik": "res://scripts/perks/malikPerk.gd",
+	"Dina": "res://scripts/perks/dinaPerk.gd",
+	"Bill": "res://scripts/perks/billPerk.gd",
+	"Yara": "res://scripts/perks/yaraPerk.gd",
+	"Clicker": "res://scripts/perks/clickerPerk.gd",
+	"LevRare": "res://scripts/perks/levRarePerk.gd",
+	"Bloater": "res://scripts/perks/bloaterPerk.gd",
+	"RatKingRare": "res://scripts/perks/ratKingRarePerk.gd",
 }

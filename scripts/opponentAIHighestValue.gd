@@ -1,13 +1,32 @@
 extends OpponentAI
 class_name OpponentAIHighestValue
 
-func play_character_card(_opponent_hand, _player_hand):
-	var highest = null
-	for card in _opponent_hand:
+func play_character_card(opponent_hand, _player_hand):
+	var characters: Array = []
+	
+	# Collect character cards only
+	for card in opponent_hand:
 		if card.type == "Character":
-			if highest == null or card.value > highest.value:
-				highest = card
-	return highest
+			characters.append(card)
+	
+	# Find highest-value card
+	var highest = characters[0]
+	for card in characters:
+		if int(card.get_node("value").text) > int(highest.get_node("value").text):
+			highest = card
+	
+	# 70% chance: choose highest
+	if randf() < 0.7:
+		return highest
+	
+	# 30% chance: choose a random non-highest card
+	var others = characters.filter(func(c): return c != highest)
+	
+	if others.size() == 0:
+		# Only one character, must pick it
+		return highest
+	
+	return others[randi() % others.size()]
 
 func choose_support_card(opponent_hand, opponent_character, player_character):
 	var best = null

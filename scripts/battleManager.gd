@@ -61,11 +61,11 @@ func _ready() -> void:
 	# For now we are hard coding the player and enemy names (will be randomized later)
 	$"../arena/opponent/name".text = "Dr. Leda Mire"
 	$"../arena/opponent/description".text = "Deranged Researcher"
-	$"../arena/opponent/value".text = "30"
+	$"../arena/opponent/value".text = "50"
 	
 	$"../arena/player/name".text = "June Ravel"
 	$"../arena/player/description".text = "Former Firefly"
-	$"../arena/player/value".text = "30"
+	$"../arena/player/value".text = "50"
 
 func resetTurn():
 	playerCharacterCard = null
@@ -112,7 +112,7 @@ func opponent_character_turn():
 	var playerHand = $"../playerHand".playerHand
 	var card = opponentAI.play_character_card(opponentHand, playerHand)
 	
-	animate_opponent_playing_card(card, $"../cardSlots/opponentCardSlotCharacter")
+	await animate_opponent_playing_card(card, $"../cardSlots/opponentCardSlotCharacter")
 	opponentCharacterCard = card
 	
 	$"../arena/player/indicator".visible = true
@@ -128,6 +128,7 @@ func opponent_character_turn():
 func init_support_round():
 	lockPlayerInput = false
 	
+	apply_mid_round_perks()
 	allow_support_cards()
 	
 	if whoStartedRound == "player":
@@ -148,7 +149,7 @@ func on_player_support_played(card):
 		
 		$"../arena/player/indicator".visible = false
 		$"../arena/opponent/indicator".visible = false
-		await wait_for(END_ROUND_TIME)
+		await apply_end_round_perks()
 		end_turn()
 
 func opponent_support_turn():
@@ -170,7 +171,7 @@ func opponent_support_turn():
 		
 		$"../arena/player/indicator".visible = false
 		$"../arena/opponent/indicator".visible = false
-		await wait_for(END_ROUND_TIME)
+		await apply_end_round_perks()
 		end_turn()
 	else:
 		# Always give the player the option of playing a support
@@ -186,6 +187,7 @@ func end_turn():
 	roundStage = RoundStage.END_CALCULATION
 	# Apply any perks and do the calculation
 	await calculate_damage()
+	await wait_for(END_ROUND_TIME)
 	
 	var cardsToDiscard = []
 	var playerHand = $"../playerHand".playerHand
@@ -221,7 +223,7 @@ func _on_end_turn_button_pressed() -> void:
 
 	$"../arena/player/indicator".visible = false
 	$"../arena/opponent/indicator".visible = false
-	await wait_for(END_ROUND_TIME)
+	await apply_end_round_perks()
 	end_turn()
 
 # Helper functions
@@ -280,7 +282,40 @@ func reset_allowed_support_cards():
 		if card.type == "Support":
 			card.canBePlayed = false
 
+func apply_mid_round_perks():
+	if playerCharacterCard.perk && playerCharacterCard.perk.timing == "midRound":
+		await wait_for(1)
+		await playerCharacterCard.perk.apply_mid_perk(playerCharacterCard, $"../playerHand".playerHand, opponentCharacterCard)
+	
+	if opponentCharacterCard.perk && opponentCharacterCard.perk.timing == "midRound":
+		await opponentCharacterCard.perk.apply_mid_perk(opponentCharacterCard, $"../opponentHand".opponentHand, playerCharacterCard)
+
+func apply_end_round_perks():
+	# For now its just characters and characters happen AFTER support
+	if playerCharacterCard.perk && playerCharacterCard.perk.timing == "endRound":
+		await playerCharacterCard.perk.apply_end_perk(playerCharacterCard, playerSupportCard, opponentCharacterCard, opponentSupportCard, $"../playerHand".playerHand)
+	
+	if opponentCharacterCard.perk && opponentCharacterCard.perk.timing == "endRound":
+		await opponentCharacterCard.perk.apply_end_perk(opponentCharacterCard, opponentSupportCard, playerCharacterCard, playerSupportCard, $"../opponentHand".opponentHand)
+	
+	await wait_for(1)
+
+func apply_calculation_round_perks(playerTotal, opponentTotal):
+	if playerCharacterCard.perk && playerCharacterCard.perk.timing == "calculationRound":
+		await playerCharacterCard.perk.apply_after_calculation_perk(playerCharacterCard, $"../playerHand".playerHand, playerTotal, opponentTotal)
+	
+	if opponentCharacterCard.perk && opponentCharacterCard.perk.timing == "calculationRound":
+		await opponentCharacterCard.perk.apply_after_calculation_perk(opponentCharacterCard, $"../opponentHand".opponentHand, opponentTotal, playerTotal)
+
+func reset_played_cards_perks():
+	if playerCharacterCard.perk:
+		playerCharacterCard.get_node("value").text = str(playerCharacterCard.value)
+	
+	if opponentCharacterCard.perk:
+		opponentCharacterCard.get_node("value").text = str(opponentCharacterCard.value)
+
 func move_cards_to_discard(cards):
+	reset_played_cards_perks()
 	reset_allowed_support_cards()
 	
 	for card in cards:
@@ -344,14 +379,16 @@ func repopulate_decks():
 			discardedCards.erase(card)
 
 func calculate_damage():
-	var playerTotal = playerCharacterCard.value
-	var opponentTotal = opponentCharacterCard.value
+	var playerTotal = int(playerCharacterCard.get_node("value").text)
+	var opponentTotal = int(opponentCharacterCard.get_node("value").text)
 	
 	if playerSupportCard:
 		playerTotal += playerSupportCard.value
 	
 	if opponentSupportCard:
 		opponentTotal += opponentSupportCard.value
+	
+	apply_calculation_round_perks(playerTotal, opponentTotal)
 	
 	var damage = 0
 	
@@ -361,9 +398,62 @@ func calculate_damage():
 		
 		opponentHealth -= damage
 		$"../arena/opponent/value".text = str(opponentHealth)
+		
+		$"../arena/opponent/damage".text = "-" + str(damage)
+		$"../arena/opponent/AnimationPlayer".queue("showDamage")
+		
+		#special case for bloater
+		if opponentCharacterCard.cardKey == "Bloater" && opponentCharacterCard.perkValueAtRoundEnd:
+			var playerHealth = int($"../arena/player/value".text) - opponentCharacterCard.perkValueAtRoundEnd
+			await wait_for(0.5)
+			$"../arena/player/value".text = str(playerHealth)
+			$"../arena/player/damage".text = "-" + str(opponentCharacterCard.perkValueAtRoundEnd)
+			$"../arena/player/AnimationPlayer".queue("showDamage")
+		
+		if playerCharacterCard.perkValueAtRoundEnd:
+			opponentHealth -= playerCharacterCard.perkValueAtRoundEnd
+			await $"../arena/opponent/AnimationPlayer".animation_finished
+			await wait_for(0.5)
+			
+			$"../arena/opponent/value".text = str(opponentHealth)
+			$"../arena/opponent/damage".text = "-" + str(playerCharacterCard.perkValueAtRoundEnd)
+			$"../arena/opponent/AnimationPlayer".queue("showDamage")
 	elif opponentTotal > playerTotal:
 		var playerHealth = int($"../arena/player/value".text)
 		damage = opponentTotal - playerTotal
 		
 		playerHealth -= damage
 		$"../arena/player/value".text = str(playerHealth)
+		
+		$"../arena/player/damage".text = "-" + str(damage)
+		$"../arena/player/AnimationPlayer".queue("showDamage")
+		
+		#special case for bloater
+		if playerCharacterCard.cardKey == "Bloater" && playerCharacterCard.perkValueAtRoundEnd:
+			var opponentHealth = int($"../arena/opponent/value".text) - playerCharacterCard.perkValueAtRoundEnd
+			await wait_for(0.5)
+			$"../arena/opponent/value".text = str(opponentHealth)
+			$"../arena/opponent/damage".text = "-" + str(playerCharacterCard.perkValueAtRoundEnd)
+			$"../arena/opponent/AnimationPlayer".queue("showDamage")
+		
+		if opponentCharacterCard.perkValueAtRoundEnd:
+			playerHealth -= opponentCharacterCard.perkValueAtRoundEnd
+			await $"../arena/player/AnimationPlayer".animation_finished
+			await wait_for(0.5)
+			
+			$"../arena/player/value".text = str(playerHealth)
+			$"../arena/player/damage".text = "-" + str(opponentCharacterCard.perkValueAtRoundEnd)
+			$"../arena/player/AnimationPlayer".queue("showDamage")
+	elif opponentTotal == playerTotal: # Special Case for Lev
+		if playerCharacterCard.cardKey == "LevRare":
+			var opponentHealth = int($"../arena/opponent/value".text) - playerCharacterCard.perkValueAtRoundEnd
+			await wait_for(0.5)
+			$"../arena/opponent/value".text = str(opponentHealth)
+			$"../arena/opponent/damage".text = "-" + str(playerCharacterCard.perkValueAtRoundEnd)
+			$"../arena/opponent/AnimationPlayer".queue("showDamage")
+		if opponentCharacterCard.cardKey == "LevRare":
+			var playerHealth = int($"../arena/player/value".text) - opponentCharacterCard.perkValueAtRoundEnd
+			await wait_for(0.5)
+			$"../arena/player/value".text = str(playerHealth)
+			$"../arena/player/damage".text = "-" + str(opponentCharacterCard.perkValueAtRoundEnd)
+			$"../arena/player/AnimationPlayer".queue("showDamage")
