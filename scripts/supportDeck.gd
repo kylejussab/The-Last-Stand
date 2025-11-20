@@ -8,6 +8,7 @@ const SUPPORT_DECK_POSITION = Vector2(135, 548)
 
 var deck = [
 	"TrapMine",
+	"TrapMine",
 	"SmokeBombRare",
 	"SmokeBomb",
 	"RageRare",

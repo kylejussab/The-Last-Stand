@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dix33o1614oad"
-path="res://.godot/imported/LevRareCard.png-841b354d46570ad8791975c313c0ccd0.ctex"
+uid="uid://b63sehid0es6q"
+path="res://.godot/imported/TheProphetCard.png-12a40057c6abeb877fabba236718a102.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/LevRareCard.png"
-dest_files=["res://.godot/imported/LevRareCard.png-841b354d46570ad8791975c313c0ccd0.ctex"]
+source_file="res://assets/TheProphetCard.png"
+dest_files=["res://.godot/imported/TheProphetCard.png-12a40057c6abeb877fabba236718a102.ctex"]
 
 [params]
 

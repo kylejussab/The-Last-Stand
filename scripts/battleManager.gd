@@ -61,11 +61,11 @@ func _ready() -> void:
 	# For now we are hard coding the player and enemy names (will be randomized later)
 	$"../arena/opponent/name".text = "Dr. Leda Mire"
 	$"../arena/opponent/description".text = "Deranged Researcher"
-	$"../arena/opponent/value".text = "50"
+	$"../arena/opponent/value".text = "40"
 	
 	$"../arena/player/name".text = "June Ravel"
 	$"../arena/player/description".text = "Former Firefly"
-	$"../arena/player/value".text = "50"
+	$"../arena/player/value".text = "40"
 
 func resetTurn():
 	playerCharacterCard = null

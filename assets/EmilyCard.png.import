@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://mdj5017umllu"
-path="res://.godot/imported/TessCard.png-ea621f76170d1f01d60092c61cf0f6ee.ctex"
+uid="uid://dw7i0kw7e8xae"
+path="res://.godot/imported/EmilyCard.png-1dc969ce70f1da0295876f2376a24d25.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/TessCard.png"
-dest_files=["res://.godot/imported/TessCard.png-ea621f76170d1f01d60092c61cf0f6ee.ctex"]
+source_file="res://assets/EmilyCard.png"
+dest_files=["res://.godot/imported/EmilyCard.png-1dc969ce70f1da0295876f2376a24d25.ctex"]
 
 [params]
 

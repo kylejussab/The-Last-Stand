@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b3dml6enjr7ad"
-path="res://.godot/imported/RatKingRareCard.png-9a27609e25b6f7abd213a72e1af07b4c.ctex"
+uid="uid://jy28cyavqpql"
+path="res://.godot/imported/EugeneCard.png-52c6ac2da2d2dda54ee6c281c26941f6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/RatKingRareCard.png"
-dest_files=["res://.godot/imported/RatKingRareCard.png-9a27609e25b6f7abd213a72e1af07b4c.ctex"]
+source_file="res://assets/EugeneCard.png"
+dest_files=["res://.godot/imported/EugeneCard.png-52c6ac2da2d2dda54ee6c281c26941f6.ctex"]
 
 [params]
 

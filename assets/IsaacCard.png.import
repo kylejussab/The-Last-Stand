@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dh5426w8ri2v8"
-path="res://.godot/imported/TommyRareCard.png-fd6d2a7b9c62d8127e71c7213c34e6b0.ctex"
+uid="uid://cevjsjrf26txq"
+path="res://.godot/imported/IsaacCard.png-da698cda82789bb41b2273e77086d89b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/TommyRareCard.png"
-dest_files=["res://.godot/imported/TommyRareCard.png-fd6d2a7b9c62d8127e71c7213c34e6b0.ctex"]
+source_file="res://assets/IsaacCard.png"
+dest_files=["res://.godot/imported/IsaacCard.png-da698cda82789bb41b2273e77086d89b.ctex"]
 
 [params]
 

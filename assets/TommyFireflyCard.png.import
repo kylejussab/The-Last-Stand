@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dpv7htlicg0mq"
-path="res://.godot/imported/EllieRareCard.png-a596f81032021e25bbeab2713d1f4928.ctex"
+uid="uid://6kvhebbwpua1"
+path="res://.godot/imported/TommyFireflyCard.png-03d91942becdadded37bf537f88e4c64.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/EllieRareCard.png"
-dest_files=["res://.godot/imported/EllieRareCard.png-a596f81032021e25bbeab2713d1f4928.ctex"]
+source_file="res://assets/TommyFireflyCard.png"
+dest_files=["res://.godot/imported/TommyFireflyCard.png-03d91942becdadded37bf537f88e4c64.ctex"]
 
 [params]
 

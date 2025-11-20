@@ -7,17 +7,15 @@ func _init() -> void:
 	timing = "midRound"
 
 func apply_mid_perk(thisCard, _thisHand, otherCard):
-	if otherCard.role.contains("Aggressive") || otherCard.role.contains("Defensive"):
+	if otherCard.faction == "Seraphite":
 		card = thisCard
-		
-		var difference = otherCard.value - thisCard.value
 		
 		card.get_node("AnimationPlayer").animation_started.connect(_when_animation_starts)
 		
 		value = int(card.get_node("value").text)
-		value += difference
+		value += 2
 		
-		card.get_node("perk").text = "+" + str(difference)
+		card.get_node("perk").text = "+2"
 		card.get_node("AnimationPlayer").queue("showPerk")
 
 func _when_animation_starts(name: String):
