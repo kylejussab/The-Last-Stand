@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://jngqb2o54u6x"
-path="res://.godot/imported/BarricadeRareCard.png-05442e77cd4e534cfe728fc3f992e1d0.ctex"
+uid="uid://bwuv8txcsrdyh"
+path="res://.godot/imported/TrainingManualCard.png-5850507590ce88b8965082bdace6e097.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/BarricadeRareCard.png"
-dest_files=["res://.godot/imported/BarricadeRareCard.png-05442e77cd4e534cfe728fc3f992e1d0.ctex"]
+source_file="res://assets/TrainingManualCard.png"
+dest_files=["res://.godot/imported/TrainingManualCard.png-5850507590ce88b8965082bdace6e097.ctex"]
 
 [params]
 

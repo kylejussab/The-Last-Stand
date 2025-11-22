@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dy88v0u8m4ykf"
-path="res://.godot/imported/RageRareCard.png-9eb41fa395ea95d73992d4a12fd29aa0.ctex"
+uid="uid://73rbni73u622"
+path="res://.godot/imported/BrickCard.png-9e523e914796c1ca77d7c278b66c3f92.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/RageRareCard.png"
-dest_files=["res://.godot/imported/RageRareCard.png-9eb41fa395ea95d73992d4a12fd29aa0.ctex"]
+source_file="res://assets/BrickCard.png"
+dest_files=["res://.godot/imported/BrickCard.png-9e523e914796c1ca77d7c278b66c3f92.ctex"]
 
 [params]
 

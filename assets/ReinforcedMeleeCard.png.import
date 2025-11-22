@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cnl2ykl35rreu"
-path="res://.godot/imported/ResilienceRareCard.png-f1f8822051f9bbeaa666b9e6e64ceda0.ctex"
+uid="uid://ncwmqeffob06"
+path="res://.godot/imported/ReinforcedMeleeCard.png-98f150e174b3ab650a59377cf6a8339c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ResilienceRareCard.png"
-dest_files=["res://.godot/imported/ResilienceRareCard.png-f1f8822051f9bbeaa666b9e6e64ceda0.ctex"]
+source_file="res://assets/ReinforcedMeleeCard.png"
+dest_files=["res://.godot/imported/ReinforcedMeleeCard.png-98f150e174b3ab650a59377cf6a8339c.ctex"]
 
 [params]
 

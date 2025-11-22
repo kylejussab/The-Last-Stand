@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://0xnyh2l5i8nx"
-path="res://.godot/imported/MolotovRareCard.png-3b4bb3f88c8dbfe1345686e8e6e248ac.ctex"
+uid="uid://cks1c5vfcryn5"
+path="res://.godot/imported/SupplementsCard.png-e96feda504867d6868afe7301d5a47fa.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/MolotovRareCard.png"
-dest_files=["res://.godot/imported/MolotovRareCard.png-3b4bb3f88c8dbfe1345686e8e6e248ac.ctex"]
+source_file="res://assets/SupplementsCard.png"
+dest_files=["res://.godot/imported/SupplementsCard.png-e96feda504867d6868afe7301d5a47fa.ctex"]
 
 [params]
 

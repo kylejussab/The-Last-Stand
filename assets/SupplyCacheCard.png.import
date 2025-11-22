@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://qn8itq64fst5"
-path="res://.godot/imported/PoisonDartCard.png-26cbefaecf66a71271f4f55909ceb861.ctex"
+uid="uid://bmol23as3qxj6"
+path="res://.godot/imported/SupplyCacheCard.png-fc73fac4d5d59fdc4ea4b1787342055d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/PoisonDartCard.png"
-dest_files=["res://.godot/imported/PoisonDartCard.png-26cbefaecf66a71271f4f55909ceb861.ctex"]
+source_file="res://assets/SupplyCacheCard.png"
+dest_files=["res://.godot/imported/SupplyCacheCard.png-fc73fac4d5d59fdc4ea4b1787342055d.ctex"]
 
 [params]
 

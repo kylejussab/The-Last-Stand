@@ -37,43 +37,22 @@ const CHARACTERS = { # Value, Type, Faction, Class
 }
 
 const SUPPORTS = { # Value, Type, Class
-	"SmokeBomb": [2, "Support", "Crafty"],
-	"SmokeBombRare": [2, "Support", "Stealthy/Crafty"],
-
+	"Molotov": [2, "Support", "Aggressive"],
+	"ReinforcedMelee": [1, "Support", "Aggressive/Survivor"],
 	"Rage": [2, "Support", "Aggressive"],
-	"RageRare": [3, "Support", "Aggressive"],
-
-	"TrapMine": [2, "Support", "Crafty/Defensive"],
-	"Silencer": [2, "Support", "Stealthy"],
-
-	"Resilience": [1, "Support", "Survivor"],
-	"ResilienceRare": [3, "Support", "Survivor"],
-
-	"AdrenalineRare": [3, "Support", "Aggressive/Survivor"],
-
-	"ShotgunShells": [3, "Support", "Aggressive"],
-
-	"PoisonDart": [1, "Support", "Stealthy"],
-	"Cloak": [2, "Support", "Stealthy"],
-	"CloakRare": [2, "Support", "Stealthy"],
-
+	"Silencer": [2, "Support", "Stealthy/Defensive"],
+	"SmokeBomb": [2, "Support", "Crafty/Stealthy"],
+	"TrapMine": [2, "Support", "Crafty"],
 	"ScavengedParts": [1, "Support", "Survivor"],
-	"ScavengedPartsRare": [1, "Support", "Survivor/Defensive"],
-
-	"Barricade": [3, "Support", "Stealthy/Defensive"],
-
-	"MedKit": [3, "Support", "Crafty"],
-	"MedKitRare": [3, "Support", "Crafty/Defensive"],
-
-	"Armor": [2, "Support", "Defensive"],
-
-	"Molotov": [3, "Support", "Aggressive"],
-	"MolotovRare": [3, "Support", "Aggressive"],
-
-	"SupplyCacheRare": [0, "Support", "Crafty/Defensive"],
-
-	"Shield": [1, "Support", "Defensive"],
-	"Fortify": [2, "Support", "Defensive"]
+	"MedKit": [2, "Support", "Crafty/Defensive"],
+	"Resilience": [3, "Support", "Survivor"],
+	"Retreat": [3, "Support", "Defensive"],
+	"Bottle": [1, "Support", "Stealthy"],
+	"Brick": [1, "Support", "Stealthy"],
+	"TrainingManual": [1, "Support", "Crafty"],
+	"ShotgunShells": [2, "Support", "Survivor"],
+	"Supplements": [2, "Support", "Aggressive/Crafty/Defensive/Stealthy/Survivor"],
+	"SupplyCache": [0, "Support", "Aggressive/Crafty/Defensive/Stealthy/Survivor"],
 }
 
 const PERKS = {

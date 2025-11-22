@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ch1o67f7pph2o"
-path="res://.godot/imported/Temp Card Back.png-e5aec046522d7478416a408c3c9d23f5.ctex"
+uid="uid://sd12nxm8m54o"
+path="res://.godot/imported/RetreatCard.png-1e6ad5a29feee08cef026eb77b73b5c3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Temp Card Back.png"
-dest_files=["res://.godot/imported/Temp Card Back.png-e5aec046522d7478416a408c3c9d23f5.ctex"]
+source_file="res://assets/RetreatCard.png"
+dest_files=["res://.godot/imported/RetreatCard.png-1e6ad5a29feee08cef026eb77b73b5c3.ctex"]
 
 [params]
 
