@@ -8,36 +8,28 @@ const SUPPORT_DECK_POSITION = Vector2(135, 548)
 
 var deck = [
 	"Molotov",
-	"Molotov",
+	"Rage",
 	"ReinforcedMelee",
-	"Rage",
-	"Rage",
-	"Silencer",
-	"Silencer",
-	"SmokeBomb",
-	"SmokeBomb",
+	"ReinforcedMelee",
 	"TrapMine",
 	"TrapMine",
-	"ScavengedParts",
-	"ScavengedParts",
+	"SmokeBomb",
+	"SmokeBomb",
+	"Silencer",
 	"MedKit",
 	"MedKit",
 	"Resilience",
-	"Resilience",
 	"Retreat",
-	"Retreat",
+	"ScavengedParts",
+	"ScavengedParts",
+	"ShotgunShells",
+	"TrainingManual",
+	"Supplements",
+	"SupplyCache",
+	"Brick",
 	"Bottle",
 	"Brick",
-	"TrainingManual",
-	"TrainingManual",
-	"ShotgunShells",
-	"ShotgunShells",
-	"Supplements",
-	"Supplements",
-	"Supplements",
-	"SupplyCache",
-	"SupplyCache",
-	"ReinforcedMelee",
+	"Bottle",
 ]
 
 var cardDatabaseReference
@@ -71,6 +63,10 @@ func draw_card():
 	newCard.cardKey = cardDrawn
 	newCard.position = SUPPORT_DECK_POSITION
 	
+	# Add the perk
+	if cardDatabaseReference.PERKS.has(cardDrawn):
+		newCard.perk = load(cardDatabaseReference.PERKS[cardDrawn]).new()
+	
 	newCard.get_node("image").texture = load(cardImagePath)
 	newCard.get_node("value").text = str(cardDatabaseReference.SUPPORTS[cardDrawn][0])
 	newCard.value = cardDatabaseReference.SUPPORTS[cardDrawn][0]
@@ -97,6 +93,10 @@ func draw_opponent_card():
 	var cardImagePath = str("res://assets/" + cardDrawn + "Card.png")
 	newCard.cardKey = cardDrawn
 	newCard.position = SUPPORT_DECK_POSITION
+	
+	# Add the perk
+	if cardDatabaseReference.PERKS.has(cardDrawn):
+		newCard.perk = load(cardDatabaseReference.PERKS[cardDrawn]).new()
 	
 	newCard.get_node("image").texture = load(cardImagePath)
 	newCard.get_node("value").text = str(cardDatabaseReference.SUPPORTS[cardDrawn][0])

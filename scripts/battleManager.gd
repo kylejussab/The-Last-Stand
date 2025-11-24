@@ -59,15 +59,16 @@ func _ready() -> void:
 	$"../arena/opponent/indicator".visible = false
 	
 	# For now we are hard coding the player and enemy names (will be randomized later)
-	$"../arena/opponent/name".text = "Dr. Leda Mire"
-	$"../arena/opponent/description".text = "Deranged Researcher"
-	$"../arena/opponent/value".text = "40"
+	$"../arena/opponent/name".text = "Ethan Hark"
+	$"../arena/opponent/description".text = "Patrol Leader"
+	$"../arena/opponent/value".text = "35"
 	
 	$"../arena/player/name".text = "June Ravel"
 	$"../arena/player/description".text = "Former Firefly"
-	$"../arena/player/value".text = "40"
+	$"../arena/player/value".text = "35"
 
 func resetTurn():
+	print(turnNumber)
 	playerCharacterCard = null
 	playerSupportCard = null
 	opponentCharacterCard = null
@@ -297,6 +298,13 @@ func apply_end_round_perks():
 	
 	if opponentCharacterCard.perk && opponentCharacterCard.perk.timing == "endRound":
 		await opponentCharacterCard.perk.apply_end_perk(opponentCharacterCard, opponentSupportCard, playerCharacterCard, playerSupportCard, $"../opponentHand".opponentHand)
+	
+	# Check for the supply cache
+	if playerSupportCard && playerSupportCard.perk && playerSupportCard.perk.timing == "endRound":
+		await playerSupportCard.perk.apply_end_perk(playerCharacterCard, playerSupportCard, opponentCharacterCard, opponentSupportCard, $"../playerHand".playerHand)
+	
+	if opponentSupportCard && opponentSupportCard.perk && opponentSupportCard.perk.timing == "endRound":
+		await opponentSupportCard.perk.apply_end_perk(opponentCharacterCard, opponentSupportCard, playerCharacterCard, playerSupportCard, $"../opponentHand".opponentHand)
 	
 	await wait_for(1)
 

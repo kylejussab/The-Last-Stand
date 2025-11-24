@@ -77,4 +77,5 @@ const PERKS = {
 	"RatKing": "res://scripts/perks/ratKingPerk.gd",
 	"TheProphet": "res://scripts/perks/theProphetPerk.gd",
 	"Alice": "res://scripts/perks/alicePerk.gd",
+	"SupplyCache": "res://scripts/perks/supplyCachePerk.gd",
 }
