@@ -1,4 +1,4 @@
-# The Last Stand (Fan Project)
+# The Last Stand
 
 **The Last Stand** is a fan-made card game inspired by *The Last of Us*.  
 
