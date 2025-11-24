@@ -68,7 +68,6 @@ func _ready() -> void:
 	$"../arena/player/value".text = "35"
 
 func resetTurn():
-	print(turnNumber)
 	playerCharacterCard = null
 	playerSupportCard = null
 	opponentCharacterCard = null
