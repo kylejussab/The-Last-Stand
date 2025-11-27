@@ -72,7 +72,7 @@ func draw_card():
 	$RichTextLabel.text = str(deck.size())
 	var cardScene = preload(PLAYER_CARD_SCENE_PATH)
 	var newCard = cardScene.instantiate()
-	var cardImagePath = str("res://assets/" + cardDrawn + "Card.png")
+	var cardImagePath = str("res://assets/cards/" + cardDrawn + "Card.png")
 	newCard.cardKey = cardDrawn
 	newCard.position = CHARACTER_DECK_POSITION
 	
@@ -104,7 +104,7 @@ func draw_opponent_card():
 	$RichTextLabel.text = str(deck.size())
 	var cardScene = preload(OPPONENT_CARD_SCENE_PATH)
 	var newCard = cardScene.instantiate()
-	var cardImagePath = str("res://assets/" + cardDrawn + "Card.png")
+	var cardImagePath = str("res://assets/cards/" + cardDrawn + "Card.png")
 	newCard.cardKey = cardDrawn
 	newCard.position = CHARACTER_DECK_POSITION
 	

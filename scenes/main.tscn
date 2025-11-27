@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://dgb52shq4jcyg"]
+[gd_scene load_steps=33 format=3 uid="uid://dgb52shq4jcyg"]
 
 [ext_resource type="Script" uid="uid://dgl6h7ryesfn8" path="res://scripts/cardManager.gd" id="1_0wfyh"]
 [ext_resource type="Script" uid="uid://c3p2rmoacsirj" path="res://scripts/inputManager.gd" id="1_o6xl0"]
@@ -9,13 +9,17 @@
 [ext_resource type="Script" uid="uid://b0yx32b2u0wb1" path="res://scripts/characterDeck.gd" id="5_tefeu"]
 [ext_resource type="PackedScene" uid="uid://cedct6rr8lclv" path="res://scenes/opponentCardSlot.tscn" id="6_85g3d"]
 [ext_resource type="Script" uid="uid://dwr382qynby8f" path="res://scripts/battleManager.gd" id="10_choun"]
-[ext_resource type="Texture2D" uid="uid://ymoqjcc5xbj2" path="res://assets/CardBack.png" id="11_eb6dy"]
+[ext_resource type="Texture2D" uid="uid://ymoqjcc5xbj2" path="res://assets/cards/CardBack.png" id="11_jbj1t"]
 [ext_resource type="Script" uid="uid://conm4253y3tth" path="res://scripts/oppponentHand.gd" id="11_ya4ey"]
 [ext_resource type="Script" uid="uid://che0dt2kvp0wy" path="res://scripts/supportDeck.gd" id="12_eb6dy"]
 [ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://assets/fonts/SF-Pro-Display-Black.otf" id="13_a8y0u"]
-[ext_resource type="Texture2D" uid="uid://dqdg81ffrtrt0" path="res://assets/Arena.png" id="13_trceg"]
+[ext_resource type="Texture2D" uid="uid://dqdg81ffrtrt0" path="res://assets/arenas/Arena.png" id="14_jbj1t"]
+[ext_resource type="Texture2D" uid="uid://xni81jo33g8f" path="res://assets/arenaHeads/JuneNeutral.png" id="15_gqmmt"]
 [ext_resource type="FontFile" uid="uid://di1dchl37cfhu" path="res://assets/fonts/SF-Pro-Display-Semibold.otf" id="15_jkv2x"]
-[ext_resource type="Texture2D" uid="uid://dgqjpfbqq0f4p" path="res://assets/ActiveIndicator.png" id="16_jbj1t"]
+[ext_resource type="Texture2D" uid="uid://dgqjpfbqq0f4p" path="res://assets/arenas/ActiveIndicator.png" id="16_muem4"]
+[ext_resource type="Texture2D" uid="uid://bpqj5m7tiyln" path="res://assets/arenaHeads/JuneHurt.png" id="16_yc10j"]
+[ext_resource type="Texture2D" uid="uid://crwpvlesiqi0o" path="res://assets/arenaHeads/JuneThinking.png" id="17_jscy8"]
+[ext_resource type="Texture2D" uid="uid://d2oxvh8kvsjse" path="res://assets/arenaHeads/JuneHappy.png" id="18_pm3ni"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jyhfs"]
 size = Vector2(140, 196)
@@ -215,7 +219,7 @@ script = ExtResource("5_tefeu")
 [node name="image" type="Sprite2D" parent="characterDeck"]
 position = Vector2(0, 3.8146973e-06)
 scale = Vector2(0.2, 0.2)
-texture = ExtResource("11_eb6dy")
+texture = ExtResource("11_jbj1t")
 
 [node name="Area2D" type="Area2D" parent="characterDeck"]
 collision_layer = 3
@@ -241,7 +245,7 @@ script = ExtResource("12_eb6dy")
 [node name="image" type="Sprite2D" parent="supportDeck"]
 position = Vector2(0, 3.8146973e-06)
 scale = Vector2(0.2, 0.2)
-texture = ExtResource("11_eb6dy")
+texture = ExtResource("11_jbj1t")
 
 [node name="Area2D" type="Area2D" parent="supportDeck"]
 collision_layer = 3
@@ -279,9 +283,29 @@ z_index = -99
 [node name="image" type="Sprite2D" parent="arena"]
 position = Vector2(959.98895, 540.00006)
 scale = Vector2(0.24000001, 0.24000001)
-texture = ExtResource("13_trceg")
+texture = ExtResource("14_jbj1t")
+metadata/_edit_lock_ = true
 
 [node name="opponent" type="Node2D" parent="arena"]
+
+[node name="head" type="Node2D" parent="arena/opponent"]
+position = Vector2(1597, 350)
+scale = Vector2(0.05, 0.05)
+
+[node name="neutral" type="Sprite2D" parent="arena/opponent/head"]
+texture = ExtResource("15_gqmmt")
+
+[node name="hurt" type="Sprite2D" parent="arena/opponent/head"]
+visible = false
+texture = ExtResource("16_yc10j")
+
+[node name="thinking" type="Sprite2D" parent="arena/opponent/head"]
+visible = false
+texture = ExtResource("17_jscy8")
+
+[node name="happy" type="Sprite2D" parent="arena/opponent/head"]
+visible = false
+texture = ExtResource("18_pm3ni")
 
 [node name="name" type="Label" parent="arena/opponent"]
 offset_left = 1662.0
@@ -332,7 +356,7 @@ vertical_alignment = 1
 visible = false
 position = Vector2(1627, 349)
 scale = Vector2(0.24, 0.24)
-texture = ExtResource("16_jbj1t")
+texture = ExtResource("16_muem4")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="arena/opponent"]
 libraries = {
@@ -340,6 +364,25 @@ libraries = {
 }
 
 [node name="player" type="Node2D" parent="arena"]
+
+[node name="head" type="Node2D" parent="arena/player"]
+position = Vector2(1597, 568)
+scale = Vector2(0.05, 0.05)
+
+[node name="neutral" type="Sprite2D" parent="arena/player/head"]
+texture = ExtResource("15_gqmmt")
+
+[node name="hurt" type="Sprite2D" parent="arena/player/head"]
+visible = false
+texture = ExtResource("16_yc10j")
+
+[node name="thinking" type="Sprite2D" parent="arena/player/head"]
+visible = false
+texture = ExtResource("17_jscy8")
+
+[node name="happy" type="Sprite2D" parent="arena/player/head"]
+visible = false
+texture = ExtResource("18_pm3ni")
 
 [node name="name" type="Label" parent="arena/player"]
 offset_left = 1662.0
@@ -390,7 +433,7 @@ vertical_alignment = 1
 visible = false
 position = Vector2(1627, 568)
 scale = Vector2(0.24, 0.24)
-texture = ExtResource("16_jbj1t")
+texture = ExtResource("16_muem4")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="arena/player"]
 libraries = {

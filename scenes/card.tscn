@@ -1,8 +1,8 @@
 [gd_scene load_steps=10 format=3 uid="uid://b1ue0o8lsverh"]
 
 [ext_resource type="Script" uid="uid://ucr1vk8xoov" path="res://scripts/card.gd" id="1_6u4wf"]
-[ext_resource type="Texture2D" uid="uid://ymoqjcc5xbj2" path="res://assets/CardBack.png" id="2_ktuci"]
-[ext_resource type="Texture2D" uid="uid://cgcss8mjj2at4" path="res://assets/JoelCard.png" id="3_ktuci"]
+[ext_resource type="Texture2D" uid="uid://ymoqjcc5xbj2" path="res://assets/cards/CardBack.png" id="2_kg30u"]
+[ext_resource type="Texture2D" uid="uid://cgcss8mjj2at4" path="res://assets/cards/JoelCard.png" id="3_sy11y"]
 [ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://assets/fonts/SF-Pro-Display-Black.otf" id="4_kg30u"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
@@ -186,12 +186,12 @@ script = ExtResource("1_6u4wf")
 
 [node name="imageBack" type="Sprite2D" parent="."]
 scale = Vector2(0.2, 0.2)
-texture = ExtResource("2_ktuci")
+texture = ExtResource("2_kg30u")
 
 [node name="image" type="Sprite2D" parent="."]
 z_index = -1
 scale = Vector2(0.2, 0.2)
-texture = ExtResource("3_ktuci")
+texture = ExtResource("3_sy11y")
 
 [node name="Area2D" type="Area2D" parent="."]
 
