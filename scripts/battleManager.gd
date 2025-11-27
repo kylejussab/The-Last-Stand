@@ -50,36 +50,40 @@ func _ready() -> void:
 	
 	hide_end_turn_button()
 	
-	opponentAI = OpponentAIHighestValue.new()
+	# Changing the opponent will change the arena
+	setupArena("June", "Ethan")
 	
 	# Player always starts
 	whoStartedRound = "player"
 	roundStage = RoundStage.PLAYER_CHARACTER
 	$"../arena/player/indicator".visible = true
 	$"../arena/opponent/indicator".visible = false
-	
-	# For now we are hard coding the player and enemy (will make a function to do these assignments later)
-	$"../arena/opponent/name".text = "Ethan Hark"
-	$"../arena/opponent/description".text = "Patrol Leader"
-	$"../arena/opponent/value".text = "35"
-	# For now the opponent gets assigned June heads
-	$"../arena/opponent/head".get_node("neutral").texture = load("res://assets/arenaHeads/JuneNeutral.png")
-	$"../arena/opponent/head".get_node("hurt").texture = load("res://assets/arenaHeads/JuneHurt.png")
-	$"../arena/opponent/head".get_node("thinking").texture = load("res://assets/arenaHeads/JuneThinking.png")
-	$"../arena/opponent/head".get_node("happy").texture = load("res://assets/arenaHeads/JuneHappy.png")
-	
-	$"../arena/player/name".text = "June Ravel"
-	$"../arena/player/description".text = "Former Firefly"
-	$"../arena/player/value".text = "35"
-	
-	$"../arena/player/head".get_node("neutral").texture = load("res://assets/arenaHeads/JuneNeutral.png")
-	$"../arena/player/head".get_node("hurt").texture = load("res://assets/arenaHeads/JuneHurt.png")
-	$"../arena/player/head".get_node("thinking").texture = load("res://assets/arenaHeads/JuneThinking.png")
-	$"../arena/player/head".get_node("happy").texture = load("res://assets/arenaHeads/JuneHappy.png")
-	
-	# Since the player always starts, have them thinking
 	changeHeadExpression($"../arena/player/head", "thinking")
 	changeHeadExpression($"../arena/opponent/head", "neutral")
+
+func setupArena(player, opponent):
+	match player:
+		"June":
+			$"../arena/player/name".text = "June Ravel"
+			$"../arena/player/description".text = "Former Firefly"
+			$"../arena/player/value".text = "35"
+			
+			$"../arena/player/head".get_node("neutral").texture = load("res://assets/arenaHeads/JuneNeutral.png")
+			$"../arena/player/head".get_node("hurt").texture = load("res://assets/arenaHeads/JuneHurt.png")
+			$"../arena/player/head".get_node("thinking").texture = load("res://assets/arenaHeads/JuneThinking.png")
+			$"../arena/player/head".get_node("happy").texture = load("res://assets/arenaHeads/JuneHappy.png")
+	
+	match opponent:
+		"Ethan":
+			$"../arena/opponent/name".text = "Ethan Hark"
+			$"../arena/opponent/description".text = "Patrol Leader"
+			$"../arena/opponent/value".text = "35"
+			# For now the opponent gets assigned June heads
+			$"../arena/opponent/head".get_node("neutral").texture = load("res://assets/arenaHeads/JuneNeutral.png")
+			$"../arena/opponent/head".get_node("hurt").texture = load("res://assets/arenaHeads/JuneHurt.png")
+			$"../arena/opponent/head".get_node("thinking").texture = load("res://assets/arenaHeads/JuneThinking.png")
+			$"../arena/opponent/head".get_node("happy").texture = load("res://assets/arenaHeads/JuneHappy.png")
+			opponentAI = OpponentAIHighestValue.new()
 
 func resetTurn():
 	playerCharacterCard = null
