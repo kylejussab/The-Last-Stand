@@ -58,14 +58,28 @@ func _ready() -> void:
 	$"../arena/player/indicator".visible = true
 	$"../arena/opponent/indicator".visible = false
 	
-	# For now we are hard coding the player and enemy names (will be randomized later)
+	# For now we are hard coding the player and enemy (will make a function to do these assignments later)
 	$"../arena/opponent/name".text = "Ethan Hark"
 	$"../arena/opponent/description".text = "Patrol Leader"
 	$"../arena/opponent/value".text = "35"
+	# For now the opponent gets assigned June heads
+	$"../arena/opponent/head".get_node("neutral").texture = load("res://assets/arenaHeads/JuneNeutral.png")
+	$"../arena/opponent/head".get_node("hurt").texture = load("res://assets/arenaHeads/JuneHurt.png")
+	$"../arena/opponent/head".get_node("thinking").texture = load("res://assets/arenaHeads/JuneThinking.png")
+	$"../arena/opponent/head".get_node("happy").texture = load("res://assets/arenaHeads/JuneHappy.png")
 	
 	$"../arena/player/name".text = "June Ravel"
 	$"../arena/player/description".text = "Former Firefly"
 	$"../arena/player/value".text = "35"
+	
+	$"../arena/player/head".get_node("neutral").texture = load("res://assets/arenaHeads/JuneNeutral.png")
+	$"../arena/player/head".get_node("hurt").texture = load("res://assets/arenaHeads/JuneHurt.png")
+	$"../arena/player/head".get_node("thinking").texture = load("res://assets/arenaHeads/JuneThinking.png")
+	$"../arena/player/head".get_node("happy").texture = load("res://assets/arenaHeads/JuneHappy.png")
+	
+	# Since the player always starts, have them thinking
+	changeHeadExpression($"../arena/player/head", "thinking")
+	changeHeadExpression($"../arena/opponent/head", "neutral")
 
 func resetTurn():
 	playerCharacterCard = null
@@ -87,8 +101,12 @@ func resetTurn():
 		$"../arena/player/indicator".visible = true
 		$"../arena/opponent/indicator".visible = false
 		lockPlayerInput = false
+		changeHeadExpression($"../arena/player/head", "thinking")
+		changeHeadExpression($"../arena/opponent/head", "neutral")
 	
 	if whoStartedRound == "opponent":
+		changeHeadExpression($"../arena/player/head", "neutral")
+		changeHeadExpression($"../arena/opponent/head", "thinking")
 		opponent_character_turn()
 
 func on_player_character_played(card):
@@ -100,10 +118,13 @@ func on_player_character_played(card):
 	else:
 		roundStage = RoundStage.OPPONENT_CHARACTER
 		opponent_character_turn()
+	
+	changeHeadExpression($"../arena/player/head", "neutral")
 
 func opponent_character_turn():
 	$"../arena/player/indicator".visible = false
 	$"../arena/opponent/indicator".visible = true
+	changeHeadExpression($"../arena/opponent/head", "thinking")
 	lockPlayerInput = true
 	await wait_for(OPPONENT_THINKING_TIME)
 	
@@ -124,20 +145,29 @@ func opponent_character_turn():
 	else:
 		lockPlayerInput = false
 		roundStage = RoundStage.PLAYER_CHARACTER
+		changeHeadExpression($"../arena/player/head", "thinking")
+	
+	changeHeadExpression($"../arena/opponent/head", "neutral")
 
 func init_support_round():
 	lockPlayerInput = false
+	changeHeadExpression($"../arena/player/head", "neutral")
+	changeHeadExpression($"../arena/opponent/head", "neutral")
 	
 	apply_mid_round_perks()
 	allow_support_cards()
 	
 	if whoStartedRound == "player":
 		roundStage = RoundStage.PLAYER_SUPPORT
+		changeHeadExpression($"../arena/player/head", "thinking")
 	else:
 		roundStage = RoundStage.OPPONENT_SUPPORT
+		changeHeadExpression($"../arena/opponent/head", "thinking")
 		opponent_support_turn()
 
 func on_player_support_played(card):
+	changeHeadExpression($"../arena/player/head", "neutral")
+	
 	hide_end_turn_button()
 	
 	playerSupportCard = card
@@ -149,12 +179,14 @@ func on_player_support_played(card):
 		
 		$"../arena/player/indicator".visible = false
 		$"../arena/opponent/indicator".visible = false
+		changeHeadExpression($"../arena/player/head", "neutral")
 		await apply_end_round_perks()
 		end_turn()
 
 func opponent_support_turn():
 	$"../arena/player/indicator".visible = false
 	$"../arena/opponent/indicator".visible = true
+	changeHeadExpression($"../arena/opponent/head", "thinking")
 	lockPlayerInput = true
 	await wait_for(OPPONENT_THINKING_TIME)
 	
@@ -165,6 +197,8 @@ func opponent_support_turn():
 	if card != null:
 		animate_opponent_playing_card(card, $"../cardSlots/opponentCardSlotSupport")
 		opponentSupportCard = card
+	
+	changeHeadExpression($"../arena/opponent/head", "neutral")
 	
 	if whoStartedRound == "player":
 		# Calculate the reward values (this is where health would be subtracted)
@@ -177,6 +211,7 @@ func opponent_support_turn():
 		# Always give the player the option of playing a support
 		$"../arena/player/indicator".visible = true
 		$"../arena/opponent/indicator".visible = false
+		changeHeadExpression($"../arena/player/head", "thinking")
 		lockPlayerInput = false
 		roundStage = RoundStage.PLAYER_SUPPORT
 		show_end_turn_button()
@@ -215,6 +250,7 @@ func end_turn():
 
 func _on_end_turn_button_pressed() -> void:
 	hide_end_turn_button()
+	changeHeadExpression($"../arena/player/head", "neutral")
 	
 	# If player played support, let the AI choose to play support, otherwise end
 	if !opponentPlayedSupport:
@@ -406,6 +442,9 @@ func calculate_damage():
 		opponentHealth -= damage
 		$"../arena/opponent/value".text = str(opponentHealth)
 		
+		changeHeadExpression($"../arena/player/head", "happy")
+		changeHeadExpression($"../arena/opponent/head", "hurt")
+		
 		$"../arena/opponent/damage".text = "-" + str(damage)
 		$"../arena/opponent/AnimationPlayer".queue("showDamage")
 		
@@ -431,6 +470,9 @@ func calculate_damage():
 		
 		playerHealth -= damage
 		$"../arena/player/value".text = str(playerHealth)
+		
+		changeHeadExpression($"../arena/player/head", "hurt")
+		changeHeadExpression($"../arena/opponent/head", "happy")
 		
 		$"../arena/player/damage".text = "-" + str(damage)
 		$"../arena/player/AnimationPlayer".queue("showDamage")
@@ -464,3 +506,9 @@ func calculate_damage():
 			$"../arena/player/value".text = str(playerHealth)
 			$"../arena/player/damage".text = "-" + str(opponentCharacterCard.perkValueAtRoundEnd)
 			$"../arena/player/AnimationPlayer".queue("showDamage")
+
+func changeHeadExpression(head, expression):
+	var states = ["neutral", "thinking", "hurt", "happy"]
+	
+	for state in states:
+		head.get_node(state).visible = (state == expression)
