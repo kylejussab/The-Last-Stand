@@ -1,9 +1,9 @@
-# The Last Stand
+<img width="5335" height="1780" alt="Last Stand Banner" src="https://github.com/user-attachments/assets/07732bec-68d5-4e32-acb5-a529d0c1e090" />
 
-**The Last Stand** is a fan-made card game inspired by *The Last of Us*.  
+A fan-made card game inspired by 'The Last of Us'.  
 
 ## Disclaimer
-This game is a **fan work** based on *The Last of Us*, a property of **Naughty Dog and Sony Interactive Entertainment**.  
+This game is a **fan work** based on 'The Last of Us', a property of **Naughty Dog and Sony Interactive Entertainment**.  
 I do **not claim ownership** of any characters, names, or concepts associated with *The Last of Us*.  
 This project is **not for sale** and is **not affiliated with or endorsed by Sony or Naughty Dog**.
 
