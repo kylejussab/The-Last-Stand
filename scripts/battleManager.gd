@@ -75,6 +75,8 @@ func setupArena(player, opponent):
 	
 	match opponent:
 		"Ethan":
+			$"../arena/image".texture = load("res://assets/arenas/EthanArena.png")
+			
 			$"../arena/opponent/name".text = "Ethan Hark"
 			$"../arena/opponent/description".text = "Patrol Leader"
 			$"../arena/opponent/value".text = "35"

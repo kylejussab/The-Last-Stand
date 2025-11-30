@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cedct6rr8lclv"]
 
-[ext_resource type="Texture2D" uid="uid://ymoqjcc5xbj2" path="res://assets/CardBack.png" id="1_hkvyg"]
+[ext_resource type="Texture2D" uid="uid://cbgv0l1d6fl7k" path="res://assets/cards/CardBackBlank.png" id="1_hkvyg"]
 
 [node name="cardSlot" type="Node2D"]
 

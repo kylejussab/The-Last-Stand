@@ -1,8 +1,8 @@
 [gd_scene load_steps=9 format=3 uid="uid://bn88i42vic2bw"]
 
 [ext_resource type="Script" uid="uid://df6vntpyt6v25" path="res://scripts/opponentCard.gd" id="1_6ngam"]
-[ext_resource type="Texture2D" uid="uid://ymoqjcc5xbj2" path="res://assets/CardBack.png" id="2_6ngam"]
-[ext_resource type="Texture2D" uid="uid://cgcss8mjj2at4" path="res://assets/JoelCard.png" id="3_uqoa2"]
+[ext_resource type="Texture2D" uid="uid://cbgv0l1d6fl7k" path="res://assets/cards/CardBackBlank.png" id="2_4jfu0"]
+[ext_resource type="Texture2D" uid="uid://cgcss8mjj2at4" path="res://assets/cards/JoelCard.png" id="3_uqoa2"]
 [ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://assets/fonts/SF-Pro-Display-Black.otf" id="4_4jfu0"]
 
 [sub_resource type="Animation" id="Animation_sy11y"]
@@ -219,7 +219,7 @@ script = ExtResource("1_6ngam")
 
 [node name="imageBack" type="Sprite2D" parent="."]
 scale = Vector2(0.2, 0.2)
-texture = ExtResource("2_6ngam")
+texture = ExtResource("2_4jfu0")
 
 [node name="image" type="Sprite2D" parent="."]
 visible = false

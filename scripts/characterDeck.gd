@@ -81,6 +81,7 @@ func draw_card():
 		newCard.perk = load(cardDatabaseReference.PERKS[cardDrawn]).new()
 	
 	newCard.get_node("image").texture = load(cardImagePath)
+	newCard.get_node("imageBack").texture = load("res://assets/cards/CardBackBlank.png")
 	newCard.get_node("value").text = str(cardDatabaseReference.CHARACTERS[cardDrawn][0])
 	newCard.value = cardDatabaseReference.CHARACTERS[cardDrawn][0]
 	newCard.type = cardDatabaseReference.CHARACTERS[cardDrawn][1]
@@ -113,6 +114,7 @@ func draw_opponent_card():
 		newCard.perk = load(cardDatabaseReference.PERKS[cardDrawn]).new()
 	
 	newCard.get_node("image").texture = load(cardImagePath)
+	newCard.get_node("imageBack").texture = load("res://assets/cards/CardBackBlank.png")
 	newCard.get_node("value").text = str(cardDatabaseReference.CHARACTERS[cardDrawn][0])
 	newCard.value = cardDatabaseReference.CHARACTERS[cardDrawn][0]
 	newCard.type = cardDatabaseReference.CHARACTERS[cardDrawn][1]
