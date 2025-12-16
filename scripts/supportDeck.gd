@@ -6,6 +6,15 @@ const CARD_DRAW_SPEED = 0.2
 
 const SUPPORT_DECK_POSITION = Vector2(135, 548)
 
+@onready var soundPlayer = $AudioStreamPlayer2D
+
+var shuffleSounds = [
+	preload("res://assets/sounds/cards/shuffle_1.wav"),
+	preload("res://assets/sounds/cards/shuffle_2.wav"),
+	preload("res://assets/sounds/cards/shuffle_3.wav"),
+	preload("res://assets/sounds/cards/shuffle_4.wav")
+]
+
 var deck = [
 	"Molotov",
 	"Rage",
@@ -40,13 +49,13 @@ func _ready() -> void:
 	$RichTextLabel.text = str(deck.size())
 	cardDatabaseReference = preload("res://scripts/database.gd")
 	
-	# Start the player with 4 cards
-	for i in range(4):
-		draw_card()
-	
-	# Start the opponent with 4 cards
-	for i in range(4):
-		draw_opponent_card()
+	## Start the player with 4 cards
+	#for i in range(4):
+		#draw_card()
+	#
+	## Start the opponent with 4 cards
+	#for i in range(4):
+		#draw_opponent_card()
 
 func draw_card():
 	var cardDrawn = deck[0]
@@ -80,6 +89,7 @@ func draw_card():
 	$"../playerHand".add_card_to_hand(newCard, CARD_DRAW_SPEED)
 	
 	newCard.get_node("AnimationPlayer").play("cardFlip")
+	newCard.play_draw_sound()
 
 func draw_opponent_card():
 	var cardDrawn = deck[0]
@@ -110,6 +120,7 @@ func draw_opponent_card():
 	$"../cardManager".add_child(newCard)
 	newCard.name = "Card"
 	$"../opponentHand".add_card_to_hand(newCard, CARD_DRAW_SPEED)
+	newCard.play_draw_sound()
 	
 	# This if statement hides and shows the cards (In place for now, for debugging)
 	if $"../battleManager".showOpponentsCards:
@@ -121,11 +132,14 @@ func reshuffle_from_discards(discardedCards):
 	for card in discardedCards:
 		deck.append(card.cardKey)
 		
+		card.play_draw_sound()
 		await move_card_back_to_deck(card)
 		
 		card.queue_free()
-
+	
 	deck.shuffle()
+	await get_tree().create_timer(.3).timeout
+	play_shuffle_sound()
 	
 	$RichTextLabel.text = str(deck.size())
 
@@ -133,3 +147,8 @@ func move_card_back_to_deck(card):
 	var tween = get_tree().create_tween()
 	tween.tween_property(card, "position", SUPPORT_DECK_POSITION, 0.1)
 	await tween.finished
+
+func play_shuffle_sound():
+	var randomSound = shuffleSounds.pick_random()
+	soundPlayer.stream = randomSound
+	soundPlayer.play()

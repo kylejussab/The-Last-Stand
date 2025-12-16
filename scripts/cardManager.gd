@@ -9,7 +9,7 @@ const DEFAULT_CARD_MOVE_SPEED = 0.1
 
 var draggedCard: Node2D
 var screenSize: Vector2
-var isHoveringOnCard: bool
+var hoveredCard: Node2D = null
 var playerHandReference: Node
 
 func _ready() -> void:
@@ -27,10 +27,12 @@ func _process(_delta: float) -> void:
 func start_drag(card):
 	if !$"../battleManager".lockPlayerInput:
 		draggedCard = card
+		draggedCard.play_draw_sound()
 		card.scale = Vector2(1, 1)
 
 func finish_drag():
 	draggedCard.scale = Vector2(1.05, 1.05)
+	draggedCard.play_draw_sound()
 	
 	var cardSlot = get_card_slot()
 	
@@ -89,19 +91,22 @@ func connect_card_signals(card):
 	card.connect("hoverExited", on_card_hover_exit)
 
 func on_card_hover_enter(card):
-	if !isHoveringOnCard:
-		highlight_card(card, true)
-		isHoveringOnCard = true
+	if draggedCard: return
+	
+	if hoveredCard and hoveredCard != card:
+		highlight_card(hoveredCard, false)
+	
+	hoveredCard = card
+	highlight_card(card, true)
 
 func on_card_hover_exit(card):
-	if !draggedCard && !card.cardSlot:
+	if hoveredCard == card:
 		highlight_card(card, false)
+		hoveredCard = null
 		
 		var newCardHovered = get_card()
 		if newCardHovered:
-			highlight_card(card, true)
-		else:
-			isHoveringOnCard = false
+			on_card_hover_enter(newCardHovered)
 
 func highlight_card(card, hovered: bool):
 	if hovered:
@@ -141,6 +146,7 @@ func move_card_on_double_click(card, cardSlot):
 	if !cardSlot.occupied:
 		var tween = get_tree().create_tween()
 		tween.tween_property(card, "position", cardSlot.position, 0.1)
+		tween.finished.connect(func(): card.play_draw_sound())
 		
 		playerHandReference.remove_card_from_hand(draggedCard)
 		

@@ -3,6 +3,7 @@ extends Node
 const OPPONENT_THINKING_TIME = 1
 const END_ROUND_TIME = 1.2
 const CARD_MOVE_SPEED = 0.2
+const CARD_MOVE_FAST_SPEED = 0.15
 
 const DISCARD_PILE_POSITION = Vector2(135, 300)
 
@@ -21,7 +22,7 @@ var opponentSupportCard
 
 var opponentPlayedSupport = false
 
-var lockPlayerInput = false
+var lockPlayerInput = true
 
 var turnNumber = 1
 
@@ -42,6 +43,8 @@ var discardedCards = []
 var showOpponentsCards = false
 
 func _ready() -> void:
+	lockPlayerInput = true
+	
 	$"../battleTimer".one_shot = true
 	$"../battleTimer".wait_time = OPPONENT_THINKING_TIME
 	
@@ -53,6 +56,8 @@ func _ready() -> void:
 	# Changing the opponent will change the arena
 	setupArena("June", "Ethan")
 	
+	await draw_cards_at_start()
+	
 	# Player always starts
 	whoStartedRound = "player"
 	roundStage = RoundStage.PLAYER_CHARACTER
@@ -60,6 +65,8 @@ func _ready() -> void:
 	$"../arena/opponent/indicator".visible = false
 	changeHeadExpression($"../arena/player/head", "thinking")
 	changeHeadExpression($"../arena/opponent/head", "neutral")
+	
+	lockPlayerInput = false
 
 func setupArena(player, opponent):
 	match player:
@@ -275,7 +282,9 @@ func wait_for(duration):
 	await $"../battleTimer".timeout
 
 func animate_opponent_playing_card(opponentCard, opponentCardSlot):
+	opponentCard.play_draw_sound()
 	var tween = get_tree().create_tween()
+	tween.finished.connect(func(): opponentCard.play_draw_sound())
 	tween.tween_property(opponentCard, "position", opponentCardSlot.position, CARD_MOVE_SPEED)
 	
 	# Comment this out when we hide opponent cards
@@ -369,10 +378,14 @@ func move_cards_to_discard(cards):
 	
 	for card in cards:
 		discardedCards.append(card)
+		card.play_draw_sound()
 		card.scale = Vector2(1, 1)
 		
 		var tween = get_tree().create_tween()
-		tween.tween_property(card, "position", DISCARD_PILE_POSITION, CARD_MOVE_SPEED)
+		tween.finished.connect(func(): card.play_draw_sound())
+		tween.tween_property(card, "position", DISCARD_PILE_POSITION, CARD_MOVE_FAST_SPEED)
+		
+		await tween.finished
 	
 	$"../cardSlots/cardSlotSupport".occupied = false
 	$"../cardSlots/cardSlotCharacter".occupied = false
@@ -518,3 +531,19 @@ func changeHeadExpression(head, expression):
 	
 	for state in states:
 		head.get_node(state).visible = (state == expression)
+
+func draw_cards_at_start():
+	await $"../characterDeck".ready
+	await $"../supportDeck".ready
+	
+	for i in range(4):
+		await wait_for(CARD_MOVE_FAST_SPEED)
+		$"../characterDeck".draw_card()
+		await wait_for(CARD_MOVE_FAST_SPEED)
+		$"../characterDeck".draw_opponent_card()
+	
+	for i in range(4):
+		await wait_for(CARD_MOVE_FAST_SPEED)
+		$"../supportDeck".draw_card()
+		await wait_for(CARD_MOVE_FAST_SPEED)
+		$"../supportDeck".draw_opponent_card()
