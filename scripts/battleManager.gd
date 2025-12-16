@@ -237,6 +237,14 @@ func end_turn():
 	await calculate_damage()
 	await wait_for(END_ROUND_TIME)
 	
+	# Check for game over first
+	var playerHealth = int($"../arena/player/value".text)
+	var opponentHealth = int($"../arena/opponent/value".text)
+	
+	if playerHealth <= 0 or opponentHealth <= 0:
+		await end_round_sequence()
+		return
+	
 	var cardsToDiscard = []
 	var playerHand = $"../playerHand".playerHand
 	var opponentHand = $"../opponentHand".opponentHand
@@ -420,7 +428,7 @@ func repopolate_hand(hand, handToUpdate):
 		supportCount += 1
 		await wait_for(CARD_MOVE_SPEED)
 
-func repopulate_decks():
+func repopulate_decks(endGame: bool = false):
 	var discardedCharacters := []
 	var discardedSupports := []
 
@@ -430,12 +438,12 @@ func repopulate_decks():
 		elif card.type == "Support":
 			discardedSupports.append(card)
 
-	if $"../characterDeck".deck.size() < MIN_CARDS_FOR_RESHUFFLE:
+	if endGame or $"../characterDeck".deck.size() < MIN_CARDS_FOR_RESHUFFLE:
 		await $"../characterDeck".reshuffle_from_discards(discardedCharacters)
 		for card in discardedCharacters:
 			discardedCards.erase(card)
 
-	if $"../supportDeck".deck.size() < MIN_CARDS_FOR_RESHUFFLE:
+	if endGame or $"../supportDeck".deck.size() < MIN_CARDS_FOR_RESHUFFLE:
 		await $"../supportDeck".reshuffle_from_discards(discardedSupports)
 		for card in discardedSupports:
 			discardedCards.erase(card)
@@ -547,3 +555,27 @@ func draw_cards_at_start():
 		$"../supportDeck".draw_card()
 		await wait_for(CARD_MOVE_FAST_SPEED)
 		$"../supportDeck".draw_opponent_card()
+
+func end_round_sequence():
+	var cardsToDiscard = []
+	
+	if playerSupportCard:
+		cardsToDiscard.append(playerSupportCard)
+	
+	cardsToDiscard.append(playerCharacterCard)
+	cardsToDiscard.append(opponentCharacterCard)
+	
+	if opponentSupportCard:
+		cardsToDiscard.append(opponentSupportCard)
+	
+	for card in $"../opponentHand".opponentHand:
+		cardsToDiscard.append(card)
+	
+	for card in $"../playerHand".playerHand:
+		cardsToDiscard.append(card)
+	
+	await move_cards_to_discard(cardsToDiscard)
+	
+	# Do the overlay of the game information somewhere here
+	
+	await repopulate_decks(true)

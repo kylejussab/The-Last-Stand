@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://cbgv0l1d6fl7k" path="res://assets/cards/CardBackBlank.png" id="2_kg30u"]
 [ext_resource type="Texture2D" uid="uid://cgcss8mjj2at4" path="res://assets/cards/JoelCard.png" id="3_sy11y"]
 [ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://assets/fonts/SF-Pro-Display-Black.otf" id="4_kg30u"]
-[ext_resource type="Texture2D" uid="uid://ccdjtimyjx8d" path="res://assets/cardDescriptions/malik.png" id="5_sy11y"]
+[ext_resource type="Texture2D" uid="uid://ccdjtimyjx8d" path="res://assets/cardDescriptions/Malik.png" id="5_sy11y"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
 size = Vector2(146, 204)
