@@ -112,9 +112,13 @@ func highlight_card(card, hovered: bool):
 	if hovered:
 		card.scale = Vector2(1.05, 1.05)
 		card.z_index = 2
+		if card.perk:
+			card.get_node("description").visible = true
 	else:
 		card.scale = Vector2(1, 1)
 		card.z_index = 1
+		if card.perk:
+			card.get_node("description").visible = false
 
 func get_top_card(cards):
 	var topCard = cards[0].collider.get_parent()

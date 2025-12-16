@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://b1ue0o8lsverh"]
+[gd_scene load_steps=11 format=3 uid="uid://b1ue0o8lsverh"]
 
 [ext_resource type="Script" uid="uid://ucr1vk8xoov" path="res://scripts/card.gd" id="1_6u4wf"]
 [ext_resource type="Texture2D" uid="uid://cbgv0l1d6fl7k" path="res://assets/cards/CardBackBlank.png" id="2_kg30u"]
 [ext_resource type="Texture2D" uid="uid://cgcss8mjj2at4" path="res://assets/cards/JoelCard.png" id="3_sy11y"]
 [ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://assets/fonts/SF-Pro-Display-Black.otf" id="4_kg30u"]
+[ext_resource type="Texture2D" uid="uid://ccdjtimyjx8d" path="res://assets/cardDescriptions/malik.png" id="5_sy11y"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
 size = Vector2(146, 204)
@@ -227,6 +228,12 @@ libraries = {
 }
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+
+[node name="description" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, -180)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("5_sy11y")
 
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]
