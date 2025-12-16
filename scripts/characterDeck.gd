@@ -61,14 +61,6 @@ func _ready() -> void:
 	
 	$RichTextLabel.text = str(deck.size())
 	cardDatabaseReference = preload("res://scripts/database.gd")
-	
-	## Start the player with 4 cards
-	#for i in range(4):
-		#draw_card()
-	#
-	## Start the opponent with 4 cards
-	#for i in range(4):
-		#draw_opponent_card()
 
 func draw_card():
 	var cardDrawn = deck[0]
