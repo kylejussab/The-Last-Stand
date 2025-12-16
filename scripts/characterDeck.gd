@@ -139,13 +139,24 @@ func reshuffle_from_discards(discardedCards):
 	for card in discardedCards:
 		deck.append(card.cardKey)
 		
+		card.play_draw_sound()
 		await move_card_back_to_deck(card)
 		
 		card.queue_free()
-
+		
 	deck.shuffle()
-	await get_tree().create_timer(.3).timeout
+	
+	z_index = 100
+	var tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	tween.tween_property($image, "scale", Vector2(0.288, 0.288), 0.15)
+	await tween.finished
+	
 	play_shuffle_sound()
+	
+	await get_tree().create_timer(0.2).timeout
+	var tween_back = create_tween().set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
+	tween_back.tween_property($image, "scale", Vector2(0.188, 0.188), 0.2)
+	z_index = -2
 	
 	$RichTextLabel.text = str(deck.size())
 
