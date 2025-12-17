@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://dgb52shq4jcyg"]
+[gd_scene load_steps=36 format=3 uid="uid://dgb52shq4jcyg"]
 
 [ext_resource type="Script" uid="uid://dgl6h7ryesfn8" path="res://scripts/cardManager.gd" id="1_0wfyh"]
 [ext_resource type="Script" uid="uid://c3p2rmoacsirj" path="res://scripts/inputManager.gd" id="1_o6xl0"]
@@ -27,25 +27,15 @@
 size = Vector2(140, 196)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a8y0u"]
-bg_color = Color(0, 0, 0, 0.5019608)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
+bg_color = Color(0, 0, 0, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jbj1t"]
-bg_color = Color(0, 0, 0, 0.5019608)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
+bg_color = Color(0, 0, 0, 0)
+border_color = Color(1, 1, 1, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jkv2x"]
-bg_color = Color(0.08468998, 0.08468992, 0.08468989, 0.5019608)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
+bg_color = Color(0.08627451, 0.08627451, 0.08627451, 0)
+border_width_bottom = 1
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_a8y0u"]
 
@@ -171,6 +161,10 @@ _data = {
 &"showDamage": SubResource("Animation_dp3eg")
 }
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y6deb"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_bottom = 1
+
 [node name="main" type="Node2D"]
 
 [node name="inputManager" type="Node2D" parent="."]
@@ -272,10 +266,10 @@ vertical_alignment = 1
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="supportDeck"]
 
 [node name="EndTurnButton" type="Button" parent="."]
-offset_left = 828.0
+offset_left = 835.0
 offset_top = 570.0
-offset_right = 1019.0
-offset_bottom = 627.0
+offset_right = 930.0
+offset_bottom = 600.0
 theme_override_fonts/font = ExtResource("13_a8y0u")
 theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxFlat_a8y0u")
@@ -287,12 +281,12 @@ text = "End Turn"
 
 [node name="arena" type="Node2D" parent="."]
 z_index = -99
-metadata/_edit_lock_ = true
 
 [node name="image" type="Sprite2D" parent="arena"]
 position = Vector2(959.989, 540)
 scale = Vector2(0.24000001, 0.24000001)
 texture = ExtResource("15_yc10j")
+metadata/_edit_lock_ = true
 
 [node name="opponent" type="Node2D" parent="arena"]
 
@@ -1160,5 +1154,57 @@ theme_override_font_sizes/normal_font_size = 20
 text = "**"
 horizontal_alignment = 2
 
+[node name="ReplayButton" type="Button" parent="arena/gameOver"]
+visible = false
+z_index = 201
+offset_left = 770.0
+offset_top = 790.0
+offset_right = 840.0
+offset_bottom = 820.0
+theme_override_fonts/font = ExtResource("13_a8y0u")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_a8y0u")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_jbj1t")
+theme_override_styles/hover = SubResource("StyleBoxFlat_jkv2x")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_a8y0u")
+theme_override_styles/focus = SubResource("StyleBoxFlat_y6deb")
+text = "Replay"
+alignment = 0
+
+[node name="MainMenuButton" type="Button" parent="arena/gameOver"]
+visible = false
+z_index = 201
+offset_left = 770.0
+offset_top = 860.0
+offset_right = 877.0
+offset_bottom = 890.0
+theme_override_fonts/font = ExtResource("13_a8y0u")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_a8y0u")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_jbj1t")
+theme_override_styles/hover = SubResource("StyleBoxFlat_jkv2x")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_a8y0u")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_jkv2x")
+text = "Main Menu"
+alignment = 0
+
+[node name="ContinueButton" type="Button" parent="arena/gameOver"]
+visible = false
+z_index = 201
+offset_left = 770.0
+offset_top = 930.0
+offset_right = 861.0
+offset_bottom = 960.0
+theme_override_fonts/font = ExtResource("13_a8y0u")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_a8y0u")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_jbj1t")
+theme_override_styles/hover = SubResource("StyleBoxFlat_jkv2x")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_a8y0u")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_jkv2x")
+text = "Continue"
+alignment = 0
+
 [connection signal="timeout" from="inputManager/Timer" to="inputManager" method="_on_timer_timeout"]
 [connection signal="pressed" from="EndTurnButton" to="battleManager" method="_on_end_turn_button_pressed"]
+[connection signal="pressed" from="arena/gameOver/ReplayButton" to="battleManager" method="_on_replay_button_pressed"]

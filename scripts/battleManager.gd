@@ -47,6 +47,7 @@ var totalForceExerted = 0
 var opponentForceExerted = 0
 var highestDamageDealt = 0
 var roundWinsUnderdog = 0
+var allPlayedCards = []
 var startTime
 var endTime
 
@@ -471,6 +472,8 @@ func calculate_damage():
 	totalForceExerted += playerTotal
 	opponentForceExerted += opponentTotal
 	
+	allPlayedCards.append({"faction": playerCharacterCard.faction, "cardKey": playerCharacterCard.cardKey})
+	
 	if highestDamageDealt < playerTotal:
 		highestDamageDealt = playerTotal
 	
@@ -560,9 +563,10 @@ func changeHeadExpression(head, expression):
 	for state in states:
 		head.get_node(state).visible = (state == expression)
 
-func draw_cards_at_start():
-	await $"../characterDeck".ready
-	await $"../supportDeck".ready
+func draw_cards_at_start(firstStart: bool = true):
+	if firstStart:
+		await $"../characterDeck".ready
+		await $"../supportDeck".ready
 	
 	for i in range(4):
 		await wait_for(CARD_MOVE_FAST_SPEED)
@@ -609,7 +613,7 @@ func play_game_over_animation():
 	
 	await wait_for(1.5)
 	
-	animate_game_outcome()
+	animate_game_outcome(int($"../arena/player/value".text) > int($"../arena/opponent/value".text))
 
 func animate_game_outcome_title(playerWon: bool):
 	$"../arena/gameOver/overlay".visible = true
@@ -638,7 +642,7 @@ func animate_game_outcome_title(playerWon: bool):
 	
 	await slamTween.finished
 
-func animate_game_outcome():
+func animate_game_outcome(playerWon: bool):
 	var slideTween = create_tween().set_parallel(true)
 	var targetPosition = Vector2(150, 80)
 	
@@ -649,23 +653,39 @@ func animate_game_outcome():
 	
 	await wait_for(.3)
 	
-	animate_game_stats()
+	animate_game_stats(playerWon)
 
-func animate_game_stats():
+func animate_game_stats(playerWon: bool):
 	set_end_game_stats()
 	
 	var performanceNode = $"../arena/gameOver/performance"
 	var gameNode = $"../arena/gameOver/game"
 	var scoreNode = $"../arena/gameOver/score"
 	var lineNode = $"../arena/gameOver/line"
+	var replayButton = $"../arena/gameOver/ReplayButton"
+	replayButton.disabled = true
+	var mainMenuButton = $"../arena/gameOver/MainMenuButton"
+	mainMenuButton.disabled = true
+	var continueButton = $"../arena/gameOver/ContinueButton"
+	continueButton.disabled = true
 	
-	for node in [performanceNode, gameNode, scoreNode, lineNode]:
+	for node in [performanceNode, gameNode, scoreNode, lineNode, replayButton, mainMenuButton, continueButton]:
 		node.modulate.a = 0.0
 		node.visible = true
 	
 	performanceNode.position.y += 20
 	gameNode.position.y += 20
 	scoreNode.position.y += 20
+	
+	if playerWon:
+		# Show the continue button
+		replayButton.position.y = 805
+		mainMenuButton.position.y = 875
+		continueButton.position.y = 945
+	else:
+		replayButton.position.y = 875
+		mainMenuButton.position.y = 945
+		continueButton.position.y = 1015
 
 	var uiTween = create_tween()
 
@@ -683,6 +703,15 @@ func animate_game_stats():
 	uiTween.tween_property(scoreNode, "modulate:a", 1.0, 0.8).set_trans(Tween.TRANS_SINE)
 	uiTween.parallel().tween_property(scoreNode, "position:y", scoreNode.position.y - 20, 0.8).set_trans(Tween.TRANS_CUBIC)
 	
+	uiTween.tween_property(replayButton, "modulate:a", 1.0, 0.6).set_trans(Tween.TRANS_SINE)
+	replayButton.disabled = false
+	uiTween.tween_property(mainMenuButton, "modulate:a", 1.0, 0.6).set_trans(Tween.TRANS_SINE)
+	mainMenuButton.disabled = false
+	
+	if playerWon:
+		uiTween.tween_property(continueButton, "modulate:a", 1.0, 0.6).set_trans(Tween.TRANS_SINE)
+		continueButton.disabled = false
+	
 	await uiTween.finished
 
 func set_end_game_stats():
@@ -696,17 +725,20 @@ func set_end_game_stats():
 	$"../arena/gameOver/performance/stat5".text = "%.1f%%" % momentum
 	
 	# Game stats
+	var valuableCards = get_card_stats(allPlayedCards)
+	$"../arena/gameOver/game/stat1".text = valuableCards["card"]
+	$"../arena/gameOver/game/stat2".text = valuableCards["faction"]
 	$"../arena/gameOver/game/stat3".text = str(highestDamageDealt)
 	$"../arena/gameOver/game/stat4".text = str(roundWinsUnderdog)
 	
 	# Score stats
 	if int($"../arena/player/value".text) > int($"../arena/opponent/value".text):
 		$"../arena/gameOver/score/stat1text".text = "Victory"
-		var winingBase = 10
+		var winingBase = 20
 		$"../arena/gameOver/score/stat1".text = str(winingBase)
 		var force = totalForceExerted - opponentForceExerted
 		$"../arena/gameOver/score/stat2".text = str(force)
-		var efficiency = (18 - turnNumber) * 5 # 18 as an average number of rounds
+		var efficiency = (20 - turnNumber) * 5 # 20 as an average number of rounds
 		$"../arena/gameOver/score/stat3".text = str(efficiency)
 		var underdog = roundWinsUnderdog * 5
 		$"../arena/gameOver/score/stat4".text = str(underdog)
@@ -714,20 +746,17 @@ func set_end_game_stats():
 		# Multiplier
 		$"../arena/gameOver/score/stat6".text = "**"
 		$"../arena/gameOver/score/stat7".text = str(winingBase + force + efficiency + underdog + int(momentum))
-		
-		
 	else:
 		$"../arena/gameOver/score/stat1text".text = "Defeat"
 		@warning_ignore("integer_division")
 		var losingScore = str(int(totalForceExerted) / 10)
 		$"../arena/gameOver/score/stat1".text = losingScore
-		$"../arena/gameOver/score/stat2".text = "0"
-		$"../arena/gameOver/score/stat3".text = "0"
-		$"../arena/gameOver/score/stat4".text = "0"
-		$"../arena/gameOver/score/stat5".text = "0"
-		$"../arena/gameOver/score/stat6".text = "0"
+		$"../arena/gameOver/score/stat2".text = "-"
+		$"../arena/gameOver/score/stat3".text = "-"
+		$"../arena/gameOver/score/stat4".text = "-"
+		$"../arena/gameOver/score/stat5".text = "-"
+		$"../arena/gameOver/score/stat6".text = "**"
 		$"../arena/gameOver/score/stat7".text = losingScore
-	
 
 func format_time(time: float) -> String:
 	var totalSeconds = int(time / 1000.0)
@@ -735,3 +764,89 @@ func format_time(time: float) -> String:
 	var minutes = totalSeconds / 60
 	var seconds = totalSeconds % 60
 	return "%02d:%02d" % [minutes, seconds]
+
+func get_card_stats(playedCards):
+	var factionCounts = {}
+	var cardCounts = {}
+
+	for card in playedCards:
+		var faction = card["faction"]
+		var mvp = card["cardKey"]
+		
+		factionCounts[faction] = factionCounts.get(faction, 0) + 1
+		cardCounts[mvp] = cardCounts.get(mvp, 0) + 1
+		
+	var topFaction = "None"
+	var highestFactionCount = 0
+	
+	for faction in factionCounts:
+		if factionCounts[faction] > highestFactionCount:
+			highestFactionCount = factionCounts[faction]
+			topFaction = faction
+	
+	var cardKey = "None"
+	var highestCharacterCount = 0
+	
+	for card in cardCounts:
+		if cardCounts[card] > highestCharacterCount:
+			highestCharacterCount = cardCounts[card]
+			cardKey = card
+	
+	var cardName = ""
+	
+	for i in range(cardKey.length()):
+		var letter = cardKey[i]
+		if i > 0 and letter == letter.to_upper():
+			cardName += " "
+		cardName += letter
+	
+	return {"faction": topFaction, "card": cardName}
+
+func _on_replay_button_pressed() -> void:
+	resetArenaValues()
+	
+	setupArena("June", "Ethan")
+	
+	changeHeadExpression($"../arena/player/head", "neutral")
+	changeHeadExpression($"../arena/opponent/head", "neutral")
+	
+	$"../arena/gameOver/overlay".visible = false
+	$"../arena/gameOver/title".visible = false
+	$"../arena/gameOver/line".visible = false
+	$"../arena/gameOver/performance".visible = false
+	$"../arena/gameOver/game".visible = false
+	$"../arena/gameOver/score".visible = false
+	$"../arena/gameOver/ReplayButton".visible = false
+	$"../arena/gameOver/ReplayButton".disabled = true
+	$"../arena/gameOver/MainMenuButton".visible = false
+	$"../arena/gameOver/MainMenuButton".disabled = true
+	$"../arena/gameOver/ContinueButton".visible = false
+	$"../arena/gameOver/ContinueButton".disabled = true
+	
+	await draw_cards_at_start(false)
+	
+	# Player always starts
+	whoStartedRound = "player"
+	roundStage = RoundStage.PLAYER_CHARACTER
+	$"../arena/player/indicator".visible = true
+	$"../arena/opponent/indicator".visible = false
+	changeHeadExpression($"../arena/player/head", "thinking")
+	changeHeadExpression($"../arena/opponent/head", "neutral")
+	
+	lockPlayerInput = false
+	
+	startTime = Time.get_ticks_msec()
+
+func resetArenaValues():
+	lockPlayerInput = true
+	hide_end_turn_button()
+	
+	turnNumber = 1
+	totalForceExerted = 0
+	opponentForceExerted = 0
+	highestDamageDealt = 0
+	roundWinsUnderdog = 0
+	allPlayedCards = []
+	
+	$"../playerHand".playerHand = []
+	$"../opponentHand".opponentHand = []
