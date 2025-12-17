@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://dgb52shq4jcyg"]
+[gd_scene load_steps=35 format=3 uid="uid://dgb52shq4jcyg"]
 
 [ext_resource type="Script" uid="uid://dgl6h7ryesfn8" path="res://scripts/cardManager.gd" id="1_0wfyh"]
 [ext_resource type="Script" uid="uid://c3p2rmoacsirj" path="res://scripts/inputManager.gd" id="1_o6xl0"]
@@ -21,6 +21,7 @@
 [ext_resource type="Texture2D" uid="uid://bpqj5m7tiyln" path="res://assets/arenaHeads/JuneHurt.png" id="16_yc10j"]
 [ext_resource type="Texture2D" uid="uid://crwpvlesiqi0o" path="res://assets/arenaHeads/JuneThinking.png" id="17_jscy8"]
 [ext_resource type="Texture2D" uid="uid://d2oxvh8kvsjse" path="res://assets/arenaHeads/JuneHappy.png" id="18_pm3ni"]
+[ext_resource type="Texture2D" uid="uid://dxbmvsoua68c4" path="res://assets/ui/GameOverOverlay.png" id="22_jscy8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jyhfs"]
 size = Vector2(140, 196)
@@ -446,6 +447,718 @@ texture = ExtResource("16_muem4")
 libraries = {
 &"": SubResource("AnimationLibrary_gqmmt")
 }
+
+[node name="gameOver" type="Node2D" parent="arena"]
+z_index = 200
+
+[node name="overlay" type="Sprite2D" parent="arena/gameOver"]
+visible = false
+scale = Vector2(0.24, 0.24)
+texture = ExtResource("22_jscy8")
+centered = false
+
+[node name="title" type="RichTextLabel" parent="arena/gameOver"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 145.0
+offset_top = 80.0
+offset_right = 445.0
+offset_bottom = 130.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = ExtResource("13_a8y0u")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 32
+text = "SURVIVED"
+horizontal_alignment = 1
+
+[node name="line" type="ColorRect" parent="arena/gameOver"]
+visible = false
+offset_left = 215.0
+offset_top = 137.0
+offset_right = 665.0
+offset_bottom = 139.0
+
+[node name="performance" type="Node2D" parent="arena/gameOver"]
+visible = false
+
+[node name="heading" type="RichTextLabel" parent="arena/gameOver/performance"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 215.0
+offset_top = 160.0
+offset_right = 665.0
+offset_bottom = 190.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = ExtResource("13_a8y0u")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "PERFORMANCE"
+
+[node name="line" type="ColorRect" parent="arena/gameOver/performance"]
+offset_left = 215.0
+offset_top = 195.0
+offset_right = 665.0
+offset_bottom = 196.0
+color = Color(1, 1, 1, 0.35686275)
+
+[node name="stat1text" type="RichTextLabel" parent="arena/gameOver/performance"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 215.0
+offset_top = 210.0
+offset_right = 665.0
+offset_bottom = 240.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "Total force exerted"
+
+[node name="stat1" type="RichTextLabel" parent="arena/gameOver/performance"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 215.0
+offset_top = 210.0
+offset_right = 665.0
+offset_bottom = 240.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "**"
+horizontal_alignment = 2
+
+[node name="stat2text" type="RichTextLabel" parent="arena/gameOver/performance"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 215.0
+offset_top = 250.0
+offset_right = 665.0
+offset_bottom = 280.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "Opponent force exerted"
+
+[node name="stat2" type="RichTextLabel" parent="arena/gameOver/performance"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 215.0
+offset_top = 250.0
+offset_right = 665.0
+offset_bottom = 280.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "**"
+horizontal_alignment = 2
+
+[node name="stat3text" type="RichTextLabel" parent="arena/gameOver/performance"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 215.0
+offset_top = 290.0
+offset_right = 665.0
+offset_bottom = 320.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "Rounds played"
+
+[node name="stat3" type="RichTextLabel" parent="arena/gameOver/performance"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 215.0
+offset_top = 290.0
+offset_right = 665.0
+offset_bottom = 320.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "**"
+horizontal_alignment = 2
+
+[node name="stat4text" type="RichTextLabel" parent="arena/gameOver/performance"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 215.0
+offset_top = 330.0
+offset_right = 665.0
+offset_bottom = 360.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "Time elapsed"
+
+[node name="stat4" type="RichTextLabel" parent="arena/gameOver/performance"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 215.0
+offset_top = 330.0
+offset_right = 665.0
+offset_bottom = 360.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "**"
+horizontal_alignment = 2
+
+[node name="stat5text" type="RichTextLabel" parent="arena/gameOver/performance"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 215.0
+offset_top = 370.0
+offset_right = 665.0
+offset_bottom = 400.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "Momentum"
+
+[node name="stat5" type="RichTextLabel" parent="arena/gameOver/performance"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 215.0
+offset_top = 370.0
+offset_right = 665.0
+offset_bottom = 400.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "**"
+horizontal_alignment = 2
+
+[node name="game" type="Node2D" parent="arena/gameOver"]
+visible = false
+
+[node name="heading" type="RichTextLabel" parent="arena/gameOver/game"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 215.0
+offset_top = 430.0
+offset_right = 665.0
+offset_bottom = 460.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = ExtResource("13_a8y0u")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "GAME"
+
+[node name="line" type="ColorRect" parent="arena/gameOver/game"]
+offset_left = 215.0
+offset_top = 465.0
+offset_right = 665.0
+offset_bottom = 466.0
+color = Color(1, 1, 1, 0.35686275)
+
+[node name="stat1text" type="RichTextLabel" parent="arena/gameOver/game"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 215.0
+offset_top = 480.0
+offset_right = 665.0
+offset_bottom = 510.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "Most valuable card"
+
+[node name="stat1" type="RichTextLabel" parent="arena/gameOver/game"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 215.0
+offset_top = 480.0
+offset_right = 665.0
+offset_bottom = 510.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "lorem"
+horizontal_alignment = 2
+
+[node name="stat2text" type="RichTextLabel" parent="arena/gameOver/game"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 215.0
+offset_top = 520.0
+offset_right = 665.0
+offset_bottom = 550.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "Most played faction"
+
+[node name="stat2" type="RichTextLabel" parent="arena/gameOver/game"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 215.0
+offset_top = 520.0
+offset_right = 665.0
+offset_bottom = 550.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "lorem"
+horizontal_alignment = 2
+
+[node name="stat3text" type="RichTextLabel" parent="arena/gameOver/game"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 215.0
+offset_top = 560.0
+offset_right = 665.0
+offset_bottom = 590.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "Highest damage dealt"
+
+[node name="stat3" type="RichTextLabel" parent="arena/gameOver/game"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 215.0
+offset_top = 560.0
+offset_right = 665.0
+offset_bottom = 590.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "**"
+horizontal_alignment = 2
+
+[node name="stat4text" type="RichTextLabel" parent="arena/gameOver/game"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 215.0
+offset_top = 600.0
+offset_right = 665.0
+offset_bottom = 630.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "Round wins with weaker character"
+
+[node name="stat4" type="RichTextLabel" parent="arena/gameOver/game"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 215.0
+offset_top = 600.0
+offset_right = 665.0
+offset_bottom = 630.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "**"
+horizontal_alignment = 2
+
+[node name="score" type="Node2D" parent="arena/gameOver"]
+visible = false
+
+[node name="heading" type="RichTextLabel" parent="arena/gameOver/score"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 215.0
+offset_top = 660.0
+offset_right = 665.0
+offset_bottom = 690.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = ExtResource("13_a8y0u")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "SCORE"
+
+[node name="line" type="ColorRect" parent="arena/gameOver/score"]
+offset_left = 215.0
+offset_top = 695.0
+offset_right = 665.0
+offset_bottom = 696.0
+color = Color(1, 1, 1, 0.35686275)
+
+[node name="stat1text" type="RichTextLabel" parent="arena/gameOver/score"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 215.0
+offset_top = 710.0
+offset_right = 665.0
+offset_bottom = 740.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "Victory"
+
+[node name="stat1" type="RichTextLabel" parent="arena/gameOver/score"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 215.0
+offset_top = 710.0
+offset_right = 665.0
+offset_bottom = 740.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "**"
+horizontal_alignment = 2
+
+[node name="stat2text" type="RichTextLabel" parent="arena/gameOver/score"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 215.0
+offset_top = 750.0
+offset_right = 665.0
+offset_bottom = 780.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "Force difference"
+
+[node name="stat2" type="RichTextLabel" parent="arena/gameOver/score"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 215.0
+offset_top = 750.0
+offset_right = 665.0
+offset_bottom = 780.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "**"
+horizontal_alignment = 2
+
+[node name="stat3text" type="RichTextLabel" parent="arena/gameOver/score"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 215.0
+offset_top = 790.0
+offset_right = 665.0
+offset_bottom = 820.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "Efficiency"
+
+[node name="stat3" type="RichTextLabel" parent="arena/gameOver/score"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 215.0
+offset_top = 790.0
+offset_right = 665.0
+offset_bottom = 820.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "**"
+horizontal_alignment = 2
+
+[node name="stat4text" type="RichTextLabel" parent="arena/gameOver/score"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 215.0
+offset_top = 830.0
+offset_right = 665.0
+offset_bottom = 860.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "Underdog round wins"
+
+[node name="stat4" type="RichTextLabel" parent="arena/gameOver/score"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 215.0
+offset_top = 830.0
+offset_right = 665.0
+offset_bottom = 860.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "**"
+horizontal_alignment = 2
+
+[node name="stat5text" type="RichTextLabel" parent="arena/gameOver/score"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 215.0
+offset_top = 870.0
+offset_right = 665.0
+offset_bottom = 900.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "Momentum bonus"
+
+[node name="stat5" type="RichTextLabel" parent="arena/gameOver/score"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 215.0
+offset_top = 870.0
+offset_right = 665.0
+offset_bottom = 900.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "**"
+horizontal_alignment = 2
+
+[node name="stat6text" type="RichTextLabel" parent="arena/gameOver/score"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 215.0
+offset_top = 910.0
+offset_right = 665.0
+offset_bottom = 940.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "Modifier multiplier"
+
+[node name="stat6" type="RichTextLabel" parent="arena/gameOver/score"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 215.0
+offset_top = 910.0
+offset_right = 665.0
+offset_bottom = 940.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "**"
+horizontal_alignment = 2
+
+[node name="stat7text" type="RichTextLabel" parent="arena/gameOver/score"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 215.0
+offset_top = 950.0
+offset_right = 665.0
+offset_bottom = 980.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "Total score"
+
+[node name="stat7" type="RichTextLabel" parent="arena/gameOver/score"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 215.0
+offset_top = 950.0
+offset_right = 665.0
+offset_bottom = 980.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "**"
+horizontal_alignment = 2
 
 [connection signal="timeout" from="inputManager/Timer" to="inputManager" method="_on_timer_timeout"]
 [connection signal="pressed" from="EndTurnButton" to="battleManager" method="_on_end_turn_button_pressed"]

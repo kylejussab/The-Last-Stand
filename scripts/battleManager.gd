@@ -42,6 +42,14 @@ var discardedCards = []
 
 var showOpponentsCards = false
 
+# Stats for the game
+var totalForceExerted = 0
+var opponentForceExerted = 0
+var highestDamageDealt = 0
+var roundWinsUnderdog = 0
+var startTime
+var endTime
+
 func _ready() -> void:
 	lockPlayerInput = true
 	
@@ -67,6 +75,8 @@ func _ready() -> void:
 	changeHeadExpression($"../arena/opponent/head", "neutral")
 	
 	lockPlayerInput = false
+	
+	startTime = Time.get_ticks_msec()
 
 func setupArena(player, opponent):
 	match player:
@@ -453,10 +463,16 @@ func calculate_damage():
 	var opponentTotal = int(opponentCharacterCard.get_node("value").text)
 	
 	if playerSupportCard:
-		playerTotal += playerSupportCard.value
+		playerTotal += int(playerSupportCard.get_node("value").text)
 	
 	if opponentSupportCard:
-		opponentTotal += opponentSupportCard.value
+		opponentTotal += int(opponentSupportCard.get_node("value").text)
+	
+	totalForceExerted += playerTotal
+	opponentForceExerted += opponentTotal
+	
+	if highestDamageDealt < playerTotal:
+		highestDamageDealt = playerTotal
 	
 	apply_calculation_round_perks(playerTotal, opponentTotal)
 	
@@ -491,6 +507,10 @@ func calculate_damage():
 			$"../arena/opponent/value".text = str(opponentHealth)
 			$"../arena/opponent/damage".text = "-" + str(playerCharacterCard.perkValueAtRoundEnd)
 			$"../arena/opponent/AnimationPlayer".queue("showDamage")
+		
+		# Add to the underdog stat
+		if playerCharacterCard.value < opponentCharacterCard.value:
+			roundWinsUnderdog += 1
 	elif opponentTotal > playerTotal:
 		var playerHealth = int($"../arena/player/value".text)
 		damage = opponentTotal - playerTotal
@@ -557,6 +577,8 @@ func draw_cards_at_start():
 		$"../supportDeck".draw_opponent_card()
 
 func end_round_sequence():
+	endTime = Time.get_ticks_msec()
+	
 	var cardsToDiscard = []
 	
 	if playerSupportCard:
@@ -568,14 +590,148 @@ func end_round_sequence():
 	if opponentSupportCard:
 		cardsToDiscard.append(opponentSupportCard)
 	
-	for card in $"../opponentHand".opponentHand:
+	for card in $"../playerHand".playerHand:
 		cardsToDiscard.append(card)
 	
-	for card in $"../playerHand".playerHand:
+	for card in $"../opponentHand".opponentHand:
+		card.get_node("AnimationPlayer").play("cardFlip")
+		card.get_node("image").visible = true
 		cardsToDiscard.append(card)
 	
 	await move_cards_to_discard(cardsToDiscard)
 	
-	# Do the overlay of the game information somewhere here
+	play_game_over_animation()
 	
 	await repopulate_decks(true)
+
+func play_game_over_animation():
+	animate_game_outcome_title(int($"../arena/player/value".text) > int($"../arena/opponent/value".text))
+	
+	await wait_for(1.5)
+	
+	animate_game_outcome()
+
+func animate_game_outcome_title(playerWon: bool):
+	$"../arena/gameOver/overlay".visible = true
+	$"../arena/gameOver/title".visible = true
+	
+	var resultLabel = $"../arena/gameOver/title"
+	resultLabel.text = "SURVIVED" if playerWon else "DEFEATED"
+	resultLabel.pivot_offset = resultLabel.size / 2
+	
+	var screenSize = get_viewport().get_visible_rect().size
+	resultLabel.global_position = screenSize / 2 - resultLabel.size / 2
+	resultLabel.scale = Vector2(2.0, 2.0)
+	resultLabel.modulate.a = 0.0
+	resultLabel.visible = true
+	
+	var growTween = create_tween().set_parallel(true)
+	growTween.tween_property(resultLabel, "modulate:a", 1.0, 0.5)
+	growTween.tween_property(resultLabel, "scale", Vector2(4.0, 4.0), 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	
+	var fadeTween = create_tween()
+	fadeTween.tween_property(resultLabel, "modulate:a", 1.0, 0.3)
+	await fadeTween.finished
+	
+	var slamTween = create_tween()
+	slamTween.tween_property(resultLabel, "scale", Vector2(1, 1), 0.4).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
+	
+	await slamTween.finished
+
+func animate_game_outcome():
+	var slideTween = create_tween().set_parallel(true)
+	var targetPosition = Vector2(150, 80)
+	
+	slideTween.tween_property($"../arena/gameOver/title", "global_position", targetPosition, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+	slideTween.tween_property($"../arena/gameOver/title", "scale", Vector2(1, 1), 0.5)
+	
+	await slideTween.finished
+	
+	await wait_for(.3)
+	
+	animate_game_stats()
+
+func animate_game_stats():
+	set_end_game_stats()
+	
+	var performanceNode = $"../arena/gameOver/performance"
+	var gameNode = $"../arena/gameOver/game"
+	var scoreNode = $"../arena/gameOver/score"
+	var lineNode = $"../arena/gameOver/line"
+	
+	for node in [performanceNode, gameNode, scoreNode, lineNode]:
+		node.modulate.a = 0.0
+		node.visible = true
+	
+	performanceNode.position.y += 20
+	gameNode.position.y += 20
+	scoreNode.position.y += 20
+
+	var uiTween = create_tween()
+
+	uiTween.tween_property(performanceNode, "modulate:a", 1.0, 0.8).set_trans(Tween.TRANS_SINE)
+	uiTween.parallel().tween_property(performanceNode, "position:y", performanceNode.position.y - 20, 0.8).set_trans(Tween.TRANS_CUBIC)
+	uiTween.parallel().tween_property(lineNode, "modulate:a", 1.0, 0.8).set_trans(Tween.TRANS_SINE)
+
+	uiTween.tween_interval(0.3)
+
+	uiTween.tween_property(gameNode, "modulate:a", 1.0, 0.8).set_trans(Tween.TRANS_SINE)
+	uiTween.parallel().tween_property(gameNode, "position:y", gameNode.position.y - 20, 0.8).set_trans(Tween.TRANS_CUBIC)
+	
+	uiTween.tween_interval(0.3)
+
+	uiTween.tween_property(scoreNode, "modulate:a", 1.0, 0.8).set_trans(Tween.TRANS_SINE)
+	uiTween.parallel().tween_property(scoreNode, "position:y", scoreNode.position.y - 20, 0.8).set_trans(Tween.TRANS_CUBIC)
+	
+	await uiTween.finished
+
+func set_end_game_stats():
+	# Performance stats
+	$"../arena/gameOver/performance/stat1".text = str(totalForceExerted)
+	$"../arena/gameOver/performance/stat2".text = str(opponentForceExerted)
+	$"../arena/gameOver/performance/stat3".text = str(turnNumber)
+	$"../arena/gameOver/performance/stat4".text = format_time(endTime - startTime)
+	var dominance = totalForceExerted / float(totalForceExerted + opponentForceExerted)
+	var momentum = ((totalForceExerted/float(turnNumber))/7) * dominance * 200 #7 is used as a base "average" value per round
+	$"../arena/gameOver/performance/stat5".text = "%.1f%%" % momentum
+	
+	# Game stats
+	$"../arena/gameOver/game/stat3".text = str(highestDamageDealt)
+	$"../arena/gameOver/game/stat4".text = str(roundWinsUnderdog)
+	
+	# Score stats
+	if int($"../arena/player/value".text) > int($"../arena/opponent/value".text):
+		$"../arena/gameOver/score/stat1text".text = "Victory"
+		var winingBase = 10
+		$"../arena/gameOver/score/stat1".text = str(winingBase)
+		var force = totalForceExerted - opponentForceExerted
+		$"../arena/gameOver/score/stat2".text = str(force)
+		var efficiency = (18 - turnNumber) * 5 # 18 as an average number of rounds
+		$"../arena/gameOver/score/stat3".text = str(efficiency)
+		var underdog = roundWinsUnderdog * 5
+		$"../arena/gameOver/score/stat4".text = str(underdog)
+		$"../arena/gameOver/score/stat5".text = str(int(momentum))
+		# Multiplier
+		$"../arena/gameOver/score/stat6".text = "**"
+		$"../arena/gameOver/score/stat7".text = str(winingBase + force + efficiency + underdog + int(momentum))
+		
+		
+	else:
+		$"../arena/gameOver/score/stat1text".text = "Defeat"
+		@warning_ignore("integer_division")
+		var losingScore = str(int(totalForceExerted) / 10)
+		$"../arena/gameOver/score/stat1".text = losingScore
+		$"../arena/gameOver/score/stat2".text = "0"
+		$"../arena/gameOver/score/stat3".text = "0"
+		$"../arena/gameOver/score/stat4".text = "0"
+		$"../arena/gameOver/score/stat5".text = "0"
+		$"../arena/gameOver/score/stat6".text = "0"
+		$"../arena/gameOver/score/stat7".text = losingScore
+	
+
+func format_time(time: float) -> String:
+	var totalSeconds = int(time / 1000.0)
+	@warning_ignore("integer_division")
+	var minutes = totalSeconds / 60
+	var seconds = totalSeconds % 60
+	return "%02d:%02d" % [minutes, seconds]
