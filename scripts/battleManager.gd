@@ -7,8 +7,8 @@ const CARD_MOVE_FAST_SPEED = 0.15
 
 const DISCARD_PILE_POSITION = Vector2(135, 300)
 
-const MAX_CHARACTER_CARDS = 4
-const MAX_SUPPORT_CARDS = 4
+const MAX_CHARACTER_CARDS = 3
+const MAX_SUPPORT_CARDS = 3
 
 const MIN_CARDS_FOR_RESHUFFLE = 3
 
@@ -52,6 +52,7 @@ var startTime
 var endTime
 
 func _ready() -> void:
+	setupButtonSounds()
 	lockPlayerInput = true
 	
 	$"../battleTimer".one_shot = true
@@ -97,7 +98,7 @@ func setupArena(player, opponent):
 			
 			$"../arena/opponent/name".text = "Ethan Hark"
 			$"../arena/opponent/description".text = "Patrol Leader"
-			$"../arena/opponent/value".text = "35"
+			$"../arena/opponent/value".text = "1"
 			# For now the opponent gets assigned June heads
 			$"../arena/opponent/head".get_node("neutral").texture = load("res://assets/arenaHeads/JuneNeutral.png")
 			$"../arena/opponent/head".get_node("hurt").texture = load("res://assets/arenaHeads/JuneHurt.png")
@@ -568,13 +569,13 @@ func draw_cards_at_start(firstStart: bool = true):
 		await $"../characterDeck".ready
 		await $"../supportDeck".ready
 	
-	for i in range(4):
+	for i in range(MAX_CHARACTER_CARDS):
 		await wait_for(CARD_MOVE_FAST_SPEED)
 		$"../characterDeck".draw_card()
 		await wait_for(CARD_MOVE_FAST_SPEED)
 		$"../characterDeck".draw_opponent_card()
 	
-	for i in range(4):
+	for i in range(MAX_SUPPORT_CARDS):
 		await wait_for(CARD_MOVE_FAST_SPEED)
 		$"../supportDeck".draw_card()
 		await wait_for(CARD_MOVE_FAST_SPEED)
@@ -803,6 +804,13 @@ func get_card_stats(playedCards):
 	return {"faction": topFaction, "card": cardName}
 
 func _on_replay_button_pressed() -> void:
+	$"../arena/fade".modulate.a = 0.0
+	$"../arena/fade".visible = true
+	
+	var fadeInTween = create_tween()
+	fadeInTween.tween_property($"../arena/fade", "modulate:a", 1.0, .5)
+	await fadeInTween.finished
+	
 	resetArenaValues()
 	
 	setupArena("June", "Ethan")
@@ -822,6 +830,13 @@ func _on_replay_button_pressed() -> void:
 	$"../arena/gameOver/MainMenuButton".disabled = true
 	$"../arena/gameOver/ContinueButton".visible = false
 	$"../arena/gameOver/ContinueButton".disabled = true
+	
+	await wait_for(1)
+	
+	var fadeOutTween = create_tween()
+	fadeOutTween.tween_property($"../arena/fade", "modulate:a", 0, .5)
+	await fadeOutTween.finished
+	$"../arena/fade".visible = false
 	
 	await draw_cards_at_start(false)
 	
@@ -850,3 +865,21 @@ func resetArenaValues():
 	
 	$"../playerHand".playerHand = []
 	$"../opponentHand".opponentHand = []
+
+func setupButtonSounds():
+	for button in $"../arena/gameOver".get_children():
+		if button is Button:
+			button.mouse_entered.connect(_play_hover)
+			button.pressed.connect(_play_click)
+	
+	$"../EndTurnButton".mouse_entered.connect(_play_hover)
+	$"../EndTurnButton".pressed.connect(_play_mouse_click)
+
+func _play_hover():
+	$"../arena/ButtonHoverSound".play()
+
+func _play_click():
+	$"../arena/ButtonClickSound".play()
+
+func _play_mouse_click():
+	$"../arena/MouseClickSound".play()

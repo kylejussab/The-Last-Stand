@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://dgb52shq4jcyg"]
+[gd_scene load_steps=39 format=3 uid="uid://dgb52shq4jcyg"]
 
 [ext_resource type="Script" uid="uid://dgl6h7ryesfn8" path="res://scripts/cardManager.gd" id="1_0wfyh"]
 [ext_resource type="Script" uid="uid://c3p2rmoacsirj" path="res://scripts/inputManager.gd" id="1_o6xl0"]
@@ -16,12 +16,15 @@
 [ext_resource type="Texture2D" uid="uid://jh2lrbkjb6tx" path="res://assets/cards/CardBackSupport.png" id="13_jscy8"]
 [ext_resource type="Texture2D" uid="uid://xni81jo33g8f" path="res://assets/arenaHeads/JuneNeutral.png" id="15_gqmmt"]
 [ext_resource type="FontFile" uid="uid://di1dchl37cfhu" path="res://assets/fonts/SF-Pro-Display-Semibold.otf" id="15_jkv2x"]
+[ext_resource type="AudioStream" uid="uid://8kx4d0kvxssn" path="res://assets/sounds/ui/MouseClick.wav" id="15_og1vs"]
 [ext_resource type="Texture2D" uid="uid://cc4u4mqtyb8xx" path="res://assets/arenas/EthanArena.png" id="15_yc10j"]
 [ext_resource type="Texture2D" uid="uid://dgqjpfbqq0f4p" path="res://assets/arenas/ActiveIndicator.png" id="16_muem4"]
 [ext_resource type="Texture2D" uid="uid://bpqj5m7tiyln" path="res://assets/arenaHeads/JuneHurt.png" id="16_yc10j"]
 [ext_resource type="Texture2D" uid="uid://crwpvlesiqi0o" path="res://assets/arenaHeads/JuneThinking.png" id="17_jscy8"]
 [ext_resource type="Texture2D" uid="uid://d2oxvh8kvsjse" path="res://assets/arenaHeads/JuneHappy.png" id="18_pm3ni"]
 [ext_resource type="Texture2D" uid="uid://dxbmvsoua68c4" path="res://assets/ui/GameOverOverlay.png" id="22_jscy8"]
+[ext_resource type="AudioStream" uid="uid://bams0u5k7sdgr" path="res://assets/sounds/ui/buttonClick.wav" id="23_y6deb"]
+[ext_resource type="AudioStream" uid="uid://cufo3kt8n8vs2" path="res://assets/sounds/ui/buttonHover.wav" id="24_og1vs"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jyhfs"]
 size = Vector2(140, 196)
@@ -281,6 +284,28 @@ text = "End Turn"
 
 [node name="arena" type="Node2D" parent="."]
 z_index = -99
+
+[node name="fade" type="ColorRect" parent="arena"]
+visible = false
+z_index = 999
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0, 0, 0, 1)
+
+[node name="MouseClickSound" type="AudioStreamPlayer2D" parent="arena"]
+position = Vector2(770, 790)
+stream = ExtResource("15_og1vs")
+volume_db = -30.0
+
+[node name="ButtonClickSound" type="AudioStreamPlayer2D" parent="arena"]
+position = Vector2(770, 790)
+stream = ExtResource("23_y6deb")
+volume_db = 3.0
+
+[node name="ButtonHoverSound" type="AudioStreamPlayer2D" parent="arena"]
+position = Vector2(770, 790)
+stream = ExtResource("24_og1vs")
+volume_db = 3.0
 
 [node name="image" type="Sprite2D" parent="arena"]
 position = Vector2(959.989, 540)
