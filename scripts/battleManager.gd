@@ -7,8 +7,8 @@ const CARD_MOVE_FAST_SPEED = 0.15
 
 const DISCARD_PILE_POSITION = Vector2(135, 300)
 
-const MAX_CHARACTER_CARDS = 3
-const MAX_SUPPORT_CARDS = 3
+const MAX_CHARACTER_CARDS = 4
+const MAX_SUPPORT_CARDS = 4
 
 const MIN_CARDS_FOR_RESHUFFLE = 3
 
@@ -50,6 +50,11 @@ var roundWinsUnderdog = 0
 var allPlayedCards = []
 var startTime
 var endTime
+
+@export var whooshSounds = [
+	preload("res://assets/sounds/ui/whoosh.wav"),
+	preload("res://assets/sounds/ui/whoosh2.wav")
+]
 
 func _ready() -> void:
 	setupButtonSounds()
@@ -98,7 +103,7 @@ func setupArena(player, opponent):
 			
 			$"../arena/opponent/name".text = "Ethan Hark"
 			$"../arena/opponent/description".text = "Patrol Leader"
-			$"../arena/opponent/value".text = "1"
+			$"../arena/opponent/value".text = "35"
 			# For now the opponent gets assigned June heads
 			$"../arena/opponent/head".get_node("neutral").texture = load("res://assets/arenaHeads/JuneNeutral.png")
 			$"../arena/opponent/head".get_node("hurt").texture = load("res://assets/arenaHeads/JuneHurt.png")
@@ -492,6 +497,8 @@ func calculate_damage():
 		changeHeadExpression($"../arena/player/head", "happy")
 		changeHeadExpression($"../arena/opponent/head", "hurt")
 		
+		play_damage_sound()
+		
 		$"../arena/opponent/damage".text = "-" + str(damage)
 		$"../arena/opponent/AnimationPlayer".queue("showDamage")
 		
@@ -499,6 +506,7 @@ func calculate_damage():
 		if opponentCharacterCard.cardKey == "Bloater" && opponentCharacterCard.perkValueAtRoundEnd:
 			var playerHealth = int($"../arena/player/value".text) - opponentCharacterCard.perkValueAtRoundEnd
 			await wait_for(0.5)
+			play_damage_sound()
 			$"../arena/player/value".text = str(playerHealth)
 			$"../arena/player/damage".text = "-" + str(opponentCharacterCard.perkValueAtRoundEnd)
 			$"../arena/player/AnimationPlayer".queue("showDamage")
@@ -507,7 +515,7 @@ func calculate_damage():
 			opponentHealth -= playerCharacterCard.perkValueAtRoundEnd
 			await $"../arena/opponent/AnimationPlayer".animation_finished
 			await wait_for(0.5)
-			
+			play_damage_sound()
 			$"../arena/opponent/value".text = str(opponentHealth)
 			$"../arena/opponent/damage".text = "-" + str(playerCharacterCard.perkValueAtRoundEnd)
 			$"../arena/opponent/AnimationPlayer".queue("showDamage")
@@ -525,6 +533,8 @@ func calculate_damage():
 		changeHeadExpression($"../arena/player/head", "hurt")
 		changeHeadExpression($"../arena/opponent/head", "happy")
 		
+		play_damage_sound()
+		
 		$"../arena/player/damage".text = "-" + str(damage)
 		$"../arena/player/AnimationPlayer".queue("showDamage")
 		
@@ -532,6 +542,7 @@ func calculate_damage():
 		if playerCharacterCard.cardKey == "Bloater" && playerCharacterCard.perkValueAtRoundEnd:
 			var opponentHealth = int($"../arena/opponent/value".text) - playerCharacterCard.perkValueAtRoundEnd
 			await wait_for(0.5)
+			play_damage_sound()
 			$"../arena/opponent/value".text = str(opponentHealth)
 			$"../arena/opponent/damage".text = "-" + str(playerCharacterCard.perkValueAtRoundEnd)
 			$"../arena/opponent/AnimationPlayer".queue("showDamage")
@@ -540,7 +551,7 @@ func calculate_damage():
 			playerHealth -= opponentCharacterCard.perkValueAtRoundEnd
 			await $"../arena/player/AnimationPlayer".animation_finished
 			await wait_for(0.5)
-			
+			play_damage_sound()
 			$"../arena/player/value".text = str(playerHealth)
 			$"../arena/player/damage".text = "-" + str(opponentCharacterCard.perkValueAtRoundEnd)
 			$"../arena/player/AnimationPlayer".queue("showDamage")
@@ -548,12 +559,14 @@ func calculate_damage():
 		if playerCharacterCard.cardKey == "LevRare":
 			var opponentHealth = int($"../arena/opponent/value".text) - playerCharacterCard.perkValueAtRoundEnd
 			await wait_for(0.5)
+			play_damage_sound()
 			$"../arena/opponent/value".text = str(opponentHealth)
 			$"../arena/opponent/damage".text = "-" + str(playerCharacterCard.perkValueAtRoundEnd)
 			$"../arena/opponent/AnimationPlayer".queue("showDamage")
 		if opponentCharacterCard.cardKey == "LevRare":
 			var playerHealth = int($"../arena/player/value".text) - opponentCharacterCard.perkValueAtRoundEnd
 			await wait_for(0.5)
+			play_damage_sound()
 			$"../arena/player/value".text = str(playerHealth)
 			$"../arena/player/damage".text = "-" + str(opponentCharacterCard.perkValueAtRoundEnd)
 			$"../arena/player/AnimationPlayer".queue("showDamage")
@@ -634,6 +647,9 @@ func animate_game_outcome_title(playerWon: bool):
 	growTween.tween_property(resultLabel, "modulate:a", 1.0, 0.5)
 	growTween.tween_property(resultLabel, "scale", Vector2(4.0, 4.0), 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	
+	$"../arena/gameOver/effects".stream = whooshSounds[0]
+	$"../arena/gameOver/effects".play()
+	
 	var fadeTween = create_tween()
 	fadeTween.tween_property(resultLabel, "modulate:a", 1.0, 0.3)
 	await fadeTween.finished
@@ -646,6 +662,9 @@ func animate_game_outcome_title(playerWon: bool):
 func animate_game_outcome(playerWon: bool):
 	var slideTween = create_tween().set_parallel(true)
 	var targetPosition = Vector2(150, 80)
+	
+	$"../arena/gameOver/effects".stream = whooshSounds[1]
+	$"../arena/gameOver/effects".play()
 	
 	slideTween.tween_property($"../arena/gameOver/title", "global_position", targetPosition, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
 	slideTween.tween_property($"../arena/gameOver/title", "scale", Vector2(1, 1), 0.5)
@@ -690,30 +709,39 @@ func animate_game_stats(playerWon: bool):
 
 	var uiTween = create_tween()
 
+	$"../arena/gameOver/effects".stream = whooshSounds[1]
+	
+	uiTween.tween_callback($"../arena/gameOver/effects".play)
 	uiTween.tween_property(performanceNode, "modulate:a", 1.0, 0.8).set_trans(Tween.TRANS_SINE)
 	uiTween.parallel().tween_property(performanceNode, "position:y", performanceNode.position.y - 20, 0.8).set_trans(Tween.TRANS_CUBIC)
 	uiTween.parallel().tween_property(lineNode, "modulate:a", 1.0, 0.8).set_trans(Tween.TRANS_SINE)
-
+	
 	uiTween.tween_interval(0.3)
-
+	
+	uiTween.tween_callback($"../arena/gameOver/effects".play)
 	uiTween.tween_property(gameNode, "modulate:a", 1.0, 0.8).set_trans(Tween.TRANS_SINE)
 	uiTween.parallel().tween_property(gameNode, "position:y", gameNode.position.y - 20, 0.8).set_trans(Tween.TRANS_CUBIC)
 	
 	uiTween.tween_interval(0.3)
-
+	
+	uiTween.tween_callback($"../arena/gameOver/effects".play)
 	uiTween.tween_property(scoreNode, "modulate:a", 1.0, 0.8).set_trans(Tween.TRANS_SINE)
 	uiTween.parallel().tween_property(scoreNode, "position:y", scoreNode.position.y - 20, 0.8).set_trans(Tween.TRANS_CUBIC)
 	
-	uiTween.tween_property(replayButton, "modulate:a", 1.0, 0.6).set_trans(Tween.TRANS_SINE)
+	await uiTween.finished 
+	
+	var buttonTween = create_tween()
+	
+	buttonTween.tween_property(replayButton, "modulate:a", 1.0, 0.6).set_trans(Tween.TRANS_SINE)
 	replayButton.disabled = false
-	uiTween.tween_property(mainMenuButton, "modulate:a", 1.0, 0.6).set_trans(Tween.TRANS_SINE)
+	buttonTween.tween_property(mainMenuButton, "modulate:a", 1.0, 0.6).set_trans(Tween.TRANS_SINE)
 	mainMenuButton.disabled = false
 	
 	if playerWon:
-		uiTween.tween_property(continueButton, "modulate:a", 1.0, 0.6).set_trans(Tween.TRANS_SINE)
+		buttonTween.tween_property(continueButton, "modulate:a", 1.0, 0.6).set_trans(Tween.TRANS_SINE)
 		continueButton.disabled = false
 	
-	await uiTween.finished
+	await buttonTween.finished
 
 func set_end_game_stats():
 	# Performance stats
@@ -871,9 +899,6 @@ func setupButtonSounds():
 		if button is Button:
 			button.mouse_entered.connect(_play_hover)
 			button.pressed.connect(_play_click)
-	
-	$"../EndTurnButton".mouse_entered.connect(_play_hover)
-	$"../EndTurnButton".pressed.connect(_play_mouse_click)
 
 func _play_hover():
 	$"../arena/ButtonHoverSound".play()
@@ -881,5 +906,5 @@ func _play_hover():
 func _play_click():
 	$"../arena/ButtonClickSound".play()
 
-func _play_mouse_click():
-	$"../arena/MouseClickSound".play()
+func play_damage_sound():
+	$"../arena/damageSound".play()
