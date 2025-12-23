@@ -21,10 +21,7 @@ var opponentCharacterCard
 var opponentSupportCard
 
 var opponentPlayedSupport = false
-
 var lockPlayerInput = true
-
-var turnNumber = 1
 
 enum RoundStage {
 	PLAYER_CHARACTER,
@@ -33,7 +30,7 @@ enum RoundStage {
 	OPPONENT_SUPPORT,
 	END_CALCULATION}
 
-var whoStartedRound
+var whoStartedRound: String = "player"
 var roundStage: RoundStage
 
 var opponentAI: OpponentAI
@@ -42,14 +39,8 @@ var discardedCards = []
 
 var showOpponentsCards = false
 
-# Stats for the game
-var totalForceExerted = 0
-var opponentForceExerted = 0
-var highestDamageDealt = 0
-var roundWinsUnderdog = 0
-var allPlayedCards = []
-var startTime
-var endTime
+@onready var stats = %gameStats
+@onready var ui = %arena
 
 @export var whooshSounds = [
 	preload("res://assets/sounds/ui/whoosh.wav"),
@@ -58,7 +49,6 @@ var endTime
 
 func _ready() -> void:
 	setupButtonSounds()
-	lockPlayerInput = true
 	
 	$"../battleTimer".one_shot = true
 	$"../battleTimer".wait_time = OPPONENT_THINKING_TIME
@@ -66,49 +56,27 @@ func _ready() -> void:
 	$"../cardManager".connect("characterPlayed", Callable(self, "on_player_character_played"))
 	$"../cardManager".connect("supportPlayed", Callable(self, "on_player_support_played"))
 	
-	hide_end_turn_button()
-	
-	# Changing the opponent will change the arena
 	setupArena("June", "Ethan")
 	
 	await draw_cards_at_start()
 	
 	# Player always starts
-	whoStartedRound = "player"
+	ui.set_indicator("player")
+	ui.change_expression("player", "thinking")
+	ui.change_expression("opponent", "neutral")
 	roundStage = RoundStage.PLAYER_CHARACTER
-	$"../arena/player/indicator".visible = true
-	$"../arena/opponent/indicator".visible = false
-	changeHeadExpression($"../arena/player/head", "thinking")
-	changeHeadExpression($"../arena/opponent/head", "neutral")
 	
 	lockPlayerInput = false
 	
-	startTime = Time.get_ticks_msec()
+	stats.set_start_time()
 
 func setupArena(player, opponent):
 	match player:
 		"June":
-			$"../arena/player/name".text = "June Ravel"
-			$"../arena/player/description".text = "Former Firefly"
-			$"../arena/player/value".text = "35"
-			
-			$"../arena/player/head".get_node("neutral").texture = load("res://assets/arenaHeads/JuneNeutral.png")
-			$"../arena/player/head".get_node("hurt").texture = load("res://assets/arenaHeads/JuneHurt.png")
-			$"../arena/player/head".get_node("thinking").texture = load("res://assets/arenaHeads/JuneThinking.png")
-			$"../arena/player/head".get_node("happy").texture = load("res://assets/arenaHeads/JuneHappy.png")
-	
+			ui.setup_character("June", true)
 	match opponent:
 		"Ethan":
-			$"../arena/image".texture = load("res://assets/arenas/EthanArena.png")
-			
-			$"../arena/opponent/name".text = "Ethan Hark"
-			$"../arena/opponent/description".text = "Patrol Leader"
-			$"../arena/opponent/value".text = "35"
-			# For now the opponent gets assigned June heads
-			$"../arena/opponent/head".get_node("neutral").texture = load("res://assets/arenaHeads/JuneNeutral.png")
-			$"../arena/opponent/head".get_node("hurt").texture = load("res://assets/arenaHeads/JuneHurt.png")
-			$"../arena/opponent/head".get_node("thinking").texture = load("res://assets/arenaHeads/JuneThinking.png")
-			$"../arena/opponent/head".get_node("happy").texture = load("res://assets/arenaHeads/JuneHappy.png")
+			ui.setup_character("Ethan", false)
 			opponentAI = OpponentAIHighestValue.new()
 
 func resetTurn():
@@ -119,25 +87,25 @@ func resetTurn():
 	
 	opponentPlayedSupport = false
 	
-	hide_end_turn_button()
+	ui.show_end_turn_button(false)
 	
 	# Shuffle cards from discard back into decks if needed
 	await repopulate_decks()
 	
-	if turnNumber % 2 == 0:
+	if stats.roundNumber % 2 == 0:
 		whoStartedRound = "opponent"
+		
+		ui.change_expression("opponent", "thinking")
+		ui.change_expression("player", "neutral")
+		opponent_character_turn()
 	else:
 		whoStartedRound = "player"
-		$"../arena/player/indicator".visible = true
-		$"../arena/opponent/indicator".visible = false
+		
+		ui.set_indicator("player")
+		ui.change_expression("player", "thinking")
+		ui.change_expression("opponent", "neutral")
+		
 		lockPlayerInput = false
-		changeHeadExpression($"../arena/player/head", "thinking")
-		changeHeadExpression($"../arena/opponent/head", "neutral")
-	
-	if whoStartedRound == "opponent":
-		changeHeadExpression($"../arena/player/head", "neutral")
-		changeHeadExpression($"../arena/opponent/head", "thinking")
-		opponent_character_turn()
 
 func on_player_character_played(card):
 	playerCharacterCard = card
@@ -149,12 +117,11 @@ func on_player_character_played(card):
 		roundStage = RoundStage.OPPONENT_CHARACTER
 		opponent_character_turn()
 	
-	changeHeadExpression($"../arena/player/head", "neutral")
+	ui.change_expression("player", "neutral")
 
 func opponent_character_turn():
-	$"../arena/player/indicator".visible = false
-	$"../arena/opponent/indicator".visible = true
-	changeHeadExpression($"../arena/opponent/head", "thinking")
+	ui.set_indicator("opponent")
+	ui.change_expression("opponent", "thinking")
 	lockPlayerInput = true
 	await wait_for(OPPONENT_THINKING_TIME)
 	
@@ -166,57 +133,55 @@ func opponent_character_turn():
 	await animate_opponent_playing_card(card, $"../cardSlots/opponentCardSlotCharacter")
 	opponentCharacterCard = card
 	
-	$"../arena/player/indicator".visible = true
-	$"../arena/opponent/indicator".visible = false
+	ui.set_indicator("player")
+	
 	# If the player started the round
 	if playerCharacterCard != null:
-		show_end_turn_button()
+		ui.show_end_turn_button()
 		init_support_round()
 	else:
+		ui.change_expression("player", "thinking")
 		lockPlayerInput = false
 		roundStage = RoundStage.PLAYER_CHARACTER
-		changeHeadExpression($"../arena/player/head", "thinking")
 	
-	changeHeadExpression($"../arena/opponent/head", "neutral")
+	ui.change_expression("opponent", "neutral")
 
 func init_support_round():
 	lockPlayerInput = false
-	changeHeadExpression($"../arena/player/head", "neutral")
-	changeHeadExpression($"../arena/opponent/head", "neutral")
+	
+	ui.change_expression("player", "neutral")
+	ui.change_expression("opponent", "neutral")
 	
 	apply_mid_round_perks()
 	allow_support_cards()
 	
 	if whoStartedRound == "player":
 		roundStage = RoundStage.PLAYER_SUPPORT
-		changeHeadExpression($"../arena/player/head", "thinking")
+		ui.change_expression("player", "thinking")
 	else:
 		roundStage = RoundStage.OPPONENT_SUPPORT
-		changeHeadExpression($"../arena/opponent/head", "thinking")
+		ui.change_expression("opponent", "thinking")
 		opponent_support_turn()
 
 func on_player_support_played(card):
-	changeHeadExpression($"../arena/player/head", "neutral")
+	ui.change_expression("player", "neutral")
 	
-	hide_end_turn_button()
+	ui.show_end_turn_button(false)
 	
 	playerSupportCard = card
 	
 	if whoStartedRound == "player":
 		opponent_support_turn()
 	else:
-		# Calculate the reward values (this is where health would be subtracted)
-		
-		$"../arena/player/indicator".visible = false
-		$"../arena/opponent/indicator".visible = false
-		changeHeadExpression($"../arena/player/head", "neutral")
+		ui.set_indicator("none")
+		ui.change_expression("player", "neutral")
 		await apply_end_round_perks()
 		end_turn()
 
 func opponent_support_turn():
-	$"../arena/player/indicator".visible = false
-	$"../arena/opponent/indicator".visible = true
-	changeHeadExpression($"../arena/opponent/head", "thinking")
+	ui.set_indicator("opponent")
+	ui.change_expression("opponent", "thinking")
+	
 	lockPlayerInput = true
 	await wait_for(OPPONENT_THINKING_TIME)
 	
@@ -228,23 +193,19 @@ func opponent_support_turn():
 		animate_opponent_playing_card(card, $"../cardSlots/opponentCardSlotSupport")
 		opponentSupportCard = card
 	
-	changeHeadExpression($"../arena/opponent/head", "neutral")
+	ui.change_expression("opponent", "neutral")
 	
 	if whoStartedRound == "player":
-		# Calculate the reward values (this is where health would be subtracted)
-		
-		$"../arena/player/indicator".visible = false
-		$"../arena/opponent/indicator".visible = false
+		ui.set_indicator("none")
 		await apply_end_round_perks()
 		end_turn()
 	else:
 		# Always give the player the option of playing a support
-		$"../arena/player/indicator".visible = true
-		$"../arena/opponent/indicator".visible = false
-		changeHeadExpression($"../arena/player/head", "thinking")
+		ui.set_indicator("player")
+		ui.change_expression("player", "thinking")
 		lockPlayerInput = false
 		roundStage = RoundStage.PLAYER_SUPPORT
-		show_end_turn_button()
+		ui.show_end_turn_button()
 	
 	opponentPlayedSupport = true
 
@@ -276,27 +237,26 @@ func end_turn():
 		cardsToDiscard.append(opponentSupportCard)
 	
 	await move_cards_to_discard(cardsToDiscard)
-	hide_end_turn_button()
+	ui.show_end_turn_button(false)
 	
 	await repopolate_hand(playerHand, "player")
 	await repopolate_hand(opponentHand, "opponent")
 	
-	turnNumber += 1
+	stats.roundNumber += 1
 	cardsToDiscard = []
 	
 	resetTurn()
 
 func _on_end_turn_button_pressed() -> void:
-	hide_end_turn_button()
-	changeHeadExpression($"../arena/player/head", "neutral")
+	ui.show_end_turn_button(false)
+	ui.change_expression("player", "neutral")
 	
 	# If player played support, let the AI choose to play support, otherwise end
 	if !opponentPlayedSupport:
 		opponent_support_turn()
 		return
 
-	$"../arena/player/indicator".visible = false
-	$"../arena/opponent/indicator".visible = false
+	ui.set_indicator("none")
 	await apply_end_round_perks()
 	end_turn()
 
@@ -317,14 +277,6 @@ func animate_opponent_playing_card(opponentCard, opponentCardSlot):
 	opponentCard.get_node("image").visible = true
 	
 	$"../opponentHand".remove_card_from_hand(opponentCard)
-
-func show_end_turn_button():
-	$"../EndTurnButton".disabled = false
-	$"../EndTurnButton".visible = true
-
-func hide_end_turn_button():
-	$"../EndTurnButton".disabled = true
-	$"../EndTurnButton".visible = false
 
 func allow_support_cards():
 	var playerCharacterCardRoles = playerCharacterCard.role.split("/")
@@ -475,107 +427,97 @@ func calculate_damage():
 	if opponentSupportCard:
 		opponentTotal += int(opponentSupportCard.get_node("value").text)
 	
-	totalForceExerted += playerTotal
-	opponentForceExerted += opponentTotal
+	stats.totalForceExerted += playerTotal
+	stats.opponentForceExerted += opponentTotal
 	
-	allPlayedCards.append({"faction": playerCharacterCard.faction, "cardKey": playerCharacterCard.cardKey})
+	stats.allPlayedCards.append({"faction": playerCharacterCard.faction, "cardKey": playerCharacterCard.cardKey})
 	
-	if highestDamageDealt < playerTotal:
-		highestDamageDealt = playerTotal
+	if stats.highestDamageDealt < playerTotal:
+		stats.highestDamageDealt = playerTotal
 	
 	apply_calculation_round_perks(playerTotal, opponentTotal)
 	
 	var damage = 0
 	
 	if playerTotal > opponentTotal:
-		var opponentHealth = int($"../arena/opponent/value".text)
+		var opponentHealth = ui.get_health("opponent")
 		damage = playerTotal - opponentTotal
 		
 		opponentHealth -= damage
-		$"../arena/opponent/value".text = str(opponentHealth)
+		ui.set_health("opponent", opponentHealth)
 		
-		changeHeadExpression($"../arena/player/head", "happy")
-		changeHeadExpression($"../arena/opponent/head", "hurt")
+		ui.change_expression("player", "happy")
+		ui.change_expression("opponent", "hurt")
 		
 		play_damage_sound()
-		
-		$"../arena/opponent/damage".text = "-" + str(damage)
-		$"../arena/opponent/AnimationPlayer".queue("showDamage")
+		await ui.show_damage("opponent", damage)
 		
 		#special case for bloater
 		if opponentCharacterCard.cardKey == "Bloater" && opponentCharacterCard.perkValueAtRoundEnd:
-			var playerHealth = int($"../arena/player/value".text) - opponentCharacterCard.perkValueAtRoundEnd
+			var playerHealth = ui.get_health("player") - opponentCharacterCard.perkValueAtRoundEnd
 			await wait_for(0.5)
+			
 			play_damage_sound()
-			$"../arena/player/value".text = str(playerHealth)
-			$"../arena/player/damage".text = "-" + str(opponentCharacterCard.perkValueAtRoundEnd)
-			$"../arena/player/AnimationPlayer".queue("showDamage")
+			ui.set_health("player", playerHealth)
+			await ui.show_damage("player", opponentCharacterCard.perkValueAtRoundEnd)
 		
 		if playerCharacterCard.perkValueAtRoundEnd:
 			opponentHealth -= playerCharacterCard.perkValueAtRoundEnd
-			await $"../arena/opponent/AnimationPlayer".animation_finished
 			await wait_for(0.5)
+			
 			play_damage_sound()
-			$"../arena/opponent/value".text = str(opponentHealth)
-			$"../arena/opponent/damage".text = "-" + str(playerCharacterCard.perkValueAtRoundEnd)
-			$"../arena/opponent/AnimationPlayer".queue("showDamage")
+			ui.set_health("opponent", opponentHealth)
+			await ui.show_damage("opponent", playerCharacterCard.perkValueAtRoundEnd)
 		
 		# Add to the underdog stat
 		if playerCharacterCard.value < opponentCharacterCard.value:
-			roundWinsUnderdog += 1
+			stats.roundWinsUnderdog += 1
 	elif opponentTotal > playerTotal:
-		var playerHealth = int($"../arena/player/value".text)
+		var playerHealth = ui.get_health("player")
 		damage = opponentTotal - playerTotal
 		
 		playerHealth -= damage
-		$"../arena/player/value".text = str(playerHealth)
+		ui.set_health("player", playerHealth)
 		
-		changeHeadExpression($"../arena/player/head", "hurt")
-		changeHeadExpression($"../arena/opponent/head", "happy")
+		ui.change_expression("player", "hurt")
+		ui.change_expression("opponent", "happy")
 		
 		play_damage_sound()
-		
-		$"../arena/player/damage".text = "-" + str(damage)
-		$"../arena/player/AnimationPlayer".queue("showDamage")
+		await ui.show_damage("player", damage)
 		
 		#special case for bloater
 		if playerCharacterCard.cardKey == "Bloater" && playerCharacterCard.perkValueAtRoundEnd:
-			var opponentHealth = int($"../arena/opponent/value".text) - playerCharacterCard.perkValueAtRoundEnd
+			var opponentHealth = ui.get_health("opponent") - playerCharacterCard.perkValueAtRoundEnd
 			await wait_for(0.5)
+			
 			play_damage_sound()
-			$"../arena/opponent/value".text = str(opponentHealth)
-			$"../arena/opponent/damage".text = "-" + str(playerCharacterCard.perkValueAtRoundEnd)
-			$"../arena/opponent/AnimationPlayer".queue("showDamage")
+			ui.set_health("opponent", opponentHealth)
+			await ui.show_damage("opponent", playerCharacterCard.perkValueAtRoundEnd)
 		
 		if opponentCharacterCard.perkValueAtRoundEnd:
 			playerHealth -= opponentCharacterCard.perkValueAtRoundEnd
-			await $"../arena/player/AnimationPlayer".animation_finished
+			
 			await wait_for(0.5)
 			play_damage_sound()
-			$"../arena/player/value".text = str(playerHealth)
-			$"../arena/player/damage".text = "-" + str(opponentCharacterCard.perkValueAtRoundEnd)
-			$"../arena/player/AnimationPlayer".queue("showDamage")
+			
+			ui.set_health("player", playerHealth)
+			await ui.show_damage("player", opponentCharacterCard.perkValueAtRoundEnd)
+			
 	elif opponentTotal == playerTotal: # Special Case for Lev
 		if playerCharacterCard.cardKey == "LevRare":
-			var opponentHealth = int($"../arena/opponent/value".text) - playerCharacterCard.perkValueAtRoundEnd
+			var opponentHealth = ui.get_health("opponent") - playerCharacterCard.perkValueAtRoundEnd
 			await wait_for(0.5)
 			play_damage_sound()
-			$"../arena/opponent/value".text = str(opponentHealth)
-			$"../arena/opponent/damage".text = "-" + str(playerCharacterCard.perkValueAtRoundEnd)
-			$"../arena/opponent/AnimationPlayer".queue("showDamage")
+			
+			ui.set_health("opponent", opponentHealth)
+			await ui.show_damage("opponent", playerCharacterCard.perkValueAtRoundEnd)
 		if opponentCharacterCard.cardKey == "LevRare":
-			var playerHealth = int($"../arena/player/value".text) - opponentCharacterCard.perkValueAtRoundEnd
+			var playerHealth = ui.get_health("player") - opponentCharacterCard.perkValueAtRoundEnd
 			await wait_for(0.5)
 			play_damage_sound()
-			$"../arena/player/value".text = str(playerHealth)
-			$"../arena/player/damage".text = "-" + str(opponentCharacterCard.perkValueAtRoundEnd)
-			$"../arena/player/AnimationPlayer".queue("showDamage")
-
-func changeHeadExpression(head, expression):
-	var states = ["neutral", "thinking", "hurt", "happy"]
-	
-	for state in states:
-		head.get_node(state).visible = (state == expression)
+			
+			ui.set_health("player", playerHealth)
+			await ui.show_damage("player", opponentCharacterCard.perkValueAtRoundEnd)
 
 func draw_cards_at_start(firstStart: bool = true):
 	if firstStart:
@@ -595,7 +537,7 @@ func draw_cards_at_start(firstStart: bool = true):
 		$"../supportDeck".draw_opponent_card()
 
 func end_round_sequence():
-	endTime = Time.get_ticks_msec()
+	stats.set_end_time()
 	
 	var cardsToDiscard = []
 	
@@ -623,11 +565,11 @@ func end_round_sequence():
 	await repopulate_decks(true)
 
 func play_game_over_animation():
-	animate_game_outcome_title(int($"../arena/player/value".text) > int($"../arena/opponent/value".text))
+	animate_game_outcome_title(ui.get_health("player") > ui.get_health("opponent"))
 	
 	await wait_for(1.5)
 	
-	animate_game_outcome(int($"../arena/player/value".text) > int($"../arena/opponent/value".text))
+	animate_game_outcome(ui.get_health("player") > ui.get_health("opponent"))
 
 func animate_game_outcome_title(playerWon: bool):
 	$"../arena/gameOver/overlay".visible = true
@@ -745,31 +687,31 @@ func animate_game_stats(playerWon: bool):
 
 func set_end_game_stats():
 	# Performance stats
-	$"../arena/gameOver/performance/stat1".text = str(totalForceExerted)
-	$"../arena/gameOver/performance/stat2".text = str(opponentForceExerted)
-	$"../arena/gameOver/performance/stat3".text = str(turnNumber)
-	$"../arena/gameOver/performance/stat4".text = format_time(endTime - startTime)
-	var dominance = totalForceExerted / float(totalForceExerted + opponentForceExerted)
-	var momentum = ((totalForceExerted/float(turnNumber))/7) * dominance * 200 #7 is used as a base "average" value per round
+	$"../arena/gameOver/performance/stat1".text = str(stats.totalForceExerted)
+	$"../arena/gameOver/performance/stat2".text = str(stats.opponentForceExerted)
+	$"../arena/gameOver/performance/stat3".text = str(stats.roundNumber)
+	$"../arena/gameOver/performance/stat4".text = format_time(stats.endTime - stats.startTime)
+	var dominance = stats.totalForceExerted / float(stats.totalForceExerted + stats.opponentForceExerted)
+	var momentum = ((stats.totalForceExerted/float(stats.roundNumber))/7) * dominance * 200 #7 is used as a base "average" value per round
 	$"../arena/gameOver/performance/stat5".text = "%.1f%%" % momentum
 	
 	# Game stats
-	var valuableCards = get_card_stats(allPlayedCards)
+	var valuableCards = get_card_stats(stats.allPlayedCards)
 	$"../arena/gameOver/game/stat1".text = valuableCards["card"]
 	$"../arena/gameOver/game/stat2".text = valuableCards["faction"]
-	$"../arena/gameOver/game/stat3".text = str(highestDamageDealt)
-	$"../arena/gameOver/game/stat4".text = str(roundWinsUnderdog)
+	$"../arena/gameOver/game/stat3".text = str(stats.highestDamageDealt)
+	$"../arena/gameOver/game/stat4".text = str(stats.roundWinsUnderdog)
 	
 	# Score stats
 	if int($"../arena/player/value".text) > int($"../arena/opponent/value".text):
 		$"../arena/gameOver/score/stat1text".text = "Victory"
 		var winingBase = 20
 		$"../arena/gameOver/score/stat1".text = str(winingBase)
-		var force = totalForceExerted - opponentForceExerted
+		var force = stats.totalForceExerted - stats.opponentForceExerted
 		$"../arena/gameOver/score/stat2".text = str(force)
-		var efficiency = (20 - turnNumber) * 5 # 20 as an average number of rounds
+		var efficiency = (20 - stats.roundNumber) * 5 # 20 as an average number of rounds
 		$"../arena/gameOver/score/stat3".text = str(efficiency)
-		var underdog = roundWinsUnderdog * 5
+		var underdog = stats.roundWinsUnderdog * 5
 		$"../arena/gameOver/score/stat4".text = str(underdog)
 		$"../arena/gameOver/score/stat5".text = str(int(momentum))
 		# Multiplier
@@ -778,7 +720,7 @@ func set_end_game_stats():
 	else:
 		$"../arena/gameOver/score/stat1text".text = "Defeat"
 		@warning_ignore("integer_division")
-		var losingScore = str(int(totalForceExerted) / 10)
+		var losingScore = str(int(stats.totalForceExerted) / 10)
 		$"../arena/gameOver/score/stat1".text = losingScore
 		$"../arena/gameOver/score/stat2".text = "-"
 		$"../arena/gameOver/score/stat3".text = "-"
@@ -843,8 +785,8 @@ func _on_replay_button_pressed() -> void:
 	
 	setupArena("June", "Ethan")
 	
-	changeHeadExpression($"../arena/player/head", "neutral")
-	changeHeadExpression($"../arena/opponent/head", "neutral")
+	ui.change_expression("player", "neutral")
+	ui.change_expression("opponent", "neutral")
 	
 	$"../arena/gameOver/overlay".visible = false
 	$"../arena/gameOver/title".visible = false
@@ -871,25 +813,20 @@ func _on_replay_button_pressed() -> void:
 	# Player always starts
 	whoStartedRound = "player"
 	roundStage = RoundStage.PLAYER_CHARACTER
-	$"../arena/player/indicator".visible = true
-	$"../arena/opponent/indicator".visible = false
-	changeHeadExpression($"../arena/player/head", "thinking")
-	changeHeadExpression($"../arena/opponent/head", "neutral")
+	
+	ui.set_indicator("player")
+	ui.change_expression("player", "thinking")
+	ui.change_expression("opponent", "neutral")
 	
 	lockPlayerInput = false
 	
-	startTime = Time.get_ticks_msec()
+	stats.set_start_time()
 
 func resetArenaValues():
 	lockPlayerInput = true
-	hide_end_turn_button()
+	ui.show_end_turn_button(false)
 	
-	turnNumber = 1
-	totalForceExerted = 0
-	opponentForceExerted = 0
-	highestDamageDealt = 0
-	roundWinsUnderdog = 0
-	allPlayedCards = []
+	stats.reset_round_stats()
 	
 	$"../playerHand".playerHand = []
 	$"../opponentHand".opponentHand = []
