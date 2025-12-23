@@ -147,6 +147,7 @@ func reshuffle_from_discards(discardedCards):
 	$RichTextLabel.text = str(deck.size())
 
 func move_card_back_to_deck(card):
+	card.z_as_relative = false
 	var tween = get_tree().create_tween()
 	tween.tween_property(card, "position", SUPPORT_DECK_POSITION, 0.1)
 	await tween.finished

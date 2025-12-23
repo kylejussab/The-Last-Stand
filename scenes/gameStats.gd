@@ -1,6 +1,9 @@
 extends Node
 
 # Per round stats
+var currentPlayer: String
+var currentOpponent: String
+
 var roundNumber: int = 1
 var totalForceExerted: int = 0
 var opponentForceExerted: int = 0

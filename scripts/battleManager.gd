@@ -36,27 +36,25 @@ var roundStage: RoundStage
 var opponentAI: OpponentAI
 
 var discardedCards = []
+var discardedCardZIndex = 1
 
 var showOpponentsCards = false
 
 @onready var stats = %gameStats
 @onready var ui = %arena
-
-@export var whooshSounds = [
-	preload("res://assets/sounds/ui/whoosh.wav"),
-	preload("res://assets/sounds/ui/whoosh2.wav")
-]
+@onready var battleAnimator = %battleAnimator
 
 func _ready() -> void:
-	setupButtonSounds()
-	
 	$"../battleTimer".one_shot = true
 	$"../battleTimer".wait_time = OPPONENT_THINKING_TIME
 	
 	$"../cardManager".connect("characterPlayed", Callable(self, "on_player_character_played"))
 	$"../cardManager".connect("supportPlayed", Callable(self, "on_player_support_played"))
 	
-	setupArena("June", "Ethan")
+	# In the future for Last Stand this will pick from a random bank of enemies
+	stats.currentPlayer = "June"
+	stats.currentOpponent = "Ethan"
+	setupArena(stats.currentPlayer, stats.currentOpponent)
 	
 	await draw_cards_at_start()
 	
@@ -77,6 +75,15 @@ func setupArena(player, opponent):
 	match opponent:
 		"Ethan":
 			ui.setup_character("Ethan", false)
+			opponentAI = OpponentAIHighestValue.new()
+		"Silas":
+			ui.setup_character("Silas", false)
+			opponentAI = OpponentAIHighestValue.new()
+		"Mira":
+			ui.setup_character("Mira", false)
+			opponentAI = OpponentAIHighestValue.new()
+		"Kael":
+			ui.setup_character("Kael", false)
 			opponentAI = OpponentAIHighestValue.new()
 
 func resetTurn():
@@ -216,8 +223,8 @@ func end_turn():
 	await wait_for(END_ROUND_TIME)
 	
 	# Check for game over first
-	var playerHealth = int($"../arena/player/value".text)
-	var opponentHealth = int($"../arena/opponent/value".text)
+	var playerHealth = ui.get_health("player")
+	var opponentHealth = ui.get_health("opponent")
 	
 	if playerHealth <= 0 or opponentHealth <= 0:
 		await end_round_sequence()
@@ -358,6 +365,10 @@ func move_cards_to_discard(cards):
 		card.play_draw_sound()
 		card.scale = Vector2(1, 1)
 		
+		card.top_level = true
+		card.z_as_relative = false
+		card.z_index = discardedCardZIndex
+		discardedCardZIndex += 1
 		var tween = get_tree().create_tween()
 		tween.finished.connect(func(): card.play_draw_sound())
 		tween.tween_property(card, "position", DISCARD_PILE_POSITION, CARD_MOVE_FAST_SPEED)
@@ -400,22 +411,48 @@ func repopolate_hand(hand, handToUpdate):
 func repopulate_decks(endGame: bool = false):
 	var discardedCharacters := []
 	var discardedSupports := []
-
+	
 	for card in discardedCards:
 		if card.type == "Character":
 			discardedCharacters.append(card)
 		elif card.type == "Support":
 			discardedSupports.append(card)
-
-	if endGame or $"../characterDeck".deck.size() < MIN_CARDS_FOR_RESHUFFLE:
-		await $"../characterDeck".reshuffle_from_discards(discardedCharacters)
-		for card in discardedCharacters:
+	
+	var discardedCharactersReversed = discardedCharacters.duplicate()
+	var discardedSupportsReversed = discardedSupports.duplicate()
+	discardedCharactersReversed.reverse()
+	discardedSupportsReversed.reverse()
+	
+	if endGame:
+		discardedCards = discardedCharactersReversed + discardedSupportsReversed
+		
+		await $"../supportDeck".reshuffle_from_discards(discardedSupportsReversed)
+		for card in discardedSupportsReversed:
 			discardedCards.erase(card)
-
-	if endGame or $"../supportDeck".deck.size() < MIN_CARDS_FOR_RESHUFFLE:
-		await $"../supportDeck".reshuffle_from_discards(discardedSupports)
-		for card in discardedSupports:
+			
+		await $"../characterDeck".reshuffle_from_discards(discardedCharactersReversed)
+		for card in discardedCharactersReversed:
 			discardedCards.erase(card)
+		
+		return
+	
+	if $"../supportDeck".deck.size() < MIN_CARDS_FOR_RESHUFFLE:
+		discardedCards = discardedCharactersReversed + discardedSupportsReversed
+		
+		await $"../supportDeck".reshuffle_from_discards(discardedSupportsReversed)
+		for card in discardedSupportsReversed:
+			discardedCards.erase(card)
+		
+		return
+	
+	if $"../characterDeck".deck.size() < MIN_CARDS_FOR_RESHUFFLE:
+		discardedCards = discardedSupportsReversed + discardedCharactersReversed
+		
+		await $"../characterDeck".reshuffle_from_discards(discardedCharactersReversed)
+		for card in discardedCharactersReversed:
+			discardedCards.erase(card)
+		
+		return
 
 func calculate_damage():
 	var playerTotal = int(playerCharacterCard.get_node("value").text)
@@ -449,7 +486,6 @@ func calculate_damage():
 		ui.change_expression("player", "happy")
 		ui.change_expression("opponent", "hurt")
 		
-		play_damage_sound()
 		await ui.show_damage("opponent", damage)
 		
 		#special case for bloater
@@ -457,7 +493,6 @@ func calculate_damage():
 			var playerHealth = ui.get_health("player") - opponentCharacterCard.perkValueAtRoundEnd
 			await wait_for(0.5)
 			
-			play_damage_sound()
 			ui.set_health("player", playerHealth)
 			await ui.show_damage("player", opponentCharacterCard.perkValueAtRoundEnd)
 		
@@ -465,7 +500,6 @@ func calculate_damage():
 			opponentHealth -= playerCharacterCard.perkValueAtRoundEnd
 			await wait_for(0.5)
 			
-			play_damage_sound()
 			ui.set_health("opponent", opponentHealth)
 			await ui.show_damage("opponent", playerCharacterCard.perkValueAtRoundEnd)
 		
@@ -482,7 +516,6 @@ func calculate_damage():
 		ui.change_expression("player", "hurt")
 		ui.change_expression("opponent", "happy")
 		
-		play_damage_sound()
 		await ui.show_damage("player", damage)
 		
 		#special case for bloater
@@ -490,7 +523,6 @@ func calculate_damage():
 			var opponentHealth = ui.get_health("opponent") - playerCharacterCard.perkValueAtRoundEnd
 			await wait_for(0.5)
 			
-			play_damage_sound()
 			ui.set_health("opponent", opponentHealth)
 			await ui.show_damage("opponent", playerCharacterCard.perkValueAtRoundEnd)
 		
@@ -498,7 +530,6 @@ func calculate_damage():
 			playerHealth -= opponentCharacterCard.perkValueAtRoundEnd
 			
 			await wait_for(0.5)
-			play_damage_sound()
 			
 			ui.set_health("player", playerHealth)
 			await ui.show_damage("player", opponentCharacterCard.perkValueAtRoundEnd)
@@ -507,14 +538,12 @@ func calculate_damage():
 		if playerCharacterCard.cardKey == "LevRare":
 			var opponentHealth = ui.get_health("opponent") - playerCharacterCard.perkValueAtRoundEnd
 			await wait_for(0.5)
-			play_damage_sound()
 			
 			ui.set_health("opponent", opponentHealth)
 			await ui.show_damage("opponent", playerCharacterCard.perkValueAtRoundEnd)
 		if opponentCharacterCard.cardKey == "LevRare":
 			var playerHealth = ui.get_health("player") - opponentCharacterCard.perkValueAtRoundEnd
 			await wait_for(0.5)
-			play_damage_sound()
 			
 			ui.set_health("player", playerHealth)
 			await ui.show_damage("player", opponentCharacterCard.perkValueAtRoundEnd)
@@ -560,254 +589,13 @@ func end_round_sequence():
 	
 	await move_cards_to_discard(cardsToDiscard)
 	
-	play_game_over_animation()
+	battleAnimator.play_game_over_sequence(ui.get_health("player") > ui.get_health("opponent"))
 	
 	await repopulate_decks(true)
+	
+	discardedCardZIndex = 1
 
-func play_game_over_animation():
-	animate_game_outcome_title(ui.get_health("player") > ui.get_health("opponent"))
-	
-	await wait_for(1.5)
-	
-	animate_game_outcome(ui.get_health("player") > ui.get_health("opponent"))
-
-func animate_game_outcome_title(playerWon: bool):
-	$"../arena/gameOver/overlay".visible = true
-	$"../arena/gameOver/title".visible = true
-	
-	var resultLabel = $"../arena/gameOver/title"
-	resultLabel.text = "SURVIVED" if playerWon else "DEFEATED"
-	resultLabel.pivot_offset = resultLabel.size / 2
-	
-	var screenSize = get_viewport().get_visible_rect().size
-	resultLabel.global_position = screenSize / 2 - resultLabel.size / 2
-	resultLabel.scale = Vector2(2.0, 2.0)
-	resultLabel.modulate.a = 0.0
-	resultLabel.visible = true
-	
-	var growTween = create_tween().set_parallel(true)
-	growTween.tween_property(resultLabel, "modulate:a", 1.0, 0.5)
-	growTween.tween_property(resultLabel, "scale", Vector2(4.0, 4.0), 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	
-	$"../arena/gameOver/effects".stream = whooshSounds[0]
-	$"../arena/gameOver/effects".play()
-	
-	var fadeTween = create_tween()
-	fadeTween.tween_property(resultLabel, "modulate:a", 1.0, 0.3)
-	await fadeTween.finished
-	
-	var slamTween = create_tween()
-	slamTween.tween_property(resultLabel, "scale", Vector2(1, 1), 0.4).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
-	
-	await slamTween.finished
-
-func animate_game_outcome(playerWon: bool):
-	var slideTween = create_tween().set_parallel(true)
-	var targetPosition = Vector2(150, 80)
-	
-	$"../arena/gameOver/effects".stream = whooshSounds[1]
-	$"../arena/gameOver/effects".play()
-	
-	slideTween.tween_property($"../arena/gameOver/title", "global_position", targetPosition, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
-	slideTween.tween_property($"../arena/gameOver/title", "scale", Vector2(1, 1), 0.5)
-	
-	await slideTween.finished
-	
-	await wait_for(.3)
-	
-	animate_game_stats(playerWon)
-
-func animate_game_stats(playerWon: bool):
-	set_end_game_stats()
-	
-	var performanceNode = $"../arena/gameOver/performance"
-	var gameNode = $"../arena/gameOver/game"
-	var scoreNode = $"../arena/gameOver/score"
-	var lineNode = $"../arena/gameOver/line"
-	var replayButton = $"../arena/gameOver/ReplayButton"
-	replayButton.disabled = true
-	var mainMenuButton = $"../arena/gameOver/MainMenuButton"
-	mainMenuButton.disabled = true
-	var continueButton = $"../arena/gameOver/ContinueButton"
-	continueButton.disabled = true
-	
-	for node in [performanceNode, gameNode, scoreNode, lineNode, replayButton, mainMenuButton, continueButton]:
-		node.modulate.a = 0.0
-		node.visible = true
-	
-	performanceNode.position.y += 20
-	gameNode.position.y += 20
-	scoreNode.position.y += 20
-	
-	if playerWon:
-		# Show the continue button
-		replayButton.position.y = 805
-		mainMenuButton.position.y = 875
-		continueButton.position.y = 945
-	else:
-		replayButton.position.y = 875
-		mainMenuButton.position.y = 945
-		continueButton.position.y = 1015
-
-	var uiTween = create_tween()
-
-	$"../arena/gameOver/effects".stream = whooshSounds[1]
-	
-	uiTween.tween_callback($"../arena/gameOver/effects".play)
-	uiTween.tween_property(performanceNode, "modulate:a", 1.0, 0.8).set_trans(Tween.TRANS_SINE)
-	uiTween.parallel().tween_property(performanceNode, "position:y", performanceNode.position.y - 20, 0.8).set_trans(Tween.TRANS_CUBIC)
-	uiTween.parallel().tween_property(lineNode, "modulate:a", 1.0, 0.8).set_trans(Tween.TRANS_SINE)
-	
-	uiTween.tween_interval(0.3)
-	
-	uiTween.tween_callback($"../arena/gameOver/effects".play)
-	uiTween.tween_property(gameNode, "modulate:a", 1.0, 0.8).set_trans(Tween.TRANS_SINE)
-	uiTween.parallel().tween_property(gameNode, "position:y", gameNode.position.y - 20, 0.8).set_trans(Tween.TRANS_CUBIC)
-	
-	uiTween.tween_interval(0.3)
-	
-	uiTween.tween_callback($"../arena/gameOver/effects".play)
-	uiTween.tween_property(scoreNode, "modulate:a", 1.0, 0.8).set_trans(Tween.TRANS_SINE)
-	uiTween.parallel().tween_property(scoreNode, "position:y", scoreNode.position.y - 20, 0.8).set_trans(Tween.TRANS_CUBIC)
-	
-	await uiTween.finished 
-	
-	var buttonTween = create_tween()
-	
-	buttonTween.tween_property(replayButton, "modulate:a", 1.0, 0.6).set_trans(Tween.TRANS_SINE)
-	replayButton.disabled = false
-	buttonTween.tween_property(mainMenuButton, "modulate:a", 1.0, 0.6).set_trans(Tween.TRANS_SINE)
-	mainMenuButton.disabled = false
-	
-	if playerWon:
-		buttonTween.tween_property(continueButton, "modulate:a", 1.0, 0.6).set_trans(Tween.TRANS_SINE)
-		continueButton.disabled = false
-	
-	await buttonTween.finished
-
-func set_end_game_stats():
-	# Performance stats
-	$"../arena/gameOver/performance/stat1".text = str(stats.totalForceExerted)
-	$"../arena/gameOver/performance/stat2".text = str(stats.opponentForceExerted)
-	$"../arena/gameOver/performance/stat3".text = str(stats.roundNumber)
-	$"../arena/gameOver/performance/stat4".text = format_time(stats.endTime - stats.startTime)
-	var dominance = stats.totalForceExerted / float(stats.totalForceExerted + stats.opponentForceExerted)
-	var momentum = ((stats.totalForceExerted/float(stats.roundNumber))/7) * dominance * 200 #7 is used as a base "average" value per round
-	$"../arena/gameOver/performance/stat5".text = "%.1f%%" % momentum
-	
-	# Game stats
-	var valuableCards = get_card_stats(stats.allPlayedCards)
-	$"../arena/gameOver/game/stat1".text = valuableCards["card"]
-	$"../arena/gameOver/game/stat2".text = valuableCards["faction"]
-	$"../arena/gameOver/game/stat3".text = str(stats.highestDamageDealt)
-	$"../arena/gameOver/game/stat4".text = str(stats.roundWinsUnderdog)
-	
-	# Score stats
-	if int($"../arena/player/value".text) > int($"../arena/opponent/value".text):
-		$"../arena/gameOver/score/stat1text".text = "Victory"
-		var winingBase = 20
-		$"../arena/gameOver/score/stat1".text = str(winingBase)
-		var force = stats.totalForceExerted - stats.opponentForceExerted
-		$"../arena/gameOver/score/stat2".text = str(force)
-		var efficiency = (20 - stats.roundNumber) * 5 # 20 as an average number of rounds
-		$"../arena/gameOver/score/stat3".text = str(efficiency)
-		var underdog = stats.roundWinsUnderdog * 5
-		$"../arena/gameOver/score/stat4".text = str(underdog)
-		$"../arena/gameOver/score/stat5".text = str(int(momentum))
-		# Multiplier
-		$"../arena/gameOver/score/stat6".text = "**"
-		$"../arena/gameOver/score/stat7".text = str(winingBase + force + efficiency + underdog + int(momentum))
-	else:
-		$"../arena/gameOver/score/stat1text".text = "Defeat"
-		@warning_ignore("integer_division")
-		var losingScore = str(int(stats.totalForceExerted) / 10)
-		$"../arena/gameOver/score/stat1".text = losingScore
-		$"../arena/gameOver/score/stat2".text = "-"
-		$"../arena/gameOver/score/stat3".text = "-"
-		$"../arena/gameOver/score/stat4".text = "-"
-		$"../arena/gameOver/score/stat5".text = "-"
-		$"../arena/gameOver/score/stat6".text = "**"
-		$"../arena/gameOver/score/stat7".text = losingScore
-
-func format_time(time: float) -> String:
-	var totalSeconds = int(time / 1000.0)
-	@warning_ignore("integer_division")
-	var minutes = totalSeconds / 60
-	var seconds = totalSeconds % 60
-	return "%02d:%02d" % [minutes, seconds]
-
-func get_card_stats(playedCards):
-	var factionCounts = {}
-	var cardCounts = {}
-
-	for card in playedCards:
-		var faction = card["faction"]
-		var mvp = card["cardKey"]
-		
-		factionCounts[faction] = factionCounts.get(faction, 0) + 1
-		cardCounts[mvp] = cardCounts.get(mvp, 0) + 1
-		
-	var topFaction = "None"
-	var highestFactionCount = 0
-	
-	for faction in factionCounts:
-		if factionCounts[faction] > highestFactionCount:
-			highestFactionCount = factionCounts[faction]
-			topFaction = faction
-	
-	var cardKey = "None"
-	var highestCharacterCount = 0
-	
-	for card in cardCounts:
-		if cardCounts[card] > highestCharacterCount:
-			highestCharacterCount = cardCounts[card]
-			cardKey = card
-	
-	var cardName = ""
-	
-	for i in range(cardKey.length()):
-		var letter = cardKey[i]
-		if i > 0 and letter == letter.to_upper():
-			cardName += " "
-		cardName += letter
-	
-	return {"faction": topFaction, "card": cardName}
-
-func _on_replay_button_pressed() -> void:
-	$"../arena/fade".modulate.a = 0.0
-	$"../arena/fade".visible = true
-	
-	var fadeInTween = create_tween()
-	fadeInTween.tween_property($"../arena/fade", "modulate:a", 1.0, .5)
-	await fadeInTween.finished
-	
-	resetArenaValues()
-	
-	setupArena("June", "Ethan")
-	
-	ui.change_expression("player", "neutral")
-	ui.change_expression("opponent", "neutral")
-	
-	$"../arena/gameOver/overlay".visible = false
-	$"../arena/gameOver/title".visible = false
-	$"../arena/gameOver/line".visible = false
-	$"../arena/gameOver/performance".visible = false
-	$"../arena/gameOver/game".visible = false
-	$"../arena/gameOver/score".visible = false
-	$"../arena/gameOver/ReplayButton".visible = false
-	$"../arena/gameOver/ReplayButton".disabled = true
-	$"../arena/gameOver/MainMenuButton".visible = false
-	$"../arena/gameOver/MainMenuButton".disabled = true
-	$"../arena/gameOver/ContinueButton".visible = false
-	$"../arena/gameOver/ContinueButton".disabled = true
-	
-	await wait_for(1)
-	
-	var fadeOutTween = create_tween()
-	fadeOutTween.tween_property($"../arena/fade", "modulate:a", 0, .5)
-	await fadeOutTween.finished
-	$"../arena/fade".visible = false
-	
+func resetArena():
 	await draw_cards_at_start(false)
 	
 	# Player always starts
@@ -821,27 +609,3 @@ func _on_replay_button_pressed() -> void:
 	lockPlayerInput = false
 	
 	stats.set_start_time()
-
-func resetArenaValues():
-	lockPlayerInput = true
-	ui.show_end_turn_button(false)
-	
-	stats.reset_round_stats()
-	
-	$"../playerHand".playerHand = []
-	$"../opponentHand".opponentHand = []
-
-func setupButtonSounds():
-	for button in $"../arena/gameOver".get_children():
-		if button is Button:
-			button.mouse_entered.connect(_play_hover)
-			button.pressed.connect(_play_click)
-
-func _play_hover():
-	$"../arena/ButtonHoverSound".play()
-
-func _play_click():
-	$"../arena/ButtonClickSound".play()
-
-func play_damage_sound():
-	$"../arena/damageSound".play()

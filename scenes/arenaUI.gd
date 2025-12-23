@@ -10,20 +10,49 @@ extends Node2D
 
 @onready var endTurnButton = $"../EndTurnButton"
 
+@onready var battleManager = %battleManager
+
 const CHARACTER_DATABASE = {
 	"June": {
 		"name": "June Ravel",
 		"description": "Former Firefly",
-		"health": "10",
+		"health": "35",
 		"headPath": "res://assets/arenaHeads/"
 	},
 	"Ethan": {
 		"name": "Ethan Hark",
 		"description": "Patrol Leader",
-		"health": "10",
+		"health": "35",
+		"headPath": "res://assets/arenaHeads/",
+		"arenaPath": "res://assets/arenas/"
+	},
+	"Silas": {
+		"name": "Silas Vane",
+		"description": "Scavenger King",
+		"health": "50",
+		"headPath": "res://assets/arenaHeads/",
+		"arenaPath": "res://assets/arenas/"
+	},
+	"Mira": {
+		"name": "Mira Thorne",
+		"description": "Ex-Medic",
+		"health": "25",
+		"headPath": "res://assets/arenaHeads/",
+		"arenaPath": "res://assets/arenas/"
+	},
+	"Kael": {
+		"name": "Kaelen Voss",
+		"description": "Shield Brother",
+		"health": "45",
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	}}
+
+func _ready() -> void:
+	for button in $"../arena/gameOver".get_children():
+		if button is Button:
+			button.mouse_entered.connect(_play_hover_sound)
+			button.pressed.connect(_play_click_sound)
 
 func set_health(who: String, value: int):
 	if who == "player":
@@ -92,9 +121,74 @@ func show_damage(who: String, amount: int):
 	damageLabel.text = "-" + str(amount)
 	animationPlayer.queue("showDamage")
 	
+	$"../arena/damageSound".play()
+	
 	return animationPlayer.animation_finished
 
 func show_end_turn_button(visibility: bool = true):
 	if endTurnButton:
 		endTurnButton.visible = visibility
 		endTurnButton.disabled = !visibility
+
+func _on_replay_button_pressed() -> void:
+	fade_with_round_reset()
+
+func _on_continue_button_pressed() -> void:
+	battleManager.stats.currentOpponent = get_next_opponent()
+	fade_with_round_reset()
+	
+	print(battleManager.stats.currentOpponent)
+
+func fade_with_round_reset():
+	$"../arena/fade".modulate.a = 0.0
+	$"../arena/fade".visible = true
+	
+	var fadeInTween = create_tween()
+	fadeInTween.tween_property($"../arena/fade", "modulate:a", 1.0, .5)
+	await fadeInTween.finished
+	
+	change_expression("player", "neutral")
+	change_expression("opponent", "neutral")
+	
+	# Reset the round
+	battleManager.lockPlayerInput = true
+	battleManager.ui.show_end_turn_button(false)
+	battleManager.stats.reset_round_stats()
+	$"../playerHand".playerHand = []
+	$"../opponentHand".opponentHand = []
+	
+	$"../arena/gameOver/overlay".visible = false
+	$"../arena/gameOver/title".visible = false
+	$"../arena/gameOver/line".visible = false
+	$"../arena/gameOver/performance".visible = false
+	$"../arena/gameOver/game".visible = false
+	$"../arena/gameOver/score".visible = false
+	$"../arena/gameOver/ReplayButton".visible = false
+	$"../arena/gameOver/ReplayButton".disabled = true
+	$"../arena/gameOver/MainMenuButton".visible = false
+	$"../arena/gameOver/MainMenuButton".disabled = true
+	$"../arena/gameOver/ContinueButton".visible = false
+	$"../arena/gameOver/ContinueButton".disabled = true
+	
+	battleManager.setupArena(battleManager.stats.currentPlayer, battleManager.stats.currentOpponent)
+	await get_tree().create_timer(1).timeout
+	
+	var fadeOutTween = create_tween()
+	fadeOutTween.tween_property($"../arena/fade", "modulate:a", 0, .5)
+	await fadeOutTween.finished
+	$"../arena/fade".visible = false
+	
+	battleManager.resetArena()
+
+func get_next_opponent() -> String:
+	var list = CHARACTER_DATABASE.keys()
+	list.erase(battleManager.stats.currentPlayer)
+	list.erase(battleManager.stats.currentOpponent)
+	
+	return list.pick_random()
+
+func _play_hover_sound():
+	$"../arena/ButtonHoverSound".play()
+
+func _play_click_sound():
+	$"../arena/ButtonClickSound".play()

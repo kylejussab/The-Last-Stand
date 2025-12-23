@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://dgb52shq4jcyg"]
+[gd_scene load_steps=43 format=3 uid="uid://dgb52shq4jcyg"]
 
 [ext_resource type="Script" uid="uid://dgl6h7ryesfn8" path="res://scripts/cardManager.gd" id="1_0wfyh"]
 [ext_resource type="Script" uid="uid://c3p2rmoacsirj" path="res://scripts/inputManager.gd" id="1_o6xl0"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://c3df834vnm13g" path="res://scripts/supportCardSlot.gd" id="4_tipki"]
 [ext_resource type="Script" uid="uid://do1wqhx54kv7s" path="res://scripts/playerHand.gd" id="5_tbgi4"]
 [ext_resource type="Script" uid="uid://b0yx32b2u0wb1" path="res://scripts/characterDeck.gd" id="5_tefeu"]
+[ext_resource type="Script" uid="uid://bbvc5mqkkiqnw" path="res://scenes/battleAnimator.gd" id="5_yq6so"]
 [ext_resource type="PackedScene" uid="uid://cedct6rr8lclv" path="res://scenes/opponentCardSlot.tscn" id="6_85g3d"]
 [ext_resource type="Script" uid="uid://dwr382qynby8f" path="res://scripts/battleManager.gd" id="10_choun"]
 [ext_resource type="Script" uid="uid://conm4253y3tth" path="res://scripts/oppponentHand.gd" id="11_ya4ey"]
@@ -187,7 +188,12 @@ one_shot = true
 script = ExtResource("1_0wfyh")
 
 [node name="battleManager" type="Node" parent="."]
+unique_name_in_owner = true
 script = ExtResource("10_choun")
+
+[node name="battleAnimator" type="Node" parent="battleManager"]
+unique_name_in_owner = true
+script = ExtResource("5_yq6so")
 
 [node name="battleTimer" type="Timer" parent="."]
 
@@ -461,6 +467,7 @@ libraries = {
 }
 
 [node name="gameOver" type="Node2D" parent="arena"]
+unique_name_in_owner = true
 z_index = 200
 
 [node name="effects" type="AudioStreamPlayer2D" parent="arena/gameOver"]
@@ -1242,5 +1249,6 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_jkv2x")
 text = "End Turn"
 
 [connection signal="timeout" from="inputManager/Timer" to="inputManager" method="_on_timer_timeout"]
-[connection signal="pressed" from="arena/gameOver/ReplayButton" to="battleManager" method="_on_replay_button_pressed"]
+[connection signal="pressed" from="arena/gameOver/ReplayButton" to="arena" method="_on_replay_button_pressed"]
+[connection signal="pressed" from="arena/gameOver/ContinueButton" to="arena" method="_on_continue_button_pressed"]
 [connection signal="pressed" from="EndTurnButton" to="battleManager" method="_on_end_turn_button_pressed"]
