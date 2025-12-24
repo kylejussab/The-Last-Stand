@@ -54,6 +54,9 @@ func _ready() -> void:
 	# In the future for Last Stand this will pick from a random bank of enemies
 	stats.currentPlayer = "June"
 	stats.currentOpponent = "Ethan"
+	# Based on the gamemode chosen assign the correct health
+	stats.playerHealthValue = 100
+	ui.set_health("player", stats.playerHealthValue)
 	setupArena(stats.currentPlayer, stats.currentOpponent)
 	
 	await draw_cards_at_start()
@@ -365,8 +368,6 @@ func move_cards_to_discard(cards):
 		card.play_draw_sound()
 		card.scale = Vector2(1, 1)
 		
-		card.top_level = true
-		card.z_as_relative = false
 		card.z_index = discardedCardZIndex
 		discardedCardZIndex += 1
 		var tween = get_tree().create_tween()
@@ -427,7 +428,7 @@ func repopulate_decks(endGame: bool = false):
 		discardedCards = discardedCharactersReversed + discardedSupportsReversed
 		
 		for i in range(discardedSupportsReversed.size()):
-			discardedSupportsReversed[i].z_index = 500 - i
+			discardedSupportsReversed[i].z_index = 100 - i
 		
 		await $"../supportDeck".reshuffle_from_discards(discardedSupportsReversed)
 		for card in discardedSupportsReversed:
@@ -443,7 +444,7 @@ func repopulate_decks(endGame: bool = false):
 		discardedCards = discardedCharactersReversed + discardedSupportsReversed
 		
 		for i in range(discardedSupportsReversed.size()):
-			discardedSupportsReversed[i].z_index = 500 - i
+			discardedSupportsReversed[i].z_index = 100 - i
 		
 		await $"../supportDeck".reshuffle_from_discards(discardedSupportsReversed)
 		for card in discardedSupportsReversed:
@@ -455,7 +456,7 @@ func repopulate_decks(endGame: bool = false):
 		discardedCards = discardedSupportsReversed + discardedCharactersReversed
 		
 		for i in range(discardedCharactersReversed.size()):
-			discardedCharactersReversed[i].z_index = 500 - i
+			discardedCharactersReversed[i].z_index = 100 - i
 		
 		await $"../characterDeck".reshuffle_from_discards(discardedCharactersReversed)
 		for card in discardedCharactersReversed:

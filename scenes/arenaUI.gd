@@ -11,8 +11,9 @@ extends Node2D
 @onready var endTurnButton = $"../EndTurnButton"
 
 @onready var battleManager = %battleManager
+@onready var stats = %gameStats
 
-const CHARACTER_DATABASE = {
+var CHARACTER_DATABASE = {
 	"June": {
 		"name": "June Ravel",
 		"description": "Former Firefly",
@@ -22,28 +23,28 @@ const CHARACTER_DATABASE = {
 	"Ethan": {
 		"name": "Ethan Hark",
 		"description": "Patrol Leader",
-		"health": "35",
+		"health": "1",
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	"Silas": {
 		"name": "Silas Vane",
 		"description": "Scavenger King",
-		"health": "50",
+		"health": "1", # 50 is too high, possibly for a final boss, but not a character in this mode
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	"Mira": {
 		"name": "Mira Thorne",
 		"description": "Ex-Medic",
-		"health": "25",
+		"health": "1", #25
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	"Kael": {
 		"name": "Kaelen Voss",
 		"description": "Shield Brother",
-		"health": "45",
+		"health": "1", #45
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	}}
@@ -55,8 +56,12 @@ func _ready() -> void:
 			button.pressed.connect(_play_click_sound)
 
 func set_health(who: String, value: int):
+	if not is_node_ready():
+		await ready
+		
 	if who == "player":
 		playerHealth.text = str(value)
+		CHARACTER_DATABASE[stats.currentPlayer].health = str(value)
 	elif who == "opponent":
 		opponentHealth.text = str(value)
 
@@ -118,10 +123,10 @@ func show_damage(who: String, amount: int):
 		animationPlayer = $opponent/AnimationPlayer
 		damageLabel = $opponent/damage
 	
+	$"../arena/damageSound".play()
+	
 	damageLabel.text = "-" + str(amount)
 	animationPlayer.queue("showDamage")
-	
-	$"../arena/damageSound".play()
 	
 	return animationPlayer.animation_finished
 
@@ -131,13 +136,15 @@ func show_end_turn_button(visibility: bool = true):
 		endTurnButton.disabled = !visibility
 
 func _on_replay_button_pressed() -> void:
+	stats.replayedRound = true
 	fade_with_round_reset()
 
 func _on_continue_button_pressed() -> void:
-	battleManager.stats.currentOpponent = get_next_opponent()
+	stats.currentOpponent = get_next_opponent()
+	stats.playerHealthValue = int(playerHealth.text)
+	stats.replayedRound = false
+	stats.lastStandTotalScore += stats.lastStandCurrentRoundScore
 	fade_with_round_reset()
-	
-	print(battleManager.stats.currentOpponent)
 
 func fade_with_round_reset():
 	$"../arena/fade".modulate.a = 0.0
@@ -153,7 +160,7 @@ func fade_with_round_reset():
 	# Reset the round
 	battleManager.lockPlayerInput = true
 	battleManager.ui.show_end_turn_button(false)
-	battleManager.stats.reset_round_stats()
+	stats.reset_round_stats()
 	$"../playerHand".playerHand = []
 	$"../opponentHand".opponentHand = []
 	
@@ -170,7 +177,8 @@ func fade_with_round_reset():
 	$"../arena/gameOver/ContinueButton".visible = false
 	$"../arena/gameOver/ContinueButton".disabled = true
 	
-	battleManager.setupArena(battleManager.stats.currentPlayer, battleManager.stats.currentOpponent)
+	set_health("player", stats.playerHealthValue)
+	battleManager.setupArena(stats.currentPlayer, stats.currentOpponent)
 	await get_tree().create_timer(1).timeout
 	
 	var fadeOutTween = create_tween()

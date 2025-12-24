@@ -1,5 +1,7 @@
 extends Node
 
+var playerHealthValue: int
+
 # Per round stats
 var currentPlayer: String
 var currentOpponent: String
@@ -13,6 +15,10 @@ var allPlayedCards: Array = []
 
 var startTime: float = 0.0
 var endTime: float = 0.0
+
+var lastStandTotalScore: int = 0
+var lastStandCurrentRoundScore: int = 0
+var replayedRound: bool = false
 
 func set_start_time():
 	startTime = Time.get_ticks_msec()

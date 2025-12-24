@@ -113,12 +113,19 @@ func show_stats(playerWon: bool):
 	
 	await uiTween.finished 
 	
+	score.get_node("scoreAnimationLabel").text =  "+" + str(stats.lastStandCurrentRoundScore)
+	score.get_node("AnimationPlayer").queue("showScoreUpdate")
+	
 	var buttonTween = create_tween()
 	
 	buttonTween.tween_property(replayButton, "modulate:a", 1.0, 0.6).set_trans(Tween.TRANS_SINE)
 	replayButton.disabled = false
+	
 	buttonTween.tween_property(mainMenuButton, "modulate:a", 1.0, 0.6).set_trans(Tween.TRANS_SINE)
 	mainMenuButton.disabled = false
+	
+	# Show the new score
+	buttonTween.tween_callback(func(): score.get_node("stat7").text = str(stats.lastStandTotalScore + stats.lastStandCurrentRoundScore))
 	
 	if playerWon:
 		buttonTween.tween_property(continueButton, "modulate:a", 1.0, 0.6).set_trans(Tween.TRANS_SINE)
@@ -161,7 +168,8 @@ func set_end_game_stats(playerWon: bool):
 		score.get_node("stat5").text = str(int(momentum))
 		# Multiplier
 		score.get_node("stat6").text = "**"
-		score.get_node("stat7").text = str(winingBase + force + efficiency + underdog + int(momentum))
+		stats.lastStandCurrentRoundScore = winingBase + force + efficiency + underdog + int(momentum)
+		score.get_node("stat7").text = str(stats.lastStandTotalScore)
 	else:
 		score.get_node("stat1text").text = "Defeat"
 		@warning_ignore("integer_division")
@@ -172,7 +180,8 @@ func set_end_game_stats(playerWon: bool):
 		score.get_node("stat4").text = "-"
 		score.get_node("stat5").text = "-"
 		score.get_node("stat6").text = "**"
-		score.get_node("stat7").text = losingScore
+		stats.lastStandCurrentRoundScore = losingScore
+		score.get_node("stat7").text = str(stats.lastStandTotalScore)
 
 func format_time(time: float) -> String:
 	var totalSeconds = int(time / 1000.0)
