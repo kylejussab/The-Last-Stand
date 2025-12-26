@@ -222,13 +222,11 @@ border_color = Color(1, 1, 1, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jkv2x"]
 bg_color = Color(0.08627451, 0.08627451, 0.08627451, 0)
-border_width_bottom = 1
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_a8y0u"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y6deb"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
-border_width_bottom = 1
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jkv2x"]
 
@@ -1267,6 +1265,9 @@ offset_left = 770.0
 offset_top = 790.0
 offset_right = 840.0
 offset_bottom = 820.0
+theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("13_a8y0u")
 theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxFlat_a8y0u")
@@ -1274,7 +1275,7 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_jbj1t")
 theme_override_styles/hover = SubResource("StyleBoxFlat_jkv2x")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_a8y0u")
 theme_override_styles/focus = SubResource("StyleBoxFlat_y6deb")
-text = "Replay"
+text = "REPLAY"
 alignment = 0
 
 [node name="MainMenuButton" type="Button" parent="arena/gameOver"]
@@ -1284,6 +1285,9 @@ offset_left = 770.0
 offset_top = 860.0
 offset_right = 877.0
 offset_bottom = 890.0
+theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("13_a8y0u")
 theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxFlat_a8y0u")
@@ -1291,7 +1295,7 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_jbj1t")
 theme_override_styles/hover = SubResource("StyleBoxFlat_jkv2x")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_a8y0u")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_jkv2x")
-text = "Main Menu"
+text = "MAIN MENU"
 alignment = 0
 
 [node name="ContinueButton" type="Button" parent="arena/gameOver"]
@@ -1301,6 +1305,9 @@ offset_left = 770.0
 offset_top = 930.0
 offset_right = 861.0
 offset_bottom = 960.0
+theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("13_a8y0u")
 theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxFlat_a8y0u")
@@ -1308,7 +1315,7 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_jbj1t")
 theme_override_styles/hover = SubResource("StyleBoxFlat_jkv2x")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_a8y0u")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_jkv2x")
-text = "Continue"
+text = "CONTINUE"
 alignment = 0
 
 [node name="EndTurnButton" type="Button" parent="."]
@@ -1317,6 +1324,9 @@ offset_left = 835.0
 offset_top = 570.0
 offset_right = 930.0
 offset_bottom = 600.0
+theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("13_a8y0u")
 theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxFlat_a8y0u")
@@ -1324,7 +1334,17 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_jbj1t")
 theme_override_styles/hover = SubResource("StyleBoxFlat_jkv2x")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_a8y0u")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_jkv2x")
-text = "End Turn"
+text = "END TURN"
+
+[node name="ColorRect" type="ColorRect" parent="EndTurnButton"]
+z_index = -1
+layout_mode = 0
+offset_left = -74.0
+offset_top = -6.0
+offset_right = 173.0
+offset_bottom = 35.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.078431375)
 
 [connection signal="timeout" from="inputManager/Timer" to="inputManager" method="_on_timer_timeout"]
 [connection signal="pressed" from="arena/gameOver/ReplayButton" to="arena" method="_on_replay_button_pressed"]

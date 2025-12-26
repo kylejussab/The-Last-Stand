@@ -14,8 +14,8 @@ const BACKGROUNDS = {
 const SUPPLEMENTTEXT = {
 	"Story": "Play through a choice of three different survivor stories.",
 	"Last Stand": "Survive as many waves as possible with boosted health and no healing.",
-	"Extras": "Lorem",
-	"Options": "Lorem",
+	"Tutorial": "Coming soon.",
+	"Options": "Coming soon.",
 	"June": "What is the cost of doing what you believe is right?"
 }
 
@@ -74,7 +74,20 @@ func _on_last_stand_button_mouse_exited() -> void:
 	supplementText.text = ""
 
 func _on_last_stand_button_pressed() -> void:
+	GameStats.gameMode = "Last Stand"
 	Curtain.change_scene("res://scenes/main.tscn")
+
+func _on_tutorial_button_mouse_entered() -> void:
+	supplementText.text = SUPPLEMENTTEXT["Tutorial"]
+
+func _on_tutorial_button_mouse_exited() -> void:
+	supplementText.text = ""
+
+func _on_options_button_mouse_entered() -> void:
+	supplementText.text = SUPPLEMENTTEXT["Options"]
+
+func _on_options_button_mouse_exited() -> void:
+	supplementText.text = ""
 
 func _on_back_button_pressed() -> void:
 	storyButtonContainer.hide()
@@ -97,14 +110,6 @@ func _on_quit_button_pressed() -> void:
 	get_tree().quit()
 
 # Helpers
-func _fade_in():
-	$fadeLayer/fade.modulate.a = 0.0
-	$fadeLayer/fade.visible = true
-	
-	var fadeInTween = create_tween()
-	fadeInTween.tween_property($fadeLayer/fade, "modulate:a", 1.0, .5)
-	await fadeInTween.finished
-
 func _play_hover():
 	$ButtonHoverSound.play()
 

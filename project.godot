@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="The Last Stand"
-run/main_scene="uid://dgb52shq4jcyg"
+run/main_scene="uid://btdd4ppvwtnvy"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"
 

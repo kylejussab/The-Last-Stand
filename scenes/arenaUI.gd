@@ -146,6 +146,7 @@ func _on_continue_button_pressed() -> void:
 	fade_with_round_reset()
 
 func _on_main_menu_button_pressed() -> void:
+	GameStats.gameMode = "Main Menu"
 	Curtain.change_scene("res://scenes/mainMenu.tscn")
 
 func fade_with_round_reset():

@@ -1,6 +1,7 @@
 extends Node
 
 var invitationAccepted: bool = false
+var gameMode: String = "Main Menu"
 
 var playerHealthValue: int
 
