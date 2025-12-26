@@ -1,5 +1,7 @@
 extends Node
 
+var invitationAccepted: bool = false
+
 var playerHealthValue: int
 
 # Per round stats

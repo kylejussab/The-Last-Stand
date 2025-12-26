@@ -11,7 +11,6 @@ extends Node2D
 @onready var endTurnButton = $"../EndTurnButton"
 
 @onready var battleManager = %battleManager
-@onready var stats = %gameStats
 
 var CHARACTER_DATABASE = {
 	"June": {
@@ -61,7 +60,7 @@ func set_health(who: String, value: int):
 		
 	if who == "player":
 		playerHealth.text = str(value)
-		CHARACTER_DATABASE[stats.currentPlayer].health = str(value)
+		CHARACTER_DATABASE[GameStats.currentPlayer].health = str(value)
 	elif who == "opponent":
 		opponentHealth.text = str(value)
 
@@ -136,23 +135,21 @@ func show_end_turn_button(visibility: bool = true):
 		endTurnButton.disabled = !visibility
 
 func _on_replay_button_pressed() -> void:
-	stats.replayedRound = true
+	GameStats.replayedRound = true
 	fade_with_round_reset()
 
 func _on_continue_button_pressed() -> void:
-	stats.currentOpponent = get_next_opponent()
-	stats.playerHealthValue = int(playerHealth.text)
-	stats.replayedRound = false
-	stats.lastStandTotalScore += stats.lastStandCurrentRoundScore
+	GameStats.currentOpponent = get_next_opponent()
+	GameStats.playerHealthValue = int(playerHealth.text)
+	GameStats.replayedRound = false
+	GameStats.lastStandTotalScore += GameStats.lastStandCurrentRoundScore
 	fade_with_round_reset()
 
+func _on_main_menu_button_pressed() -> void:
+	Curtain.change_scene("res://scenes/mainMenu.tscn")
+
 func fade_with_round_reset():
-	$"../arena/fade".modulate.a = 0.0
-	$"../arena/fade".visible = true
-	
-	var fadeInTween = create_tween()
-	fadeInTween.tween_property($"../arena/fade", "modulate:a", 1.0, .5)
-	await fadeInTween.finished
+	await Curtain.fade_in()
 	
 	change_expression("player", "neutral")
 	change_expression("opponent", "neutral")
@@ -160,7 +157,7 @@ func fade_with_round_reset():
 	# Reset the round
 	battleManager.lockPlayerInput = true
 	battleManager.ui.show_end_turn_button(false)
-	stats.reset_round_stats()
+	GameStats.reset_round_stats()
 	$"../playerHand".playerHand = []
 	$"../opponentHand".opponentHand = []
 	
@@ -177,14 +174,11 @@ func fade_with_round_reset():
 	$"../arena/gameOver/ContinueButton".visible = false
 	$"../arena/gameOver/ContinueButton".disabled = true
 	
-	set_health("player", stats.playerHealthValue)
-	battleManager.setupArena(stats.currentPlayer, stats.currentOpponent)
+	set_health("player", GameStats.playerHealthValue)
+	battleManager.setupArena(GameStats.currentPlayer, GameStats.currentOpponent)
 	await get_tree().create_timer(1).timeout
 	
-	var fadeOutTween = create_tween()
-	fadeOutTween.tween_property($"../arena/fade", "modulate:a", 0, .5)
-	await fadeOutTween.finished
-	$"../arena/fade".visible = false
+	Curtain.fade_out()
 	
 	battleManager.resetArena()
 

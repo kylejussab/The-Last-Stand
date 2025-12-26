@@ -40,7 +40,6 @@ var discardedCardZIndex = 1
 
 var showOpponentsCards = false
 
-@onready var stats = %gameStats
 @onready var ui = %arena
 @onready var battleAnimator = %battleAnimator
 
@@ -51,25 +50,21 @@ func _ready() -> void:
 	$"../cardManager".connect("characterPlayed", Callable(self, "on_player_character_played"))
 	$"../cardManager".connect("supportPlayed", Callable(self, "on_player_support_played"))
 	
-	# In the future for Last Stand this will pick from a random bank of enemies
-	stats.currentPlayer = "June"
-	stats.currentOpponent = "Ethan"
-	# Based on the gamemode chosen assign the correct health
-	stats.playerHealthValue = 100
-	ui.set_health("player", stats.playerHealthValue)
-	setupArena(stats.currentPlayer, stats.currentOpponent)
+	GameStats.currentPlayer = "June"
+	GameStats.currentOpponent = "Ethan"
+	GameStats.playerHealthValue = 100
+	
+	ui.set_health("player", GameStats.playerHealthValue)
+	setupArena(GameStats.currentPlayer, GameStats.currentOpponent)
 	
 	await draw_cards_at_start()
 	
-	# Player always starts
 	ui.set_indicator("player")
 	ui.change_expression("player", "thinking")
 	ui.change_expression("opponent", "neutral")
 	roundStage = RoundStage.PLAYER_CHARACTER
-	
 	lockPlayerInput = false
-	
-	stats.set_start_time()
+	GameStats.set_start_time()
 
 func setupArena(player, opponent):
 	match player:
@@ -102,7 +97,7 @@ func resetTurn():
 	# Shuffle cards from discard back into decks if needed
 	await repopulate_decks()
 	
-	if stats.roundNumber % 2 == 0:
+	if GameStats.roundNumber % 2 == 0:
 		whoStartedRound = "opponent"
 		
 		ui.change_expression("opponent", "thinking")
@@ -252,7 +247,7 @@ func end_turn():
 	await repopolate_hand(playerHand, "player")
 	await repopolate_hand(opponentHand, "opponent")
 	
-	stats.roundNumber += 1
+	GameStats.roundNumber += 1
 	cardsToDiscard = []
 	
 	resetTurn()
@@ -474,13 +469,13 @@ func calculate_damage():
 	if opponentSupportCard:
 		opponentTotal += int(opponentSupportCard.get_node("value").text)
 	
-	stats.totalForceExerted += playerTotal
-	stats.opponentForceExerted += opponentTotal
+	GameStats.totalForceExerted += playerTotal
+	GameStats.opponentForceExerted += opponentTotal
 	
-	stats.allPlayedCards.append({"faction": playerCharacterCard.faction, "cardKey": playerCharacterCard.cardKey})
+	GameStats.allPlayedCards.append({"faction": playerCharacterCard.faction, "cardKey": playerCharacterCard.cardKey})
 	
-	if stats.highestDamageDealt < playerTotal:
-		stats.highestDamageDealt = playerTotal
+	if GameStats.highestDamageDealt < playerTotal:
+		GameStats.highestDamageDealt = playerTotal
 	
 	apply_calculation_round_perks(playerTotal, opponentTotal)
 	
@@ -515,7 +510,7 @@ func calculate_damage():
 		
 		# Add to the underdog stat
 		if playerCharacterCard.value < opponentCharacterCard.value:
-			stats.roundWinsUnderdog += 1
+			GameStats.roundWinsUnderdog += 1
 	elif opponentTotal > playerTotal:
 		var playerHealth = ui.get_health("player")
 		damage = opponentTotal - playerTotal
@@ -562,6 +557,7 @@ func draw_cards_at_start(firstStart: bool = true):
 	if firstStart:
 		await $"../characterDeck".ready
 		await $"../supportDeck".ready
+		await get_tree().create_timer(.5).timeout
 	
 	for i in range(MAX_CHARACTER_CARDS):
 		await wait_for(CARD_MOVE_FAST_SPEED)
@@ -576,7 +572,7 @@ func draw_cards_at_start(firstStart: bool = true):
 		$"../supportDeck".draw_opponent_card()
 
 func end_round_sequence():
-	stats.set_end_time()
+	GameStats.set_end_time()
 	
 	var cardsToDiscard = []
 	
@@ -618,4 +614,4 @@ func resetArena():
 	
 	lockPlayerInput = false
 	
-	stats.set_start_time()
+	GameStats.set_start_time()

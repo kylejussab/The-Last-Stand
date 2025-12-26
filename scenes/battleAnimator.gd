@@ -1,6 +1,5 @@
 extends Node
 
-@onready var stats = %gameStats
 @onready var gameOver = %gameOver
 
 @export var whooshSounds = [
@@ -113,7 +112,7 @@ func show_stats(playerWon: bool):
 	
 	await uiTween.finished 
 	
-	score.get_node("scoreAnimationLabel").text =  "+" + str(stats.lastStandCurrentRoundScore)
+	score.get_node("scoreAnimationLabel").text =  "+" + str(GameStats.lastStandCurrentRoundScore)
 	score.get_node("AnimationPlayer").queue("showScoreUpdate")
 	
 	var buttonTween = create_tween()
@@ -125,7 +124,7 @@ func show_stats(playerWon: bool):
 	mainMenuButton.disabled = false
 	
 	# Show the new score
-	buttonTween.tween_callback(func(): score.get_node("stat7").text = str(stats.lastStandTotalScore + stats.lastStandCurrentRoundScore))
+	buttonTween.tween_callback(func(): score.get_node("stat7").text = str(GameStats.lastStandTotalScore + GameStats.lastStandCurrentRoundScore))
 	
 	if playerWon:
 		buttonTween.tween_property(continueButton, "modulate:a", 1.0, 0.6).set_trans(Tween.TRANS_SINE)
@@ -137,21 +136,21 @@ func show_stats(playerWon: bool):
 func set_end_game_stats(playerWon: bool):
 	# Performance stats
 	var performance = gameOver.get_node("performance")
-	performance.get_node("stat1").text = str(stats.totalForceExerted)
-	performance.get_node("stat2").text = str(stats.opponentForceExerted)
-	performance.get_node("stat3").text = str(stats.roundNumber)
-	performance.get_node("stat4").text = format_time(stats.endTime - stats.startTime)
-	var dominance = stats.totalForceExerted / float(stats.totalForceExerted + stats.opponentForceExerted)
-	var momentum = ((stats.totalForceExerted/float(stats.roundNumber))/7) * dominance * 200 #7 is used as a base "average" value per round
+	performance.get_node("stat1").text = str(GameStats.totalForceExerted)
+	performance.get_node("stat2").text = str(GameStats.opponentForceExerted)
+	performance.get_node("stat3").text = str(GameStats.roundNumber)
+	performance.get_node("stat4").text = format_time(GameStats.endTime - GameStats.startTime)
+	var dominance = GameStats.totalForceExerted / float(GameStats.totalForceExerted + GameStats.opponentForceExerted)
+	var momentum = ((GameStats.totalForceExerted/float(GameStats.roundNumber))/7) * dominance * 200 #7 is used as a base "average" value per round
 	performance.get_node("stat5").text = "%.1f%%" % momentum
 	
 	# Game stats
 	var game = gameOver.get_node("game")
-	var valuableCards = get_card_stats(stats.allPlayedCards)
+	var valuableCards = get_card_stats(GameStats.allPlayedCards)
 	game.get_node("stat1").text = valuableCards["card"]
 	game.get_node("stat2").text = valuableCards["faction"]
-	game.get_node("stat3").text = str(stats.highestDamageDealt)
-	game.get_node("stat4").text = str(stats.roundWinsUnderdog)
+	game.get_node("stat3").text = str(GameStats.highestDamageDealt)
+	game.get_node("stat4").text = str(GameStats.roundWinsUnderdog)
 	
 	# Score stats
 	var score = gameOver.get_node("score")
@@ -159,29 +158,29 @@ func set_end_game_stats(playerWon: bool):
 		score.get_node("stat1text").text = "Victory"
 		var winingBase = 20
 		score.get_node("stat1").text = str(winingBase)
-		var force = stats.totalForceExerted - stats.opponentForceExerted
+		var force = GameStats.totalForceExerted - GameStats.opponentForceExerted
 		score.get_node("stat2").text = str(force)
-		var efficiency = (20 - stats.roundNumber) * 5 # 20 as an average number of rounds
+		var efficiency = (20 - GameStats.roundNumber) * 5 # 20 as an average number of rounds
 		score.get_node("stat3").text = str(efficiency)
-		var underdog = stats.roundWinsUnderdog * 5
+		var underdog = GameStats.roundWinsUnderdog * 5
 		score.get_node("stat4").text = str(underdog)
 		score.get_node("stat5").text = str(int(momentum))
 		# Multiplier
 		score.get_node("stat6").text = "**"
-		stats.lastStandCurrentRoundScore = winingBase + force + efficiency + underdog + int(momentum)
-		score.get_node("stat7").text = str(stats.lastStandTotalScore)
+		GameStats.lastStandCurrentRoundScore = winingBase + force + efficiency + underdog + int(momentum)
+		score.get_node("stat7").text = str(GameStats.lastStandTotalScore)
 	else:
 		score.get_node("stat1text").text = "Defeat"
 		@warning_ignore("integer_division")
-		var losingScore = str(int(stats.totalForceExerted) / 10)
+		var losingScore = str(int(GameStats.totalForceExerted) / 10)
 		score.get_node("stat1").text = losingScore
 		score.get_node("stat2").text = "-"
 		score.get_node("stat3").text = "-"
 		score.get_node("stat4").text = "-"
 		score.get_node("stat5").text = "-"
 		score.get_node("stat6").text = "**"
-		stats.lastStandCurrentRoundScore = losingScore
-		score.get_node("stat7").text = str(stats.lastStandTotalScore)
+		GameStats.lastStandCurrentRoundScore = losingScore
+		score.get_node("stat7").text = str(GameStats.lastStandTotalScore)
 
 func format_time(time: float) -> String:
 	var totalSeconds = int(time / 1000.0)
