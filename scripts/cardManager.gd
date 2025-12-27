@@ -31,8 +31,6 @@ func start_drag(card):
 		draggedCard = card
 		draggedCard.play_draw_sound()
 		card.scale = Vector2(1, 1)
-		if draggedCard.perk:
-			draggedCard.get_node("description").visible = false
 
 func finish_drag():
 	draggedCard.scale = Vector2(1.05, 1.05)
@@ -117,12 +115,20 @@ func highlight_card(card, hovered: bool):
 		card.scale = Vector2(1.35, 1.35)
 		card.z_index = 2
 		if card.perk && !draggedCard:
-			card.get_node("description").visible = true
+			card.get_node("AnimationPlayer").play("showDescription")
+			
+			if Settings.reduceAnimations:
+				var endTime = card.get_node("AnimationPlayer").current_animation_length
+				card.get_node("AnimationPlayer").seek(endTime, true)
 	else:
 		card.scale = Vector2(1, 1)
 		card.z_index = 1
 		if card.perk:
-			card.get_node("description").visible = false
+			card.get_node("AnimationPlayer").play("hideDescription")
+			
+			if Settings.reduceAnimations:
+				var endTime = card.get_node("AnimationPlayer").current_animation_length
+				card.get_node("AnimationPlayer").seek(endTime, true)
 
 func get_top_card(cards):
 	var topCard = cards[0].collider.get_parent()

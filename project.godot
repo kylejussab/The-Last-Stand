@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 Curtain="*res://scenes/curtain.tscn"
 GameStats="*res://scripts/gameStats.gd"
+Settings="*res://scripts/settings.gd"
 
 [display]
 

@@ -80,7 +80,7 @@ func draw_card():
 	# Add the perk
 	if cardDatabaseReference.PERKS.has(cardDrawn):
 		newCard.perk = load(cardDatabaseReference.PERKS[cardDrawn]).new()
-		newCard.get_node("description").texture = load("res://assets/cardDescriptions/" + cardDrawn + ".png")
+		newCard.get_node("supportingText").get_node("text").texture = load("res://assets/cardDescriptions/" + cardDrawn + ".png")
 	
 	newCard.get_node("image").texture = load(cardImagePath)
 	newCard.get_node("imageBack").texture = load("res://assets/cards/CardBackBlank.png")
