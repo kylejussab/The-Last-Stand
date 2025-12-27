@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bhhun23jkwf8b"]
 
-[ext_resource type="Script" uid="uid://cb4ey70lbs42o" path="res://scenes/curtain.gd" id="1_5vt4c"]
+[ext_resource type="Script" uid="uid://cb4ey70lbs42o" path="res://scripts/curtain.gd" id="1_5vt4c"]
 
 [node name="TransitionScreen" type="CanvasLayer"]
 layer = 128

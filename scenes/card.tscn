@@ -1,13 +1,36 @@
-[gd_scene load_steps=11 format=3 uid="uid://b1ue0o8lsverh"]
+[gd_scene load_steps=14 format=3 uid="uid://b1ue0o8lsverh"]
 
 [ext_resource type="Script" uid="uid://ucr1vk8xoov" path="res://scripts/card.gd" id="1_6u4wf"]
 [ext_resource type="Texture2D" uid="uid://cbgv0l1d6fl7k" path="res://assets/cards/CardBackBlank.png" id="2_kg30u"]
-[ext_resource type="Texture2D" uid="uid://cgcss8mjj2at4" path="res://assets/cards/JoelCard.png" id="3_sy11y"]
-[ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://assets/fonts/SF-Pro-Display-Black.otf" id="4_kg30u"]
+[ext_resource type="Texture2D" uid="uid://xm6j3gsou8ve" path="res://assets/cards/ExampleCard.png" id="3_sy11y"]
 [ext_resource type="Texture2D" uid="uid://ccdjtimyjx8d" path="res://assets/cardDescriptions/Malik.png" id="5_sy11y"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
 size = Vector2(146, 204)
+
+[sub_resource type="SystemFont" id="SystemFont_6ligt"]
+font_names = PackedStringArray("SF Pro")
+font_weight = 900
+
+[sub_resource type="FontVariation" id="FontVariation_8w5pg"]
+base_font = SubResource("SystemFont_6ligt")
+variation_opentype = {
+1869640570: 28,
+2003072104: 50,
+2003265652: 900
+}
+
+[sub_resource type="SystemFont" id="SystemFont_kg30u"]
+font_names = PackedStringArray("SF Pro")
+font_weight = 900
+
+[sub_resource type="FontVariation" id="FontVariation_sy11y"]
+base_font = SubResource("SystemFont_kg30u")
+variation_opentype = {
+1869640570: 28,
+2003072104: 50,
+2003265652: 999
+}
 
 [sub_resource type="Animation" id="Animation_sy11y"]
 length = 0.001
@@ -57,7 +80,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(-38, -86)]
+"values": [Vector2(-60, -86)]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -159,7 +182,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(-38, -86), Vector2(-38, -117)]
+"values": [Vector2(-50, -86), Vector2(-50, -117)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -201,22 +224,23 @@ shape = SubResource("RectangleShape2D_rjlel")
 
 [node name="value" type="RichTextLabel" parent="."]
 modulate = Color(1, 1, 1, 0)
-offset_left = -73.0
-offset_top = -101.0
-offset_right = -35.0
-offset_bottom = -78.0
-theme_override_fonts/normal_font = ExtResource("4_kg30u")
-theme_override_font_sizes/normal_font_size = 16
-text = "+99"
+offset_left = -70.0
+offset_top = -100.0
+offset_right = -46.0
+offset_bottom = -77.0
+mouse_filter = 2
+theme_override_fonts/normal_font = SubResource("FontVariation_8w5pg")
+text = "99"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="perk" type="RichTextLabel" parent="."]
 modulate = Color(1, 1, 1, 0)
-offset_left = -38.0
+offset_left = -60.0
 offset_top = -86.0
+offset_right = -22.0
 offset_bottom = -63.0
-theme_override_fonts/normal_font = ExtResource("4_kg30u")
+theme_override_fonts/normal_font = SubResource("FontVariation_sy11y")
 theme_override_font_sizes/normal_font_size = 16
 text = "+99"
 horizontal_alignment = 1

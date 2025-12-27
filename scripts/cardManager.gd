@@ -12,6 +12,8 @@ var screenSize: Vector2
 var hoveredCard: Node2D = null
 var playerHandReference: Node
 
+@onready var battleManager = %battleManager
+
 func _ready() -> void:
 	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 	screenSize = get_viewport().get_visible_rect().size
@@ -29,6 +31,8 @@ func start_drag(card):
 		draggedCard = card
 		draggedCard.play_draw_sound()
 		card.scale = Vector2(1, 1)
+		if draggedCard.perk:
+			draggedCard.get_node("description").visible = false
 
 func finish_drag():
 	draggedCard.scale = Vector2(1.05, 1.05)
@@ -109,10 +113,10 @@ func on_card_hover_exit(card):
 			on_card_hover_enter(newCardHovered)
 
 func highlight_card(card, hovered: bool):
-	if hovered:
-		card.scale = Vector2(1.05, 1.05)
+	if hovered && !battleManager.lockPlayerInput:
+		card.scale = Vector2(1.35, 1.35)
 		card.z_index = 2
-		if card.perk:
+		if card.perk && !draggedCard:
 			card.get_node("description").visible = true
 	else:
 		card.scale = Vector2(1, 1)

@@ -12,7 +12,7 @@ extends Node2D
 
 @onready var battleManager = %battleManager
 
-var CHARACTER_DATABASE = {
+var ARENAHEADS_DATABASE = {
 	"June": {
 		"name": "June Ravel",
 		"description": "Former Firefly",
@@ -60,7 +60,7 @@ func set_health(who: String, value: int):
 		
 	if who == "player":
 		playerHealth.text = str(value)
-		CHARACTER_DATABASE[GameStats.currentPlayer].health = str(value)
+		ARENAHEADS_DATABASE[GameStats.currentPlayer].health = str(value)
 	elif who == "opponent":
 		opponentHealth.text = str(value)
 
@@ -74,11 +74,11 @@ func get_health(who: String) -> int:
 
 func setup_character(firstName: String, isPlayer: bool):
 	var side = "player" if isPlayer else "opponent"
-	get_node(side + "/name").text = CHARACTER_DATABASE[firstName].name
-	get_node(side + "/description").text = CHARACTER_DATABASE[firstName].description
-	get_node(side + "/value").text = CHARACTER_DATABASE[firstName].health
+	get_node(side + "/name").text = ARENAHEADS_DATABASE[firstName].name
+	get_node(side + "/description").text = ARENAHEADS_DATABASE[firstName].description
+	get_node(side + "/value").text = ARENAHEADS_DATABASE[firstName].health
 	
-	var path = CHARACTER_DATABASE[firstName].headPath
+	var path = ARENAHEADS_DATABASE[firstName].headPath
 	var head = $player/head if isPlayer else $opponent/head
 	
 	head.get_node("neutral").texture = load(path + firstName + "Neutral.png")
@@ -87,7 +87,7 @@ func setup_character(firstName: String, isPlayer: bool):
 	head.get_node("happy").texture = load(path + firstName + "Happy.png")
 	
 	if !isPlayer:
-		$image.texture = load(CHARACTER_DATABASE[firstName].arenaPath + firstName + "Arena.png")
+		$image.texture = load(ARENAHEADS_DATABASE[firstName].arenaPath + firstName + "Arena.png")
 
 func change_expression(who: String, expression: String):
 	var states = ["neutral", "thinking", "hurt", "happy"]
@@ -184,9 +184,9 @@ func fade_with_round_reset():
 	battleManager.resetArena()
 
 func get_next_opponent() -> String:
-	var list = CHARACTER_DATABASE.keys()
-	list.erase(battleManager.stats.currentPlayer)
-	list.erase(battleManager.stats.currentOpponent)
+	var list = ARENAHEADS_DATABASE.keys()
+	list.erase(GameStats.currentPlayer)
+	list.erase(GameStats.currentOpponent)
 	
 	return list.pick_random()
 

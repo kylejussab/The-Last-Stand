@@ -44,8 +44,18 @@ func _input(event: InputEvent) -> void:
 		GameStats.invitationAccepted = true
 		_play_click()
 		
-		$pressAnywhere.hide()
+		mainButtonContainer.modulate.a = 0.0
 		mainButtonContainer.show()
+		
+		var outTween = create_tween()
+		outTween.tween_property($pressAnywhere, "modulate:a", 0.0, 0.3)
+		await outTween.finished
+		$pressAnywhere.hide()
+		
+		var inTween = create_tween()
+		inTween.tween_property(mainButtonContainer, "modulate:a", 1.0, 0.3)
+		await inTween.finished
+		
 		mainButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
 
 func setup_button_sounds(container: Node):
