@@ -45,7 +45,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(1624, 416)]
+"values": [Vector2(1604, 416)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -72,7 +72,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(1624, 416), Vector2(1624, 296)]
+"values": [Vector2(1604, 416), Vector2(1604, 296)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -105,7 +105,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(1624, 634)]
+"values": [Vector2(1604, 634)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -132,7 +132,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(1624, 634), Vector2(1624, 514)]
+"values": [Vector2(1604, 634), Vector2(1604, 514)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -419,9 +419,9 @@ vertical_alignment = 1
 
 [node name="damage" type="Label" parent="arena/opponent"]
 modulate = Color(1, 1, 1, 0)
-offset_left = 1624.0
+offset_left = 1604.0
 offset_top = 416.0
-offset_right = 1734.0
+offset_right = 1714.0
 offset_bottom = 467.0
 theme_override_fonts/font = ExtResource("13_a8y0u")
 theme_override_font_sizes/font_size = 42
@@ -496,9 +496,9 @@ vertical_alignment = 1
 
 [node name="damage" type="Label" parent="arena/player"]
 modulate = Color(1, 1, 1, 0)
-offset_left = 1624.0
+offset_left = 1604.0
 offset_top = 634.0
-offset_right = 1734.0
+offset_right = 1714.0
 offset_bottom = 685.0
 theme_override_fonts/font = ExtResource("13_a8y0u")
 theme_override_font_sizes/font_size = 42

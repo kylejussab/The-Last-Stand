@@ -72,6 +72,23 @@ func get_health(who: String) -> int:
 	else:
 		return 0
 
+func damage_health(who: String, damage: int):
+	var label = playerHealth if who == "player" else opponentHealth
+	var startValue = int(label.text)
+	
+	var duration = 0.0 if Settings.reduceAnimations else 1.0
+	
+	var tween = create_tween()
+	tween.tween_method(
+		func(value: int):
+			label.text = str(value)
+			if who == "player":
+				ARENAHEADS_DATABASE[GameStats.currentPlayer].health = str(value),
+		startValue,
+		damage,
+		duration
+	)
+
 func setup_character(firstName: String, isPlayer: bool):
 	var side = "player" if isPlayer else "opponent"
 	get_node(side + "/name").text = ARENAHEADS_DATABASE[firstName].name

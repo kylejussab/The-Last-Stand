@@ -375,6 +375,8 @@ func move_cards_to_discard(cards):
 	$"../cardSlots/cardSlotCharacter".occupied = false
 
 func repopolate_hand(hand, handToUpdate):
+	lockPlayerInput = true
+	
 	var characterDeckReference = $"../characterDeck"
 	var supportDeckReference = $"../supportDeck"
 	
@@ -403,6 +405,8 @@ func repopolate_hand(hand, handToUpdate):
 			supportDeckReference.draw_opponent_card()
 		supportCount += 1
 		await wait_for(CARD_MOVE_SPEED)
+	
+	lockPlayerInput = false
 
 func repopulate_decks(endGame: bool = false):
 	var discardedCharacters := []
@@ -486,7 +490,7 @@ func calculate_damage():
 		damage = playerTotal - opponentTotal
 		
 		opponentHealth -= damage
-		ui.set_health("opponent", opponentHealth)
+		ui.damage_health("opponent", opponentHealth)
 		
 		ui.change_expression("player", "happy")
 		ui.change_expression("opponent", "hurt")
@@ -498,14 +502,14 @@ func calculate_damage():
 			var playerHealth = ui.get_health("player") - opponentCharacterCard.perkValueAtRoundEnd
 			await wait_for(0.5)
 			
-			ui.set_health("player", playerHealth)
+			ui.damage_health("player", playerHealth)
 			await ui.show_damage("player", opponentCharacterCard.perkValueAtRoundEnd)
 		
 		if playerCharacterCard.perkValueAtRoundEnd:
 			opponentHealth -= playerCharacterCard.perkValueAtRoundEnd
 			await wait_for(0.5)
 			
-			ui.set_health("opponent", opponentHealth)
+			ui.damage_health("opponent", opponentHealth)
 			await ui.show_damage("opponent", playerCharacterCard.perkValueAtRoundEnd)
 		
 		# Add to the underdog stat
@@ -516,7 +520,7 @@ func calculate_damage():
 		damage = opponentTotal - playerTotal
 		
 		playerHealth -= damage
-		ui.set_health("player", playerHealth)
+		ui.damage_health("player", playerHealth)
 		
 		ui.change_expression("player", "hurt")
 		ui.change_expression("opponent", "happy")
@@ -528,7 +532,7 @@ func calculate_damage():
 			var opponentHealth = ui.get_health("opponent") - playerCharacterCard.perkValueAtRoundEnd
 			await wait_for(0.5)
 			
-			ui.set_health("opponent", opponentHealth)
+			ui.damage_health("opponent", opponentHealth)
 			await ui.show_damage("opponent", playerCharacterCard.perkValueAtRoundEnd)
 		
 		if opponentCharacterCard.perkValueAtRoundEnd:
@@ -536,7 +540,7 @@ func calculate_damage():
 			
 			await wait_for(0.5)
 			
-			ui.set_health("player", playerHealth)
+			ui.damage_health("player", playerHealth)
 			await ui.show_damage("player", opponentCharacterCard.perkValueAtRoundEnd)
 			
 	elif opponentTotal == playerTotal: # Special Case for Lev
@@ -544,13 +548,13 @@ func calculate_damage():
 			var opponentHealth = ui.get_health("opponent") - playerCharacterCard.perkValueAtRoundEnd
 			await wait_for(0.5)
 			
-			ui.set_health("opponent", opponentHealth)
+			ui.damage_health("opponent", opponentHealth)
 			await ui.show_damage("opponent", playerCharacterCard.perkValueAtRoundEnd)
 		if opponentCharacterCard.cardKey == "LevRare":
 			var playerHealth = ui.get_health("player") - opponentCharacterCard.perkValueAtRoundEnd
 			await wait_for(0.5)
 			
-			ui.set_health("player", playerHealth)
+			ui.damage_health("player", playerHealth)
 			await ui.show_damage("player", opponentCharacterCard.perkValueAtRoundEnd)
 
 func draw_cards_at_start(firstStart: bool = true):

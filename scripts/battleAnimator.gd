@@ -115,6 +115,8 @@ func show_stats(playerWon: bool):
 	score.get_node("scoreAnimationLabel").text =  "+" + str(GameStats.lastStandCurrentRoundScore)
 	score.get_node("AnimationPlayer").queue("showScoreUpdate")
 	
+	animate_score_tick(score.get_node("stat7"), GameStats.lastStandTotalScore, GameStats.lastStandTotalScore + GameStats.lastStandCurrentRoundScore)
+	
 	var buttonTween = create_tween()
 	
 	buttonTween.tween_property(replayButton, "modulate:a", 1.0, 0.6).set_trans(Tween.TRANS_SINE)
@@ -122,9 +124,6 @@ func show_stats(playerWon: bool):
 	
 	buttonTween.tween_property(mainMenuButton, "modulate:a", 1.0, 0.6).set_trans(Tween.TRANS_SINE)
 	mainMenuButton.disabled = false
-	
-	# Show the new score
-	buttonTween.tween_callback(func(): score.get_node("stat7").text = str(GameStats.lastStandTotalScore + GameStats.lastStandCurrentRoundScore))
 	
 	if playerWon:
 		buttonTween.tween_property(continueButton, "modulate:a", 1.0, 0.6).set_trans(Tween.TRANS_SINE)
@@ -225,3 +224,17 @@ func get_card_stats(playedCards):
 		cardName += letter
 	
 	return {"faction": topFaction, "card": cardName}
+
+func animate_score_tick(label, start_score: int, end_score: int):
+	var duration = 0.0 if Settings.reduceAnimations else 2.0 
+
+	var tween = create_tween()
+	
+	tween.tween_method(
+		func(val: int): label.text = str(val),
+		start_score,
+		end_score,
+		duration
+	).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT) 
+	
+	return tween

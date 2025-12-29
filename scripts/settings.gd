@@ -1,3 +1,3 @@
 extends Node
 
-var reduceAnimations: bool = false
+var reduceAnimations: bool = true

@@ -58,6 +58,11 @@ func finish_drag():
 				else:
 					emit_signal("supportPlayed", draggedCard)
 				
+				# Ensure its not highlighted
+				draggedCard.get_node("AnimationPlayer").play("hideDescription")
+				var endTime = draggedCard.get_node("AnimationPlayer").current_animation_length
+				draggedCard.get_node("AnimationPlayer").seek(endTime, true)
+				
 				draggedCard = null
 				return
 	
@@ -114,7 +119,7 @@ func highlight_card(card, hovered: bool):
 	if hovered && !battleManager.lockPlayerInput:
 		card.scale = Vector2(1.35, 1.35)
 		card.z_index = 2
-		if card.perk && !draggedCard:
+		if card.perk && !draggedCard && !battleManager.lockPlayerInput:
 			card.get_node("AnimationPlayer").play("showDescription")
 			
 			if Settings.reduceAnimations:
@@ -123,7 +128,7 @@ func highlight_card(card, hovered: bool):
 	else:
 		card.scale = Vector2(1, 1)
 		card.z_index = 1
-		if card.perk:
+		if card.perk && !battleManager.lockPlayerInput:
 			card.get_node("AnimationPlayer").play("hideDescription")
 			
 			if Settings.reduceAnimations:
@@ -177,6 +182,11 @@ func move_card_on_double_click(card, cardSlot):
 			emit_signal("characterPlayed", draggedCard)
 		else:
 			emit_signal("supportPlayed", draggedCard)
+		
+		# Ensure its not highlighted
+		draggedCard.get_node("AnimationPlayer").play("hideDescription")
+		var endTime = draggedCard.get_node("AnimationPlayer").current_animation_length
+		draggedCard.get_node("AnimationPlayer").seek(endTime, true)
 		
 		playerHandReference.remove_card_from_hand(draggedCard)
 		draggedCard = null
