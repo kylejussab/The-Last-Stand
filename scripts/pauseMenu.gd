@@ -24,6 +24,22 @@ func _input(event):
 				$mainButtonContainer.show()
 				$mainButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
 				currentNavigation = "Main"
+			elif currentNavigation == "Restart Confirmation":
+				_play_back_sound()
+				$restartConfirmation.hide()
+				$restartConfirmation.process_mode = Node.PROCESS_MODE_DISABLED
+				
+				$mainButtonContainer.show()
+				$mainButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
+				currentNavigation = "Main"
+			elif currentNavigation == "Main Menu Confirmation":
+				_play_back_sound()
+				$mainMenuConfirmation.hide()
+				$mainMenuConfirmation.process_mode = Node.PROCESS_MODE_DISABLED
+				
+				$mainButtonContainer.show()
+				$mainButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
+				currentNavigation = "Main"
 
 func toggle_pause():
 	var pauseState = !get_tree().paused
@@ -51,21 +67,56 @@ func _on_options_button_pressed() -> void:
 	$OptionsButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
 
 func _on_restart_button_pressed() -> void:
+	currentNavigation = "Restart Confirmation"
+	$mainButtonContainer.hide()
+	$mainButtonContainer.process_mode = Node.PROCESS_MODE_DISABLED
+	
+	$restartConfirmation.show()
+	$restartConfirmation.process_mode = Node.PROCESS_MODE_INHERIT
+
+func _on_restart_yes_button_pressed() -> void:
 	get_tree().paused = false
 	ui._on_replay_button_pressed()
 	hide()
 
+func _on_restart_no_button_pressed() -> void:
+	$restartConfirmation.hide()
+	$restartConfirmation.process_mode = Node.PROCESS_MODE_DISABLED
+	
+	$mainButtonContainer.show()
+	$mainButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
+	currentNavigation = "Main"
+
 func _on_main_menu_button_pressed() -> void:
+	currentNavigation = "Main Menu Confirmation"
+	$mainButtonContainer.hide()
+	$mainButtonContainer.process_mode = Node.PROCESS_MODE_DISABLED
+	
+	$mainMenuConfirmation.show()
+	$mainMenuConfirmation.process_mode = Node.PROCESS_MODE_INHERIT
+
+func _on_main_menu_yes_button_pressed() -> void:
 	get_tree().paused = false 
 	ui._on_main_menu_button_pressed()
 	hide()
+
+func _on_main_menu_no_button_pressed() -> void:
+	$mainMenuConfirmation.hide()
+	$mainMenuConfirmation.process_mode = Node.PROCESS_MODE_DISABLED
+	
+	$mainButtonContainer.show()
+	$mainButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
+	currentNavigation = "Main"
 
 # Helpers
 func connect_buttons(node: Node) -> void:
 	for child in node.get_children():
 		if child is Button:
 			child.mouse_entered.connect(_play_hover_sound)
-			child.pressed.connect(_play_click_sound)
+			if child.name == "NoButton":
+				child.pressed.connect(_play_back_sound)
+			else:
+				child.pressed.connect(_play_click_sound)
 		
 		if child.get_child_count() > 0:
 			connect_buttons(child)

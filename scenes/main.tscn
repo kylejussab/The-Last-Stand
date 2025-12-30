@@ -1478,10 +1478,16 @@ alignment = 0
 process_mode = 4
 visible = false
 layout_mode = 3
-anchors_preset = 0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
 offset_top = 270.0
 offset_right = 1920.0
 offset_bottom = 810.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Heading" type="RichTextLabel" parent="arena/pause/OptionsButtonContainer"]
 layout_mode = 1
@@ -1557,6 +1563,196 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_pibwh")
 text = "ACCESSIBILITY"
 alignment = 0
 
+[node name="restartConfirmation" type="Control" parent="arena/pause"]
+visible = false
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_top = 270.0
+offset_right = 1920.0
+offset_bottom = 810.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="overlay" type="ColorRect" parent="arena/pause/restartConfirmation"]
+layout_mode = 0
+offset_top = -270.0
+offset_right = 1920.0
+offset_bottom = 810.0
+color = Color(0, 0, 0, 0.39215687)
+
+[node name="Heading" type="RichTextLabel" parent="arena/pause/restartConfirmation"]
+layout_mode = 0
+offset_left = 400.0
+offset_top = 110.0
+offset_right = 700.0
+offset_bottom = 165.0
+pivot_offset = Vector2(150, 25)
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = ExtResource("13_a8y0u")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 24
+text = "RESTART ENCOUNTER"
+vertical_alignment = 1
+
+[node name="warningText" type="RichTextLabel" parent="arena/pause/restartConfirmation"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -540.0
+offset_top = -90.0
+offset_right = 140.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_font_sizes/normal_font_size = 24
+text = "Restart the current encounter? 
+All earned progress from previous encounters has been saved."
+
+[node name="YesButton" type="Button" parent="arena/pause/restartConfirmation"]
+z_index = 201
+layout_mode = 0
+offset_left = 1100.0
+offset_top = 250.0
+offset_right = 1148.0
+offset_bottom = 305.0
+theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("13_a8y0u")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_yq6so")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_fv21b")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tel4y")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_qkpxi")
+theme_override_styles/focus = SubResource("StyleBoxFlat_5q0nq")
+text = "YES"
+alignment = 0
+
+[node name="NoButton" type="Button" parent="arena/pause/restartConfirmation"]
+z_index = 201
+layout_mode = 0
+offset_left = 1200.0
+offset_top = 250.0
+offset_right = 1248.0
+offset_bottom = 305.0
+theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("13_a8y0u")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_yq6so")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_fv21b")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tel4y")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_qkpxi")
+theme_override_styles/focus = SubResource("StyleBoxFlat_5q0nq")
+text = "NO"
+alignment = 0
+
+[node name="mainMenuConfirmation" type="Control" parent="arena/pause"]
+visible = false
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_top = 270.0
+offset_right = 1920.0
+offset_bottom = 810.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="overlay" type="ColorRect" parent="arena/pause/mainMenuConfirmation"]
+layout_mode = 0
+offset_top = -270.0
+offset_right = 1920.0
+offset_bottom = 810.0
+color = Color(0, 0, 0, 0.39215687)
+
+[node name="Heading" type="RichTextLabel" parent="arena/pause/mainMenuConfirmation"]
+layout_mode = 0
+offset_left = 400.0
+offset_top = 110.0
+offset_right = 700.0
+offset_bottom = 165.0
+pivot_offset = Vector2(150, 25)
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = ExtResource("13_a8y0u")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 24
+text = "QUIT TO MAIN MENU"
+vertical_alignment = 1
+
+[node name="warningText" type="RichTextLabel" parent="arena/pause/mainMenuConfirmation"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -540.0
+offset_top = -90.0
+offset_right = 140.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_font_sizes/normal_font_size = 24
+text = "Quit to the main menu? 
+All progress has been saved."
+
+[node name="YesButton" type="Button" parent="arena/pause/mainMenuConfirmation"]
+z_index = 201
+layout_mode = 0
+offset_left = 750.0
+offset_top = 250.0
+offset_right = 798.0
+offset_bottom = 305.0
+theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("13_a8y0u")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_yq6so")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_fv21b")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tel4y")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_qkpxi")
+theme_override_styles/focus = SubResource("StyleBoxFlat_5q0nq")
+text = "YES"
+alignment = 0
+
+[node name="NoButton" type="Button" parent="arena/pause/mainMenuConfirmation"]
+z_index = 201
+layout_mode = 0
+offset_left = 850.0
+offset_top = 250.0
+offset_right = 898.0
+offset_bottom = 305.0
+theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("13_a8y0u")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_yq6so")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_fv21b")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tel4y")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_qkpxi")
+theme_override_styles/focus = SubResource("StyleBoxFlat_5q0nq")
+text = "NO"
+alignment = 0
+
 [node name="pauseIcon" type="Node2D" parent="."]
 z_index = 202
 
@@ -1611,4 +1807,8 @@ text = "END TURN"
 [connection signal="pressed" from="arena/pause/mainButtonContainer/OptionsButton" to="arena/pause" method="_on_options_button_pressed"]
 [connection signal="pressed" from="arena/pause/mainButtonContainer/RestartButton" to="arena/pause" method="_on_restart_button_pressed"]
 [connection signal="pressed" from="arena/pause/mainButtonContainer/MainMenuButton" to="arena/pause" method="_on_main_menu_button_pressed"]
+[connection signal="pressed" from="arena/pause/restartConfirmation/YesButton" to="arena/pause" method="_on_restart_yes_button_pressed"]
+[connection signal="pressed" from="arena/pause/restartConfirmation/NoButton" to="arena/pause" method="_on_restart_no_button_pressed"]
+[connection signal="pressed" from="arena/pause/mainMenuConfirmation/YesButton" to="arena/pause" method="_on_main_menu_yes_button_pressed"]
+[connection signal="pressed" from="arena/pause/mainMenuConfirmation/NoButton" to="arena/pause" method="_on_main_menu_no_button_pressed"]
 [connection signal="pressed" from="EndTurnButton" to="battleManager" method="_on_end_turn_button_pressed"]
