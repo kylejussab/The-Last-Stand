@@ -62,7 +62,9 @@ func _input(event: InputEvent) -> void:
 		
 		mainButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
 	
-	if event.is_action_pressed("ui_cancel") or (event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed) and currentNavigation != "Main":
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed and currentNavigation != "Main":
+		_play_back()
+		
 		if currentNavigation == "Story":
 			$pauseIcon.hide()
 			currentNavigation = "Main"
@@ -163,3 +165,6 @@ func _play_hover():
 
 func _play_click():
 	$ButtonClickSound.play()
+
+func _play_back():
+	$ButtonBackSound.play()

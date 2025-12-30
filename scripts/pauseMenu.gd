@@ -11,28 +11,30 @@ func _ready():
 	hide()
 
 func _input(event):
-	if event.is_action_pressed("ui_cancel") or (event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed):
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 		if GameStats.gameMode != "Last Stand Round Complete" and GameStats.gameMode != "Card Draw Animation":
 			battleManager.lockPlayerInput = true
 			if currentNavigation == "Main":
 				toggle_pause()
 			elif currentNavigation == "Options":
-				_play_click_sound()
-				currentNavigation = "Main"
+				_play_back_sound()
 				$OptionsButtonContainer.hide()
 				$OptionsButtonContainer.process_mode = Node.PROCESS_MODE_DISABLED
 				
 				$mainButtonContainer.show()
 				$mainButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
+				currentNavigation = "Main"
 
 func toggle_pause():
 	var pauseState = !get_tree().paused
 	get_tree().paused = pauseState
 	
 	if pauseState :
+		_play_click_sound()
 		$"../../pauseIcon/text".text = "BACK"
 		show()
 	else:
+		_play_back_sound()
 		battleManager.lockPlayerInput = false
 		$"../../pauseIcon/text".text = "PAUSE"
 		hide()
@@ -73,3 +75,6 @@ func _play_hover_sound():
 
 func _play_click_sound():
 	$"../ButtonClickSound".play()
+
+func _play_back_sound():
+	$"../ButtonBackSound".play()

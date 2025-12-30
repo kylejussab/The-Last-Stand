@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://btdd4ppvwtnvy"]
+[gd_scene load_steps=14 format=3 uid="uid://btdd4ppvwtnvy"]
 
 [ext_resource type="Script" uid="uid://bmorqef62jko2" path="res://scripts/mainMenu.gd" id="1_l7wge"]
 [ext_resource type="Texture2D" uid="uid://bmewebekh15ca" path="res://assets/mainMenu/main.png" id="1_qkhwq"]
@@ -6,6 +6,7 @@
 [ext_resource type="AudioStream" uid="uid://bams0u5k7sdgr" path="res://assets/sounds/ui/buttonClick.wav" id="2_clbkb"]
 [ext_resource type="FontFile" uid="uid://di1dchl37cfhu" path="res://assets/fonts/SF-Pro-Display-Semibold.otf" id="3_48ign"]
 [ext_resource type="AudioStream" uid="uid://cufo3kt8n8vs2" path="res://assets/sounds/ui/buttonHover.wav" id="3_ldpc3"]
+[ext_resource type="AudioStream" uid="uid://b3d3fqc8ee6t7" path="res://assets/sounds/ui/buttonBack.wav" id="4_y35fp"]
 [ext_resource type="Texture2D" uid="uid://be0aihjd72rmo" path="res://assets/ui/RightClickIcon.png" id="7_ldpc3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_48ign"]
@@ -33,6 +34,11 @@ volume_db = 20.0
 [node name="ButtonHoverSound" type="AudioStreamPlayer2D" parent="."]
 position = Vector2(770, 790)
 stream = ExtResource("3_ldpc3")
+volume_db = 20.0
+
+[node name="ButtonBackSound" type="AudioStreamPlayer2D" parent="."]
+position = Vector2(770, 790)
+stream = ExtResource("4_y35fp")
 volume_db = 20.0
 
 [node name="image" type="Sprite2D" parent="."]
