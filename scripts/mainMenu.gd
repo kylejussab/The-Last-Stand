@@ -3,8 +3,12 @@ extends Node2D
 @onready var backgroundImage = $image
 @onready var mainButtonContainer = $mainButtonContainer
 @onready var storyButtonContainer = $storyButtonContainer
+@onready var lastStandButtonContainer = $lastStandButtonContainer
+@onready var optionsButtonContainer = $optionsButtonContainer
 
 @onready var supplementText = $supplementText
+
+var currentNavigation: String = "Main"
 
 const BACKGROUNDS = {
 	"Main": preload("res://assets/mainMenu/main.png"),
@@ -14,14 +18,14 @@ const BACKGROUNDS = {
 const SUPPLEMENTTEXT = {
 	"Story": "Play through a choice of three different survivor stories.",
 	"Last Stand": "Survive as many waves as possible with boosted health and no healing.",
-	"Tutorial": "Coming soon.",
-	"Options": "Coming soon.",
 	"June": "What is the cost of doing what you believe is right?"
 }
 
 func _ready() -> void:
 	setup_button_sounds(mainButtonContainer)
 	setup_button_sounds(storyButtonContainer)
+	setup_button_sounds(lastStandButtonContainer)
+	setup_button_sounds(optionsButtonContainer)
 	
 	if GameStats.invitationAccepted:
 		$pressAnywhere.hide()
@@ -57,6 +61,38 @@ func _input(event: InputEvent) -> void:
 		await inTween.finished
 		
 		mainButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
+	
+	if event.is_action_pressed("ui_cancel") or (event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed) and currentNavigation != "Main":
+		if currentNavigation == "Story":
+			$pauseIcon.hide()
+			currentNavigation = "Main"
+			storyButtonContainer.hide()
+			storyButtonContainer.process_mode = Node.PROCESS_MODE_DISABLED
+			
+			backgroundImage.texture = BACKGROUNDS["Main"]
+			
+			mainButtonContainer.show()
+			mainButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
+		elif currentNavigation == "Last Stand":
+			$pauseIcon.hide()
+			currentNavigation = "Main"
+			lastStandButtonContainer.hide()
+			lastStandButtonContainer.process_mode = Node.PROCESS_MODE_DISABLED
+			
+			backgroundImage.texture = BACKGROUNDS["Main"]
+			
+			mainButtonContainer.show()
+			mainButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
+		elif currentNavigation == "Options":
+			$pauseIcon.hide()
+			currentNavigation = "Main"
+			optionsButtonContainer.hide()
+			optionsButtonContainer.process_mode = Node.PROCESS_MODE_DISABLED
+			
+			backgroundImage.texture = BACKGROUNDS["Main"]
+			
+			mainButtonContainer.show()
+			mainButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
 
 func setup_button_sounds(container: Node):
 	for child in container.get_children():
@@ -71,6 +107,9 @@ func _on_story_button_mouse_exited() -> void:
 	supplementText.text = ""
 
 func _on_story_button_pressed() -> void:
+	$pauseIcon.show()
+	currentNavigation = "Story"
+	
 	mainButtonContainer.hide()
 	mainButtonContainer.process_mode = Node.PROCESS_MODE_DISABLED
 	
@@ -84,29 +123,28 @@ func _on_last_stand_button_mouse_exited() -> void:
 	supplementText.text = ""
 
 func _on_last_stand_button_pressed() -> void:
+	$pauseIcon.show()
+	currentNavigation = "Last Stand"
+	
+	mainButtonContainer.hide()
+	mainButtonContainer.process_mode = Node.PROCESS_MODE_DISABLED
+	
+	lastStandButtonContainer.show()
+	lastStandButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
+
+func _on_new_button_pressed() -> void:
 	GameStats.gameMode = "Last Stand"
 	Curtain.change_scene("res://scenes/main.tscn")
 
-func _on_tutorial_button_mouse_entered() -> void:
-	supplementText.text = SUPPLEMENTTEXT["Tutorial"]
-
-func _on_tutorial_button_mouse_exited() -> void:
-	supplementText.text = ""
-
-func _on_options_button_mouse_entered() -> void:
-	supplementText.text = SUPPLEMENTTEXT["Options"]
-
-func _on_options_button_mouse_exited() -> void:
-	supplementText.text = ""
-
-func _on_back_button_pressed() -> void:
-	storyButtonContainer.hide()
-	storyButtonContainer.process_mode = Node.PROCESS_MODE_DISABLED
+func _on_options_button_pressed() -> void:
+	$pauseIcon.show()
+	currentNavigation = "Options"
 	
-	backgroundImage.texture = BACKGROUNDS["Main"]
+	mainButtonContainer.hide()
+	mainButtonContainer.process_mode = Node.PROCESS_MODE_DISABLED
 	
-	mainButtonContainer.show()
-	mainButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
+	optionsButtonContainer.show()
+	optionsButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
 
 func _on_june_button_mouse_entered() -> void:
 	backgroundImage.texture = BACKGROUNDS["June"]

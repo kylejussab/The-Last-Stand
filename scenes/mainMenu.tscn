@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://btdd4ppvwtnvy"]
+[gd_scene load_steps=13 format=3 uid="uid://btdd4ppvwtnvy"]
 
 [ext_resource type="Script" uid="uid://bmorqef62jko2" path="res://scripts/mainMenu.gd" id="1_l7wge"]
 [ext_resource type="Texture2D" uid="uid://bmewebekh15ca" path="res://assets/mainMenu/main.png" id="1_qkhwq"]
@@ -6,6 +6,7 @@
 [ext_resource type="AudioStream" uid="uid://bams0u5k7sdgr" path="res://assets/sounds/ui/buttonClick.wav" id="2_clbkb"]
 [ext_resource type="FontFile" uid="uid://di1dchl37cfhu" path="res://assets/fonts/SF-Pro-Display-Semibold.otf" id="3_48ign"]
 [ext_resource type="AudioStream" uid="uid://cufo3kt8n8vs2" path="res://assets/sounds/ui/buttonHover.wav" id="3_ldpc3"]
+[ext_resource type="Texture2D" uid="uid://be0aihjd72rmo" path="res://assets/ui/RightClickIcon.png" id="7_ldpc3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_48ign"]
 bg_color = Color(0, 0, 0, 0)
@@ -67,9 +68,9 @@ offset_bottom = 40.0
 z_index = 201
 layout_mode = 0
 offset_left = 120.0
-offset_top = 250.0
+offset_top = 350.0
 offset_right = 201.0
-offset_bottom = 305.0
+offset_bottom = 405.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
@@ -87,9 +88,9 @@ alignment = 0
 z_index = 201
 layout_mode = 0
 offset_left = 120.0
-offset_top = 300.0
+offset_top = 400.0
 offset_right = 267.0
-offset_bottom = 355.0
+offset_bottom = 455.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
@@ -107,9 +108,9 @@ alignment = 0
 z_index = 201
 layout_mode = 0
 offset_left = 120.0
-offset_top = 350.0
+offset_top = 450.0
 offset_right = 240.0
-offset_bottom = 405.0
+offset_bottom = 505.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
@@ -127,9 +128,9 @@ alignment = 0
 z_index = 201
 layout_mode = 0
 offset_left = 120.0
-offset_top = 400.0
+offset_top = 500.0
 offset_right = 229.0
-offset_bottom = 455.0
+offset_bottom = 555.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
@@ -147,9 +148,9 @@ alignment = 0
 z_index = 201
 layout_mode = 0
 offset_left = 120.0
-offset_top = 450.0
+offset_top = 550.0
 offset_right = 178.0
-offset_bottom = 505.0
+offset_bottom = 605.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
@@ -179,9 +180,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = 100.0
-offset_top = 180.0
+offset_top = 280.0
 offset_right = 300.0
-offset_bottom = 235.0
+offset_bottom = 335.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
@@ -196,9 +197,9 @@ vertical_alignment = 1
 z_index = 201
 layout_mode = 0
 offset_left = 140.0
-offset_top = 250.0
+offset_top = 350.0
 offset_right = 286.0
-offset_bottom = 305.0
+offset_bottom = 405.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
@@ -216,9 +217,9 @@ alignment = 0
 z_index = 201
 layout_mode = 0
 offset_left = 140.0
-offset_top = 300.0
+offset_top = 400.0
 offset_right = 315.0
-offset_bottom = 355.0
+offset_bottom = 455.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
@@ -236,9 +237,9 @@ alignment = 0
 z_index = 201
 layout_mode = 0
 offset_left = 140.0
-offset_top = 350.0
+offset_top = 450.0
 offset_right = 315.0
-offset_bottom = 405.0
+offset_bottom = 505.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
@@ -252,12 +253,61 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_ldpc3")
 text = "COMING SOON"
 alignment = 0
 
-[node name="BackButton" type="Button" parent="storyButtonContainer"]
+[node name="lastStandButtonContainer" type="Control" parent="."]
+process_mode = 4
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Heading" type="RichTextLabel" parent="lastStandButtonContainer"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 100.0
+offset_top = 280.0
+offset_right = 300.0
+offset_bottom = 335.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = ExtResource("2_3d1i7")
+theme_override_fonts/bold_font = ExtResource("2_3d1i7")
+theme_override_font_sizes/normal_font_size = 24
+text = "LAST STAND"
+vertical_alignment = 1
+
+[node name="NewButton" type="Button" parent="lastStandButtonContainer"]
+z_index = 201
+layout_mode = 0
+offset_left = 140.0
+offset_top = 350.0
+offset_right = 196.0
+offset_bottom = 405.0
+theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_3d1i7")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_48ign")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_l7wge")
+theme_override_styles/hover = SubResource("StyleBoxFlat_7nrmo")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_clbkb")
+theme_override_styles/focus = SubResource("StyleBoxFlat_ldpc3")
+text = "NEW"
+alignment = 0
+
+[node name="ContinueButton" type="Button" parent="lastStandButtonContainer"]
 z_index = 201
 layout_mode = 0
 offset_left = 140.0
 offset_top = 400.0
-offset_right = 208.0
+offset_right = 265.0
 offset_bottom = 455.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
@@ -269,7 +319,116 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_l7wge")
 theme_override_styles/hover = SubResource("StyleBoxFlat_7nrmo")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_clbkb")
 theme_override_styles/focus = SubResource("StyleBoxFlat_ldpc3")
-text = "BACK"
+text = "CONTINUE"
+alignment = 0
+
+[node name="StatisticsButton" type="Button" parent="lastStandButtonContainer"]
+z_index = 201
+layout_mode = 0
+offset_left = 140.0
+offset_top = 450.0
+offset_right = 265.0
+offset_bottom = 505.0
+theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_3d1i7")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_48ign")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_l7wge")
+theme_override_styles/hover = SubResource("StyleBoxFlat_7nrmo")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_clbkb")
+theme_override_styles/focus = SubResource("StyleBoxFlat_ldpc3")
+text = "STATISTICS"
+alignment = 0
+
+[node name="optionsButtonContainer" type="Control" parent="."]
+process_mode = 4
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Heading" type="RichTextLabel" parent="optionsButtonContainer"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 100.0
+offset_top = 280.0
+offset_right = 300.0
+offset_bottom = 335.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = ExtResource("2_3d1i7")
+theme_override_fonts/bold_font = ExtResource("2_3d1i7")
+theme_override_font_sizes/normal_font_size = 24
+text = "OPTIONS"
+vertical_alignment = 1
+
+[node name="DisplayButton" type="Button" parent="optionsButtonContainer"]
+z_index = 201
+layout_mode = 0
+offset_left = 140.0
+offset_top = 350.0
+offset_right = 196.0
+offset_bottom = 405.0
+theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_3d1i7")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_48ign")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_l7wge")
+theme_override_styles/hover = SubResource("StyleBoxFlat_7nrmo")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_clbkb")
+theme_override_styles/focus = SubResource("StyleBoxFlat_ldpc3")
+text = "DISPLAY"
+alignment = 0
+
+[node name="AudioButton" type="Button" parent="optionsButtonContainer"]
+z_index = 201
+layout_mode = 0
+offset_left = 140.0
+offset_top = 400.0
+offset_right = 218.0
+offset_bottom = 455.0
+theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_3d1i7")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_48ign")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_l7wge")
+theme_override_styles/hover = SubResource("StyleBoxFlat_7nrmo")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_clbkb")
+theme_override_styles/focus = SubResource("StyleBoxFlat_ldpc3")
+text = "AUDIO"
+alignment = 0
+
+[node name="AccessibilityButton" type="Button" parent="optionsButtonContainer"]
+z_index = 201
+layout_mode = 0
+offset_left = 140.0
+offset_top = 450.0
+offset_right = 265.0
+offset_bottom = 505.0
+theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_3d1i7")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_48ign")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_l7wge")
+theme_override_styles/hover = SubResource("StyleBoxFlat_7nrmo")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_clbkb")
+theme_override_styles/focus = SubResource("StyleBoxFlat_ldpc3")
+text = "ACCESSIBILITY"
 alignment = 0
 
 [node name="supplementText" type="RichTextLabel" parent="."]
@@ -289,17 +448,45 @@ theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 
 theme_override_fonts/normal_font = ExtResource("3_48ign")
 theme_override_font_sizes/normal_font_size = 24
 
+[node name="pauseIcon" type="Node2D" parent="."]
+visible = false
+z_index = 202
+
+[node name="image" type="Sprite2D" parent="pauseIcon"]
+position = Vector2(1800, 1040)
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("7_ldpc3")
+
+[node name="text" type="RichTextLabel" parent="pauseIcon"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1825.0
+offset_top = 1025.0
+offset_right = 1878.0
+offset_bottom = 1055.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = ExtResource("2_3d1i7")
+theme_override_fonts/bold_font = ExtResource("2_3d1i7")
+theme_override_font_sizes/normal_font_size = 16
+text = "BACK"
+fit_content = true
+autowrap_mode = 0
+vertical_alignment = 1
+
 [connection signal="mouse_entered" from="mainButtonContainer/StoryButton" to="." method="_on_story_button_mouse_entered"]
 [connection signal="mouse_exited" from="mainButtonContainer/StoryButton" to="." method="_on_story_button_mouse_exited"]
 [connection signal="pressed" from="mainButtonContainer/StoryButton" to="." method="_on_story_button_pressed"]
 [connection signal="mouse_entered" from="mainButtonContainer/LastStandButton" to="." method="_on_last_stand_button_mouse_entered"]
 [connection signal="mouse_exited" from="mainButtonContainer/LastStandButton" to="." method="_on_last_stand_button_mouse_exited"]
 [connection signal="pressed" from="mainButtonContainer/LastStandButton" to="." method="_on_last_stand_button_pressed"]
-[connection signal="mouse_entered" from="mainButtonContainer/TutorialButton" to="." method="_on_tutorial_button_mouse_entered"]
-[connection signal="mouse_exited" from="mainButtonContainer/TutorialButton" to="." method="_on_tutorial_button_mouse_exited"]
-[connection signal="mouse_entered" from="mainButtonContainer/OptionsButton" to="." method="_on_options_button_mouse_entered"]
-[connection signal="mouse_exited" from="mainButtonContainer/OptionsButton" to="." method="_on_options_button_mouse_exited"]
+[connection signal="pressed" from="mainButtonContainer/OptionsButton" to="." method="_on_options_button_pressed"]
 [connection signal="pressed" from="mainButtonContainer/QuitButton" to="." method="_on_quit_button_pressed"]
 [connection signal="mouse_entered" from="storyButtonContainer/JuneButton" to="." method="_on_june_button_mouse_entered"]
 [connection signal="mouse_exited" from="storyButtonContainer/JuneButton" to="." method="_on_june_button_mouse_exited"]
-[connection signal="pressed" from="storyButtonContainer/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="lastStandButtonContainer/NewButton" to="." method="_on_new_button_pressed"]

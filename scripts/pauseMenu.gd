@@ -30,9 +30,11 @@ func toggle_pause():
 	get_tree().paused = pauseState
 	
 	if pauseState :
+		$"../../pauseIcon/text".text = "BACK"
 		show()
 	else:
 		battleManager.lockPlayerInput = false
+		$"../../pauseIcon/text".text = "PAUSE"
 		hide()
 
 func _on_resume_pressed():
@@ -47,7 +49,7 @@ func _on_options_button_pressed() -> void:
 	$OptionsButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
 
 func _on_restart_button_pressed() -> void:
-	get_tree().paused = false 
+	get_tree().paused = false
 	ui._on_replay_button_pressed()
 	hide()
 

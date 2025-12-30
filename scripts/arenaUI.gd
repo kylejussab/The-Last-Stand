@@ -171,6 +171,8 @@ func _on_main_menu_button_pressed() -> void:
 func fade_with_round_reset():
 	await Curtain.fade_in()
 	
+	$"../pauseIcon/text".text = "PAUSE"
+	
 	change_expression("player", "neutral")
 	change_expression("opponent", "neutral")
 	

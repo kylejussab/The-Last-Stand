@@ -583,6 +583,7 @@ func end_round_sequence():
 	GameStats.set_end_time()
 	GameStats.gameMode = "Last Stand Round Complete"
 	GameStats.totalInGameTimePlayed += GameStats.currentRoundDuration
+	$"../pauseIcon".hide()
 	
 	var cardsToDiscard = []
 	
@@ -612,6 +613,8 @@ func end_round_sequence():
 	discardedCardZIndex = 1
 
 func resetArena():
+	$"../pauseIcon".show()
+	
 	await draw_cards_at_start(false)
 	
 	# Player always starts
