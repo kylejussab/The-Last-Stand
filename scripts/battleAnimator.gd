@@ -138,7 +138,7 @@ func set_end_game_stats(playerWon: bool):
 	performance.get_node("stat1").text = str(GameStats.totalForceExerted)
 	performance.get_node("stat2").text = str(GameStats.opponentForceExerted)
 	performance.get_node("stat3").text = str(GameStats.roundNumber)
-	performance.get_node("stat4").text = format_time(GameStats.endTime - GameStats.startTime)
+	performance.get_node("stat4").text = format_time(GameStats.currentRoundDuration)
 	var dominance = GameStats.totalForceExerted / float(GameStats.totalForceExerted + GameStats.opponentForceExerted)
 	var momentum = ((GameStats.totalForceExerted/float(GameStats.roundNumber))/7) * dominance * 200 #7 is used as a base "average" value per round
 	performance.get_node("stat5").text = "%.1f%%" % momentum
@@ -182,10 +182,8 @@ func set_end_game_stats(playerWon: bool):
 		score.get_node("stat7").text = str(GameStats.lastStandTotalScore)
 
 func format_time(time: float) -> String:
-	var totalSeconds = int(time / 1000.0)
-	@warning_ignore("integer_division")
-	var minutes = totalSeconds / 60
-	var seconds = totalSeconds % 60
+	var minutes = int(time / 60)
+	var seconds = int(time) % 60
 	return "%02d:%02d" % [minutes, seconds]
 
 func get_card_stats(playedCards):

@@ -2,6 +2,7 @@ extends Node
 
 var invitationAccepted: bool = false
 var gameMode: String = "Main Menu"
+var totalInGameTimePlayed: float = 0.0
 
 var playerHealthValue: int
 
@@ -16,18 +17,23 @@ var highestDamageDealt: int = 0
 var roundWinsUnderdog: int = 0
 var allPlayedCards: Array = []
 
-var startTime: float = 0.0
-var endTime: float = 0.0
+var currentRoundDuration: float = 0.0 
+var canCountDuration: bool = false
 
 var lastStandTotalScore: int = 0
 var lastStandCurrentRoundScore: int = 0
 var replayedRound: bool = false
 
+func _process(delta):
+	if canCountDuration:
+		currentRoundDuration += delta
+
 func set_start_time():
-	startTime = Time.get_ticks_msec()
+	currentRoundDuration = 0.0
+	canCountDuration = true
 
 func set_end_time():
-	endTime = Time.get_ticks_msec()
+	canCountDuration = false
 
 func reset_round_stats():
 	roundNumber = 1

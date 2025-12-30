@@ -153,6 +153,7 @@ func show_end_turn_button(visibility: bool = true):
 
 func _on_replay_button_pressed() -> void:
 	GameStats.replayedRound = true
+	GameStats.gameMode = "Last Stand"
 	fade_with_round_reset()
 
 func _on_continue_button_pressed() -> void:
@@ -160,6 +161,7 @@ func _on_continue_button_pressed() -> void:
 	GameStats.playerHealthValue = int(playerHealth.text)
 	GameStats.replayedRound = false
 	GameStats.lastStandTotalScore += GameStats.lastStandCurrentRoundScore
+	GameStats.gameMode = "Last Stand"
 	fade_with_round_reset()
 
 func _on_main_menu_button_pressed() -> void:
@@ -178,6 +180,10 @@ func fade_with_round_reset():
 	GameStats.reset_round_stats()
 	$"../playerHand".playerHand = []
 	$"../opponentHand".opponentHand = []
+	
+	# Clean up older scene children
+	for card in $"../cardManager".get_children():
+		card.queue_free()
 	
 	$"../arena/gameOver/overlay".visible = false
 	$"../arena/gameOver/title".visible = false

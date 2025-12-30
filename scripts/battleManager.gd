@@ -563,6 +563,8 @@ func draw_cards_at_start(firstStart: bool = true):
 		await $"../supportDeck".ready
 		await get_tree().create_timer(.5).timeout
 	
+	GameStats.gameMode = "Card Draw Animation"
+	
 	for i in range(MAX_CHARACTER_CARDS):
 		await wait_for(CARD_MOVE_FAST_SPEED)
 		$"../characterDeck".draw_card()
@@ -574,9 +576,13 @@ func draw_cards_at_start(firstStart: bool = true):
 		$"../supportDeck".draw_card()
 		await wait_for(CARD_MOVE_FAST_SPEED)
 		$"../supportDeck".draw_opponent_card()
+	
+	GameStats.gameMode = "Last Stand"
 
 func end_round_sequence():
 	GameStats.set_end_time()
+	GameStats.gameMode = "Last Stand Round Complete"
+	GameStats.totalInGameTimePlayed += GameStats.currentRoundDuration
 	
 	var cardsToDiscard = []
 	

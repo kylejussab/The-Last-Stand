@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=3 uid="uid://dgb52shq4jcyg"]
+[gd_scene load_steps=57 format=3 uid="uid://dgb52shq4jcyg"]
 
 [ext_resource type="Script" uid="uid://dgl6h7ryesfn8" path="res://scripts/cardManager.gd" id="1_0wfyh"]
 [ext_resource type="Script" uid="uid://c3p2rmoacsirj" path="res://scripts/inputManager.gd" id="1_o6xl0"]
@@ -29,6 +29,7 @@
 [ext_resource type="AudioStream" uid="uid://bams0u5k7sdgr" path="res://assets/sounds/ui/buttonClick.wav" id="23_y6deb"]
 [ext_resource type="AudioStream" uid="uid://cufo3kt8n8vs2" path="res://assets/sounds/ui/buttonHover.wav" id="24_og1vs"]
 [ext_resource type="AudioStream" uid="uid://bqgphoeowbviu" path="res://assets/sounds/ui/whoosh.wav" id="25_2wyq8"]
+[ext_resource type="Script" uid="uid://c50sxxmg3g1sv" path="res://scripts/pauseMenu.gd" id="30_fv21b"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jyhfs"]
 size = Vector2(140, 196)
@@ -230,6 +231,34 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jkv2x"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yq6so"]
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fv21b"]
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tel4y"]
+bg_color = Color(0.08627451, 0.08627451, 0.08627451, 0)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qkpxi"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5q0nq"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dgi5k"]
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j8jky"]
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kmb1v"]
+bg_color = Color(0.08627451, 0.08627451, 0.08627451, 0)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fuf3a"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pibwh"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
 [node name="main" type="Node2D"]
 
 [node name="gameStats" type="Node" parent="."]
@@ -349,11 +378,13 @@ stream = ExtResource("15_2wyq8")
 volume_db = -15.0
 
 [node name="ButtonClickSound" type="AudioStreamPlayer2D" parent="arena"]
+process_mode = 3
 position = Vector2(770, 790)
 stream = ExtResource("23_y6deb")
 volume_db = 20.0
 
 [node name="ButtonHoverSound" type="AudioStreamPlayer2D" parent="arena"]
+process_mode = 3
 position = Vector2(770, 790)
 stream = ExtResource("24_og1vs")
 volume_db = 20.0
@@ -1318,6 +1349,205 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_jkv2x")
 text = "CONTINUE"
 alignment = 0
 
+[node name="pause" type="Node2D" parent="arena"]
+z_index = 201
+script = ExtResource("30_fv21b")
+
+[node name="overlay" type="ColorRect" parent="arena/pause"]
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0, 0, 0, 0.9019608)
+
+[node name="mainButtonContainer" type="Control" parent="arena/pause"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_top = 270.0
+offset_right = 1920.0
+offset_bottom = 810.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Heading" type="RichTextLabel" parent="arena/pause/mainButtonContainer"]
+layout_mode = 0
+offset_left = 120.0
+offset_top = 110.0
+offset_right = 320.0
+offset_bottom = 165.0
+pivot_offset = Vector2(150, 25)
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = ExtResource("13_a8y0u")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 24
+text = "PAUSED"
+vertical_alignment = 1
+
+[node name="OptionsButton" type="Button" parent="arena/pause/mainButtonContainer"]
+z_index = 201
+layout_mode = 0
+offset_left = 140.0
+offset_top = 160.0
+offset_right = 249.0
+offset_bottom = 215.0
+theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("13_a8y0u")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_yq6so")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_fv21b")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tel4y")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_qkpxi")
+theme_override_styles/focus = SubResource("StyleBoxFlat_5q0nq")
+text = "OPTIONS"
+alignment = 0
+
+[node name="TutorialButton" type="Button" parent="arena/pause/mainButtonContainer"]
+z_index = 201
+layout_mode = 0
+offset_left = 140.0
+offset_top = 210.0
+offset_right = 287.0
+offset_bottom = 265.0
+theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("13_a8y0u")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_yq6so")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_fv21b")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tel4y")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_qkpxi")
+theme_override_styles/focus = SubResource("StyleBoxFlat_5q0nq")
+text = "TUTORIALS"
+alignment = 0
+
+[node name="RestartButton" type="Button" parent="arena/pause/mainButtonContainer"]
+z_index = 201
+layout_mode = 0
+offset_left = 140.0
+offset_top = 260.0
+offset_right = 401.0
+offset_bottom = 315.0
+theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("13_a8y0u")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_yq6so")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_fv21b")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tel4y")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_qkpxi")
+theme_override_styles/focus = SubResource("StyleBoxFlat_5q0nq")
+text = "RESTART ENCOUNTER"
+alignment = 0
+
+[node name="MainMenuButton" type="Button" parent="arena/pause/mainButtonContainer"]
+z_index = 201
+layout_mode = 0
+offset_left = 140.0
+offset_top = 310.0
+offset_right = 379.0
+offset_bottom = 365.0
+theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("13_a8y0u")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_yq6so")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_fv21b")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tel4y")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_qkpxi")
+theme_override_styles/focus = SubResource("StyleBoxFlat_5q0nq")
+text = "QUIT TO MAIN MENU"
+alignment = 0
+
+[node name="OptionsButtonContainer" type="Control" parent="arena/pause"]
+process_mode = 4
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_top = 270.0
+offset_right = 1920.0
+offset_bottom = 810.0
+
+[node name="Heading" type="RichTextLabel" parent="arena/pause/OptionsButtonContainer"]
+layout_mode = 1
+offset_left = 120.0
+offset_top = 110.0
+offset_right = 320.0
+offset_bottom = 165.0
+pivot_offset = Vector2(150, 25)
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = ExtResource("13_a8y0u")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 24
+text = "OPTIONS"
+vertical_alignment = 1
+
+[node name="DisplayButton" type="Button" parent="arena/pause/OptionsButtonContainer"]
+z_index = 201
+layout_mode = 0
+offset_left = 140.0
+offset_top = 160.0
+offset_right = 286.0
+offset_bottom = 215.0
+theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("13_a8y0u")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_dgi5k")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_j8jky")
+theme_override_styles/hover = SubResource("StyleBoxFlat_kmb1v")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_fuf3a")
+theme_override_styles/focus = SubResource("StyleBoxFlat_pibwh")
+text = "DISPLAY"
+alignment = 0
+
+[node name="AudioButton" type="Button" parent="arena/pause/OptionsButtonContainer"]
+z_index = 201
+layout_mode = 0
+offset_left = 140.0
+offset_top = 210.0
+offset_right = 315.0
+offset_bottom = 265.0
+theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("13_a8y0u")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_dgi5k")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_j8jky")
+theme_override_styles/hover = SubResource("StyleBoxFlat_kmb1v")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_fuf3a")
+theme_override_styles/focus = SubResource("StyleBoxFlat_pibwh")
+text = "AUDIO"
+alignment = 0
+
+[node name="AccessibilityButton" type="Button" parent="arena/pause/OptionsButtonContainer"]
+z_index = 201
+layout_mode = 0
+offset_left = 140.0
+offset_top = 260.0
+offset_right = 322.0
+offset_bottom = 315.0
+theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("13_a8y0u")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_dgi5k")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_j8jky")
+theme_override_styles/hover = SubResource("StyleBoxFlat_kmb1v")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_fuf3a")
+theme_override_styles/focus = SubResource("StyleBoxFlat_pibwh")
+text = "ACCESSIBILITY"
+alignment = 0
+
 [node name="EndTurnButton" type="Button" parent="."]
 visible = false
 offset_left = 835.0
@@ -1340,4 +1570,7 @@ text = "END TURN"
 [connection signal="pressed" from="arena/gameOver/ReplayButton" to="arena" method="_on_replay_button_pressed"]
 [connection signal="pressed" from="arena/gameOver/MainMenuButton" to="arena" method="_on_main_menu_button_pressed"]
 [connection signal="pressed" from="arena/gameOver/ContinueButton" to="arena" method="_on_continue_button_pressed"]
+[connection signal="pressed" from="arena/pause/mainButtonContainer/OptionsButton" to="arena/pause" method="_on_options_button_pressed"]
+[connection signal="pressed" from="arena/pause/mainButtonContainer/RestartButton" to="arena/pause" method="_on_restart_button_pressed"]
+[connection signal="pressed" from="arena/pause/mainButtonContainer/MainMenuButton" to="arena/pause" method="_on_main_menu_button_pressed"]
 [connection signal="pressed" from="EndTurnButton" to="battleManager" method="_on_end_turn_button_pressed"]

@@ -255,9 +255,9 @@ alignment = 0
 [node name="BackButton" type="Button" parent="storyButtonContainer"]
 z_index = 201
 layout_mode = 0
-offset_left = 120.0
+offset_left = 140.0
 offset_top = 400.0
-offset_right = 188.0
+offset_right = 208.0
 offset_bottom = 455.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
