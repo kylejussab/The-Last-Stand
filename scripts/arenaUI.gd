@@ -8,15 +8,13 @@ extends Node2D
 @onready var opponentHealthLabel = $opponent/value
 @onready var opponentHead = $opponent/head
 
-@onready var endTurnButton = $"../EndTurnButton"
-
 @onready var battleManager = %battleManager
 
 func _ready() -> void:
-	for button in $"../arena/gameOver".get_children():
+	for button in %gameOver.get_children():
 		if button is Button:
-			button.mouse_entered.connect(func(): $"../arena/ButtonHoverSound".play())
-			button.pressed.connect(func(): $"../arena/ButtonClickSound".play())
+			button.mouse_entered.connect(func(): %ButtonHoverSound.play())
+			button.pressed.connect(func(): %ButtonClickSound.play())
 
 func update_health(who: Actor.Type, value: int, instant: bool = false) -> void:
 	if not is_node_ready():
@@ -107,7 +105,7 @@ func play_damage_effect(who: Actor.Type, value: int) -> Signal:
 			animationPlayer = $opponent/AnimationPlayer
 			damageLabel = $opponent/damage
 	
-	$"../arena/damageSound".play()
+	%damageSound.play()
 	
 	damageLabel.text = "-" + str(value)
 	animationPlayer.queue("showDamage")
@@ -115,9 +113,8 @@ func play_damage_effect(who: Actor.Type, value: int) -> Signal:
 	return animationPlayer.animation_finished
 
 func show_end_turn_button(visibility: bool = true) -> void:
-	if endTurnButton:
-		endTurnButton.visible = visibility
-		endTurnButton.disabled = !visibility
+	%EndTurnButton.visible = visibility
+	%EndTurnButton.disabled = !visibility
 
 # Helpers
 func _on_replay_button_pressed() -> void:
@@ -140,7 +137,7 @@ func _on_main_menu_button_pressed() -> void:
 func _fade_with_round_reset() -> void:
 	await Curtain.fade_in()
 	
-	$"../pauseIcon/text".text = "PAUSE"
+	%pauseIcon/text.text = "PAUSE"
 	
 	change_mood(Actor.Type.PLAYER, Actor.Mood.NEUTRAL)
 	change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
@@ -157,9 +154,9 @@ func _fade_with_round_reset() -> void:
 	battleManager.resetArena()
 
 func _reset_game_over_ui() -> void:
-	$"../arena/gameOver/".visible = false
+	%gameOver.visible = false
 	
-	for child in $"../arena/gameOver/".get_children():
+	for child in %gameOver.get_children():
 		if child is Button:
 			child.disabled = true
 
@@ -167,11 +164,11 @@ func _reset_board_state() -> void:
 	battleManager.lockPlayerInput = true
 	show_end_turn_button(false)
 	GameStats.reset_round_stats()
-	$"../playerHand".playerHand = []
-	$"../opponentHand".opponentHand = []
+	%playerHand.playerHand = []
+	%opponentHand.opponentHand = []
 	
 	# Clean up older scene children
-	for card in $"../cardManager".get_children():
+	for card in %cardManager.get_children():
 		card.queue_free()
 
 func _get_next_opponent() -> Actor.Avatar:

@@ -274,6 +274,7 @@ script = ExtResource("1_o6xl0")
 one_shot = true
 
 [node name="cardManager" type="Node2D" parent="."]
+unique_name_in_owner = true
 script = ExtResource("1_0wfyh")
 
 [node name="battleManager" type="Node" parent="."]
@@ -307,9 +308,11 @@ z_index = -2
 position = Vector2(1214.5, 407)
 
 [node name="playerHand" type="Node2D" parent="."]
+unique_name_in_owner = true
 script = ExtResource("5_tbgi4")
 
 [node name="opponentHand" type="Node2D" parent="."]
+unique_name_in_owner = true
 script = ExtResource("11_ya4ey")
 
 [node name="characterDeck" type="Node2D" parent="."]
@@ -376,16 +379,19 @@ z_index = -99
 script = ExtResource("16_2f3dj")
 
 [node name="damageSound" type="AudioStreamPlayer2D" parent="arena"]
+unique_name_in_owner = true
 stream = ExtResource("15_2wyq8")
 volume_db = -15.0
 
 [node name="ButtonClickSound" type="AudioStreamPlayer2D" parent="arena"]
+unique_name_in_owner = true
 process_mode = 3
 position = Vector2(770, 790)
 stream = ExtResource("23_y6deb")
 volume_db = 20.0
 
 [node name="ButtonHoverSound" type="AudioStreamPlayer2D" parent="arena"]
+unique_name_in_owner = true
 process_mode = 3
 position = Vector2(770, 790)
 stream = ExtResource("24_og1vs")
@@ -1754,6 +1760,7 @@ text = "NO"
 alignment = 0
 
 [node name="pauseIcon" type="Node2D" parent="."]
+unique_name_in_owner = true
 z_index = 202
 
 [node name="image" type="Sprite2D" parent="pauseIcon"]
@@ -1783,6 +1790,7 @@ autowrap_mode = 0
 vertical_alignment = 1
 
 [node name="EndTurnButton" type="Button" parent="."]
+unique_name_in_owner = true
 visible = false
 offset_left = 835.0
 offset_top = 570.0
