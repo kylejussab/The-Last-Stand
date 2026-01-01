@@ -1,206 +1,154 @@
 extends Node2D
 
-@onready var playerName = $player/name
-@onready var playerHealth = $player/value
+@onready var playerNameLabel = $player/name
+@onready var playerHealthLabel = $player/value
 @onready var playerHead = $player/head
 
-@onready var opponentName = $opponent/name
-@onready var opponentHealth = $opponent/value
+@onready var opponentNameLabel = $opponent/name
+@onready var opponentHealthLabel = $opponent/value
 @onready var opponentHead = $opponent/head
 
 @onready var endTurnButton = $"../EndTurnButton"
 
 @onready var battleManager = %battleManager
 
-var ARENAHEADS_DATABASE = {
-	"June": {
-		"name": "June Ravel",
-		"description": "Former Firefly",
-		"health": "35",
-		"headPath": "res://assets/arenaHeads/"
-	},
-	"Ethan": {
-		"name": "Ethan Hark",
-		"description": "Patrol Leader",
-		"health": "1",
-		"headPath": "res://assets/arenaHeads/",
-		"arenaPath": "res://assets/arenas/"
-	},
-	"Silas": {
-		"name": "Silas Vane",
-		"description": "Scavenger King",
-		"health": "1", # 50 is too high, possibly for a final boss, but not a character in this mode
-		"headPath": "res://assets/arenaHeads/",
-		"arenaPath": "res://assets/arenas/"
-	},
-	"Mira": {
-		"name": "Mira Thorne",
-		"description": "Ex-Medic",
-		"health": "1", #25
-		"headPath": "res://assets/arenaHeads/",
-		"arenaPath": "res://assets/arenas/"
-	},
-	"Kael": {
-		"name": "Kaelen Voss",
-		"description": "Shield Brother",
-		"health": "1", #45
-		"headPath": "res://assets/arenaHeads/",
-		"arenaPath": "res://assets/arenas/"
-	}}
-
 func _ready() -> void:
 	for button in $"../arena/gameOver".get_children():
 		if button is Button:
-			button.mouse_entered.connect(_play_hover_sound)
-			button.pressed.connect(_play_click_sound)
+			button.mouse_entered.connect(func(): $"../arena/ButtonHoverSound".play())
+			button.pressed.connect(func(): $"../arena/ButtonClickSound".play())
 
-func set_health(who: String, value: int):
+func update_health(who: Actor.Type, value: int, instant: bool = false) -> void:
 	if not is_node_ready():
 		await ready
 		
-	if who == "player":
-		playerHealth.text = str(value)
-		ARENAHEADS_DATABASE[GameStats.currentPlayer].health = str(value)
-	elif who == "opponent":
-		opponentHealth.text = str(value)
-
-func get_health(who: String) -> int:
-	if who == "player":
-		return int(playerHealth.text)
-	elif who == "opponent":
-		return int(opponentHealth.text)
+	var label: Label = playerHealthLabel if who == Actor.Type.PLAYER else opponentHealthLabel
+	var startValue: int = int(label.text)
+	
+	if who == Actor.Type.PLAYER:
+		Database.AVATARS[GameStats.currentPlayer].health = value
+	
+	if Settings.reduceAnimations or instant:
+		label.text = str(value)
 	else:
-		return 0
+		var tween = create_tween()
+		tween.tween_method(
+			func(val: int): label.text = str(val),
+			startValue,
+			value,
+			1.0
+		)
 
-func damage_health(who: String, damage: int):
-	var label = playerHealth if who == "player" else opponentHealth
-	var startValue = int(label.text)
-	
-	var duration = 0.0 if Settings.reduceAnimations else 1.0
-	
-	var tween = create_tween()
-	tween.tween_method(
-		func(value: int):
-			label.text = str(value)
-			if who == "player":
-				ARENAHEADS_DATABASE[GameStats.currentPlayer].health = str(value),
-		startValue,
-		damage,
-		duration
-	)
+func get_health(who: Actor.Type) -> int:
+	match who:
+		Actor.Type.PLAYER:
+			return int(playerHealthLabel.text)
+		Actor.Type.OPPONENT:
+			return int(opponentHealthLabel.text)
+		_:
+			return 0
 
-func setup_character(firstName: String, isPlayer: bool):
-	var side = "player" if isPlayer else "opponent"
-	get_node(side + "/name").text = ARENAHEADS_DATABASE[firstName].name
-	get_node(side + "/description").text = ARENAHEADS_DATABASE[firstName].description
-	get_node(side + "/value").text = ARENAHEADS_DATABASE[firstName].health
+func setup_avatar(avatar: Actor.Avatar, type: Actor.Type) -> void:
+	var data = Database.AVATARS[avatar]
 	
-	var path = ARENAHEADS_DATABASE[firstName].headPath
-	var head = $player/head if isPlayer else $opponent/head
+	var isPlayer: bool = true if type == Actor.Type.PLAYER else false
+	var avatarParent: Node2D = get_node("player") if isPlayer else get_node("opponent")
 	
-	head.get_node("neutral").texture = load(path + firstName + "Neutral.png")
-	head.get_node("hurt").texture = load(path + firstName + "Hurt.png")
-	head.get_node("thinking").texture = load(path + firstName + "Thinking.png")
-	head.get_node("happy").texture = load(path + firstName + "Happy.png")
+	avatarParent.get_node("name").text = data.name
+	avatarParent.get_node("description").text = data.description
+	avatarParent.get_node("value").text = str(data.health)
 	
-	if !isPlayer:
-		$image.texture = load(ARENAHEADS_DATABASE[firstName].arenaPath + firstName + "Arena.png")
+	var basePath: String = "%s%s" % [data.headPath, data.name.get_slice(" ", 0)]
+	
+	var headNode: Node2D = avatarParent.get_node("head")
+	headNode.get_node("neutral").texture = load(basePath + "Neutral.png")
+	headNode.get_node("hurt").texture = load(basePath + "Hurt.png")
+	headNode.get_node("thinking").texture = load(basePath + "Thinking.png")
+	headNode.get_node("happy").texture = load(basePath + "Happy.png")
+	
+	if type == Actor.Type.OPPONENT:
+		$image.texture = load("%s%sArena.png" % [data.arenaPath, data.name.get_slice(" ", 0)])
 
-func change_expression(who: String, expression: String):
-	var states = ["neutral", "thinking", "hurt", "happy"]
+func change_mood(who: Actor.Type, mood: Actor.Mood) -> void:
+	var headNode: Node2D = playerHead if who == Actor.Type.PLAYER else opponentHead
+	var expressionNodeName: String = ""
+	
+	match mood:
+		Actor.Mood.NEUTRAL: expressionNodeName = "neutral"
+		Actor.Mood.THINKING: expressionNodeName = "thinking"
+		Actor.Mood.HURT: expressionNodeName = "hurt"
+		Actor.Mood.HAPPY: expressionNodeName = "happy"
+	
+	for child in headNode.get_children():
+		if child.name in ["neutral", "thinking", "hurt", "happy"]:
+			child.visible = (child.name == expressionNodeName)
 
-	if who == "player":
-		for state in states:
-			playerHead.get_node(state).visible = (state == expression)
-	elif who == "opponent":
-		for state in states:
-			opponentHead.get_node(state).visible = (state == expression)
-
-func set_indicator(who: String):
+func set_indicator(who: Actor.Type) -> void:
 	$player/indicator.visible = false
 	$opponent/indicator.visible = false
 	
-	if who == "none":
-		return
-	
-	if who == "player":
-		$player/indicator.visible = true
-	elif who == "opponent":
-		$opponent/indicator.visible = true
+	match who:
+		Actor.Type.NONE:
+			return
+		Actor.Type.PLAYER:
+			$player/indicator.visible = true
+		Actor.Type.OPPONENT:
+			$opponent/indicator.visible = true
 
-func show_damage(who: String, amount: int):
-	var animationPlayer
-	var damageLabel
+func play_damage_effect(who: Actor.Type, value: int) -> Signal:
+	var animationPlayer: AnimationPlayer
+	var damageLabel: Label
 	
-	if who == "player":
-		animationPlayer = $player/AnimationPlayer
-		damageLabel = $player/damage
-	elif who == "opponent":
-		animationPlayer = $opponent/AnimationPlayer
-		damageLabel = $opponent/damage
+	match who:
+		Actor.Type.PLAYER:
+			animationPlayer = $player/AnimationPlayer
+			damageLabel = $player/damage
+		Actor.Type.OPPONENT:
+			animationPlayer = $opponent/AnimationPlayer
+			damageLabel = $opponent/damage
 	
 	$"../arena/damageSound".play()
 	
-	damageLabel.text = "-" + str(amount)
+	damageLabel.text = "-" + str(value)
 	animationPlayer.queue("showDamage")
 	
 	return animationPlayer.animation_finished
 
-func show_end_turn_button(visibility: bool = true):
+func show_end_turn_button(visibility: bool = true) -> void:
 	if endTurnButton:
 		endTurnButton.visible = visibility
 		endTurnButton.disabled = !visibility
 
+# Helpers
 func _on_replay_button_pressed() -> void:
 	GameStats.replayedRound = true
 	GameStats.gameMode = "Last Stand"
-	fade_with_round_reset()
+	_fade_with_round_reset()
 
 func _on_continue_button_pressed() -> void:
-	GameStats.currentOpponent = get_next_opponent()
-	GameStats.playerHealthValue = int(playerHealth.text)
+	GameStats.currentOpponent = _get_next_opponent()
+	GameStats.playerHealthValue = int(playerHealthLabel.text)
 	GameStats.replayedRound = false
 	GameStats.lastStandTotalScore += GameStats.lastStandCurrentRoundScore
 	GameStats.gameMode = "Last Stand"
-	fade_with_round_reset()
+	_fade_with_round_reset()
 
 func _on_main_menu_button_pressed() -> void:
 	GameStats.gameMode = "Main Menu"
 	Curtain.change_scene("res://scenes/mainMenu.tscn")
 
-func fade_with_round_reset():
+func _fade_with_round_reset() -> void:
 	await Curtain.fade_in()
 	
 	$"../pauseIcon/text".text = "PAUSE"
 	
-	change_expression("player", "neutral")
-	change_expression("opponent", "neutral")
+	change_mood(Actor.Type.PLAYER, Actor.Mood.NEUTRAL)
+	change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
 	
-	# Reset the round
-	battleManager.lockPlayerInput = true
-	battleManager.ui.show_end_turn_button(false)
-	GameStats.reset_round_stats()
-	$"../playerHand".playerHand = []
-	$"../opponentHand".opponentHand = []
+	_reset_game_over_ui()
+	_reset_board_state()
 	
-	# Clean up older scene children
-	for card in $"../cardManager".get_children():
-		card.queue_free()
-	
-	$"../arena/gameOver/overlay".visible = false
-	$"../arena/gameOver/title".visible = false
-	$"../arena/gameOver/line".visible = false
-	$"../arena/gameOver/performance".visible = false
-	$"../arena/gameOver/game".visible = false
-	$"../arena/gameOver/score".visible = false
-	$"../arena/gameOver/ReplayButton".visible = false
-	$"../arena/gameOver/ReplayButton".disabled = true
-	$"../arena/gameOver/MainMenuButton".visible = false
-	$"../arena/gameOver/MainMenuButton".disabled = true
-	$"../arena/gameOver/ContinueButton".visible = false
-	$"../arena/gameOver/ContinueButton".disabled = true
-	
-	set_health("player", GameStats.playerHealthValue)
+	update_health(Actor.Type.PLAYER, GameStats.playerHealthValue, true)
 	battleManager.setupArena(GameStats.currentPlayer, GameStats.currentOpponent)
 	await get_tree().create_timer(1).timeout
 	
@@ -208,15 +156,36 @@ func fade_with_round_reset():
 	
 	battleManager.resetArena()
 
-func get_next_opponent() -> String:
-	var list = ARENAHEADS_DATABASE.keys()
-	list.erase(GameStats.currentPlayer)
-	list.erase(GameStats.currentOpponent)
+func _reset_game_over_ui() -> void:
+	$"../arena/gameOver/".visible = false
 	
-	return list.pick_random()
+	for child in $"../arena/gameOver/".get_children():
+		if child is Button:
+			child.disabled = true
 
-func _play_hover_sound():
-	$"../arena/ButtonHoverSound".play()
+func _reset_board_state() -> void:
+	battleManager.lockPlayerInput = true
+	show_end_turn_button(false)
+	GameStats.reset_round_stats()
+	$"../playerHand".playerHand = []
+	$"../opponentHand".opponentHand = []
+	
+	# Clean up older scene children
+	for card in $"../cardManager".get_children():
+		card.queue_free()
 
-func _play_click_sound():
-	$"../arena/ButtonClickSound".play()
+func _get_next_opponent() -> Actor.Avatar:
+	if GameStats.opponentList.is_empty():
+		var list = Database.AVATARS.keys()
+		list.erase(GameStats.currentPlayer)
+		
+		if GameStats.currentOpponent in list and list.size() > 1:
+			list.erase(GameStats.currentOpponent)
+			list.shuffle()
+			list.push_back(GameStats.currentOpponent)
+		else:
+			list.shuffle()
+		
+		GameStats.opponentList = list
+	
+	return GameStats.opponentList.pop_front()

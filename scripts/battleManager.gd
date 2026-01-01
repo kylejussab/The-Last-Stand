@@ -50,38 +50,39 @@ func _ready() -> void:
 	$"../cardManager".connect("characterPlayed", Callable(self, "on_player_character_played"))
 	$"../cardManager".connect("supportPlayed", Callable(self, "on_player_support_played"))
 	
-	GameStats.currentPlayer = "June"
-	GameStats.currentOpponent = "Ethan"
+	# For now forcing it to start with Ethan, but it shouldn't
+	GameStats.currentPlayer = Actor.Avatar.JUNE
+	GameStats.currentOpponent = Actor.Avatar.ETHAN
 	GameStats.playerHealthValue = 100
 	
-	ui.set_health("player", GameStats.playerHealthValue)
+	ui.update_health(Actor.Type.PLAYER, GameStats.playerHealthValue, true)
 	setupArena(GameStats.currentPlayer, GameStats.currentOpponent)
 	
 	await draw_cards_at_start()
 	
-	ui.set_indicator("player")
-	ui.change_expression("player", "thinking")
-	ui.change_expression("opponent", "neutral")
+	ui.set_indicator(Actor.Type.PLAYER)
+	ui.change_mood(Actor.Type.PLAYER, Actor.Mood.THINKING)
+	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
 	roundStage = RoundStage.PLAYER_CHARACTER
 	lockPlayerInput = false
 	GameStats.set_start_time()
 
 func setupArena(player, opponent):
-	match player:
-		"June":
-			ui.setup_character("June", true)
+	ui.setup_avatar(player, Actor.Type.PLAYER)
+	
+	# We assign different Ais here when they are made
 	match opponent:
-		"Ethan":
-			ui.setup_character("Ethan", false)
+		Actor.Avatar.ETHAN:
+			ui.setup_avatar(opponent, Actor.Type.OPPONENT)
 			opponentAI = OpponentAIHighestValue.new()
-		"Silas":
-			ui.setup_character("Silas", false)
+		Actor.Avatar.SILAS:
+			ui.setup_avatar(opponent, Actor.Type.OPPONENT)
 			opponentAI = OpponentAIHighestValue.new()
-		"Mira":
-			ui.setup_character("Mira", false)
+		Actor.Avatar.MIRA:
+			ui.setup_avatar(opponent, Actor.Type.OPPONENT)
 			opponentAI = OpponentAIHighestValue.new()
-		"Kael":
-			ui.setup_character("Kael", false)
+		Actor.Avatar.KAEL:
+			ui.setup_avatar(opponent, Actor.Type.OPPONENT)
 			opponentAI = OpponentAIHighestValue.new()
 
 func resetTurn():
@@ -100,15 +101,15 @@ func resetTurn():
 	if GameStats.roundNumber % 2 == 0:
 		whoStartedRound = "opponent"
 		
-		ui.change_expression("opponent", "thinking")
-		ui.change_expression("player", "neutral")
+		ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.THINKING)
+		ui.change_mood(Actor.Type.PLAYER, Actor.Mood.NEUTRAL)
 		opponent_character_turn()
 	else:
 		whoStartedRound = "player"
 		
-		ui.set_indicator("player")
-		ui.change_expression("player", "thinking")
-		ui.change_expression("opponent", "neutral")
+		ui.set_indicator(Actor.Type.PLAYER)
+		ui.change_mood(Actor.Type.PLAYER, Actor.Mood.THINKING)
+		ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
 		
 		lockPlayerInput = false
 
@@ -122,11 +123,11 @@ func on_player_character_played(card):
 		roundStage = RoundStage.OPPONENT_CHARACTER
 		opponent_character_turn()
 	
-	ui.change_expression("player", "neutral")
+	ui.change_mood(Actor.Type.PLAYER, Actor.Mood.NEUTRAL)
 
 func opponent_character_turn():
-	ui.set_indicator("opponent")
-	ui.change_expression("opponent", "thinking")
+	ui.set_indicator(Actor.Type.OPPONENT)
+	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.THINKING)
 	lockPlayerInput = true
 	await wait_for(OPPONENT_THINKING_TIME)
 	
@@ -138,38 +139,38 @@ func opponent_character_turn():
 	await animate_opponent_playing_card(card, $"../cardSlots/opponentCardSlotCharacter")
 	opponentCharacterCard = card
 	
-	ui.set_indicator("player")
+	ui.set_indicator(Actor.Type.PLAYER)
 	
 	# If the player started the round
 	if playerCharacterCard != null:
 		ui.show_end_turn_button()
 		init_support_round()
 	else:
-		ui.change_expression("player", "thinking")
+		ui.change_mood(Actor.Type.PLAYER, Actor.Mood.THINKING)
 		lockPlayerInput = false
 		roundStage = RoundStage.PLAYER_CHARACTER
 	
-	ui.change_expression("opponent", "neutral")
+	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
 
 func init_support_round():
 	lockPlayerInput = false
 	
-	ui.change_expression("player", "neutral")
-	ui.change_expression("opponent", "neutral")
+	ui.change_mood(Actor.Type.PLAYER, Actor.Mood.NEUTRAL)
+	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
 	
 	apply_mid_round_perks()
 	allow_support_cards()
 	
 	if whoStartedRound == "player":
 		roundStage = RoundStage.PLAYER_SUPPORT
-		ui.change_expression("player", "thinking")
+		ui.change_mood(Actor.Type.PLAYER, Actor.Mood.THINKING)
 	else:
 		roundStage = RoundStage.OPPONENT_SUPPORT
-		ui.change_expression("opponent", "thinking")
+		ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.THINKING)
 		opponent_support_turn()
 
 func on_player_support_played(card):
-	ui.change_expression("player", "neutral")
+	ui.change_mood(Actor.Type.PLAYER, Actor.Mood.NEUTRAL)
 	
 	ui.show_end_turn_button(false)
 	
@@ -178,14 +179,14 @@ func on_player_support_played(card):
 	if whoStartedRound == "player":
 		opponent_support_turn()
 	else:
-		ui.set_indicator("none")
-		ui.change_expression("player", "neutral")
+		ui.set_indicator(Actor.Type.NONE)
+		ui.change_mood(Actor.Type.PLAYER, Actor.Mood.NEUTRAL)
 		await apply_end_round_perks()
 		end_turn()
 
 func opponent_support_turn():
-	ui.set_indicator("opponent")
-	ui.change_expression("opponent", "thinking")
+	ui.set_indicator(Actor.Type.OPPONENT)
+	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.THINKING)
 	
 	lockPlayerInput = true
 	await wait_for(OPPONENT_THINKING_TIME)
@@ -198,16 +199,16 @@ func opponent_support_turn():
 		animate_opponent_playing_card(card, $"../cardSlots/opponentCardSlotSupport")
 		opponentSupportCard = card
 	
-	ui.change_expression("opponent", "neutral")
+	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
 	
 	if whoStartedRound == "player":
-		ui.set_indicator("none")
+		ui.set_indicator(Actor.Type.NONE)
 		await apply_end_round_perks()
 		end_turn()
 	else:
 		# Always give the player the option of playing a support
-		ui.set_indicator("player")
-		ui.change_expression("player", "thinking")
+		ui.set_indicator(Actor.Type.PLAYER)
+		ui.change_mood(Actor.Type.PLAYER, Actor.Mood.THINKING)
 		lockPlayerInput = false
 		roundStage = RoundStage.PLAYER_SUPPORT
 		ui.show_end_turn_button()
@@ -221,8 +222,8 @@ func end_turn():
 	await wait_for(END_ROUND_TIME)
 	
 	# Check for game over first
-	var playerHealth = ui.get_health("player")
-	var opponentHealth = ui.get_health("opponent")
+	var playerHealth = ui.get_health(Actor.Type.PLAYER)
+	var opponentHealth = ui.get_health(Actor.Type.OPPONENT)
 	
 	if playerHealth <= 0 or opponentHealth <= 0:
 		await end_round_sequence()
@@ -254,14 +255,14 @@ func end_turn():
 
 func _on_end_turn_button_pressed() -> void:
 	ui.show_end_turn_button(false)
-	ui.change_expression("player", "neutral")
+	ui.change_mood(Actor.Type.PLAYER, Actor.Mood.NEUTRAL)
 	
 	# If player played support, let the AI choose to play support, otherwise end
 	if !opponentPlayedSupport:
 		opponent_support_turn()
 		return
 
-	ui.set_indicator("none")
+	ui.set_indicator(Actor.Type.NONE)
 	await apply_end_round_perks()
 	end_turn()
 
@@ -486,76 +487,76 @@ func calculate_damage():
 	var damage = 0
 	
 	if playerTotal > opponentTotal:
-		var opponentHealth = ui.get_health("opponent")
+		var opponentHealth = ui.get_health(Actor.Type.OPPONENT)
 		damage = playerTotal - opponentTotal
 		
 		opponentHealth -= damage
-		ui.damage_health("opponent", opponentHealth)
+		ui.update_health(Actor.Type.OPPONENT, opponentHealth)
 		
-		ui.change_expression("player", "happy")
-		ui.change_expression("opponent", "hurt")
+		ui.change_mood(Actor.Type.PLAYER, Actor.Mood.HAPPY)
+		ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.HURT)
 		
-		await ui.show_damage("opponent", damage)
+		await ui.play_damage_effect(Actor.Type.OPPONENT, damage)
 		
 		#special case for bloater
 		if opponentCharacterCard.cardKey == "Bloater" && opponentCharacterCard.perkValueAtRoundEnd:
-			var playerHealth = ui.get_health("player") - opponentCharacterCard.perkValueAtRoundEnd
+			var playerHealth = ui.get_health(Actor.Type.PLAYER) - opponentCharacterCard.perkValueAtRoundEnd
 			await wait_for(0.5)
 			
-			ui.damage_health("player", playerHealth)
-			await ui.show_damage("player", opponentCharacterCard.perkValueAtRoundEnd)
+			ui.update_health(Actor.Type.PLAYER, playerHealth)
+			await ui.play_damage_effect(Actor.Type.PLAYER, opponentCharacterCard.perkValueAtRoundEnd)
 		
 		if playerCharacterCard.perkValueAtRoundEnd:
 			opponentHealth -= playerCharacterCard.perkValueAtRoundEnd
 			await wait_for(0.5)
 			
-			ui.damage_health("opponent", opponentHealth)
-			await ui.show_damage("opponent", playerCharacterCard.perkValueAtRoundEnd)
+			ui.update_health(Actor.Type.OPPONENT, opponentHealth)
+			await ui.play_damage_effect(Actor.Type.OPPONENT, playerCharacterCard.perkValueAtRoundEnd)
 		
 		# Add to the underdog stat
 		if playerCharacterCard.value < opponentCharacterCard.value:
 			GameStats.roundWinsUnderdog += 1
 	elif opponentTotal > playerTotal:
-		var playerHealth = ui.get_health("player")
+		var playerHealth = ui.get_health(Actor.Type.PLAYER)
 		damage = opponentTotal - playerTotal
 		
 		playerHealth -= damage
-		ui.damage_health("player", playerHealth)
+		ui.update_health(Actor.Type.PLAYER, playerHealth)
 		
-		ui.change_expression("player", "hurt")
-		ui.change_expression("opponent", "happy")
+		ui.change_mood(Actor.Type.PLAYER, Actor.Mood.HURT)
+		ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.HAPPY)
 		
-		await ui.show_damage("player", damage)
+		await ui.play_damage_effect(Actor.Type.PLAYER, damage)
 		
 		#special case for bloater
 		if playerCharacterCard.cardKey == "Bloater" && playerCharacterCard.perkValueAtRoundEnd:
-			var opponentHealth = ui.get_health("opponent") - playerCharacterCard.perkValueAtRoundEnd
+			var opponentHealth = ui.get_health(Actor.Type.OPPONENT) - playerCharacterCard.perkValueAtRoundEnd
 			await wait_for(0.5)
 			
-			ui.damage_health("opponent", opponentHealth)
-			await ui.show_damage("opponent", playerCharacterCard.perkValueAtRoundEnd)
+			ui.update_health(Actor.Type.OPPONENT, opponentHealth)
+			await ui.play_damage_effect(Actor.Type.OPPONENT, playerCharacterCard.perkValueAtRoundEnd)
 		
 		if opponentCharacterCard.perkValueAtRoundEnd:
 			playerHealth -= opponentCharacterCard.perkValueAtRoundEnd
 			
 			await wait_for(0.5)
 			
-			ui.damage_health("player", playerHealth)
-			await ui.show_damage("player", opponentCharacterCard.perkValueAtRoundEnd)
+			ui.update_health(Actor.Type.PLAYER, playerHealth)
+			await ui.play_damage_effect(Actor.Type.PLAYER, opponentCharacterCard.perkValueAtRoundEnd)
 			
 	elif opponentTotal == playerTotal: # Special Case for Lev
 		if playerCharacterCard.cardKey == "LevRare":
-			var opponentHealth = ui.get_health("opponent") - playerCharacterCard.perkValueAtRoundEnd
+			var opponentHealth = ui.get_health(Actor.Type.OPPONENT) - playerCharacterCard.perkValueAtRoundEnd
 			await wait_for(0.5)
 			
-			ui.damage_health("opponent", opponentHealth)
-			await ui.show_damage("opponent", playerCharacterCard.perkValueAtRoundEnd)
+			ui.update_health(Actor.Type.OPPONENT, opponentHealth)
+			await ui.play_damage_effect(Actor.Type.OPPONENT, playerCharacterCard.perkValueAtRoundEnd)
 		if opponentCharacterCard.cardKey == "LevRare":
-			var playerHealth = ui.get_health("player") - opponentCharacterCard.perkValueAtRoundEnd
+			var playerHealth = ui.get_health(Actor.Type.OPPONENT) - opponentCharacterCard.perkValueAtRoundEnd
 			await wait_for(0.5)
 			
-			ui.damage_health("player", playerHealth)
-			await ui.show_damage("player", opponentCharacterCard.perkValueAtRoundEnd)
+			ui.update_health(Actor.Type.PLAYER, playerHealth)
+			await ui.play_damage_effect(Actor.Type.PLAYER, opponentCharacterCard.perkValueAtRoundEnd)
 
 func draw_cards_at_start(firstStart: bool = true):
 	if firstStart:
@@ -606,7 +607,7 @@ func end_round_sequence():
 	
 	await move_cards_to_discard(cardsToDiscard)
 	
-	battleAnimator.play_game_over_sequence(ui.get_health("player") > ui.get_health("opponent"))
+	battleAnimator.play_game_over_sequence(ui.get_health(Actor.Type.PLAYER) > ui.get_health(Actor.Type.OPPONENT))
 	
 	await repopulate_decks(true)
 	
@@ -621,9 +622,9 @@ func resetArena():
 	whoStartedRound = "player"
 	roundStage = RoundStage.PLAYER_CHARACTER
 	
-	ui.set_indicator("player")
-	ui.change_expression("player", "thinking")
-	ui.change_expression("opponent", "neutral")
+	ui.set_indicator(Actor.Type.PLAYER)
+	ui.change_mood(Actor.Type.PLAYER, Actor.Mood.THINKING)
+	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
 	
 	lockPlayerInput = false
 	

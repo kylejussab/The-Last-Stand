@@ -5,10 +5,11 @@ var gameMode: String = "Main Menu"
 var totalInGameTimePlayed: float = 0.0
 
 var playerHealthValue: int
+var opponentList: Array = []
 
 # Per round stats
-var currentPlayer: String
-var currentOpponent: String
+var currentPlayer: Actor.Avatar
+var currentOpponent: Actor.Avatar
 
 var roundNumber: int = 1
 var totalForceExerted: int = 0

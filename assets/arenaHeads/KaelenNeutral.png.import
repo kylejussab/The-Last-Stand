@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://baeum2xner26h"
-path="res://.godot/imported/KaelArena.png-7763fa2689b5f2b3737c4819902d5e1f.ctex"
+uid="uid://dksmfhv2pl1u0"
+path="res://.godot/imported/KaelenNeutral.png-2b0f45f082d527f79b7b8d9400d2b25f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/arenas/KaelArena.png"
-dest_files=["res://.godot/imported/KaelArena.png-7763fa2689b5f2b3737c4819902d5e1f.ctex"]
+source_file="res://assets/arenaHeads/KaelenNeutral.png"
+dest_files=["res://.godot/imported/KaelenNeutral.png-2b0f45f082d527f79b7b8d9400d2b25f.ctex"]
 
 [params]
 

@@ -1,3 +1,5 @@
+extends Node2D
+
 const CHARACTERS = { # Value, Type, Faction, Class
 	"Yara": [3, "Character", "Seraphite", "Stealthy"],
 	"Lev": [3, "Character", "Seraphite", "Stealthy/Survivor"],
@@ -78,4 +80,42 @@ const PERKS = {
 	"TheProphet": "res://scripts/perks/theProphetPerk.gd",
 	"Alice": "res://scripts/perks/alicePerk.gd",
 	"SupplyCache": "res://scripts/perks/supplyCachePerk.gd",
+}
+
+var AVATARS = {
+	Actor.Avatar.JUNE: {
+		"name": "June Ravel",
+		"description": "Former Firefly",
+		"health": 35,
+		"headPath": "res://assets/arenaHeads/"
+	},
+	Actor.Avatar.ETHAN: {
+		"name": "Ethan Hark",
+		"description": "Patrol Leader",
+		"health": 1,
+		"headPath": "res://assets/arenaHeads/",
+		"arenaPath": "res://assets/arenas/"
+	},
+	Actor.Avatar.SILAS: {
+		"name": "Silas Vane",
+		"description": "Scavenger King",
+		"health": 1, # 50 is too high, possibly for a final boss, but not a character in this mode
+		"headPath": "res://assets/arenaHeads/",
+		"arenaPath": "res://assets/arenas/"
+	},
+	Actor.Avatar.MIRA: {
+		"name": "Mira Thorne",
+		"description": "Ex-Medic",
+		"health": 1, #25
+		"headPath": "res://assets/arenaHeads/",
+		"arenaPath": "res://assets/arenas/"
+	},
+	Actor.Avatar.KAEL: {
+		"name": "Kaelen Voss",
+		"description": "Shield Brother",
+		"health": 1, #45,
+
+		"headPath": "res://assets/arenaHeads/",
+		"arenaPath": "res://assets/arenas/"
+	}
 }
