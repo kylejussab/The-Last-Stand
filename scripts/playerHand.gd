@@ -13,7 +13,13 @@ func _ready() -> void:
 func add_card_to_hand(card, speed):
 	if card not in playerHand:
 		if card.type == "Character":
-			playerHand.insert(0, card)
+			var split_index = 0
+			for i in range(playerHand.size()):
+				if playerHand[i].type == "Support":
+					break
+				split_index += 1
+			
+			playerHand.insert(split_index, card)
 		else:
 			playerHand.append(card)
 		update_hand_positions(speed)

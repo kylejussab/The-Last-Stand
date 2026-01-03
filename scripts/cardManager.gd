@@ -9,8 +9,10 @@ const DEFAULT_CARD_MOVE_SPEED = 0.1
 
 var draggedCard: Node2D
 var screenSize: Vector2
-var isHoveringOnCard: bool
+var hoveredCard: Node2D = null
 var playerHandReference: Node
+
+@onready var battleManager = %battleManager
 
 func _ready() -> void:
 	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
@@ -27,10 +29,12 @@ func _process(_delta: float) -> void:
 func start_drag(card):
 	if !$"../battleManager".lockPlayerInput:
 		draggedCard = card
+		draggedCard.play_draw_sound()
 		card.scale = Vector2(1, 1)
 
 func finish_drag():
 	draggedCard.scale = Vector2(1.05, 1.05)
+	draggedCard.play_draw_sound()
 	
 	var cardSlot = get_card_slot()
 	
@@ -53,6 +57,11 @@ func finish_drag():
 					emit_signal("characterPlayed", draggedCard)
 				else:
 					emit_signal("supportPlayed", draggedCard)
+				
+				# Ensure its not highlighted
+				draggedCard.get_node("AnimationPlayer").play("hideDescription")
+				var endTime = draggedCard.get_node("AnimationPlayer").current_animation_length
+				draggedCard.get_node("AnimationPlayer").seek(endTime, true)
 				
 				draggedCard = null
 				return
@@ -89,27 +98,42 @@ func connect_card_signals(card):
 	card.connect("hoverExited", on_card_hover_exit)
 
 func on_card_hover_enter(card):
-	if !isHoveringOnCard:
-		highlight_card(card, true)
-		isHoveringOnCard = true
+	if draggedCard: return
+	
+	if hoveredCard and hoveredCard != card:
+		highlight_card(hoveredCard, false)
+	
+	hoveredCard = card
+	highlight_card(card, true)
 
 func on_card_hover_exit(card):
-	if !draggedCard && !card.cardSlot:
+	if hoveredCard == card:
 		highlight_card(card, false)
+		hoveredCard = null
 		
 		var newCardHovered = get_card()
 		if newCardHovered:
-			highlight_card(card, true)
-		else:
-			isHoveringOnCard = false
+			on_card_hover_enter(newCardHovered)
 
 func highlight_card(card, hovered: bool):
-	if hovered:
-		card.scale = Vector2(1.05, 1.05)
+	if hovered && !battleManager.lockPlayerInput:
+		card.scale = Vector2(1.35, 1.35)
 		card.z_index = 2
+		if card.perk && !draggedCard && !battleManager.lockPlayerInput:
+			card.get_node("AnimationPlayer").play("showDescription")
+			
+			if Settings.reduceAnimations:
+				var endTime = card.get_node("AnimationPlayer").current_animation_length
+				card.get_node("AnimationPlayer").seek(endTime, true)
 	else:
 		card.scale = Vector2(1, 1)
 		card.z_index = 1
+		if card.perk && !battleManager.lockPlayerInput:
+			card.get_node("AnimationPlayer").play("hideDescription")
+			
+			if Settings.reduceAnimations:
+				var endTime = card.get_node("AnimationPlayer").current_animation_length
+				card.get_node("AnimationPlayer").seek(endTime, true)
 
 func get_top_card(cards):
 	var topCard = cards[0].collider.get_parent()
@@ -141,6 +165,7 @@ func move_card_on_double_click(card, cardSlot):
 	if !cardSlot.occupied:
 		var tween = get_tree().create_tween()
 		tween.tween_property(card, "position", cardSlot.position, 0.1)
+		tween.finished.connect(func(): card.play_draw_sound())
 		
 		playerHandReference.remove_card_from_hand(draggedCard)
 		
@@ -157,6 +182,11 @@ func move_card_on_double_click(card, cardSlot):
 			emit_signal("characterPlayed", draggedCard)
 		else:
 			emit_signal("supportPlayed", draggedCard)
+		
+		# Ensure its not highlighted
+		draggedCard.get_node("AnimationPlayer").play("hideDescription")
+		var endTime = draggedCard.get_node("AnimationPlayer").current_animation_length
+		draggedCard.get_node("AnimationPlayer").seek(endTime, true)
 		
 		playerHandReference.remove_card_from_hand(draggedCard)
 		draggedCard = null

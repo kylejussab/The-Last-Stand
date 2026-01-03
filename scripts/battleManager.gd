@@ -3,6 +3,7 @@ extends Node
 const OPPONENT_THINKING_TIME = 1
 const END_ROUND_TIME = 1.2
 const CARD_MOVE_SPEED = 0.2
+const CARD_MOVE_FAST_SPEED = 0.15
 
 const DISCARD_PILE_POSITION = Vector2(135, 300)
 
@@ -20,10 +21,7 @@ var opponentCharacterCard
 var opponentSupportCard
 
 var opponentPlayedSupport = false
-
-var lockPlayerInput = false
-
-var turnNumber = 1
+var lockPlayerInput = true
 
 enum RoundStage {
 	PLAYER_CHARACTER,
@@ -32,14 +30,18 @@ enum RoundStage {
 	OPPONENT_SUPPORT,
 	END_CALCULATION}
 
-var whoStartedRound
+var whoStartedRound: String = "player"
 var roundStage: RoundStage
 
 var opponentAI: OpponentAI
 
 var discardedCards = []
+var discardedCardZIndex = 1
 
 var showOpponentsCards = false
+
+@onready var ui = %arena
+@onready var battleAnimator = %battleAnimator
 
 func _ready() -> void:
 	$"../battleTimer".one_shot = true
@@ -48,24 +50,40 @@ func _ready() -> void:
 	$"../cardManager".connect("characterPlayed", Callable(self, "on_player_character_played"))
 	$"../cardManager".connect("supportPlayed", Callable(self, "on_player_support_played"))
 	
-	hide_end_turn_button()
+	# For now forcing it to start with Ethan, but it shouldn't
+	GameStats.currentPlayer = Actor.Avatar.JUNE
+	GameStats.currentOpponent = Actor.Avatar.ETHAN
+	GameStats.playerHealthValue = 100
 	
-	opponentAI = OpponentAIHighestValue.new()
+	ui.update_health(Actor.Type.PLAYER, GameStats.playerHealthValue, true)
+	setupArena(GameStats.currentPlayer, GameStats.currentOpponent)
 	
-	# Player always starts
-	whoStartedRound = "player"
+	await draw_cards_at_start()
+	
+	ui.set_indicator(Actor.Type.PLAYER)
+	ui.change_mood(Actor.Type.PLAYER, Actor.Mood.THINKING)
+	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
 	roundStage = RoundStage.PLAYER_CHARACTER
-	$"../arena/player/indicator".visible = true
-	$"../arena/opponent/indicator".visible = false
+	lockPlayerInput = false
+	GameStats.set_start_time()
+
+func setupArena(player, opponent):
+	ui.setup_avatar(player, Actor.Type.PLAYER)
 	
-	# For now we are hard coding the player and enemy names (will be randomized later)
-	$"../arena/opponent/name".text = "Ethan Hark"
-	$"../arena/opponent/description".text = "Patrol Leader"
-	$"../arena/opponent/value".text = "35"
-	
-	$"../arena/player/name".text = "June Ravel"
-	$"../arena/player/description".text = "Former Firefly"
-	$"../arena/player/value".text = "35"
+	# We assign different Ais here when they are made
+	match opponent:
+		Actor.Avatar.ETHAN:
+			ui.setup_avatar(opponent, Actor.Type.OPPONENT)
+			opponentAI = OpponentAIHighestValue.new()
+		Actor.Avatar.SILAS:
+			ui.setup_avatar(opponent, Actor.Type.OPPONENT)
+			opponentAI = OpponentAIHighestValue.new()
+		Actor.Avatar.MIRA:
+			ui.setup_avatar(opponent, Actor.Type.OPPONENT)
+			opponentAI = OpponentAIHighestValue.new()
+		Actor.Avatar.KAEL:
+			ui.setup_avatar(opponent, Actor.Type.OPPONENT)
+			opponentAI = OpponentAIHighestValue.new()
 
 func resetTurn():
 	playerCharacterCard = null
@@ -75,21 +93,25 @@ func resetTurn():
 	
 	opponentPlayedSupport = false
 	
-	hide_end_turn_button()
+	ui.show_end_turn_button(false)
 	
 	# Shuffle cards from discard back into decks if needed
 	await repopulate_decks()
 	
-	if turnNumber % 2 == 0:
+	if GameStats.roundNumber % 2 == 0:
 		whoStartedRound = "opponent"
+		
+		ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.THINKING)
+		ui.change_mood(Actor.Type.PLAYER, Actor.Mood.NEUTRAL)
+		opponent_character_turn()
 	else:
 		whoStartedRound = "player"
-		$"../arena/player/indicator".visible = true
-		$"../arena/opponent/indicator".visible = false
+		
+		ui.set_indicator(Actor.Type.PLAYER)
+		ui.change_mood(Actor.Type.PLAYER, Actor.Mood.THINKING)
+		ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
+		
 		lockPlayerInput = false
-	
-	if whoStartedRound == "opponent":
-		opponent_character_turn()
 
 func on_player_character_played(card):
 	playerCharacterCard = card
@@ -100,10 +122,12 @@ func on_player_character_played(card):
 	else:
 		roundStage = RoundStage.OPPONENT_CHARACTER
 		opponent_character_turn()
+	
+	ui.change_mood(Actor.Type.PLAYER, Actor.Mood.NEUTRAL)
 
 func opponent_character_turn():
-	$"../arena/player/indicator".visible = false
-	$"../arena/opponent/indicator".visible = true
+	ui.set_indicator(Actor.Type.OPPONENT)
+	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.THINKING)
 	lockPlayerInput = true
 	await wait_for(OPPONENT_THINKING_TIME)
 	
@@ -115,46 +139,55 @@ func opponent_character_turn():
 	await animate_opponent_playing_card(card, $"../cardSlots/opponentCardSlotCharacter")
 	opponentCharacterCard = card
 	
-	$"../arena/player/indicator".visible = true
-	$"../arena/opponent/indicator".visible = false
+	ui.set_indicator(Actor.Type.PLAYER)
+	
 	# If the player started the round
 	if playerCharacterCard != null:
-		show_end_turn_button()
+		ui.show_end_turn_button()
 		init_support_round()
 	else:
+		ui.change_mood(Actor.Type.PLAYER, Actor.Mood.THINKING)
 		lockPlayerInput = false
 		roundStage = RoundStage.PLAYER_CHARACTER
+	
+	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
 
 func init_support_round():
 	lockPlayerInput = false
+	
+	ui.change_mood(Actor.Type.PLAYER, Actor.Mood.NEUTRAL)
+	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
 	
 	apply_mid_round_perks()
 	allow_support_cards()
 	
 	if whoStartedRound == "player":
 		roundStage = RoundStage.PLAYER_SUPPORT
+		ui.change_mood(Actor.Type.PLAYER, Actor.Mood.THINKING)
 	else:
 		roundStage = RoundStage.OPPONENT_SUPPORT
+		ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.THINKING)
 		opponent_support_turn()
 
 func on_player_support_played(card):
-	hide_end_turn_button()
+	ui.change_mood(Actor.Type.PLAYER, Actor.Mood.NEUTRAL)
+	
+	ui.show_end_turn_button(false)
 	
 	playerSupportCard = card
 	
 	if whoStartedRound == "player":
 		opponent_support_turn()
 	else:
-		# Calculate the reward values (this is where health would be subtracted)
-		
-		$"../arena/player/indicator".visible = false
-		$"../arena/opponent/indicator".visible = false
+		ui.set_indicator(Actor.Type.NONE)
+		ui.change_mood(Actor.Type.PLAYER, Actor.Mood.NEUTRAL)
 		await apply_end_round_perks()
 		end_turn()
 
 func opponent_support_turn():
-	$"../arena/player/indicator".visible = false
-	$"../arena/opponent/indicator".visible = true
+	ui.set_indicator(Actor.Type.OPPONENT)
+	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.THINKING)
+	
 	lockPlayerInput = true
 	await wait_for(OPPONENT_THINKING_TIME)
 	
@@ -166,20 +199,19 @@ func opponent_support_turn():
 		animate_opponent_playing_card(card, $"../cardSlots/opponentCardSlotSupport")
 		opponentSupportCard = card
 	
+	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
+	
 	if whoStartedRound == "player":
-		# Calculate the reward values (this is where health would be subtracted)
-		
-		$"../arena/player/indicator".visible = false
-		$"../arena/opponent/indicator".visible = false
+		ui.set_indicator(Actor.Type.NONE)
 		await apply_end_round_perks()
 		end_turn()
 	else:
 		# Always give the player the option of playing a support
-		$"../arena/player/indicator".visible = true
-		$"../arena/opponent/indicator".visible = false
+		ui.set_indicator(Actor.Type.PLAYER)
+		ui.change_mood(Actor.Type.PLAYER, Actor.Mood.THINKING)
 		lockPlayerInput = false
 		roundStage = RoundStage.PLAYER_SUPPORT
-		show_end_turn_button()
+		ui.show_end_turn_button()
 	
 	opponentPlayedSupport = true
 
@@ -188,6 +220,14 @@ func end_turn():
 	# Apply any perks and do the calculation
 	await calculate_damage()
 	await wait_for(END_ROUND_TIME)
+	
+	# Check for game over first
+	var playerHealth = ui.get_health(Actor.Type.PLAYER)
+	var opponentHealth = ui.get_health(Actor.Type.OPPONENT)
+	
+	if playerHealth <= 0 or opponentHealth <= 0:
+		await end_round_sequence()
+		return
 	
 	var cardsToDiscard = []
 	var playerHand = $"../playerHand".playerHand
@@ -203,26 +243,26 @@ func end_turn():
 		cardsToDiscard.append(opponentSupportCard)
 	
 	await move_cards_to_discard(cardsToDiscard)
-	hide_end_turn_button()
+	ui.show_end_turn_button(false)
 	
 	await repopolate_hand(playerHand, "player")
 	await repopolate_hand(opponentHand, "opponent")
 	
-	turnNumber += 1
+	GameStats.roundNumber += 1
 	cardsToDiscard = []
 	
 	resetTurn()
 
 func _on_end_turn_button_pressed() -> void:
-	hide_end_turn_button()
+	ui.show_end_turn_button(false)
+	ui.change_mood(Actor.Type.PLAYER, Actor.Mood.NEUTRAL)
 	
 	# If player played support, let the AI choose to play support, otherwise end
 	if !opponentPlayedSupport:
 		opponent_support_turn()
 		return
 
-	$"../arena/player/indicator".visible = false
-	$"../arena/opponent/indicator".visible = false
+	ui.set_indicator(Actor.Type.NONE)
 	await apply_end_round_perks()
 	end_turn()
 
@@ -233,22 +273,15 @@ func wait_for(duration):
 	await $"../battleTimer".timeout
 
 func animate_opponent_playing_card(opponentCard, opponentCardSlot):
+	opponentCard.play_draw_sound()
+	
+	opponentCard.get_node("AnimationPlayer").play("cardFlip")
+	
 	var tween = get_tree().create_tween()
+	tween.finished.connect(func(): opponentCard.play_draw_sound())
 	tween.tween_property(opponentCard, "position", opponentCardSlot.position, CARD_MOVE_SPEED)
 	
-	# Comment this out when we hide opponent cards
-	opponentCard.get_node("AnimationPlayer").play("cardFlip")
-	opponentCard.get_node("image").visible = true
-	
 	$"../opponentHand".remove_card_from_hand(opponentCard)
-
-func show_end_turn_button():
-	$"../EndTurnButton".disabled = false
-	$"../EndTurnButton".visible = true
-
-func hide_end_turn_button():
-	$"../EndTurnButton".disabled = true
-	$"../EndTurnButton".visible = false
 
 func allow_support_cards():
 	var playerCharacterCardRoles = playerCharacterCard.role.split("/")
@@ -288,7 +321,11 @@ func apply_mid_round_perks():
 		await playerCharacterCard.perk.apply_mid_perk(playerCharacterCard, $"../playerHand".playerHand, opponentCharacterCard)
 	
 	if opponentCharacterCard.perk && opponentCharacterCard.perk.timing == "midRound":
+		await wait_for(1)
 		await opponentCharacterCard.perk.apply_mid_perk(opponentCharacterCard, $"../opponentHand".opponentHand, playerCharacterCard)
+	
+	# Handle the runner perk
+	_handle_runner_perk()
 
 func apply_end_round_perks():
 	# For now its just characters and characters happen AFTER support
@@ -327,15 +364,23 @@ func move_cards_to_discard(cards):
 	
 	for card in cards:
 		discardedCards.append(card)
+		card.play_draw_sound()
 		card.scale = Vector2(1, 1)
 		
+		card.z_index = discardedCardZIndex
+		discardedCardZIndex += 1
 		var tween = get_tree().create_tween()
-		tween.tween_property(card, "position", DISCARD_PILE_POSITION, CARD_MOVE_SPEED)
+		tween.finished.connect(func(): card.play_draw_sound())
+		tween.tween_property(card, "position", DISCARD_PILE_POSITION, CARD_MOVE_FAST_SPEED)
+		
+		await tween.finished
 	
 	$"../cardSlots/cardSlotSupport".occupied = false
 	$"../cardSlots/cardSlotCharacter".occupied = false
 
 func repopolate_hand(hand, handToUpdate):
+	lockPlayerInput = true
+	
 	var characterDeckReference = $"../characterDeck"
 	var supportDeckReference = $"../supportDeck"
 	
@@ -364,103 +409,263 @@ func repopolate_hand(hand, handToUpdate):
 			supportDeckReference.draw_opponent_card()
 		supportCount += 1
 		await wait_for(CARD_MOVE_SPEED)
+	
+	lockPlayerInput = false
 
-func repopulate_decks():
+func repopulate_decks(endGame: bool = false):
 	var discardedCharacters := []
 	var discardedSupports := []
-
+	
 	for card in discardedCards:
 		if card.type == "Character":
 			discardedCharacters.append(card)
 		elif card.type == "Support":
 			discardedSupports.append(card)
-
-	if $"../characterDeck".deck.size() < MIN_CARDS_FOR_RESHUFFLE:
-		await $"../characterDeck".reshuffle_from_discards(discardedCharacters)
-		for card in discardedCharacters:
+	
+	var discardedCharactersReversed = discardedCharacters.duplicate()
+	var discardedSupportsReversed = discardedSupports.duplicate()
+	discardedCharactersReversed.reverse()
+	discardedSupportsReversed.reverse()
+	
+	if endGame:
+		discardedCards = discardedCharactersReversed + discardedSupportsReversed
+		
+		for i in range(discardedSupportsReversed.size()):
+			discardedSupportsReversed[i].z_index = 100 - i
+		
+		await $"../supportDeck".reshuffle_from_discards(discardedSupportsReversed)
+		for card in discardedSupportsReversed:
 			discardedCards.erase(card)
-
+			
+		await $"../characterDeck".reshuffle_from_discards(discardedCharactersReversed)
+		for card in discardedCharactersReversed:
+			discardedCards.erase(card)
+		
+		return
+	
 	if $"../supportDeck".deck.size() < MIN_CARDS_FOR_RESHUFFLE:
-		await $"../supportDeck".reshuffle_from_discards(discardedSupports)
-		for card in discardedSupports:
+		discardedCards = discardedCharactersReversed + discardedSupportsReversed
+		
+		for i in range(discardedSupportsReversed.size()):
+			discardedSupportsReversed[i].z_index = 100 - i
+		
+		$"../supportDeck".reshuffle_from_discards(discardedSupportsReversed)
+		for card in discardedSupportsReversed:
 			discardedCards.erase(card)
+		
+		return
+	
+	if $"../characterDeck".deck.size() < MIN_CARDS_FOR_RESHUFFLE:
+		discardedCards = discardedSupportsReversed + discardedCharactersReversed
+		
+		for i in range(discardedCharactersReversed.size()):
+			discardedCharactersReversed[i].z_index = 100 - i
+		
+		$"../characterDeck".reshuffle_from_discards(discardedCharactersReversed)
+		for card in discardedCharactersReversed:
+			discardedCards.erase(card)
+		
+		return
 
 func calculate_damage():
 	var playerTotal = int(playerCharacterCard.get_node("value").text)
 	var opponentTotal = int(opponentCharacterCard.get_node("value").text)
 	
 	if playerSupportCard:
-		playerTotal += playerSupportCard.value
+		playerTotal += int(playerSupportCard.get_node("value").text)
 	
 	if opponentSupportCard:
-		opponentTotal += opponentSupportCard.value
+		opponentTotal += int(opponentSupportCard.get_node("value").text)
+	
+	GameStats.totalForceExerted += playerTotal
+	GameStats.opponentForceExerted += opponentTotal
+	
+	GameStats.allPlayedCards.append({"faction": playerCharacterCard.faction, "cardKey": playerCharacterCard.cardKey})
+	
+	if GameStats.highestDamageDealt < playerTotal:
+		GameStats.highestDamageDealt = playerTotal
 	
 	apply_calculation_round_perks(playerTotal, opponentTotal)
 	
 	var damage = 0
 	
 	if playerTotal > opponentTotal:
-		var opponentHealth = int($"../arena/opponent/value".text)
+		var opponentHealth = ui.get_health(Actor.Type.OPPONENT)
 		damage = playerTotal - opponentTotal
 		
 		opponentHealth -= damage
-		$"../arena/opponent/value".text = str(opponentHealth)
+		ui.update_health(Actor.Type.OPPONENT, opponentHealth)
 		
-		$"../arena/opponent/damage".text = "-" + str(damage)
-		$"../arena/opponent/AnimationPlayer".queue("showDamage")
+		ui.change_mood(Actor.Type.PLAYER, Actor.Mood.HAPPY)
+		ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.HURT)
+		
+		await ui.play_damage_effect(Actor.Type.OPPONENT, damage)
 		
 		#special case for bloater
 		if opponentCharacterCard.cardKey == "Bloater" && opponentCharacterCard.perkValueAtRoundEnd:
-			var playerHealth = int($"../arena/player/value".text) - opponentCharacterCard.perkValueAtRoundEnd
+			var playerHealth = ui.get_health(Actor.Type.PLAYER) - opponentCharacterCard.perkValueAtRoundEnd
 			await wait_for(0.5)
-			$"../arena/player/value".text = str(playerHealth)
-			$"../arena/player/damage".text = "-" + str(opponentCharacterCard.perkValueAtRoundEnd)
-			$"../arena/player/AnimationPlayer".queue("showDamage")
+			
+			ui.update_health(Actor.Type.PLAYER, playerHealth)
+			await ui.play_damage_effect(Actor.Type.PLAYER, opponentCharacterCard.perkValueAtRoundEnd)
 		
 		if playerCharacterCard.perkValueAtRoundEnd:
 			opponentHealth -= playerCharacterCard.perkValueAtRoundEnd
-			await $"../arena/opponent/AnimationPlayer".animation_finished
 			await wait_for(0.5)
 			
-			$"../arena/opponent/value".text = str(opponentHealth)
-			$"../arena/opponent/damage".text = "-" + str(playerCharacterCard.perkValueAtRoundEnd)
-			$"../arena/opponent/AnimationPlayer".queue("showDamage")
+			ui.update_health(Actor.Type.OPPONENT, opponentHealth)
+			await ui.play_damage_effect(Actor.Type.OPPONENT, playerCharacterCard.perkValueAtRoundEnd)
+		
+		# Add to the underdog stat
+		if playerCharacterCard.value < opponentCharacterCard.value:
+			GameStats.roundWinsUnderdog += 1
 	elif opponentTotal > playerTotal:
-		var playerHealth = int($"../arena/player/value".text)
+		var playerHealth = ui.get_health(Actor.Type.PLAYER)
 		damage = opponentTotal - playerTotal
 		
 		playerHealth -= damage
-		$"../arena/player/value".text = str(playerHealth)
+		ui.update_health(Actor.Type.PLAYER, playerHealth)
 		
-		$"../arena/player/damage".text = "-" + str(damage)
-		$"../arena/player/AnimationPlayer".queue("showDamage")
+		ui.change_mood(Actor.Type.PLAYER, Actor.Mood.HURT)
+		ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.HAPPY)
+		
+		await ui.play_damage_effect(Actor.Type.PLAYER, damage)
 		
 		#special case for bloater
 		if playerCharacterCard.cardKey == "Bloater" && playerCharacterCard.perkValueAtRoundEnd:
-			var opponentHealth = int($"../arena/opponent/value".text) - playerCharacterCard.perkValueAtRoundEnd
+			var opponentHealth = ui.get_health(Actor.Type.OPPONENT) - playerCharacterCard.perkValueAtRoundEnd
 			await wait_for(0.5)
-			$"../arena/opponent/value".text = str(opponentHealth)
-			$"../arena/opponent/damage".text = "-" + str(playerCharacterCard.perkValueAtRoundEnd)
-			$"../arena/opponent/AnimationPlayer".queue("showDamage")
+			
+			ui.update_health(Actor.Type.OPPONENT, opponentHealth)
+			await ui.play_damage_effect(Actor.Type.OPPONENT, playerCharacterCard.perkValueAtRoundEnd)
 		
 		if opponentCharacterCard.perkValueAtRoundEnd:
 			playerHealth -= opponentCharacterCard.perkValueAtRoundEnd
-			await $"../arena/player/AnimationPlayer".animation_finished
+			
 			await wait_for(0.5)
 			
-			$"../arena/player/value".text = str(playerHealth)
-			$"../arena/player/damage".text = "-" + str(opponentCharacterCard.perkValueAtRoundEnd)
-			$"../arena/player/AnimationPlayer".queue("showDamage")
+			ui.update_health(Actor.Type.PLAYER, playerHealth)
+			await ui.play_damage_effect(Actor.Type.PLAYER, opponentCharacterCard.perkValueAtRoundEnd)
+	
 	elif opponentTotal == playerTotal: # Special Case for Lev
-		if playerCharacterCard.cardKey == "LevRare":
-			var opponentHealth = int($"../arena/opponent/value".text) - playerCharacterCard.perkValueAtRoundEnd
+		if playerCharacterCard.cardKey == "Lev":
+			var opponentHealth = ui.get_health(Actor.Type.OPPONENT) - playerCharacterCard.perkValueAtRoundEnd
 			await wait_for(0.5)
-			$"../arena/opponent/value".text = str(opponentHealth)
-			$"../arena/opponent/damage".text = "-" + str(playerCharacterCard.perkValueAtRoundEnd)
-			$"../arena/opponent/AnimationPlayer".queue("showDamage")
-		if opponentCharacterCard.cardKey == "LevRare":
-			var playerHealth = int($"../arena/player/value".text) - opponentCharacterCard.perkValueAtRoundEnd
+			
+			ui.update_health(Actor.Type.OPPONENT, opponentHealth)
+			await ui.play_damage_effect(Actor.Type.OPPONENT, playerCharacterCard.perkValueAtRoundEnd)
+		if opponentCharacterCard.cardKey == "Lev":
+			var playerHealth = ui.get_health(Actor.Type.PLAYER) - opponentCharacterCard.perkValueAtRoundEnd
 			await wait_for(0.5)
-			$"../arena/player/value".text = str(playerHealth)
-			$"../arena/player/damage".text = "-" + str(opponentCharacterCard.perkValueAtRoundEnd)
-			$"../arena/player/AnimationPlayer".queue("showDamage")
+			
+			ui.update_health(Actor.Type.PLAYER, playerHealth)
+			await ui.play_damage_effect(Actor.Type.PLAYER, opponentCharacterCard.perkValueAtRoundEnd)
+
+func draw_cards_at_start(firstStart: bool = true):
+	if firstStart:
+		await $"../characterDeck".ready
+		await $"../supportDeck".ready
+		await get_tree().create_timer(.5).timeout
+	
+	GameStats.gameMode = "Card Draw Animation"
+	
+	for i in range(MAX_CHARACTER_CARDS):
+		await wait_for(CARD_MOVE_FAST_SPEED)
+		$"../characterDeck".draw_card()
+		await wait_for(CARD_MOVE_FAST_SPEED)
+		$"../characterDeck".draw_opponent_card()
+	
+	for i in range(MAX_SUPPORT_CARDS):
+		await wait_for(CARD_MOVE_FAST_SPEED)
+		$"../supportDeck".draw_card()
+		await wait_for(CARD_MOVE_FAST_SPEED)
+		$"../supportDeck".draw_opponent_card()
+	
+	GameStats.gameMode = "Last Stand"
+
+func end_round_sequence():
+	GameStats.set_end_time()
+	GameStats.gameMode = "Last Stand Round Complete"
+	GameStats.totalInGameTimePlayed += GameStats.currentRoundDuration
+	$"../pauseIcon".hide()
+	
+	var cardsToDiscard = []
+	
+	if playerSupportCard:
+		cardsToDiscard.append(playerSupportCard)
+	
+	cardsToDiscard.append(playerCharacterCard)
+	cardsToDiscard.append(opponentCharacterCard)
+	
+	if opponentSupportCard:
+		cardsToDiscard.append(opponentSupportCard)
+	
+	for card in $"../playerHand".playerHand:
+		cardsToDiscard.append(card)
+	
+	for card in $"../opponentHand".opponentHand:
+		card.get_node("AnimationPlayer").play("cardFlip")
+		card.get_node("image").visible = true
+		cardsToDiscard.append(card)
+	
+	await move_cards_to_discard(cardsToDiscard)
+	
+	battleAnimator.play_game_over_sequence(ui.get_health(Actor.Type.PLAYER) > ui.get_health(Actor.Type.OPPONENT))
+	
+	await repopulate_decks(true)
+	
+	discardedCardZIndex = 1
+
+func resetArena():
+	$"../pauseIcon".show()
+	
+	await draw_cards_at_start(false)
+	
+	# Player always starts
+	whoStartedRound = "player"
+	roundStage = RoundStage.PLAYER_CHARACTER
+	
+	ui.set_indicator(Actor.Type.PLAYER)
+	ui.change_mood(Actor.Type.PLAYER, Actor.Mood.THINKING)
+	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
+	
+	lockPlayerInput = false
+	
+	GameStats.set_start_time()
+
+func place_card_in_discard(card, hand):
+	discardedCards.append(card)
+	card.play_draw_sound()
+	card.scale = Vector2(1, 1)
+	
+	card.z_index = discardedCardZIndex
+	discardedCardZIndex += 1
+	var tween = get_tree().create_tween()
+	tween.finished.connect(func(): card.play_draw_sound())
+	tween.tween_property(card, "position", DISCARD_PILE_POSITION, CARD_MOVE_FAST_SPEED)
+	
+	await tween.finished
+	
+	hand.remove_card_from_hand(card)
+
+func _handle_runner_perk() -> void:
+	if playerCharacterCard.cardKey == "Runner" or opponentCharacterCard.cardKey == "Runner":
+		var runnerCards = []
+		
+		if playerCharacterCard.cardKey == "Runner":
+			for card in %playerHand.playerHand:
+				if card.cardKey == "Runner":
+					runnerCards.append(card)
+					card.disable_interaction()
+			
+			for card in runnerCards:
+				await place_card_in_discard(card, %playerHand)
+		
+		if opponentCharacterCard.cardKey == "Runner":
+			for card in %opponentHand.opponentHand:
+				if card.cardKey == "Runner":
+					runnerCards.append(card)
+			
+			for card in runnerCards:
+				card.get_node("AnimationPlayer").play("cardFlip")
+				await place_card_in_discard(card, %opponentHand)

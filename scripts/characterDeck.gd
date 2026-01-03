@@ -6,43 +6,75 @@ const CARD_DRAW_SPEED = 0.2
 
 const CHARACTER_DECK_POSITION = Vector2(135, 796)
 
+@onready var soundPlayer = $AudioStreamPlayer2D
+
+var shuffleSounds = [
+	preload("res://assets/sounds/cards/shuffle_1.wav"),
+	preload("res://assets/sounds/cards/shuffle_2.wav"),
+	preload("res://assets/sounds/cards/shuffle_3.wav"),
+	preload("res://assets/sounds/cards/shuffle_4.wav")
+]
+
+#var deck = [
+	#"TheProphet",
+	#"Emily",
+	#"Ezra",
+	#"Lyra",
+	#"SeraphiteBrute",
+	#"Alice",
+	#"Eugene",
+	#"Riley",
+	#"Bill",
+	#"Runner",
+	#"Tommy",
+	#"Nora",
+	#"Lev",
+	#"RatKing",
+	#"Stalker",
+	#"Clicker",
+	#"Stalker",
+	#"Yara",
+	#"Dina",
+	#"Bloater",
+	#"Joel",
+	#"Marlene",
+	#"Malik",
+	#"Jessie",
+	#"Ellie",
+	#"Abby",
+	#"FireflySoldier",
+	#"FireflySoldier",
+	#"Isaac",
+	#"WLFSoldier",
+	#"TommyFirefly",
+	#"Manny",
+	#"Li",
+	#"Runner",
+	#"Runner",
+	#"Stalker",
+#]
+
 var deck = [
-	"TheProphet",
-	"Emily",
-	"Ezra",
-	"Lyra",
-	"SeraphiteBrute",
-	"Alice",
-	"Eugene",
-	"Riley",
-	"Bill",
-	"Runner",
-	"Tommy",
-	"Nora",
-	"Lev",
-	"RatKing",
-	"Stalker",
-	"Clicker",
-	"Stalker",
-	"Yara",
-	"Dina",
+	"Runner", "Runner", "Runner", "Runner",
+	"Stalker", "Stalker", "Stalker",
+	"FireflySoldier", "FireflySoldier", "FireflySoldier",
+	"WLFSoldier", "WLFSoldier",
+	"SeraphiteBrute", "SeraphiteBrute",
+	
+	"Clicker", "Clicker",
 	"Bloater",
+	"Emily", "Ezra", "Lev", "Yara",
+	"Nora", "Manny", "Alice",
+	"Bill", "Dina", "Jessie", "Tommy", "TommyFirefly",
+	"Riley", "Eugene", "Malik",
+	
 	"Joel",
-	"Marlene",
-	"Malik",
-	"Jessie",
 	"Ellie",
 	"Abby",
-	"FireflySoldier",
-	"FireflySoldier",
 	"Isaac",
-	"WLFSoldier",
-	"TommyFirefly",
-	"Manny",
-	"Li",
-	"Runner",
-	"Runner",
-	"Stalker",
+	"TheProphet",
+	"Marlene",
+	"RatKing",
 ]
 
 var cardDatabaseReference
@@ -52,14 +84,6 @@ func _ready() -> void:
 	
 	$RichTextLabel.text = str(deck.size())
 	cardDatabaseReference = preload("res://scripts/database.gd")
-	
-	# Start the player with 4 cards
-	for i in range(4):
-		draw_card()
-	
-	# Start the opponent with 4 cards
-	for i in range(4):
-		draw_opponent_card()
 
 func draw_card():
 	var cardDrawn = deck[0]
@@ -72,15 +96,17 @@ func draw_card():
 	$RichTextLabel.text = str(deck.size())
 	var cardScene = preload(PLAYER_CARD_SCENE_PATH)
 	var newCard = cardScene.instantiate()
-	var cardImagePath = str("res://assets/" + cardDrawn + "Card.png")
+	var cardImagePath = str("res://assets/cards/" + cardDrawn + "Card.png")
 	newCard.cardKey = cardDrawn
 	newCard.position = CHARACTER_DECK_POSITION
 	
 	# Add the perk
 	if cardDatabaseReference.PERKS.has(cardDrawn):
 		newCard.perk = load(cardDatabaseReference.PERKS[cardDrawn]).new()
+		newCard.get_node("supportingText").get_node("text").texture = load("res://assets/cardDescriptions/" + cardDrawn + ".png")
 	
 	newCard.get_node("image").texture = load(cardImagePath)
+	newCard.get_node("imageBack").texture = load("res://assets/cards/CardBackBlank.png")
 	newCard.get_node("value").text = str(cardDatabaseReference.CHARACTERS[cardDrawn][0])
 	newCard.value = cardDatabaseReference.CHARACTERS[cardDrawn][0]
 	newCard.type = cardDatabaseReference.CHARACTERS[cardDrawn][1]
@@ -93,6 +119,7 @@ func draw_card():
 	$"../playerHand".add_card_to_hand(newCard, CARD_DRAW_SPEED)
 	
 	newCard.get_node("AnimationPlayer").play("cardFlip")
+	newCard.play_draw_sound()
 
 func draw_opponent_card():
 	var cardDrawn = deck[0]
@@ -104,7 +131,7 @@ func draw_opponent_card():
 	$RichTextLabel.text = str(deck.size())
 	var cardScene = preload(OPPONENT_CARD_SCENE_PATH)
 	var newCard = cardScene.instantiate()
-	var cardImagePath = str("res://assets/" + cardDrawn + "Card.png")
+	var cardImagePath = str("res://assets/cards/" + cardDrawn + "Card.png")
 	newCard.cardKey = cardDrawn
 	newCard.position = CHARACTER_DECK_POSITION
 	
@@ -113,6 +140,7 @@ func draw_opponent_card():
 		newCard.perk = load(cardDatabaseReference.PERKS[cardDrawn]).new()
 	
 	newCard.get_node("image").texture = load(cardImagePath)
+	newCard.get_node("imageBack").texture = load("res://assets/cards/CardBackBlank.png")
 	newCard.get_node("value").text = str(cardDatabaseReference.CHARACTERS[cardDrawn][0])
 	newCard.value = cardDatabaseReference.CHARACTERS[cardDrawn][0]
 	newCard.type = cardDatabaseReference.CHARACTERS[cardDrawn][1]
@@ -123,6 +151,7 @@ func draw_opponent_card():
 	$"../cardManager".add_child(newCard)
 	newCard.name = "Card"
 	$"../opponentHand".add_card_to_hand(newCard, CARD_DRAW_SPEED)
+	newCard.play_draw_sound()
 	
 	# This if statement hides and shows the cards (In place for now, for debugging)
 	if $"../battleManager".showOpponentsCards:
@@ -134,11 +163,24 @@ func reshuffle_from_discards(discardedCards):
 	for card in discardedCards:
 		deck.append(card.cardKey)
 		
+		card.play_draw_sound()
 		await move_card_back_to_deck(card)
 		
 		card.queue_free()
-
+		
 	deck.shuffle()
+	
+	z_index = 100
+	var tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	tween.tween_property($image, "scale", Vector2(0.288, 0.288), 0.15)
+	await tween.finished
+	
+	play_shuffle_sound()
+	
+	await get_tree().create_timer(0.2).timeout
+	var tween_back = create_tween().set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
+	tween_back.tween_property($image, "scale", Vector2(0.188, 0.188), 0.2)
+	z_index = -2
 	
 	$RichTextLabel.text = str(deck.size())
 
@@ -146,3 +188,8 @@ func move_card_back_to_deck(card):
 	var tween = get_tree().create_tween()
 	tween.tween_property(card, "position", CHARACTER_DECK_POSITION, 0.1)
 	await tween.finished
+
+func play_shuffle_sound():
+	var randomSound = shuffleSounds.pick_random()
+	soundPlayer.stream = randomSound
+	soundPlayer.play()
