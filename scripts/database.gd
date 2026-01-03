@@ -45,7 +45,7 @@ const SUPPORTS = { # Value, Type, Class
 	"Silencer": [4, "Support", "Stealthy/Defensive"],
 	"SmokeBomb": [4, "Support", "Crafty/Stealthy"],
 	"TrapMine": [5, "Support", "Crafty"],
-	"ScavengedParts": [3, "Support", "Survivor"],
+	"ScavengedParts": [2, "Support", "Survivor"],
 	"MedKit": [2, "Support", "Crafty/Defensive"],
 	"Resilience": [5, "Support", "Survivor"],
 	"Retreat": [4, "Support", "Defensive"],

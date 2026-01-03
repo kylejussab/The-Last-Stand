@@ -449,7 +449,7 @@ func repopulate_decks(endGame: bool = false):
 		for i in range(discardedSupportsReversed.size()):
 			discardedSupportsReversed[i].z_index = 100 - i
 		
-		await $"../supportDeck".reshuffle_from_discards(discardedSupportsReversed)
+		$"../supportDeck".reshuffle_from_discards(discardedSupportsReversed)
 		for card in discardedSupportsReversed:
 			discardedCards.erase(card)
 		
@@ -461,7 +461,7 @@ func repopulate_decks(endGame: bool = false):
 		for i in range(discardedCharactersReversed.size()):
 			discardedCharactersReversed[i].z_index = 100 - i
 		
-		await $"../characterDeck".reshuffle_from_discards(discardedCharactersReversed)
+		$"../characterDeck".reshuffle_from_discards(discardedCharactersReversed)
 		for card in discardedCharactersReversed:
 			discardedCards.erase(card)
 		
