@@ -13,9 +13,9 @@ func apply_mid_perk(_thisCard, _thisHand, otherCard):
 		card.get_node("AnimationPlayer").animation_started.connect(_when_animation_starts)
 		
 		value = int(card.get_node("value").text)
-		value -= 2
+		value -= 4
 		
-		card.get_node("perk").text = "-2"
+		card.get_node("perk").text = "-4"
 		card.get_node("AnimationPlayer").queue("showPerk")
 
 func _when_animation_starts(name: String):

@@ -40,3 +40,13 @@ func play_draw_sound():
 	var randomSound = drawSounds.pick_random()
 	soundPlayer.stream = randomSound
 	soundPlayer.play()
+
+func disable_interaction() -> void:
+	$Area2D/CollisionShape2D.set_deferred("disabled", true)
+	
+	scale = Vector2(1, 1)
+	
+	if has_node("AnimationPlayer"):
+		$AnimationPlayer.play("hideDescription")
+		var end_time = $AnimationPlayer.current_animation_length
+		$AnimationPlayer.seek(end_time, true)

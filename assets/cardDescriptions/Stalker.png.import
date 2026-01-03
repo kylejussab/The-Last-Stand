@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c77lsgdpsgfho"
-path="res://.godot/imported/Runner.png-2f93ed483db1e26c964b4d65584aa740.ctex"
+uid="uid://2jjto632l15n"
+path="res://.godot/imported/Stalker.png-15422b5372dd485777900f687d2d3a82.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/cardDescriptions/Runner.png"
-dest_files=["res://.godot/imported/Runner.png-2f93ed483db1e26c964b4d65584aa740.ctex"]
+source_file="res://assets/cardDescriptions/Stalker.png"
+dest_files=["res://.godot/imported/Stalker.png-15422b5372dd485777900f687d2d3a82.ctex"]
 
 [params]
 

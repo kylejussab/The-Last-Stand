@@ -6,9 +6,15 @@ var value
 func _init() -> void:
 	timing = "endRound"
 
-func apply_end_perk(_thisCharacterCard, thisSupportCard, _otherCharacterCard, _otherSupportCard, thisHand):
+func apply_end_perk(thisCharacterCard, thisSupportCard, _otherCharacterCard, _otherSupportCard, thisHand):
 	if thisSupportCard && thisSupportCard.cardKey == "SupplyCache":
-		card = thisHand[randi() % thisHand.size()]
+		var updatedHand = []
+		
+		for item in thisHand:
+			if item != thisSupportCard and item != thisCharacterCard:
+				updatedHand.append(item)
+		
+		card = updatedHand.pick_random()
 		
 		card.get_node("AnimationPlayer").animation_started.connect(_when_animation_starts)
 		

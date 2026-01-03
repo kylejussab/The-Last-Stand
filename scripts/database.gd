@@ -1,7 +1,7 @@
 extends Node2D
 
 const CHARACTERS = { # Value, Type, Faction, Class
-	"Yara": [3, "Character", "Seraphite", "Stealthy"],
+	"Yara": [4, "Character", "Seraphite", "Stealthy"],
 	"Lev": [3, "Character", "Seraphite", "Stealthy/Survivor"],
 	"TheProphet": [6, "Character", "Seraphite", "Stealthy/Defensive"],
 	"Emily": [4, "Character", "Seraphite", "Survivor"],
@@ -23,10 +23,10 @@ const CHARACTERS = { # Value, Type, Faction, Class
 	"Eugene": [3, "Character", "Firefly", "Crafty/Survivor"],
 	"Riley": [3, "Character", "Firefly", "Stealthy"],
 	
-	"Runner": [1, "Character", "Infected", "Aggressive"],
-	"Stalker": [2, "Character", "Infected", "Stealthy"],
+	"Runner": [2, "Character", "Infected", "Aggressive"],
+	"Stalker": [3, "Character", "Infected", "Stealthy"],
 	"Clicker": [5, "Character", "Infected", "Aggressive"],
-	"Bloater": [3, "Character", "Infected", "Defensive"],
+	"Bloater": [4, "Character", "Infected", "Defensive"],
 	"RatKing": [8, "Character", "Infected", "Aggressive"],
 	"Malik": [3, "Character", "Infected", "Survivor"],
 	
@@ -39,20 +39,20 @@ const CHARACTERS = { # Value, Type, Faction, Class
 }
 
 const SUPPORTS = { # Value, Type, Class
-	"Molotov": [2, "Support", "Aggressive"],
-	"ReinforcedMelee": [1, "Support", "Aggressive/Survivor"],
-	"Rage": [2, "Support", "Aggressive"],
-	"Silencer": [2, "Support", "Stealthy/Defensive"],
-	"SmokeBomb": [2, "Support", "Crafty/Stealthy"],
-	"TrapMine": [2, "Support", "Crafty"],
-	"ScavengedParts": [1, "Support", "Survivor"],
+	"Molotov": [5, "Support", "Aggressive"],
+	"ReinforcedMelee": [2, "Support", "Aggressive/Survivor"],
+	"Rage": [6, "Support", "Aggressive"],
+	"Silencer": [4, "Support", "Stealthy/Defensive"],
+	"SmokeBomb": [4, "Support", "Crafty/Stealthy"],
+	"TrapMine": [5, "Support", "Crafty"],
+	"ScavengedParts": [3, "Support", "Survivor"],
 	"MedKit": [2, "Support", "Crafty/Defensive"],
-	"Resilience": [3, "Support", "Survivor"],
-	"Retreat": [3, "Support", "Defensive"],
-	"Bottle": [1, "Support", "Stealthy"],
-	"Brick": [1, "Support", "Stealthy"],
-	"TrainingManual": [1, "Support", "Crafty"],
-	"ShotgunShells": [2, "Support", "Survivor"],
+	"Resilience": [5, "Support", "Survivor"],
+	"Retreat": [4, "Support", "Defensive"],
+	"Bottle": [2, "Support", "Stealthy"],
+	"Brick": [2, "Support", "Stealthy"],
+	"TrainingManual": [2, "Support", "Crafty"],
+	"ShotgunShells": [3, "Support", "Survivor"],
 	"Supplements": [2, "Support", "Aggressive/Crafty/Defensive/Stealthy/Survivor"],
 	"SupplyCache": [0, "Support", "Aggressive/Crafty/Defensive/Stealthy/Survivor"],
 }
@@ -63,6 +63,7 @@ const PERKS = {
 	"Manny": "res://scripts/perks/mannyPerk.gd",
 	"Jessie": "res://scripts/perks/jessiePerk.gd",
 	"Runner": "res://scripts/perks/runnerPerk.gd",
+	"Stalker": "res://scripts/perks/stalkerPerk.gd",
 	"Abby": "res://scripts/perks/abbyPerk.gd",
 	"Isaac": "res://scripts/perks/isaacPerk.gd",
 	"WLFSoldier": "res://scripts/perks/wlfSoldierPerk.gd",
@@ -92,29 +93,28 @@ var AVATARS = {
 	Actor.Avatar.ETHAN: {
 		"name": "Ethan Hark",
 		"description": "Patrol Leader",
-		"health": 1,
+		"health": 20,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.SILAS: {
 		"name": "Silas Vane",
 		"description": "Scavenger King",
-		"health": 1, # 50 is too high, possibly for a final boss, but not a character in this mode
+		"health": 20, # 50 is too high, possibly for a final boss, but not a character in this mode
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.MIRA: {
 		"name": "Mira Thorne",
 		"description": "Ex-Medic",
-		"health": 1, #25
+		"health": 20, #25
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.KAEL: {
 		"name": "Kaelen Voss",
 		"description": "Shield Brother",
-		"health": 1, #45,
-
+		"health": 20, #45,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	}

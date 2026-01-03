@@ -274,13 +274,12 @@ func wait_for(duration):
 
 func animate_opponent_playing_card(opponentCard, opponentCardSlot):
 	opponentCard.play_draw_sound()
+	
+	opponentCard.get_node("AnimationPlayer").play("cardFlip")
+	
 	var tween = get_tree().create_tween()
 	tween.finished.connect(func(): opponentCard.play_draw_sound())
 	tween.tween_property(opponentCard, "position", opponentCardSlot.position, CARD_MOVE_SPEED)
-	
-	# Comment this out when we hide opponent cards
-	opponentCard.get_node("AnimationPlayer").play("cardFlip")
-	opponentCard.get_node("image").visible = true
 	
 	$"../opponentHand".remove_card_from_hand(opponentCard)
 
@@ -322,7 +321,11 @@ func apply_mid_round_perks():
 		await playerCharacterCard.perk.apply_mid_perk(playerCharacterCard, $"../playerHand".playerHand, opponentCharacterCard)
 	
 	if opponentCharacterCard.perk && opponentCharacterCard.perk.timing == "midRound":
+		await wait_for(1)
 		await opponentCharacterCard.perk.apply_mid_perk(opponentCharacterCard, $"../opponentHand".opponentHand, playerCharacterCard)
+	
+	# Handle the runner perk
+	_handle_runner_perk()
 
 func apply_end_round_perks():
 	# For now its just characters and characters happen AFTER support
@@ -543,16 +546,16 @@ func calculate_damage():
 			
 			ui.update_health(Actor.Type.PLAYER, playerHealth)
 			await ui.play_damage_effect(Actor.Type.PLAYER, opponentCharacterCard.perkValueAtRoundEnd)
-			
+	
 	elif opponentTotal == playerTotal: # Special Case for Lev
-		if playerCharacterCard.cardKey == "LevRare":
+		if playerCharacterCard.cardKey == "Lev":
 			var opponentHealth = ui.get_health(Actor.Type.OPPONENT) - playerCharacterCard.perkValueAtRoundEnd
 			await wait_for(0.5)
 			
 			ui.update_health(Actor.Type.OPPONENT, opponentHealth)
 			await ui.play_damage_effect(Actor.Type.OPPONENT, playerCharacterCard.perkValueAtRoundEnd)
-		if opponentCharacterCard.cardKey == "LevRare":
-			var playerHealth = ui.get_health(Actor.Type.OPPONENT) - opponentCharacterCard.perkValueAtRoundEnd
+		if opponentCharacterCard.cardKey == "Lev":
+			var playerHealth = ui.get_health(Actor.Type.PLAYER) - opponentCharacterCard.perkValueAtRoundEnd
 			await wait_for(0.5)
 			
 			ui.update_health(Actor.Type.PLAYER, playerHealth)
@@ -629,3 +632,40 @@ func resetArena():
 	lockPlayerInput = false
 	
 	GameStats.set_start_time()
+
+func place_card_in_discard(card, hand):
+	discardedCards.append(card)
+	card.play_draw_sound()
+	card.scale = Vector2(1, 1)
+	
+	card.z_index = discardedCardZIndex
+	discardedCardZIndex += 1
+	var tween = get_tree().create_tween()
+	tween.finished.connect(func(): card.play_draw_sound())
+	tween.tween_property(card, "position", DISCARD_PILE_POSITION, CARD_MOVE_FAST_SPEED)
+	
+	await tween.finished
+	
+	hand.remove_card_from_hand(card)
+
+func _handle_runner_perk() -> void:
+	if playerCharacterCard.cardKey == "Runner" or opponentCharacterCard.cardKey == "Runner":
+		var runnerCards = []
+		
+		if playerCharacterCard.cardKey == "Runner":
+			for card in %playerHand.playerHand:
+				if card.cardKey == "Runner":
+					runnerCards.append(card)
+					card.disable_interaction()
+			
+			for card in runnerCards:
+				await place_card_in_discard(card, %playerHand)
+		
+		if opponentCharacterCard.cardKey == "Runner":
+			for card in %opponentHand.opponentHand:
+				if card.cardKey == "Runner":
+					runnerCards.append(card)
+			
+			for card in runnerCards:
+				card.get_node("AnimationPlayer").play("cardFlip")
+				await place_card_in_discard(card, %opponentHand)

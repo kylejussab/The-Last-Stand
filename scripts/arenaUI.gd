@@ -157,6 +157,7 @@ func _reset_game_over_ui() -> void:
 	%gameOver.visible = false
 	
 	for child in %gameOver.get_children():
+		child.visible = false
 		if child is Button:
 			child.disabled = true
 

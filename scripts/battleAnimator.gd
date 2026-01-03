@@ -13,6 +13,7 @@ func play_game_over_sequence(playerWon: bool):
 	await show_stats(playerWon)
 
 func title_slam_and_slide(playerWon: bool):
+	%gameOver.visible = true
 	gameOver.get_node("overlay").visible = true
 	gameOver.get_node("title").visible = true
 	
@@ -159,7 +160,7 @@ func set_end_game_stats(playerWon: bool):
 		score.get_node("stat1").text = str(winingBase)
 		var force = GameStats.totalForceExerted - GameStats.opponentForceExerted
 		score.get_node("stat2").text = str(force)
-		var efficiency = (20 - GameStats.roundNumber) * 5 # 20 as an average number of rounds
+		var efficiency = (9 - GameStats.roundNumber) * 5 # 9 as an average number of rounds
 		score.get_node("stat3").text = str(efficiency)
 		var underdog = GameStats.roundWinsUnderdog * 5
 		score.get_node("stat4").text = str(underdog)
