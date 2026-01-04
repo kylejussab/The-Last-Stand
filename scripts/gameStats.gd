@@ -1,6 +1,6 @@
 extends Node
 
-enum Mode { MAIN_MENU, CARD_DRAW, LAST_STAND, LAST_STAND_ROUND_COMPLETED, LAST_STAND_GAME_COMPLETED }
+enum Mode { MAIN_MENU, CARD_DRAW, JUNE_RAVEL, LAST_STAND, LAST_STAND_ROUND_COMPLETED }
 
 var invitationAccepted: bool = false
 var gameMode: Mode = Mode.MAIN_MENU

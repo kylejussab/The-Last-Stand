@@ -141,4 +141,4 @@ var AVATARS = {
 	}
 }
 
-const JUNE_OPPONENTS = []
+const JUNE_OPPONENTS = [Actor.Avatar.ETHAN, Actor.Avatar.UCKMANN, Actor.Avatar.ALLEY, Actor.Avatar.MIRA, Actor.Avatar.RHEA]

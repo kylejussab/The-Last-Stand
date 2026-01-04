@@ -50,15 +50,23 @@ func _ready() -> void:
 	$"../cardManager".connect("characterPlayed", Callable(self, "_on_player_character_played"))
 	$"../cardManager".connect("supportPlayed", Callable(self, "_on_player_support_played"))
 	
-	GameStats.currentPlayer = Actor.Avatar.JUNE
-	GameStats.playerHealthValue = 100 
+	match GameStats.gameMode:
+		GameStats.Mode.JUNE_RAVEL:
+			GameStats.currentPlayer = Actor.Avatar.JUNE
+			GameStats.playerHealthValue = Database.AVATARS[Actor.Avatar.JUNE].health
+		
+		GameStats.Mode.LAST_STAND:
+			# Maybe there should be an avatar thats always used for Last Stand
+			GameStats.currentPlayer = Actor.Avatar.JUNE
+			GameStats.playerHealthValue = 100 
+	
 	ui.update_health(Actor.Type.PLAYER, GameStats.playerHealthValue, true)
 	
 	start_new_match()
 
 func start_new_match() -> void:
 	if not GameStats.replayedRound:
-		GameStats.currentOpponent = _pick_random_opponent()
+		GameStats.currentOpponent = _pick_next_opponent()
 	
 	_initialize_opponent(GameStats.currentPlayer, GameStats.currentOpponent)
 	
@@ -335,19 +343,26 @@ func _draw_cards_at_start(firstStart: bool = true) -> void:
 	
 	%pauseIcon.show()
 
-func _pick_random_opponent() -> Actor.Avatar:
+func _pick_next_opponent() -> Actor.Avatar:
 	if GameStats.opponentList.is_empty():
-		var list = Database.AVATARS.keys()
-		list.erase(GameStats.currentPlayer)
-		
-		if GameStats.currentOpponent in list and list.size() > 1:
-			list.erase(GameStats.currentOpponent)
-			list.shuffle()
-			list.push_back(GameStats.currentOpponent)
-		else:
-			list.shuffle()
-		
-		GameStats.opponentList = list
+		match GameStats.gameMode:
+			GameStats.Mode.JUNE_RAVEL:
+				GameStats.opponentList = Database.JUNE_OPPONENTS.duplicate()
+			GameStats.Mode.LAST_STAND:
+				var list = Database.AVATARS.keys()
+				
+				if GameStats.currentPlayer in list:
+					list.erase(GameStats.currentPlayer)
+				
+				list.shuffle()
+				
+				if GameStats.currentOpponent in list and list.size() > 1:
+					if list[0] == GameStats.currentOpponent:
+						var temp = list[0]
+						list[0] = list[1]
+						list[1] = temp
+				
+				GameStats.opponentList = list
 	
 	return GameStats.opponentList.pop_front()
 

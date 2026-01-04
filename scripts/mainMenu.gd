@@ -118,6 +118,18 @@ func _on_story_button_pressed() -> void:
 	storyButtonContainer.show()
 	storyButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
 
+func _on_june_button_mouse_entered() -> void:
+	backgroundImage.texture = BACKGROUNDS["June"]
+	supplementText.text = SUPPLEMENTTEXT["June"]
+
+func _on_june_button_mouse_exited() -> void:
+	backgroundImage.texture = BACKGROUNDS["Main"]
+	supplementText.text = ""
+
+func _on_june_button_pressed() -> void:
+	GameStats.gameMode = GameStats.Mode.JUNE_RAVEL
+	Curtain.change_scene("res://scenes/main.tscn")
+
 func _on_last_stand_button_mouse_entered() -> void:
 	supplementText.text = SUPPLEMENTTEXT["Last Stand"]
 
@@ -147,14 +159,6 @@ func _on_options_button_pressed() -> void:
 	
 	optionsButtonContainer.show()
 	optionsButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
-
-func _on_june_button_mouse_entered() -> void:
-	backgroundImage.texture = BACKGROUNDS["June"]
-	supplementText.text = SUPPLEMENTTEXT["June"]
-
-func _on_june_button_mouse_exited() -> void:
-	backgroundImage.texture = BACKGROUNDS["Main"]
-	supplementText.text = ""
 
 func _on_quit_button_pressed() -> void:
 	get_tree().quit()
