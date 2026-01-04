@@ -1,14 +1,14 @@
 extends Node2D
 
-@onready var playerNameLabel = $player/name
-@onready var playerHealthLabel = $player/value
-@onready var playerHead = $player/head
+@onready var playerNameLabel: Label = $player/name
+@onready var playerHealthLabel: Label = $player/value
+@onready var playerHead: Node2D = $player/head
 
-@onready var opponentNameLabel = $opponent/name
-@onready var opponentHealthLabel = $opponent/value
-@onready var opponentHead = $opponent/head
+@onready var opponentNameLabel: Label = $opponent/name
+@onready var opponentHealthLabel: Label = $opponent/value
+@onready var opponentHead: Node2D = $opponent/head
 
-@onready var battleManager = %battleManager
+@onready var battleManager: Node = %battleManager
 
 func _ready() -> void:
 	for button in %gameOver.get_children():
@@ -162,8 +162,8 @@ func _reset_board_state() -> void:
 	battleManager.lockPlayerInput = true
 	show_end_turn_button(false)
 	GameStats.reset_round_stats()
-	%playerHand.playerHand = []
-	%opponentHand.opponentHand = []
+	%playerHand.playerHand.clear()
+	%opponentHand.opponentHand.clear()
 	
 	# Clean up older scene children
 	for card in %cardManager.get_children():

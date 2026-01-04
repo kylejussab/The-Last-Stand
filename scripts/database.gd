@@ -97,6 +97,20 @@ var AVATARS = {
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
+	Actor.Avatar.UCKMANN: {
+		"name": "Dr Uckmann",
+		"description": "Dog Director",
+		"health": 1,
+		"headPath": "res://assets/arenaHeads/",
+		"arenaPath": "res://assets/arenas/"
+	},
+	Actor.Avatar.ALLEY: {
+		"name": "Alley Ross",
+		"description": "Scriptweaver",
+		"health": 1,
+		"headPath": "res://assets/arenaHeads/",
+		"arenaPath": "res://assets/arenas/"
+	},
 	Actor.Avatar.SILAS: {
 		"name": "Silas Vane",
 		"description": "Scavenger King",

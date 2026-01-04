@@ -15,32 +15,6 @@ var shuffleSounds = [
 	preload("res://assets/sounds/cards/shuffle_4.wav")
 ]
 
-#var deck = [
-	#"Molotov",
-	#"Rage",
-	#"ReinforcedMelee",
-	#"ReinforcedMelee",
-	#"TrapMine",
-	#"TrapMine",
-	#"SmokeBomb",
-	#"SmokeBomb",
-	#"Silencer",
-	#"MedKit",
-	#"MedKit",
-	#"Resilience",
-	#"Retreat",
-	#"ScavengedParts",
-	#"ScavengedParts",
-	#"ShotgunShells",
-	#"TrainingManual",
-	#"Supplements",
-	#"SupplyCache",
-	#"Brick",
-	#"Bottle",
-	#"Brick",
-	#"Bottle",
-#]
-
 var deck = [
 	"Brick", "Brick",
 	"Bottle", "Bottle",
