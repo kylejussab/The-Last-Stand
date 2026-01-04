@@ -286,6 +286,7 @@ unique_name_in_owner = true
 script = ExtResource("5_yq6so")
 
 [node name="battleTimer" type="Timer" parent="."]
+one_shot = true
 
 [node name="cardSlots" type="Node2D" parent="."]
 
@@ -300,10 +301,12 @@ position = Vector2(739, 407)
 script = ExtResource("4_jyhfs")
 
 [node name="opponentCardSlotCharacter" parent="cardSlots" instance=ExtResource("6_85g3d")]
+unique_name_in_owner = true
 z_index = -2
 position = Vector2(1008, 407)
 
 [node name="opponentCardSlotSupport" parent="cardSlots" instance=ExtResource("6_85g3d")]
+unique_name_in_owner = true
 z_index = -2
 position = Vector2(1214.5, 407)
 

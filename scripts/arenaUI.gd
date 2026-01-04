@@ -116,16 +116,15 @@ func show_end_turn_button(visibility: bool = true) -> void:
 	%EndTurnButton.visible = visibility
 	%EndTurnButton.disabled = !visibility
 
-# Helpers
+# Privates
 func _on_replay_button_pressed() -> void:
 	GameStats.replayedRound = true
 	GameStats.gameMode = "Last Stand"
 	_fade_with_round_reset()
 
 func _on_continue_button_pressed() -> void:
-	GameStats.currentOpponent = _get_next_opponent()
-	GameStats.playerHealthValue = int(playerHealthLabel.text)
 	GameStats.replayedRound = false
+	GameStats.playerHealthValue = int(playerHealthLabel.text)
 	GameStats.lastStandTotalScore += GameStats.lastStandCurrentRoundScore
 	GameStats.gameMode = "Last Stand"
 	_fade_with_round_reset()
@@ -134,24 +133,22 @@ func _on_main_menu_button_pressed() -> void:
 	GameStats.gameMode = "Main Menu"
 	Curtain.change_scene("res://scenes/mainMenu.tscn")
 
+# Helpers
 func _fade_with_round_reset() -> void:
 	await Curtain.fade_in()
 	
 	%pauseIcon/text.text = "PAUSE"
-	
 	change_mood(Actor.Type.PLAYER, Actor.Mood.NEUTRAL)
 	change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
-	
 	_reset_game_over_ui()
 	_reset_board_state()
 	
 	update_health(Actor.Type.PLAYER, GameStats.playerHealthValue, true)
-	battleManager.setupArena(GameStats.currentPlayer, GameStats.currentOpponent)
-	await get_tree().create_timer(1).timeout
 	
+	await get_tree().create_timer(1).timeout
 	Curtain.fade_out()
 	
-	battleManager.resetArena()
+	battleManager.start_new_match()
 
 func _reset_game_over_ui() -> void:
 	%gameOver.visible = false
@@ -171,19 +168,3 @@ func _reset_board_state() -> void:
 	# Clean up older scene children
 	for card in %cardManager.get_children():
 		card.queue_free()
-
-func _get_next_opponent() -> Actor.Avatar:
-	if GameStats.opponentList.is_empty():
-		var list = Database.AVATARS.keys()
-		list.erase(GameStats.currentPlayer)
-		
-		if GameStats.currentOpponent in list and list.size() > 1:
-			list.erase(GameStats.currentOpponent)
-			list.shuffle()
-			list.push_back(GameStats.currentOpponent)
-		else:
-			list.shuffle()
-		
-		GameStats.opponentList = list
-	
-	return GameStats.opponentList.pop_front()
