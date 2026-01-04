@@ -97,6 +97,13 @@ var AVATARS = {
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
+	Actor.Avatar.RHEA: {
+		"name": "Rhea",
+		"description": "Cold Matriarch",
+		"health": 1,
+		"headPath": "res://assets/arenaHeads/",
+		"arenaPath": "res://assets/arenas/"
+	},
 	Actor.Avatar.UCKMANN: {
 		"name": "Dr Uckmann",
 		"description": "Dog Director",
@@ -133,3 +140,5 @@ var AVATARS = {
 		"arenaPath": "res://assets/arenas/"
 	}
 }
+
+const JUNE_OPPONENTS = []

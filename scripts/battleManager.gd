@@ -88,6 +88,9 @@ func _initialize_opponent(player: Actor.Avatar, opponent: Actor.Avatar) -> void:
 		Actor.Avatar.ETHAN:
 			ui.setup_avatar(opponent, Actor.Type.OPPONENT)
 			opponentAI = OpponentAIHighestValue.new()
+		Actor.Avatar.RHEA:
+			ui.setup_avatar(opponent, Actor.Type.OPPONENT)
+			opponentAI = OpponentAIHighestValue.new()
 		Actor.Avatar.UCKMANN:
 			ui.setup_avatar(opponent, Actor.Type.OPPONENT)
 			opponentAI = OpponentAIHighestValue.new()
@@ -239,7 +242,7 @@ func _transition_to_resolution_phase() -> void:
 
 func _conclude_match() -> void:
 	GameStats.set_end_time()
-	GameStats.gameMode = "Last Stand Round Complete"
+	GameStats.gameMode = GameStats.Mode.LAST_STAND_ROUND_COMPLETED
 	GameStats.totalInGameTimePlayed += GameStats.currentRoundDuration
 	%pauseIcon.hide()
 	
@@ -307,12 +310,14 @@ func _on_end_turn_button_pressed() -> void:
 
 # Helpers
 func _draw_cards_at_start(firstStart: bool = true) -> void:
+	%pauseIcon.hide()
+	
 	if firstStart:
 		await $"../characterDeck".ready
 		await $"../supportDeck".ready
 		await get_tree().create_timer(.5).timeout
 	
-	GameStats.gameMode = "Card Draw Animation"
+	GameStats.gameMode = GameStats.Mode.CARD_DRAW
 	
 	for i in range(maximumCharacterCardsInHand):
 		await get_tree().create_timer(CARD_MOVE_FAST_SPEED).timeout
@@ -326,7 +331,9 @@ func _draw_cards_at_start(firstStart: bool = true) -> void:
 		await get_tree().create_timer(CARD_MOVE_FAST_SPEED).timeout
 		$"../supportDeck".draw_opponent_card()
 	
-	GameStats.gameMode = "Last Stand"
+	GameStats.gameMode = GameStats.Mode.LAST_STAND
+	
+	%pauseIcon.show()
 
 func _pick_random_opponent() -> Actor.Avatar:
 	if GameStats.opponentList.is_empty():

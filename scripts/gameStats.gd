@@ -1,7 +1,9 @@
 extends Node
 
+enum Mode { MAIN_MENU, CARD_DRAW, LAST_STAND, LAST_STAND_ROUND_COMPLETED, LAST_STAND_GAME_COMPLETED }
+
 var invitationAccepted: bool = false
-var gameMode: String = "Main Menu"
+var gameMode: Mode = Mode.MAIN_MENU
 var totalInGameTimePlayed: float = 0.0
 
 var playerHealthValue: int

@@ -12,7 +12,7 @@ func _ready():
 
 func _input(event):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
-		if GameStats.gameMode != "Last Stand Round Complete" and GameStats.gameMode != "Card Draw Animation":
+		if GameStats.gameMode != GameStats.Mode.LAST_STAND_ROUND_COMPLETED and GameStats.gameMode != GameStats.Mode.CARD_DRAW:
 			battleManager.lockPlayerInput = true
 			if currentNavigation == "Main":
 				toggle_pause()

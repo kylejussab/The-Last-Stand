@@ -135,7 +135,7 @@ func _on_last_stand_button_pressed() -> void:
 	lastStandButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
 
 func _on_new_button_pressed() -> void:
-	GameStats.gameMode = "Last Stand"
+	GameStats.gameMode = GameStats.Mode.LAST_STAND
 	Curtain.change_scene("res://scenes/main.tscn")
 
 func _on_options_button_pressed() -> void:

@@ -119,18 +119,18 @@ func show_end_turn_button(visibility: bool = true) -> void:
 # Privates
 func _on_replay_button_pressed() -> void:
 	GameStats.replayedRound = true
-	GameStats.gameMode = "Last Stand"
+	GameStats.gameMode = GameStats.Mode.LAST_STAND
 	_fade_with_round_reset()
 
 func _on_continue_button_pressed() -> void:
 	GameStats.replayedRound = false
 	GameStats.playerHealthValue = int(playerHealthLabel.text)
 	GameStats.lastStandTotalScore += GameStats.lastStandCurrentRoundScore
-	GameStats.gameMode = "Last Stand"
+	GameStats.gameMode = GameStats.Mode.LAST_STAND
 	_fade_with_round_reset()
 
 func _on_main_menu_button_pressed() -> void:
-	GameStats.gameMode = "Main Menu"
+	GameStats.gameMode = GameStats.Mode.MAIN_MENU
 	Curtain.change_scene("res://scenes/mainMenu.tscn")
 
 # Helpers
