@@ -180,7 +180,7 @@ func set_end_game_stats(playerWon: bool):
 		score.get_node("stat5").text = "-"
 		score.get_node("stat6").text = "**"
 		GameStats.lastStandCurrentRoundScore = losingScore
-		score.get_node("stat7").text = str(GameStats.lastStandTotalScore)
+		score.get_node("stat7").text = "%05d" % GameStats.lastStandTotalScore
 
 func format_time(time: float) -> String:
 	var minutes = int(time / 60)
@@ -230,7 +230,7 @@ func animate_score_tick(label, start_score: int, end_score: int):
 	var tween = create_tween()
 	
 	tween.tween_method(
-		func(val: int): label.text = str(val),
+		func(val: int): label.text = "%05d" % val,
 		start_score,
 		end_score,
 		duration

@@ -93,49 +93,49 @@ var AVATARS = {
 	Actor.Avatar.ETHAN: {
 		"name": "Ethan Hark",
 		"description": "Patrol Leader",
-		"health": 1,
+		"health": 10,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.RHEA: {
 		"name": "Rhea",
-		"description": "Cold Matriarch",
-		"health": 1,
+		"description": "Matriarch",
+		"health": 10,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.UCKMANN: {
 		"name": "Dr Uckmann",
 		"description": "Dog Director",
-		"health": 1,
+		"health": 10,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.ALLEY: {
 		"name": "Alley Ross",
 		"description": "Scriptweaver",
-		"health": 1,
+		"health": 10,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.SILAS: {
 		"name": "Silas Vane",
 		"description": "Scavenger King",
-		"health": 1,
+		"health": 10,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.MIRA: {
 		"name": "Mira Thorne",
 		"description": "Ex-Medic",
-		"health": 1, 
+		"health": 10, 
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.KAEL: {
 		"name": "Kaelen Voss",
 		"description": "Shield Brother",
-		"health": 1,
+		"health": 10,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	}

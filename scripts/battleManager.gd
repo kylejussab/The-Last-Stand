@@ -7,7 +7,7 @@ const END_ROUND_TIME: float = 1.2
 const CARD_MOVE_SPEED: float = 0.2
 const CARD_MOVE_FAST_SPEED: float = 0.15
 
-const DISCARD_PILE_POSITION: Vector2 = Vector2(135, 300)
+const DISCARD_PILE_POSITION: Vector2 = Vector2(135, 292)
 
 const MINIMUM_CARDS_FOR_RESHUFFLE: int = 3
 
@@ -58,7 +58,7 @@ func _ready() -> void:
 		GameStats.Mode.LAST_STAND:
 			# Maybe there should be an avatar thats always used for Last Stand
 			GameStats.currentPlayer = Actor.Avatar.JUNE
-			GameStats.playerHealthValue = 100 
+			GameStats.playerHealthValue = 99 
 	
 	ui.update_health(Actor.Type.PLAYER, GameStats.playerHealthValue, true)
 	

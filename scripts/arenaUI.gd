@@ -27,11 +27,11 @@ func update_health(who: Actor.Type, value: int, instant: bool = false) -> void:
 		Database.AVATARS[GameStats.currentPlayer].health = value
 	
 	if Settings.reduceAnimations or instant:
-		label.text = str(value)
+		label.text = "%02d" % value
 	else:
 		var tween = create_tween()
 		tween.tween_method(
-			func(val: int): label.text = str(val),
+			func(val: int): label.text = ("-" if val < 0 else "") + "%02d" % abs(val),
 			startValue,
 			value,
 			1.0
