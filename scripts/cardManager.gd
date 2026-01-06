@@ -27,7 +27,7 @@ func _process(_delta: float) -> void:
 		draggedCard.position = Vector2(clamp(mousePosition.x, 0, screenSize.x), clamp(mousePosition.y, 0, screenSize.y))
 
 func start_drag(card):
-	if !$"../battleManager".lockPlayerInput:
+	if !battleManager.lockPlayerInput and card.cardSlot == null:
 		draggedCard = card
 		draggedCard.play_draw_sound()
 		card.scale = Vector2(1, 1)
@@ -41,14 +41,14 @@ func finish_drag():
 	if cardSlot and not cardSlot.occupied and draggedCard.canBePlayed:
 		if draggedCard.type == cardSlot.type:
 			# Only allow a support card play after a character card
-			if draggedCard.type == "Support" && !$"../battleManager".playerCharacterCard:
+			if draggedCard.type == "Support" && !battleManager.playerCharacterCard:
 				pass
 			else:
 				playerHandReference.remove_card_from_hand(draggedCard)
 				
 				draggedCard.z_index = -1
 				draggedCard.position = cardSlot.position
-				draggedCard.get_node("Area2D/CollisionShape2D").disabled = true
+				#draggedCard.get_node("Area2D/CollisionShape2D").disabled = true
 				cardSlot.occupied = true
 				draggedCard.cardSlot = cardSlot
 				
@@ -116,6 +116,12 @@ func on_card_hover_exit(card):
 			on_card_hover_enter(newCardHovered)
 
 func highlight_card(card, hovered: bool):
+	var animationPlayer = card.get_node("AnimationPlayer")
+	
+	if animationPlayer.is_playing():
+		if animationPlayer.current_animation == "showPerk" or animationPlayer.current_animation == "cardFlip":
+			return
+	
 	if hovered && !battleManager.lockPlayerInput:
 		card.scale = Vector2(1.35, 1.35)
 		card.z_index = 2
@@ -171,7 +177,7 @@ func move_card_on_double_click(card, cardSlot):
 		
 		card.z_index = -1
 		card.position = cardSlot.position
-		card.get_node("Area2D/CollisionShape2D").disabled = true
+		#card.get_node("Area2D/CollisionShape2D").disabled = true
 		cardSlot.occupied = true
 		card.cardSlot = cardSlot
 		

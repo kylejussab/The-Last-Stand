@@ -23,6 +23,8 @@ func add_card_to_hand(card, speed):
 		else:
 			playerHand.append(card)
 		update_hand_positions(speed)
+		
+		card.get_node("Area2D/CollisionShape2D").disabled = false
 	else:
 		animate_card_to_position(card, card.handPosition, DEFAULT_CARD_MOVE_SPEED)
 

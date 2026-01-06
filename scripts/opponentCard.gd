@@ -1,5 +1,9 @@
 extends Node2D
 
+signal hoverEntered(card)
+signal hoverExited(card)
+
+var cardSlot: Node2D
 var cardKey: String
 var type
 var handPosition: Vector2
@@ -22,7 +26,16 @@ var canBePlayed: bool
 	preload("res://assets/sounds/cards/deal_7.wav")
 ]
 
+func _ready() -> void:
+	get_parent().connect_card_signals(self)
+
 func play_draw_sound():
 	var randomSound = drawSounds.pick_random()
 	soundPlayer.stream = randomSound
 	soundPlayer.play()
+
+func _on_area_2d_mouse_entered() -> void:
+	emit_signal("hoverEntered", self)
+
+func _on_area_2d_mouse_exited() -> void:
+	emit_signal("hoverExited", self)

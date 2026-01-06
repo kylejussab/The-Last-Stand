@@ -135,6 +135,7 @@ func _execute_opponent_character_play() -> void:
 	await get_tree().create_timer(OPPONENT_THINKING_TIME).timeout
 	
 	var card = opponentAI.play_character_card(opponentHand, playerHand)
+	card.cardSlot = opponentCharacterCardSlot
 	
 	_animate_opponent_playing_card(card, opponentCharacterCardSlot)
 	opponentCharacterCard = card
@@ -194,6 +195,7 @@ func _execute_opponent_support_play() -> void:
 	var card = opponentAI.choose_support_card(opponentHand, opponentCharacterCard, playerCharacterCard)
 	
 	if card != null:
+		card.cardSlot = opponentSupportCardSlot
 		_animate_opponent_playing_card(card, opponentSupportCardSlot)
 		opponentSupportCard = card
 	
@@ -368,6 +370,7 @@ func _pick_next_opponent() -> Actor.Avatar:
 
 func _animate_opponent_playing_card(opponentCard: Node2D, opponentCardSlot: Node2D) -> void:
 	opponentCard.play_draw_sound()
+	opponentCard.get_node("Area2D/CollisionShape2D").disabled = false
 	
 	opponentCard.get_node("AnimationPlayer").play("cardFlip")
 	
@@ -463,6 +466,7 @@ func _move_cards_to_discard(cards: Array) -> void:
 		discardedCards.append(card)
 		card.play_draw_sound()
 		card.scale = Vector2(1, 1)
+		card.get_node("Area2D/CollisionShape2D").disabled = true
 		
 		card.z_index = discardedCardZIndex
 		discardedCardZIndex += 1
@@ -590,6 +594,7 @@ func _place_card_in_discard(card: Node2D, hand: Node2D) -> void:
 	discardedCards.append(card)
 	card.play_draw_sound()
 	card.scale = Vector2(1, 1)
+	card.get_node("Area2D/CollisionShape2D").disabled = true
 	
 	card.z_index = discardedCardZIndex
 	discardedCardZIndex += 1
