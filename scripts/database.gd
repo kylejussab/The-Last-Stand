@@ -87,55 +87,55 @@ var AVATARS = {
 	Actor.Avatar.JUNE: {
 		"name": "June Ravel",
 		"description": "Former Firefly",
-		"health": 35,
+		"health": "%02d" % 35,
 		"headPath": "res://assets/arenaHeads/"
 	},
 	Actor.Avatar.ETHAN: {
 		"name": "Ethan Hark",
 		"description": "Patrol Leader",
-		"health": 10,
+		"health": "%02d" % 1,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.RHEA: {
 		"name": "Rhea",
 		"description": "Matriarch",
-		"health": 10,
+		"health": "%02d" % 1,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.UCKMANN: {
 		"name": "Dr Uckmann",
 		"description": "Dog Director",
-		"health": 10,
+		"health": "%02d" % 1,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.ALLEY: {
 		"name": "Alley Ross",
 		"description": "Scriptweaver",
-		"health": 10,
+		"health": "%02d" % 1,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.SILAS: {
 		"name": "Silas Vane",
 		"description": "Scavenger King",
-		"health": 10,
+		"health": "%02d" % 1,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.MIRA: {
 		"name": "Mira Thorne",
 		"description": "Ex-Medic",
-		"health": 10, 
+		"health": "%02d" % 1, 
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.KAEL: {
 		"name": "Kaelen Voss",
 		"description": "Shield Brother",
-		"health": 10,
+		"health": "%02d" % 1,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	}

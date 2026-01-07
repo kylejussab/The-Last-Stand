@@ -120,17 +120,19 @@ func on_card_hover_exit(card):
 func highlight_card(card, hovered: bool):
 	var animationPlayer = card.get_node("AnimationPlayer")
 	
-	if animationPlayer.is_playing():
+	if battleManager.lockPlayerInput:
+		return
+		
+	if animationPlayer and animationPlayer.is_playing():
 		if animationPlayer.current_animation == "showPerk" or animationPlayer.current_animation == "cardFlip":
 			return
 	
-	if !battleManager.lockPlayerInput:
-		_play_card_hover_sound()
-
-	if hovered && !battleManager.lockPlayerInput:
+	_play_card_hover_sound()
+	
+	if hovered:
 		card.scale = Vector2(1.35, 1.35)
 		card.z_index = 2
-		if card.perk && !draggedCard && !battleManager.lockPlayerInput:
+		if card.perk and !draggedCard:
 			card.get_node("AnimationPlayer").play("showDescription")
 			
 			if Settings.reduceAnimations:
@@ -139,7 +141,7 @@ func highlight_card(card, hovered: bool):
 	else:
 		card.scale = Vector2(1, 1)
 		card.z_index = 1
-		if card.perk && !battleManager.lockPlayerInput:
+		if card.perk:
 			card.get_node("AnimationPlayer").play("hideDescription")
 			
 			if Settings.reduceAnimations:
@@ -152,6 +154,9 @@ func get_top_card(cards):
 	
 	for i in range(1, cards.size()):
 		var currentCard = cards[i].collider.get_parent()
+		if "type" not in currentCard: # Filters out anything that isn't a card
+			continue
+		
 		if currentCard.z_index > topCardZIndex:
 			topCard = currentCard
 			topCardZIndex = currentCard.z_index

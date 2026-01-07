@@ -272,7 +272,7 @@ func _conclude_match() -> void:
 	
 	await _move_cards_to_discard(cardsToDiscard)
 	
-	battleAnimator.play_game_over_sequence(ui.get_health(Actor.Type.PLAYER) > ui.get_health(Actor.Type.OPPONENT))
+	battleAnimator.play_game_over_sequence(ui.get_health(Actor.Type.PLAYER) > 0)
 	
 	await _repopulate_decks(true)
 	
