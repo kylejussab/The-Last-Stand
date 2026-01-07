@@ -745,6 +745,24 @@ offset_bottom = 139.0
 [node name="performance" type="Node2D" parent="arena/gameOver"]
 visible = false
 
+[node name="wins" type="RichTextLabel" parent="arena/gameOver/performance"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 595.0
+offset_top = 80.0
+offset_right = 665.0
+offset_bottom = 130.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/normal_font = ExtResource("13_a8y0u")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 32
+text = "99"
+horizontal_alignment = 2
+
 [node name="heading" type="RichTextLabel" parent="arena/gameOver/performance"]
 anchors_preset = 8
 anchor_left = 0.5

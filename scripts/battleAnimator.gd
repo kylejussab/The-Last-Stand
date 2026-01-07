@@ -17,6 +17,9 @@ func title_slam_and_slide(playerWon: bool):
 	gameOver.get_node("overlay").visible = true
 	gameOver.get_node("title").visible = true
 	
+	if playerWon:
+		GameStats.numberOfWins += 1
+	
 	var resultLabel = gameOver.get_node("title")
 	resultLabel.text = "SURVIVED" if playerWon else "DEFEATED"
 	resultLabel.pivot_offset = resultLabel.size / 2
@@ -136,6 +139,7 @@ func show_stats(playerWon: bool):
 func set_end_game_stats(playerWon: bool):
 	# Performance stats
 	var performance = gameOver.get_node("performance")
+	performance.get_node("wins").text = "%02d" % GameStats.numberOfWins
 	performance.get_node("stat1").text = str(GameStats.totalForceExerted)
 	performance.get_node("stat2").text = str(GameStats.opponentForceExerted)
 	performance.get_node("stat3").text = str(GameStats.roundNumber)
@@ -168,7 +172,7 @@ func set_end_game_stats(playerWon: bool):
 		# Multiplier
 		score.get_node("stat6").text = "**"
 		GameStats.lastStandCurrentRoundScore = winingBase + force + efficiency + underdog + int(momentum)
-		score.get_node("stat7").text = str(GameStats.lastStandTotalScore)
+		score.get_node("stat7").text = "%05d" % GameStats.lastStandTotalScore
 	else:
 		score.get_node("stat1text").text = "Defeat"
 		@warning_ignore("integer_division")

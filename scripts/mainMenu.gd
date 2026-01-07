@@ -127,8 +127,9 @@ func _on_june_button_mouse_exited() -> void:
 	supplementText.text = ""
 
 func _on_june_button_pressed() -> void:
-	GameStats.gameMode = GameStats.Mode.JUNE_RAVEL
-	Curtain.change_scene("res://scenes/main.tscn")
+	#GameStats.gameMode = GameStats.Mode.JUNE_RAVEL
+	#Curtain.change_scene("res://scenes/main.tscn")
+	pass
 
 func _on_last_stand_button_mouse_entered() -> void:
 	supplementText.text = SUPPLEMENTTEXT["Last Stand"]

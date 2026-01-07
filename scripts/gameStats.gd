@@ -13,6 +13,7 @@ var opponentList: Array = []
 var currentPlayer: Actor.Avatar
 var currentOpponent: Actor.Avatar
 
+var numberOfWins: int = 0
 var roundNumber: int = 1
 var totalForceExerted: int = 0
 var opponentForceExerted: int = 0
