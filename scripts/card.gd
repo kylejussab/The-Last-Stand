@@ -38,7 +38,6 @@ func _on_area_2d_mouse_exited() -> void:
 
 func play_draw_sound():
 	var randomSound = drawSounds.pick_random()
-	soundPlayer.volume_db = 0.0
 	soundPlayer.stream = randomSound
 	soundPlayer.play()
 

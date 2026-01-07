@@ -12,6 +12,8 @@ var screenSize: Vector2
 var hoveredCard: Node2D = null
 var playerHandReference: Node
 
+var canPlayHoverSound: bool = true
+
 @onready var battleManager = %battleManager
 
 func _ready() -> void:
@@ -122,6 +124,9 @@ func highlight_card(card, hovered: bool):
 		if animationPlayer.current_animation == "showPerk" or animationPlayer.current_animation == "cardFlip":
 			return
 	
+	if !battleManager.lockPlayerInput:
+		_play_card_hover_sound()
+
 	if hovered && !battleManager.lockPlayerInput:
 		card.scale = Vector2(1.35, 1.35)
 		card.z_index = 2
@@ -196,3 +201,14 @@ func move_card_on_double_click(card, cardSlot):
 		
 		playerHandReference.remove_card_from_hand(draggedCard)
 		draggedCard = null
+
+func _play_card_hover_sound() -> void:
+	if %CardHoverSound.playing:
+		return
+	
+	if canPlayHoverSound:
+		%CardHoverSound.play()
+		canPlayHoverSound = false
+		
+	await get_tree().create_timer(.1).timeout
+	canPlayHoverSound = true
