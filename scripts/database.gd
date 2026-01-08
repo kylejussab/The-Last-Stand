@@ -143,11 +143,11 @@ var AVATARS = {
 
 const JUNE_OPPONENTS = [Actor.Avatar.ETHAN, Actor.Avatar.UCKMANN, Actor.Avatar.ALLEY, Actor.Avatar.MIRA, Actor.Avatar.RHEA]
 
-enum Modifier { INFECTED_DECK, SMALLER_HAND, SLOW_BLEED }
+enum Modifier { INFECTED_DECK, REDUCED_HAND, SLOW_BLEED, ALWAYS_FIRST, VOLATILE_HAND }
 
 const MODIFIERS = {
-	Modifier.SMALLER_HAND: {
-		"id": Modifier.SMALLER_HAND,
+	Modifier.REDUCED_HAND: {
+		"id": Modifier.REDUCED_HAND,
 		"tier": 1,
 		"multiplier": 0.5,
 		"duration": 2, # Games
@@ -163,6 +163,18 @@ const MODIFIERS = {
 		"id": Modifier.INFECTED_DECK,
 		"tier": 2,
 		"multiplier": 2.0,
+		"duration": 2,
+	},
+	Modifier.VOLATILE_HAND: {
+		"id": Modifier.VOLATILE_HAND,
+		"tier": 1,
+		"multiplier": 0.75,
+		"duration": 3,
+	},
+	Modifier.ALWAYS_FIRST: {
+		"id": Modifier.ALWAYS_FIRST,
+		"tier": 3,
+		"multiplier": 2.5,
 		"duration": 2,
 	},
 } 

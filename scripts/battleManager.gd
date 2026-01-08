@@ -9,11 +9,16 @@ const CARD_MOVE_FAST_SPEED: float = 0.15
 
 const DISCARD_PILE_POSITION: Vector2 = Vector2(135, 292)
 
-const MINIMUM_CARDS_FOR_RESHUFFLE: int = 3
+const MAXIMUM_HAND_SIZE: int = 8
+
+var minimumCardsForReshuffle: int = 3
 
 # Modifiers
 var infectedDeckActive: bool = false
 var slowBleedActive: bool = false
+var alwaysFirstActive: bool = false
+var volatileHandActive: bool = false
+var reducedHandActive: bool = false
 var maximumCharacterCardsInHand: int = 4
 var maximumSupportCardsInHand: int = 4
 
@@ -85,11 +90,17 @@ func add_modifier(modifier: Database.Modifier) -> void:
 	match modifier:
 		Database.Modifier.INFECTED_DECK:
 			infectedDeckActive = true
-		Database.Modifier.SMALLER_HAND:
+		Database.Modifier.REDUCED_HAND:
+			reducedHandActive = true
 			maximumCharacterCardsInHand = 3
 			maximumSupportCardsInHand = 3
 		Database.Modifier.SLOW_BLEED:
 			slowBleedActive = true
+		Database.Modifier.ALWAYS_FIRST:
+			alwaysFirstActive = true
+		Database.Modifier.VOLATILE_HAND:
+			minimumCardsForReshuffle = 6
+			volatileHandActive = true
 
 func remove_modifier(modifier: Database.Modifier) -> void:
 	for i in range(GameStats.activeMultipliers.size() - 1, -1, -1):
@@ -101,11 +112,17 @@ func remove_modifier(modifier: Database.Modifier) -> void:
 	match modifier:
 		Database.Modifier.INFECTED_DECK:
 			infectedDeckActive = false
-		Database.Modifier.SMALLER_HAND:
+		Database.Modifier.REDUCED_HAND:
+			reducedHandActive = false
 			maximumCharacterCardsInHand = 4
 			maximumSupportCardsInHand = 4
 		Database.Modifier.SLOW_BLEED:
 			slowBleedActive = false
+		Database.Modifier.ALWAYS_FIRST:
+			alwaysFirstActive = false
+		Database.Modifier.VOLATILE_HAND:
+			minimumCardsForReshuffle = 3
+			volatileHandActive = false
 
 # Privates
 func _initialize_game() -> void:
@@ -132,6 +149,8 @@ func _initialize_game() -> void:
 	
 	lockPlayerInput = false
 	GameStats.set_start_time()
+	
+	print(GameStats.gameMode)
 
 func _initialize_opponent(player: Actor.Avatar, opponent: Actor.Avatar) -> void:
 	ui.setup_avatar(player, Actor.Type.PLAYER)
@@ -336,7 +355,7 @@ func _start_new_round() -> void:
 	# Shuffle cards from discard back into decks if needed
 	await _repopulate_decks()
 	
-	if GameStats.roundNumber % 2 == 0:
+	if GameStats.roundNumber % 2 == 0 and !alwaysFirstActive:
 		whoStartedRound = Actor.Type.OPPONENT
 		
 		ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.THINKING)
@@ -380,9 +399,17 @@ func _draw_cards_at_start(firstStart: bool = true) -> void:
 		await get_tree().create_timer(CARD_MOVE_FAST_SPEED).timeout
 		$"../characterDeck".draw_opponent_card()
 	
+	if reducedHandActive:
+		await get_tree().create_timer(CARD_MOVE_FAST_SPEED).timeout
+		$"../characterDeck".draw_opponent_card()
+	
 	for i in range(maximumSupportCardsInHand):
 		await get_tree().create_timer(CARD_MOVE_FAST_SPEED).timeout
 		$"../supportDeck".draw_card()
+		await get_tree().create_timer(CARD_MOVE_FAST_SPEED).timeout
+		$"../supportDeck".draw_opponent_card()
+	
+	if reducedHandActive:
 		await get_tree().create_timer(CARD_MOVE_FAST_SPEED).timeout
 		$"../supportDeck".draw_opponent_card()
 	
@@ -495,6 +522,9 @@ func _calculate_damage() -> void:
 		await _handle_opponent_win(playerTotal, opponentTotal)
 	elif opponentTotal == playerTotal:
 		await _handle_lev_perk()
+	
+	if slowBleedActive:
+		await _deal_damage(Actor.Type.PLAYER, Database.MODIFIERS[Database.Modifier.SLOW_BLEED]["amount"])
 
 func _apply_calculation_round_perks(playerTotal: int, opponentTotal: int) -> void:
 	if playerCharacterCard.perk && playerCharacterCard.perk.timing == "calculationRound":
@@ -523,6 +553,10 @@ func _move_cards_to_discard(cards: Array) -> void:
 	
 	$"../cardSlots/cardSlotSupport".occupied = false
 	$"../cardSlots/cardSlotCharacter".occupied = false
+	
+	if GameStats.roundNumber % 3 == 0 and volatileHandActive and GameStats.gameMode == GameStats.Mode.LAST_STAND:
+		for card in playerHand.duplicate():
+			await _place_card_in_discard(card, %playerHand)
 
 func _reset_played_cards_perks() -> void:
 	if playerCharacterCard.perk:
@@ -561,22 +595,46 @@ func _repopulate_hand(hand: Array, who: Actor.Type) -> void:
 		elif card.type == "Support":
 			supportCount += 1
 	
-	while characterCount < maximumCharacterCardsInHand:
-		if who == Actor.Type.PLAYER:
+	if who == Actor.Type.PLAYER:
+		while characterCount < maximumCharacterCardsInHand:
 			characterDeckReference.draw_card()
-		else:
+			characterCount += 1
+			await get_tree().create_timer(CARD_MOVE_SPEED).timeout
+	else:
+		@warning_ignore("integer_division")
+		while characterCount < MAXIMUM_HAND_SIZE / 2:
 			characterDeckReference.draw_opponent_card()
-		
-		characterCount += 1
-		await get_tree().create_timer(CARD_MOVE_SPEED).timeout
+			characterCount += 1
+			await get_tree().create_timer(CARD_MOVE_SPEED).timeout
 	
-	while supportCount < maximumSupportCardsInHand:
-		if who == Actor.Type.PLAYER:
+	if who == Actor.Type.PLAYER:
+		while supportCount < maximumCharacterCardsInHand:
 			supportDeckReference.draw_card()
-		else:
+			supportCount += 1
+			await get_tree().create_timer(CARD_MOVE_SPEED).timeout
+	else:
+		@warning_ignore("integer_division")
+		while supportCount < MAXIMUM_HAND_SIZE / 2:
 			supportDeckReference.draw_opponent_card()
-		supportCount += 1
-		await get_tree().create_timer(CARD_MOVE_SPEED).timeout
+			supportCount += 1
+			await get_tree().create_timer(CARD_MOVE_SPEED).timeout
+	
+	#while characterCount < maximumCharacterCardsInHand:
+		#if who == Actor.Type.PLAYER:
+			#characterDeckReference.draw_card()
+		#else:
+			#characterDeckReference.draw_opponent_card()
+		#
+		#characterCount += 1
+		#await get_tree().create_timer(CARD_MOVE_SPEED).timeout
+	
+	#while supportCount < maximumSupportCardsInHand:
+		#if who == Actor.Type.PLAYER:
+			#supportDeckReference.draw_card()
+		#else:
+			#supportDeckReference.draw_opponent_card()
+		#supportCount += 1
+		#await get_tree().create_timer(CARD_MOVE_SPEED).timeout
 	
 	lockPlayerInput = false
 
@@ -611,7 +669,7 @@ func _repopulate_decks(endGame: bool = false) -> void:
 		
 		return
 	
-	if $"../supportDeck".deck.size() < MINIMUM_CARDS_FOR_RESHUFFLE:
+	if $"../supportDeck".deck.size() < minimumCardsForReshuffle:
 		discardedCards = discardedCharactersReversed + discardedSupportsReversed
 		
 		for i in range(discardedSupportsReversed.size()):
@@ -623,7 +681,7 @@ func _repopulate_decks(endGame: bool = false) -> void:
 		
 		return
 	
-	if $"../characterDeck".deck.size() < MINIMUM_CARDS_FOR_RESHUFFLE:
+	if $"../characterDeck".deck.size() < minimumCardsForReshuffle:
 		discardedCards = discardedSupportsReversed + discardedCharactersReversed
 		
 		for i in range(discardedCharactersReversed.size()):
@@ -688,9 +746,6 @@ func _handle_player_win(playerTotal: int, opponentTotal: int) -> void:
 
 	if playerCharacterCard.value < opponentCharacterCard.value:
 		GameStats.roundWinsUnderdog += 1
-	
-	if slowBleedActive:
-		await _deal_damage(Actor.Type.PLAYER, Database.MODIFIERS[Database.Modifier.SLOW_BLEED]["amount"])
 
 func _handle_opponent_win(playerTotal: int, opponentTotal: int) -> void:
 	var damage = opponentTotal - playerTotal
@@ -704,9 +759,6 @@ func _handle_opponent_win(playerTotal: int, opponentTotal: int) -> void:
 	
 	if opponentCharacterCard.perkValueAtRoundEnd: # Any non-special perks that need triggering on round end
 		await _deal_damage(Actor.Type.PLAYER, opponentCharacterCard.perkValueAtRoundEnd)
-	
-	if slowBleedActive:
-		await _deal_damage(Actor.Type.PLAYER, Database.MODIFIERS[Database.Modifier.SLOW_BLEED]["amount"])
 
 func _handle_bloater_perk(winner: Actor.Type) -> void:
 	if winner == Actor.Type.PLAYER:
