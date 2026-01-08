@@ -93,52 +93,170 @@ var AVATARS = {
 	Actor.Avatar.ETHAN: {
 		"name": "Ethan Hark",
 		"description": "Patrol Leader",
-		"health": "%02d" % 1,
+		"health": "%02d" % 5,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.RHEA: {
 		"name": "Rhea",
 		"description": "Matriarch",
-		"health": "%02d" % 1,
+		"health": "%02d" % 5,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.UCKMANN: {
 		"name": "Dr Uckmann",
 		"description": "Dog Director",
-		"health": "%02d" % 1,
+		"health": "%02d" % 5,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.ALLEY: {
 		"name": "Alley Ross",
 		"description": "Scriptweaver",
-		"health": "%02d" % 1,
+		"health": "%02d" % 5,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.SILAS: {
 		"name": "Silas Vane",
 		"description": "Scavenger King",
-		"health": "%02d" % 1,
+		"health": "%02d" % 5,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.MIRA: {
 		"name": "Mira Thorne",
 		"description": "Ex-Medic",
-		"health": "%02d" % 1, 
+		"health": "%02d" % 5, 
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.KAEL: {
 		"name": "Kaelen Voss",
 		"description": "Shield Brother",
-		"health": "%02d" % 1,
+		"health": "%02d" % 5,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	}
 }
 
 const JUNE_OPPONENTS = [Actor.Avatar.ETHAN, Actor.Avatar.UCKMANN, Actor.Avatar.ALLEY, Actor.Avatar.MIRA, Actor.Avatar.RHEA]
+
+enum Modifier { INFECTED_DECK, SMALLER_HAND, SLOW_BLEED }
+
+const MODIFIERS = {
+	Modifier.SMALLER_HAND: {
+		"id": Modifier.SMALLER_HAND,
+		"tier": 1,
+		"multiplier": 0.5,
+		"duration": 2, # Games
+	},
+	Modifier.SLOW_BLEED: {
+		"id": Modifier.SLOW_BLEED,
+		"tier": 1,
+		"multiplier": 0.5,
+		"duration": 3,
+		"amount": 1,
+	},
+	Modifier.INFECTED_DECK: {
+		"id": Modifier.INFECTED_DECK,
+		"tier": 2,
+		"multiplier": 2.0,
+		"duration": 2,
+	},
+} 
+
+var standardCharacterDeck = [
+	"Runner", "Runner", "Runner", "Runner",
+	"Stalker", "Stalker", "Stalker",
+	"FireflySoldier", "FireflySoldier", "FireflySoldier",
+	"WLFSoldier", "WLFSoldier",
+	"SeraphiteBrute", "SeraphiteBrute",
+	
+	"Clicker", "Clicker",
+	"Bloater",
+	"Emily", "Ezra", "Lev", "Yara",
+	"Nora", "Manny", "Alice",
+	"Bill", "Dina", "Jessie", "Tommy", "TommyFirefly",
+	"Riley", "Eugene", "Malik",
+	
+	"Joel",
+	"Ellie",
+	"Abby",
+	"Isaac",
+	"TheProphet",
+	"Marlene",
+	"RatKing",
+]
+
+var standardSupportDeck = [
+	"Brick", "Brick",
+	"Bottle", "Bottle",
+	"ScavengedParts", "ScavengedParts", "ScavengedParts",
+	"Supplements", "Supplements",
+	"SupplyCache", "SupplyCache",
+	
+	"MedKit", "MedKit",
+	"SmokeBomb", "SmokeBomb",
+	"Silencer", "Silencer",
+	"ReinforcedMelee", "ReinforcedMelee",
+	"TrainingManual",
+	"Retreat",
+	"Resilience",
+	"ShotgunShells",
+	
+	"Molotov",
+	"Rage",
+	"TrapMine",
+]
+
+var infectedHeavyCharacterDeck = [
+	"Runner", "Runner", "Runner", "Runner", "Runner", "Runner",
+	"Stalker", "Stalker", "Stalker", "Stalker", "Stalker",
+	"Clicker", "Clicker", "Clicker",
+	"Bloater", "Bloater",
+	"Malik", "Malik",
+	
+	"Runner", "Runner", "Runner", "Runner",
+	"Stalker", "Stalker", "Stalker",
+	"FireflySoldier",
+	"WLFSoldier",
+	"SeraphiteBrute",
+	
+	"Clicker", "Clicker",
+	"Bloater",
+	"Emily", "Ezra", "Lev", "Yara",
+	"Nora", "Manny", "Alice",
+	"Bill", "Dina", "Jessie", "Tommy", "TommyFirefly",
+	"Riley", "Eugene", "Malik",
+	
+	"Joel",
+	"Ellie",
+	"Abby",
+	"Isaac",
+	"TheProphet",
+	"Marlene",
+	"RatKing",
+]
+
+var infectedHeavySupportDeck = [
+	"Brick", "Brick", "Brick", 
+	"Bottle", "Bottle", "Bottle",
+	
+	"Supplements", "Supplements", "Supplements",
+	"SupplyCache", "SupplyCache", "SupplyCache",
+	
+	"Molotov", "Molotov", 
+	"Rage", "Rage", "Rage",
+	"ReinforcedMelee", "ReinforcedMelee", "ReinforcedMelee",
+	
+	"ScavengedParts", "ScavengedParts",
+	"Resilience",
+	"ShotgunShells",
+	
+	"MedKit", "MedKit",
+	"SmokeBomb", "SmokeBomb",
+	"Silencer", 
+	"TrapMine",
+]

@@ -15,34 +15,11 @@ var shuffleSounds = [
 	preload("res://assets/sounds/cards/shuffle_4.wav")
 ]
 
-var deck = [
-	"Runner", "Runner", "Runner", "Runner",
-	"Stalker", "Stalker", "Stalker",
-	"FireflySoldier", "FireflySoldier", "FireflySoldier",
-	"WLFSoldier", "WLFSoldier",
-	"SeraphiteBrute", "SeraphiteBrute",
-	
-	"Clicker", "Clicker",
-	"Bloater",
-	"Emily", "Ezra", "Lev", "Yara",
-	"Nora", "Manny", "Alice",
-	"Bill", "Dina", "Jessie", "Tommy", "TommyFirefly",
-	"Riley", "Eugene", "Malik",
-	
-	"Joel",
-	"Ellie",
-	"Abby",
-	"Isaac",
-	"TheProphet",
-	"Marlene",
-	"RatKing",
-]
+var deck: Array
 
 var cardDatabaseReference
 
 func _ready() -> void:
-	deck.shuffle()
-	
 	$RichTextLabel.text = str(deck.size())
 	cardDatabaseReference = preload("res://scripts/database.gd")
 
@@ -122,13 +99,24 @@ func draw_opponent_card():
 		newCard.get_node("image").visible = false
 
 func reshuffle_from_discards(discardedCards):
+	var processedNodes = []
+
 	for card in discardedCards:
+		if not is_instance_valid(card):
+			continue
+		
+		if card in processedNodes:
+			continue
+		
+		processedNodes.append(card)
+		
 		deck.append(card.cardKey)
 		
 		card.play_draw_sound()
 		await move_card_back_to_deck(card)
 		
-		card.queue_free()
+		if is_instance_valid(card):
+			card.queue_free()
 		
 	deck.shuffle()
 	

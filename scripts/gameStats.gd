@@ -20,6 +20,8 @@ var opponentForceExerted: int = 0
 var highestDamageDealt: int = 0
 var roundWinsUnderdog: int = 0
 var allPlayedCards: Array = []
+var multiplierTotal: float = 1.0
+var activeMultipliers: Array = []
 
 var currentRoundDuration: float = 0.0 
 var canCountDuration: bool = false

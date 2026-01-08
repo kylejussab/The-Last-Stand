@@ -15,32 +15,11 @@ var shuffleSounds = [
 	preload("res://assets/sounds/cards/shuffle_4.wav")
 ]
 
-var deck = [
-	"Brick", "Brick",
-	"Bottle", "Bottle",
-	"ScavengedParts", "ScavengedParts", "ScavengedParts",
-	"Supplements", "Supplements",
-	"SupplyCache", "SupplyCache",
-	
-	"MedKit", "MedKit",
-	"SmokeBomb", "SmokeBomb",
-	"Silencer", "Silencer",
-	"ReinforcedMelee", "ReinforcedMelee",
-	"TrainingManual",
-	"Retreat",
-	"Resilience",
-	"ShotgunShells",
-	
-	"Molotov",
-	"Rage",
-	"TrapMine",
-]
+var deck: Array
 
 var cardDatabaseReference
 
 func _ready() -> void:
-	deck.shuffle()
-	
 	$RichTextLabel.text = str(deck.size())
 	cardDatabaseReference = preload("res://scripts/database.gd")
 

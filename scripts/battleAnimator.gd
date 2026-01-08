@@ -47,7 +47,7 @@ func title_slam_and_slide(playerWon: bool):
 	
 	await slamTween.finished
 	
-	await get_tree().create_timer(1.5).timeout
+	await get_tree().create_timer(1).timeout
 	
 	var slideTween = create_tween().set_parallel(true)
 	var targetPosition = Vector2(150, 80)
@@ -160,8 +160,8 @@ func set_end_game_stats(playerWon: bool):
 	var score = gameOver.get_node("score")
 	if playerWon:
 		score.get_node("stat1text").text = "Victory"
-		var winingBase = 20
-		score.get_node("stat1").text = str(winingBase)
+		var winningBase = 20
+		score.get_node("stat1").text = str(winningBase)
 		var force = GameStats.totalForceExerted - GameStats.opponentForceExerted
 		score.get_node("stat2").text = str(force)
 		var efficiency = (9 - GameStats.roundNumber) * 5 # 9 as an average number of rounds
@@ -170,21 +170,23 @@ func set_end_game_stats(playerWon: bool):
 		score.get_node("stat4").text = str(underdog)
 		score.get_node("stat5").text = str(int(momentum))
 		# Multiplier
-		score.get_node("stat6").text = "**"
-		GameStats.lastStandCurrentRoundScore = winingBase + force + efficiency + underdog + int(momentum)
+		score.get_node("stat6").text = str(GameStats.multiplierTotal) + "x"
+		GameStats.lastStandCurrentRoundScore = int((winningBase + force + efficiency + underdog + momentum) * GameStats.multiplierTotal)
 		score.get_node("stat7").text = "%05d" % GameStats.lastStandTotalScore
 	else:
 		score.get_node("stat1text").text = "Defeat"
 		@warning_ignore("integer_division")
-		var losingScore = str(int(GameStats.totalForceExerted) / 10)
-		score.get_node("stat1").text = losingScore
+		var losingScore = int(GameStats.totalForceExerted / 10)
+		score.get_node("stat1").text = str(losingScore)
 		score.get_node("stat2").text = "-"
 		score.get_node("stat3").text = "-"
 		score.get_node("stat4").text = "-"
 		score.get_node("stat5").text = "-"
-		score.get_node("stat6").text = "**"
+		score.get_node("stat6").text = str(GameStats.multiplierTotal) + "x"
 		GameStats.lastStandCurrentRoundScore = losingScore
 		score.get_node("stat7").text = "%05d" % GameStats.lastStandTotalScore
+	
+	_handle_modifier_durations()
 
 func format_time(time: float) -> String:
 	var minutes = int(time / 60)
@@ -241,3 +243,12 @@ func animate_score_tick(label, start_score: int, end_score: int):
 	).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT) 
 	
 	return tween
+
+func _handle_modifier_durations() -> void:
+	for i in range(GameStats.activeMultipliers.size() - 1, -1, -1):
+		var modifier = GameStats.activeMultipliers[i]
+		
+		modifier["currentDuration"] += 1
+		
+		if modifier["currentDuration"] >= modifier["duration"]:
+			%battleManager.remove_modifier(modifier["id"])

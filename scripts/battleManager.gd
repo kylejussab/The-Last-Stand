@@ -11,6 +11,9 @@ const DISCARD_PILE_POSITION: Vector2 = Vector2(135, 292)
 
 const MINIMUM_CARDS_FOR_RESHUFFLE: int = 3
 
+# Modifiers
+var infectedDeckActive: bool = false
+var slowBleedActive: bool = false
 var maximumCharacterCardsInHand: int = 4
 var maximumSupportCardsInHand: int = 4
 
@@ -72,9 +75,51 @@ func start_new_match() -> void:
 	
 	await _initialize_game()
 
+func add_modifier(modifier: Database.Modifier) -> void:
+	var instance = Database.MODIFIERS[modifier].duplicate(true)
+	instance["currentDuration"] = 0
+	
+	GameStats.activeMultipliers.append(instance)
+	GameStats.multiplierTotal += instance["multiplier"]
+	
+	match modifier:
+		Database.Modifier.INFECTED_DECK:
+			infectedDeckActive = true
+		Database.Modifier.SMALLER_HAND:
+			maximumCharacterCardsInHand = 3
+			maximumSupportCardsInHand = 3
+		Database.Modifier.SLOW_BLEED:
+			slowBleedActive = true
+
+func remove_modifier(modifier: Database.Modifier) -> void:
+	for i in range(GameStats.activeMultipliers.size() - 1, -1, -1):
+		if GameStats.activeMultipliers[i].get("id") == modifier:
+			GameStats.multiplierTotal -= GameStats.activeMultipliers[i]["multiplier"]
+			GameStats.activeMultipliers.remove_at(i)
+			break
+	
+	match modifier:
+		Database.Modifier.INFECTED_DECK:
+			infectedDeckActive = false
+		Database.Modifier.SMALLER_HAND:
+			maximumCharacterCardsInHand = 4
+			maximumSupportCardsInHand = 4
+		Database.Modifier.SLOW_BLEED:
+			slowBleedActive = false
+
 # Privates
 func _initialize_game() -> void:
 	%pauseIcon.show()
+	
+	if infectedDeckActive:
+		$"../characterDeck".deck = Database.infectedHeavyCharacterDeck.duplicate()
+		$"../supportDeck".deck = Database.infectedHeavySupportDeck.duplicate()
+	else:
+		$"../characterDeck".deck = Database.standardCharacterDeck.duplicate()
+		$"../supportDeck".deck = Database.standardSupportDeck.duplicate()
+	
+	$"../characterDeck".deck.shuffle()
+	$"../supportDeck".deck.shuffle()
 	
 	await _draw_cards_at_start(false)
 	
@@ -643,6 +688,9 @@ func _handle_player_win(playerTotal: int, opponentTotal: int) -> void:
 
 	if playerCharacterCard.value < opponentCharacterCard.value:
 		GameStats.roundWinsUnderdog += 1
+	
+	if slowBleedActive:
+		await _deal_damage(Actor.Type.PLAYER, Database.MODIFIERS[Database.Modifier.SLOW_BLEED]["amount"])
 
 func _handle_opponent_win(playerTotal: int, opponentTotal: int) -> void:
 	var damage = opponentTotal - playerTotal
@@ -656,6 +704,9 @@ func _handle_opponent_win(playerTotal: int, opponentTotal: int) -> void:
 	
 	if opponentCharacterCard.perkValueAtRoundEnd: # Any non-special perks that need triggering on round end
 		await _deal_damage(Actor.Type.PLAYER, opponentCharacterCard.perkValueAtRoundEnd)
+	
+	if slowBleedActive:
+		await _deal_damage(Actor.Type.PLAYER, Database.MODIFIERS[Database.Modifier.SLOW_BLEED]["amount"])
 
 func _handle_bloater_perk(winner: Actor.Type) -> void:
 	if winner == Actor.Type.PLAYER:
