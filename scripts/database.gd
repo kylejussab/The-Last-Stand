@@ -143,21 +143,27 @@ var AVATARS = {
 
 const JUNE_OPPONENTS = [Actor.Avatar.ETHAN, Actor.Avatar.UCKMANN, Actor.Avatar.ALLEY, Actor.Avatar.MIRA, Actor.Avatar.RHEA]
 
-enum Modifier { INFECTED_DECK, REDUCED_HAND, SLOW_BLEED, ALWAYS_FIRST, VOLATILE_HAND, NO_DEFENSE, LONE_WOLF }
+enum Modifier { SLOW_BLEED, REDUCED_HAND, VOLATILE_HAND, NO_DEFENSE, CARD_ROT, INFECTED_DECK, ALWAYS_FIRST, LONE_WOLF }
 
 const MODIFIERS = {
-	Modifier.REDUCED_HAND: {
-		"id": Modifier.REDUCED_HAND,
-		"tier": 1,
-		"multiplier": 0.5,
-		"duration": 2, # Games
-	},
 	Modifier.SLOW_BLEED: {
 		"id": Modifier.SLOW_BLEED,
 		"tier": 1,
 		"multiplier": 0.5,
 		"duration": 3,
 		"amount": 1,
+	},
+	Modifier.REDUCED_HAND: {
+		"id": Modifier.REDUCED_HAND,
+		"tier": 1,
+		"multiplier": 0.5,
+		"duration": 2,
+	},
+	Modifier.VOLATILE_HAND: {
+		"id": Modifier.VOLATILE_HAND,
+		"tier": 1,
+		"multiplier": 0.75,
+		"duration": 3,
 	},
 	Modifier.NO_DEFENSE: {
 		"id": Modifier.NO_DEFENSE,
@@ -171,20 +177,20 @@ const MODIFIERS = {
 		"multiplier": 2.0,
 		"duration": 2,
 	},
-	Modifier.VOLATILE_HAND: {
-		"id": Modifier.VOLATILE_HAND,
-		"tier": 1,
-		"multiplier": 0.75,
-		"duration": 3,
-	},
 	Modifier.ALWAYS_FIRST: {
 		"id": Modifier.ALWAYS_FIRST,
-		"tier": 3,
-		"multiplier": 2.5,
+		"tier": 2,
+		"multiplier": 2.25,
 		"duration": 2,
 	},
 	Modifier.LONE_WOLF: {
 		"id": Modifier.LONE_WOLF,
+		"tier": 3,
+		"multiplier": 2.75,
+		"duration": 1,
+	},
+	Modifier.CARD_ROT: {
+		"id": Modifier.CARD_ROT,
 		"tier": 3,
 		"multiplier": 3.5,
 		"duration": 1,

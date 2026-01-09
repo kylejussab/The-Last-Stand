@@ -14,6 +14,7 @@ const HALF_MAXIMUM_HAND_SIZE: int = 4
 var minimumCardsForReshuffle: int = 3
 
 # Modifiers
+var cardRotActive: bool = false
 var infectedDeckActive: bool = false
 var slowBleedActive: bool = false
 var alwaysFirstActive: bool = false
@@ -73,6 +74,9 @@ func _ready() -> void:
 	
 	ui.update_health(Actor.Type.PLAYER, GameStats.playerHealthValue, true)
 	
+	add_modifier(Database.Modifier.CARD_ROT)
+	add_modifier(Database.Modifier.REDUCED_HAND)
+	
 	start_new_match()
 
 func start_new_match() -> void:
@@ -91,6 +95,8 @@ func add_modifier(modifier: Database.Modifier) -> void:
 	GameStats.multiplierTotal += instance["multiplier"]
 	
 	match modifier:
+		Database.Modifier.CARD_ROT:
+			cardRotActive = true
 		Database.Modifier.NO_DEFENSE:
 			noDefenseActive = true
 		Database.Modifier.INFECTED_DECK:
@@ -126,6 +132,8 @@ func remove_modifier(modifier: Database.Modifier) -> void:
 			break
 	
 	match modifier:
+		Database.Modifier.CARD_ROT:
+			cardRotActive = false
 		Database.Modifier.NO_DEFENSE:
 			noDefenseActive = false
 		Database.Modifier.INFECTED_DECK:
@@ -552,6 +560,10 @@ func _calculate_damage() -> void:
 	
 	if slowBleedActive:
 		await _deal_damage(Actor.Type.PLAYER, Database.MODIFIERS[Database.Modifier.SLOW_BLEED]["amount"])
+	
+	if cardRotActive and GameStats.roundNumber % 3 == 0:
+		for card in playerHand:
+			card.modify_value(-1)
 
 func _apply_calculation_round_perks(playerTotal: int, opponentTotal: int) -> void:
 	if playerCharacterCard.perk && playerCharacterCard.perk.timing == "calculationRound":
