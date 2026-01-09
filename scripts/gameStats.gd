@@ -1,6 +1,6 @@
 extends Node
 
-enum Mode { MAIN_MENU, CARD_DRAW, JUNE_RAVEL, LAST_STAND, LAST_STAND_ROUND_COMPLETED }
+enum Mode { MAIN_MENU, MODIFIER_SELECTION, CARD_DRAW, JUNE_RAVEL, LAST_STAND, LAST_STAND_ROUND_COMPLETED }
 
 var invitationAccepted: bool = false
 var gameMode: Mode = Mode.MAIN_MENU
@@ -21,7 +21,7 @@ var highestDamageDealt: int = 0
 var roundWinsUnderdog: int = 0
 var allPlayedCards: Array = []
 var multiplierTotal: float = 1.0
-var activeMultipliers: Array = []
+var activeModifiers: Array = []
 
 var currentRoundDuration: float = 0.0 
 var canCountDuration: bool = false

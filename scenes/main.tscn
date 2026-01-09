@@ -1,4 +1,4 @@
-[gd_scene load_steps=60 format=3 uid="uid://dgb52shq4jcyg"]
+[gd_scene load_steps=63 format=3 uid="uid://dgb52shq4jcyg"]
 
 [ext_resource type="Script" uid="uid://dgl6h7ryesfn8" path="res://scripts/cardManager.gd" id="1_0wfyh"]
 [ext_resource type="Script" uid="uid://c3p2rmoacsirj" path="res://scripts/inputManager.gd" id="1_o6xl0"]
@@ -33,6 +33,8 @@
 [ext_resource type="AudioStream" uid="uid://bqgphoeowbviu" path="res://assets/sounds/ui/whoosh.wav" id="25_2wyq8"]
 [ext_resource type="Script" uid="uid://c50sxxmg3g1sv" path="res://scripts/pauseMenu.gd" id="30_fv21b"]
 [ext_resource type="Texture2D" uid="uid://be0aihjd72rmo" path="res://assets/ui/RightClickIcon.png" id="31_tel4y"]
+[ext_resource type="Script" uid="uid://y7ghvyxu3whm" path="res://scenes/modifierUI.gd" id="33_j8jky"]
+[ext_resource type="Texture2D" uid="uid://mostfhsgyv4f" path="res://assets/modifiers/SlotInActive.png" id="34_kmb1v"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jyhfs"]
 size = Vector2(140, 196)
@@ -382,6 +384,9 @@ bg_color = Color(0.08627451, 0.08627451, 0.08627451, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pibwh"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j8jky"]
+size = Vector2(319, 426)
 
 [node name="main" type="Node2D"]
 
@@ -1924,6 +1929,426 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_5q0nq")
 text = "NO"
 alignment = 0
 
+[node name="modifier" type="Node2D" parent="arena"]
+unique_name_in_owner = true
+visible = false
+z_index = 200
+script = ExtResource("33_j8jky")
+
+[node name="overlay" type="ColorRect" parent="arena/modifier"]
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.9019608)
+
+[node name="title" type="RichTextLabel" parent="arena/modifier"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_top = 165.0
+offset_right = 1920.0
+offset_bottom = 215.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/normal_font = ExtResource("13_a8y0u")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 32
+text = "PICK YOUR POISON"
+horizontal_alignment = 1
+
+[node name="subtitle" type="RichTextLabel" parent="arena/modifier"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_top = 220.0
+offset_right = 1920.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 24
+text = "You must select AT LEAST one modifier."
+horizontal_alignment = 1
+
+[node name="Slot 1" type="Node2D" parent="arena/modifier"]
+position = Vector2(560, 540)
+
+[node name="background" type="Sprite2D" parent="arena/modifier/Slot 1"]
+texture = ExtResource("34_kmb1v")
+
+[node name="name" type="RichTextLabel" parent="arena/modifier/Slot 1"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -40.0
+offset_right = 160.0
+offset_bottom = -15.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_fonts/normal_font = ExtResource("13_a8y0u")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "MODIFIER NAME"
+horizontal_alignment = 1
+
+[node name="description" type="RichTextLabel" parent="arena/modifier/Slot 1"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = 10.0
+offset_right = 120.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "Lorem ipsum
+Lorem ipsum
+Lorem ipsum"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="multiplier" type="RichTextLabel" parent="arena/modifier/Slot 1"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = 130.0
+offset_bottom = 155.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_fonts/normal_font = ExtResource("13_a8y0u")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "+9.99x"
+horizontal_alignment = 1
+
+[node name="line" type="ColorRect" parent="arena/modifier/Slot 1"]
+offset_top = 127.5
+offset_right = 1.0
+offset_bottom = 159.5
+mouse_filter = 2
+
+[node name="duration" type="RichTextLabel" parent="arena/modifier/Slot 1"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_top = 130.0
+offset_right = 160.0
+offset_bottom = 155.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_fonts/normal_font = ExtResource("13_a8y0u")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "9 Games"
+horizontal_alignment = 1
+
+[node name="selectedText" type="RichTextLabel" parent="arena/modifier/Slot 1"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = 175.0
+offset_right = 120.0
+offset_bottom = 205.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 16
+text = "SELECTED"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Area2D" type="Area2D" parent="arena/modifier/Slot 1"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="arena/modifier/Slot 1/Area2D"]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_j8jky")
+
+[node name="Slot 2" type="Node2D" parent="arena/modifier"]
+position = Vector2(960, 540)
+
+[node name="background" type="Sprite2D" parent="arena/modifier/Slot 2"]
+texture = ExtResource("34_kmb1v")
+
+[node name="name" type="RichTextLabel" parent="arena/modifier/Slot 2"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -40.0
+offset_right = 160.0
+offset_bottom = -15.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_fonts/normal_font = ExtResource("13_a8y0u")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "MODIFIER NAME"
+horizontal_alignment = 1
+
+[node name="description" type="RichTextLabel" parent="arena/modifier/Slot 2"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = 10.0
+offset_right = 120.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "Lorem ipsum
+Lorem ipsum
+Lorem ipsum"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="multiplier" type="RichTextLabel" parent="arena/modifier/Slot 2"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = 130.0
+offset_bottom = 155.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_fonts/normal_font = ExtResource("13_a8y0u")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "+9.99x"
+horizontal_alignment = 1
+
+[node name="line" type="ColorRect" parent="arena/modifier/Slot 2"]
+offset_top = 127.5
+offset_right = 1.0
+offset_bottom = 159.5
+mouse_filter = 2
+
+[node name="duration" type="RichTextLabel" parent="arena/modifier/Slot 2"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_top = 130.0
+offset_right = 160.0
+offset_bottom = 155.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_fonts/normal_font = ExtResource("13_a8y0u")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "9 Games"
+horizontal_alignment = 1
+
+[node name="selectedText" type="RichTextLabel" parent="arena/modifier/Slot 2"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = 175.0
+offset_right = 120.0
+offset_bottom = 205.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 16
+text = "SELECTED"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Area2D" type="Area2D" parent="arena/modifier/Slot 2"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="arena/modifier/Slot 2/Area2D"]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_j8jky")
+
+[node name="Slot 3" type="Node2D" parent="arena/modifier"]
+position = Vector2(1360, 540)
+
+[node name="background" type="Sprite2D" parent="arena/modifier/Slot 3"]
+texture = ExtResource("34_kmb1v")
+
+[node name="name" type="RichTextLabel" parent="arena/modifier/Slot 3"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -40.0
+offset_right = 160.0
+offset_bottom = -15.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_fonts/normal_font = ExtResource("13_a8y0u")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "MODIFIER NAME"
+horizontal_alignment = 1
+
+[node name="description" type="RichTextLabel" parent="arena/modifier/Slot 3"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = 10.0
+offset_right = 120.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "Lorem ipsum
+Lorem ipsum
+Lorem ipsum"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="multiplier" type="RichTextLabel" parent="arena/modifier/Slot 3"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = 130.0
+offset_bottom = 155.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_fonts/normal_font = ExtResource("13_a8y0u")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "+9.99x"
+horizontal_alignment = 1
+
+[node name="line" type="ColorRect" parent="arena/modifier/Slot 3"]
+offset_top = 127.5
+offset_right = 1.0
+offset_bottom = 159.5
+mouse_filter = 2
+
+[node name="duration" type="RichTextLabel" parent="arena/modifier/Slot 3"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_top = 130.0
+offset_right = 160.0
+offset_bottom = 155.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_fonts/normal_font = ExtResource("13_a8y0u")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 20
+text = "9 Games"
+horizontal_alignment = 1
+
+[node name="selectedText" type="RichTextLabel" parent="arena/modifier/Slot 3"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = 175.0
+offset_right = 120.0
+offset_bottom = 205.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_font_sizes/normal_font_size = 16
+text = "SELECTED"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Area2D" type="Area2D" parent="arena/modifier/Slot 3"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="arena/modifier/Slot 3/Area2D"]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_j8jky")
+
+[node name="ConfirmButton" type="Button" parent="arena/modifier"]
+z_index = 201
+offset_left = 913.0
+offset_top = 830.0
+offset_right = 1007.0
+offset_bottom = 860.0
+theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("13_a8y0u")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_a8y0u")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_jbj1t")
+theme_override_styles/hover = SubResource("StyleBoxFlat_jkv2x")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_a8y0u")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_jkv2x")
+text = "CONFIRM"
+alignment = 0
+
 [node name="pauseIcon" type="Node2D" parent="."]
 unique_name_in_owner = true
 z_index = 202
@@ -1985,4 +2410,14 @@ text = "END TURN"
 [connection signal="pressed" from="arena/pause/restartConfirmation/NoButton" to="arena/pause" method="_on_restart_no_button_pressed"]
 [connection signal="pressed" from="arena/pause/mainMenuConfirmation/YesButton" to="arena/pause" method="_on_main_menu_yes_button_pressed"]
 [connection signal="pressed" from="arena/pause/mainMenuConfirmation/NoButton" to="arena/pause" method="_on_main_menu_no_button_pressed"]
+[connection signal="input_event" from="arena/modifier/Slot 1/Area2D" to="arena/modifier" method="_on_slot1_area_2d_input_event"]
+[connection signal="mouse_entered" from="arena/modifier/Slot 1/Area2D" to="arena/modifier" method="_on_slot1_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="arena/modifier/Slot 1/Area2D" to="arena/modifier" method="_on_slot1_area_2d_mouse_exited"]
+[connection signal="input_event" from="arena/modifier/Slot 2/Area2D" to="arena/modifier" method="_on_slot2_area_2d_input_event"]
+[connection signal="mouse_entered" from="arena/modifier/Slot 2/Area2D" to="arena/modifier" method="_on_slot2_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="arena/modifier/Slot 2/Area2D" to="arena/modifier" method="_on_slot2_area_2d_mouse_exited"]
+[connection signal="input_event" from="arena/modifier/Slot 3/Area2D" to="arena/modifier" method="_on_slot3_area_2d_input_event"]
+[connection signal="mouse_entered" from="arena/modifier/Slot 3/Area2D" to="arena/modifier" method="_on_slot3_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="arena/modifier/Slot 3/Area2D" to="arena/modifier" method="_on_slot3_area_2d_mouse_exited"]
+[connection signal="pressed" from="arena/modifier/ConfirmButton" to="arena/modifier" method="_on_confirm_button_pressed"]
 [connection signal="pressed" from="EndTurnButton" to="battleManager" method="_on_end_turn_button_pressed"]

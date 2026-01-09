@@ -74,10 +74,11 @@ func _ready() -> void:
 	
 	ui.update_health(Actor.Type.PLAYER, GameStats.playerHealthValue, true)
 	
-	add_modifier(Database.Modifier.CARD_ROT)
-	add_modifier(Database.Modifier.REDUCED_HAND)
+	GameStats.gameMode = GameStats.Mode.MODIFIER_SELECTION
 	
-	start_new_match()
+	%modifier.show_modifier_menu()
+	
+	#start_new_match()
 
 func start_new_match() -> void:
 	if not GameStats.replayedRound:
@@ -91,7 +92,7 @@ func add_modifier(modifier: Database.Modifier) -> void:
 	var instance = Database.MODIFIERS[modifier].duplicate(true)
 	instance["currentDuration"] = 0
 	
-	GameStats.activeMultipliers.append(instance)
+	GameStats.activeModifiers.append(instance)
 	GameStats.multiplierTotal += instance["multiplier"]
 	
 	match modifier:
@@ -125,10 +126,10 @@ func add_modifier(modifier: Database.Modifier) -> void:
 			loneWolfActive = true
 
 func remove_modifier(modifier: Database.Modifier) -> void:
-	for i in range(GameStats.activeMultipliers.size() - 1, -1, -1):
-		if GameStats.activeMultipliers[i].get("id") == modifier:
-			GameStats.multiplierTotal -= GameStats.activeMultipliers[i]["multiplier"]
-			GameStats.activeMultipliers.remove_at(i)
+	for i in range(GameStats.activeModifiers.size() - 1, -1, -1):
+		if GameStats.activeModifiers[i].get("id") == modifier:
+			GameStats.multiplierTotal -= GameStats.activeModifiers[i]["multiplier"]
+			GameStats.activeModifiers.remove_at(i)
 			break
 	
 	match modifier:

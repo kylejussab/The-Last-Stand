@@ -29,6 +29,9 @@ func _process(_delta: float) -> void:
 		draggedCard.position = Vector2(clamp(mousePosition.x, 0, screenSize.x), clamp(mousePosition.y, 0, screenSize.y))
 
 func start_drag(card):
+	if not "cardSlot" in card:
+		return
+	
 	if !battleManager.lockPlayerInput and card.cardSlot == null:
 		draggedCard = card
 		draggedCard.play_draw_sound()
@@ -118,6 +121,9 @@ func on_card_hover_exit(card):
 			on_card_hover_enter(newCardHovered)
 
 func highlight_card(card, hovered: bool):
+	if not "cardKey" in card:
+		return
+		
 	var animationPlayer = card.get_node("AnimationPlayer")
 	
 	if battleManager.lockPlayerInput:

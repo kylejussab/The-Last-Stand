@@ -143,11 +143,13 @@ var AVATARS = {
 
 const JUNE_OPPONENTS = [Actor.Avatar.ETHAN, Actor.Avatar.UCKMANN, Actor.Avatar.ALLEY, Actor.Avatar.MIRA, Actor.Avatar.RHEA]
 
-enum Modifier { SLOW_BLEED, REDUCED_HAND, VOLATILE_HAND, NO_DEFENSE, CARD_ROT, INFECTED_DECK, ALWAYS_FIRST, LONE_WOLF }
+enum Modifier { SLOW_BLEED, REDUCED_HAND, VOLATILE_HAND, NO_DEFENSE, INFECTED_DECK, ALWAYS_FIRST, LONE_WOLF, CARD_ROT }
 
 const MODIFIERS = {
 	Modifier.SLOW_BLEED: {
 		"id": Modifier.SLOW_BLEED,
+		"name": "Slow Bleed",
+		"description": "Take 1 damage at the end of every round.",
 		"tier": 1,
 		"multiplier": 0.5,
 		"duration": 3,
@@ -155,42 +157,56 @@ const MODIFIERS = {
 	},
 	Modifier.REDUCED_HAND: {
 		"id": Modifier.REDUCED_HAND,
+		"name": "Reduced Hand",
+		"description": "Lorem",
 		"tier": 1,
 		"multiplier": 0.5,
 		"duration": 2,
 	},
 	Modifier.VOLATILE_HAND: {
 		"id": Modifier.VOLATILE_HAND,
+		"name": "Volatile Hand",
+		"description": "Lorem",
 		"tier": 1,
 		"multiplier": 0.75,
 		"duration": 3,
 	},
 	Modifier.NO_DEFENSE: {
 		"id": Modifier.NO_DEFENSE,
+		"name": "No Defense",
+		"description": "Lorem",
 		"tier": 2,
 		"multiplier": 1.5,
 		"duration": 2,
 	},
 	Modifier.INFECTED_DECK: {
 		"id": Modifier.INFECTED_DECK,
+		"name": "Infected Deck",
+		"description": "Lorem",
 		"tier": 2,
 		"multiplier": 2.0,
 		"duration": 2,
 	},
 	Modifier.ALWAYS_FIRST: {
 		"id": Modifier.ALWAYS_FIRST,
+		"name": "Always First",
+		"description": "You must play first every round.",
 		"tier": 2,
 		"multiplier": 2.25,
 		"duration": 2,
 	},
 	Modifier.LONE_WOLF: {
 		"id": Modifier.LONE_WOLF,
+		"name": "Lone Wolf",
+		"description": "Support cards are disabled. Character values increased by +50%",
 		"tier": 3,
 		"multiplier": 2.75,
 		"duration": 1,
 	},
 	Modifier.CARD_ROT: {
 		"id": Modifier.CARD_ROT,
+		"name": "Card Rot",
+		"description": "Lorem",
 		"tier": 3,
 		"multiplier": 3.5,
 		"duration": 1,
