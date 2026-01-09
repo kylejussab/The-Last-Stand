@@ -93,49 +93,49 @@ var AVATARS = {
 	Actor.Avatar.ETHAN: {
 		"name": "Ethan Hark",
 		"description": "Patrol Leader",
-		"health": "%02d" % 5,
+		"health": "%02d" % 25,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.RHEA: {
 		"name": "Rhea",
 		"description": "Matriarch",
-		"health": "%02d" % 5,
+		"health": "%02d" % 25,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.UCKMANN: {
 		"name": "Dr Uckmann",
 		"description": "Dog Director",
-		"health": "%02d" % 5,
+		"health": "%02d" % 25,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.ALLEY: {
 		"name": "Alley Ross",
 		"description": "Scriptweaver",
-		"health": "%02d" % 5,
+		"health": "%02d" % 25,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.SILAS: {
 		"name": "Silas Vane",
 		"description": "Scavenger King",
-		"health": "%02d" % 5,
+		"health": "%02d" % 25,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.MIRA: {
 		"name": "Mira Thorne",
 		"description": "Ex-Medic",
-		"health": "%02d" % 5, 
+		"health": "%02d" % 25, 
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.KAEL: {
 		"name": "Kaelen Voss",
 		"description": "Shield Brother",
-		"health": "%02d" % 5,
+		"health": "%02d" % 25,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	}
@@ -143,7 +143,7 @@ var AVATARS = {
 
 const JUNE_OPPONENTS = [Actor.Avatar.ETHAN, Actor.Avatar.UCKMANN, Actor.Avatar.ALLEY, Actor.Avatar.MIRA, Actor.Avatar.RHEA]
 
-enum Modifier { INFECTED_DECK, REDUCED_HAND, SLOW_BLEED, ALWAYS_FIRST, VOLATILE_HAND }
+enum Modifier { INFECTED_DECK, REDUCED_HAND, SLOW_BLEED, ALWAYS_FIRST, VOLATILE_HAND, NO_DEFENSE, LONE_WOLF }
 
 const MODIFIERS = {
 	Modifier.REDUCED_HAND: {
@@ -158,6 +158,12 @@ const MODIFIERS = {
 		"multiplier": 0.5,
 		"duration": 3,
 		"amount": 1,
+	},
+	Modifier.NO_DEFENSE: {
+		"id": Modifier.NO_DEFENSE,
+		"tier": 2,
+		"multiplier": 1.5,
+		"duration": 2,
 	},
 	Modifier.INFECTED_DECK: {
 		"id": Modifier.INFECTED_DECK,
@@ -176,6 +182,12 @@ const MODIFIERS = {
 		"tier": 3,
 		"multiplier": 2.5,
 		"duration": 2,
+	},
+	Modifier.LONE_WOLF: {
+		"id": Modifier.LONE_WOLF,
+		"tier": 3,
+		"multiplier": 3.5,
+		"duration": 1,
 	},
 } 
 

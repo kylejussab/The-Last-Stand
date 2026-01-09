@@ -30,30 +30,10 @@ func draw_card():
 	if deck.size() == 0:
 		$Area2D/CollisionShape2D.disabled = true
 		$image.visible = false
-	
 	$RichTextLabel.text = str(deck.size())
-	var cardScene = preload(PLAYER_CARD_SCENE_PATH)
-	var newCard = cardScene.instantiate()
-	var cardImagePath = str("res://assets/cards/" + cardDrawn + "Card.png")
-	newCard.cardKey = cardDrawn
-	newCard.position = CHARACTER_DECK_POSITION
 	
-	# Add the perk
-	if cardDatabaseReference.PERKS.has(cardDrawn):
-		newCard.perk = load(cardDatabaseReference.PERKS[cardDrawn]).new()
-		newCard.get_node("supportingText").get_node("text").texture = load("res://assets/cardDescriptions/" + cardDrawn + ".png")
+	var newCard = _create_card_instance(cardDrawn, PLAYER_CARD_SCENE_PATH, true)
 	
-	newCard.get_node("image").texture = load(cardImagePath)
-	newCard.get_node("imageBack").texture = load("res://assets/cards/CardBackBlank.png")
-	newCard.get_node("value").text = str(cardDatabaseReference.CHARACTERS[cardDrawn][0])
-	newCard.value = cardDatabaseReference.CHARACTERS[cardDrawn][0]
-	newCard.type = cardDatabaseReference.CHARACTERS[cardDrawn][1]
-	newCard.faction = cardDatabaseReference.CHARACTERS[cardDrawn][2]
-	newCard.role = cardDatabaseReference.CHARACTERS[cardDrawn][3]
-	newCard.canBePlayed = true
-	
-	$"../cardManager".add_child(newCard)
-	newCard.name = "Card"
 	$"../playerHand".add_card_to_hand(newCard, CARD_DRAW_SPEED)
 	
 	newCard.get_node("AnimationPlayer").play("cardFlip")
@@ -65,30 +45,10 @@ func draw_opponent_card():
 	
 	if deck.size() == 0:
 		$image.visible = false
-	
 	$RichTextLabel.text = str(deck.size())
-	var cardScene = preload(OPPONENT_CARD_SCENE_PATH)
-	var newCard = cardScene.instantiate()
-	var cardImagePath = str("res://assets/cards/" + cardDrawn + "Card.png")
-	newCard.cardKey = cardDrawn
-	newCard.position = CHARACTER_DECK_POSITION
 	
-	# Add the perk
-	if cardDatabaseReference.PERKS.has(cardDrawn):
-		newCard.perk = load(cardDatabaseReference.PERKS[cardDrawn]).new()
-		newCard.get_node("supportingText").get_node("text").texture = load("res://assets/cardDescriptions/" + cardDrawn + ".png")
+	var newCard = _create_card_instance(cardDrawn, OPPONENT_CARD_SCENE_PATH)
 	
-	newCard.get_node("image").texture = load(cardImagePath)
-	newCard.get_node("imageBack").texture = load("res://assets/cards/CardBackBlank.png")
-	newCard.get_node("value").text = str(cardDatabaseReference.CHARACTERS[cardDrawn][0])
-	newCard.value = cardDatabaseReference.CHARACTERS[cardDrawn][0]
-	newCard.type = cardDatabaseReference.CHARACTERS[cardDrawn][1]
-	newCard.faction = cardDatabaseReference.CHARACTERS[cardDrawn][2]
-	newCard.role = cardDatabaseReference.CHARACTERS[cardDrawn][3]
-	newCard.canBePlayed = true
-	
-	$"../cardManager".add_child(newCard)
-	newCard.name = "Card"
 	$"../opponentHand".add_card_to_hand(newCard, CARD_DRAW_SPEED)
 	newCard.play_draw_sound()
 	
@@ -125,7 +85,7 @@ func reshuffle_from_discards(discardedCards):
 	tween.tween_property($image, "scale", Vector2(0.288, 0.288), 0.15)
 	await tween.finished
 	
-	play_shuffle_sound()
+	_play_shuffle_sound()
 	
 	await get_tree().create_timer(0.2).timeout
 	var tween_back = create_tween().set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
@@ -139,7 +99,41 @@ func move_card_back_to_deck(card):
 	tween.tween_property(card, "position", CHARACTER_DECK_POSITION, 0.1)
 	await tween.finished
 
-func play_shuffle_sound():
+# Privates
+func _create_card_instance(cardKey: String, scenePath: String, isPlayer: bool = false) -> Node2D:
+	var cardScene = load(scenePath)
+	var newCard = cardScene.instantiate()
+	
+	newCard.cardKey = cardKey
+	newCard.position = CHARACTER_DECK_POSITION
+	newCard.name = "Card"
+	newCard.canBePlayed = true
+
+	var data = cardDatabaseReference.CHARACTERS[cardKey]
+	newCard.value = data[0]
+	newCard.type = data[1]
+	newCard.faction = data[2]
+	newCard.role = data[3]
+	
+	if %battleManager.noDefenseActive and "Defensive" in newCard.role and isPlayer:
+		newCard.value = 0
+	
+	if %battleManager.loneWolfActive and isPlayer:
+		newCard.value *= 1.75
+	
+	newCard.get_node("value").text = str(newCard.value)
+	newCard.get_node("image").texture = load("res://assets/cards/" + cardKey + "Card.png")
+	newCard.get_node("imageBack").texture = load("res://assets/cards/CardBackBlank.png")
+
+	if cardDatabaseReference.PERKS.has(cardKey):
+		newCard.perk = load(cardDatabaseReference.PERKS[cardKey]).new()
+		newCard.get_node("supportingText/text").texture = load("res://assets/cardDescriptions/" + cardKey + ".png")
+
+	$"../cardManager".add_child(newCard)
+	
+	return newCard
+
+func _play_shuffle_sound():
 	var randomSound = shuffleSounds.pick_random()
 	soundPlayer.stream = randomSound
 	soundPlayer.play()

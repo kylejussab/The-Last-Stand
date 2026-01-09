@@ -9,7 +9,7 @@ const CARD_MOVE_FAST_SPEED: float = 0.15
 
 const DISCARD_PILE_POSITION: Vector2 = Vector2(135, 292)
 
-const MAXIMUM_HAND_SIZE: int = 8
+const HALF_MAXIMUM_HAND_SIZE: int = 4
 
 var minimumCardsForReshuffle: int = 3
 
@@ -19,6 +19,9 @@ var slowBleedActive: bool = false
 var alwaysFirstActive: bool = false
 var volatileHandActive: bool = false
 var reducedHandActive: bool = false
+var noDefenseActive: bool = false
+var loneWolfActive: bool = false
+
 var maximumCharacterCardsInHand: int = 4
 var maximumSupportCardsInHand: int = 4
 
@@ -88,12 +91,18 @@ func add_modifier(modifier: Database.Modifier) -> void:
 	GameStats.multiplierTotal += instance["multiplier"]
 	
 	match modifier:
+		Database.Modifier.NO_DEFENSE:
+			noDefenseActive = true
 		Database.Modifier.INFECTED_DECK:
 			infectedDeckActive = true
 		Database.Modifier.REDUCED_HAND:
 			reducedHandActive = true
-			maximumCharacterCardsInHand = 3
-			maximumSupportCardsInHand = 3
+			if loneWolfActive:
+				maximumCharacterCardsInHand = 6
+				maximumSupportCardsInHand = 0
+			else:
+				maximumCharacterCardsInHand = 3
+				maximumSupportCardsInHand = 3
 		Database.Modifier.SLOW_BLEED:
 			slowBleedActive = true
 		Database.Modifier.ALWAYS_FIRST:
@@ -101,6 +110,13 @@ func add_modifier(modifier: Database.Modifier) -> void:
 		Database.Modifier.VOLATILE_HAND:
 			minimumCardsForReshuffle = 6
 			volatileHandActive = true
+		Database.Modifier.LONE_WOLF:
+			if reducedHandActive:
+				maximumCharacterCardsInHand = 6
+			else:
+				maximumCharacterCardsInHand = 8
+			maximumSupportCardsInHand = 0
+			loneWolfActive = true
 
 func remove_modifier(modifier: Database.Modifier) -> void:
 	for i in range(GameStats.activeMultipliers.size() - 1, -1, -1):
@@ -110,6 +126,8 @@ func remove_modifier(modifier: Database.Modifier) -> void:
 			break
 	
 	match modifier:
+		Database.Modifier.NO_DEFENSE:
+			noDefenseActive = false
 		Database.Modifier.INFECTED_DECK:
 			infectedDeckActive = false
 		Database.Modifier.REDUCED_HAND:
@@ -123,6 +141,14 @@ func remove_modifier(modifier: Database.Modifier) -> void:
 		Database.Modifier.VOLATILE_HAND:
 			minimumCardsForReshuffle = 3
 			volatileHandActive = false
+		Database.Modifier.LONE_WOLF:
+			if reducedHandActive:
+				maximumCharacterCardsInHand = 3
+				maximumSupportCardsInHand = 3
+			else:
+				maximumCharacterCardsInHand = 4
+				maximumSupportCardsInHand = 4
+			loneWolfActive = true
 
 # Privates
 func _initialize_game() -> void:
@@ -149,8 +175,6 @@ func _initialize_game() -> void:
 	
 	lockPlayerInput = false
 	GameStats.set_start_time()
-	
-	print(GameStats.gameMode)
 
 func _initialize_opponent(player: Actor.Avatar, opponent: Actor.Avatar) -> void:
 	ui.setup_avatar(player, Actor.Type.PLAYER)
@@ -211,6 +235,7 @@ func _execute_opponent_character_play() -> void:
 		ui.show_end_turn_button()
 		_apply_mid_round_perks()
 		_transition_to_support_phase()
+
 	else:
 		ui.change_mood(Actor.Type.PLAYER, Actor.Mood.THINKING)
 		lockPlayerInput = false
@@ -270,12 +295,12 @@ func _execute_opponent_support_play() -> void:
 		await _apply_end_round_perks()
 		_transition_to_resolution_phase()
 	else:
-		# Always give the player the option of playing a support
-		ui.set_indicator(Actor.Type.PLAYER)
-		ui.change_mood(Actor.Type.PLAYER, Actor.Mood.THINKING)
 		lockPlayerInput = false
 		roundStage = RoundStage.PLAYER_SUPPORT
+		ui.set_indicator(Actor.Type.PLAYER)
+		ui.change_mood(Actor.Type.PLAYER, Actor.Mood.THINKING)
 		ui.show_end_turn_button()
+
 	
 	opponentPlayedSupport = true
 
@@ -393,25 +418,27 @@ func _draw_cards_at_start(firstStart: bool = true) -> void:
 	
 	GameStats.gameMode = GameStats.Mode.CARD_DRAW
 	
-	for i in range(maximumCharacterCardsInHand):
-		await get_tree().create_timer(CARD_MOVE_FAST_SPEED).timeout
-		$"../characterDeck".draw_card()
-		await get_tree().create_timer(CARD_MOVE_FAST_SPEED).timeout
-		$"../characterDeck".draw_opponent_card()
+	var characterDrawLoop = max(maximumCharacterCardsInHand, HALF_MAXIMUM_HAND_SIZE)
 	
-	if reducedHandActive:
-		await get_tree().create_timer(CARD_MOVE_FAST_SPEED).timeout
-		$"../characterDeck".draw_opponent_card()
+	for i in range(characterDrawLoop):
+		if i < maximumCharacterCardsInHand:
+			await get_tree().create_timer(CARD_MOVE_FAST_SPEED).timeout
+			$"../characterDeck".draw_card()
+			
+		if i < HALF_MAXIMUM_HAND_SIZE:
+			await get_tree().create_timer(CARD_MOVE_FAST_SPEED).timeout
+			$"../characterDeck".draw_opponent_card()
 	
-	for i in range(maximumSupportCardsInHand):
-		await get_tree().create_timer(CARD_MOVE_FAST_SPEED).timeout
-		$"../supportDeck".draw_card()
-		await get_tree().create_timer(CARD_MOVE_FAST_SPEED).timeout
-		$"../supportDeck".draw_opponent_card()
-	
-	if reducedHandActive:
-		await get_tree().create_timer(CARD_MOVE_FAST_SPEED).timeout
-		$"../supportDeck".draw_opponent_card()
+	var supportDrawLoop = max(maximumSupportCardsInHand, HALF_MAXIMUM_HAND_SIZE)
+
+	for i in range(supportDrawLoop):
+		if i < maximumSupportCardsInHand:
+			await get_tree().create_timer(CARD_MOVE_FAST_SPEED).timeout
+			$"../supportDeck".draw_card()
+			
+		if i < HALF_MAXIMUM_HAND_SIZE:
+			await get_tree().create_timer(CARD_MOVE_FAST_SPEED).timeout
+			$"../supportDeck".draw_opponent_card()
 	
 	GameStats.gameMode = GameStats.Mode.LAST_STAND
 	
@@ -602,39 +629,22 @@ func _repopulate_hand(hand: Array, who: Actor.Type) -> void:
 			await get_tree().create_timer(CARD_MOVE_SPEED).timeout
 	else:
 		@warning_ignore("integer_division")
-		while characterCount < MAXIMUM_HAND_SIZE / 2:
+		while characterCount < HALF_MAXIMUM_HAND_SIZE:
 			characterDeckReference.draw_opponent_card()
 			characterCount += 1
 			await get_tree().create_timer(CARD_MOVE_SPEED).timeout
 	
 	if who == Actor.Type.PLAYER:
-		while supportCount < maximumCharacterCardsInHand:
+		while supportCount < maximumSupportCardsInHand:
 			supportDeckReference.draw_card()
 			supportCount += 1
 			await get_tree().create_timer(CARD_MOVE_SPEED).timeout
 	else:
 		@warning_ignore("integer_division")
-		while supportCount < MAXIMUM_HAND_SIZE / 2:
+		while supportCount < HALF_MAXIMUM_HAND_SIZE:
 			supportDeckReference.draw_opponent_card()
 			supportCount += 1
 			await get_tree().create_timer(CARD_MOVE_SPEED).timeout
-	
-	#while characterCount < maximumCharacterCardsInHand:
-		#if who == Actor.Type.PLAYER:
-			#characterDeckReference.draw_card()
-		#else:
-			#characterDeckReference.draw_opponent_card()
-		#
-		#characterCount += 1
-		#await get_tree().create_timer(CARD_MOVE_SPEED).timeout
-	
-	#while supportCount < maximumSupportCardsInHand:
-		#if who == Actor.Type.PLAYER:
-			#supportDeckReference.draw_card()
-		#else:
-			#supportDeckReference.draw_opponent_card()
-		#supportCount += 1
-		#await get_tree().create_timer(CARD_MOVE_SPEED).timeout
 	
 	lockPlayerInput = false
 
