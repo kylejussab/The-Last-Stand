@@ -124,7 +124,7 @@ func _on_replay_button_pressed() -> void:
 	
 	if GameStats.gameMode == GameStats.Mode.LAST_STAND_ROUND_COMPLETED:
 		GameStats.gameMode = GameStats.Mode.LAST_STAND
-		
+	
 	_fade_with_round_reset()
 
 func _on_continue_button_pressed() -> void:
@@ -147,6 +147,7 @@ func _on_main_menu_button_pressed() -> void:
 func _fade_with_round_reset() -> void:
 	await Curtain.fade_in()
 	
+	%bubbleContainer.clear_modifiers()
 	%pauseIcon/text.text = "PAUSE"
 	change_mood(Actor.Type.PLAYER, Actor.Mood.NEUTRAL)
 	change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
@@ -160,7 +161,7 @@ func _fade_with_round_reset() -> void:
 	
 	battleManager.prepare_opponent()
 	
-	if GameStats.numberOfWins % 3 == 0:
+	if GameStats.numberOfWins % 3 == 0 and not GameStats.replayedRound:
 		modifierUI.show_modifier_menu()
 	else:
 		battleManager.initialize_game()

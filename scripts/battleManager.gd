@@ -110,6 +110,8 @@ func initialize_game() -> void:
 	
 	lockPlayerInput = false
 	GameStats.set_start_time()
+	
+	%bubbleContainer.render_active_modifiers()
 
 func add_modifier(modifier: Database.Modifier) -> void:
 	var instance = Database.MODIFIERS[modifier].duplicate(true)
@@ -368,6 +370,8 @@ func _conclude_match() -> void:
 	
 	await _move_cards_to_discard(cardsToDiscard)
 	
+	%bubbleContainer.clear_modifiers()
+	
 	battleAnimator.play_game_over_sequence(ui.get_health(Actor.Type.PLAYER) > 0)
 	
 	await _repopulate_decks(true)
@@ -501,7 +505,7 @@ func _apply_mid_round_perks() -> void:
 func _update_playable_support_cards() -> void:
 	var playerCharacterCardRoles = playerCharacterCard.role.split("/")
 	for card in playerHand:
-		if card.type == "Support":
+		if is_instance_valid(card) and card.type == "Support":
 			var playerSupportCardRoles = card.role.split("/")
 			for role in playerCharacterCardRoles:
 				if role in playerSupportCardRoles:
@@ -509,7 +513,7 @@ func _update_playable_support_cards() -> void:
 	
 	var opponentCharacterCardRoles = opponentCharacterCard.role.split("/")
 	for card in opponentHand:
-		if card.type == "Support":
+		if is_instance_valid(card) and card.type == "Support":
 			var opponentSupportCardRoles = card.role.split("/")
 			for role in opponentCharacterCardRoles:
 				if role in opponentSupportCardRoles:
@@ -608,14 +612,14 @@ func _reset_allowed_support_cards() -> void:
 		playerSupportCard.canBePlayed = false
 	
 	for card in playerHand:
-		if card.type == "Support":
+		if is_instance_valid(card) and card.type == "Support":
 			card.canBePlayed = false
 	
 	if opponentSupportCard:
 		opponentSupportCard.canBePlayed = false
 	
 	for card in opponentHand:
-		if card.type == "Support":
+		if is_instance_valid(card) and card.type == "Support":
 			card.canBePlayed = false
 
 func _repopulate_hand(hand: Array, who: Actor.Type) -> void:
@@ -664,9 +668,9 @@ func _repopulate_decks(endGame: bool = false) -> void:
 	var discardedSupports := []
 	
 	for card in discardedCards:
-		if card.type == "Character":
+		if is_instance_valid(card) and card.type == "Character":
 			discardedCharacters.append(card)
-		elif card.type == "Support":
+		elif is_instance_valid(card) and card.type == "Support":
 			discardedSupports.append(card)
 	
 	var discardedCharactersReversed = discardedCharacters.duplicate()
