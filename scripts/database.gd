@@ -93,49 +93,49 @@ var AVATARS = {
 	Actor.Avatar.ETHAN: {
 		"name": "Ethan Hark",
 		"description": "Patrol Leader",
-		"health": "%02d" % 25,
+		"health": "%02d" % 5,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.RHEA: {
 		"name": "Rhea",
 		"description": "Matriarch",
-		"health": "%02d" % 25,
+		"health": "%02d" % 5,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.UCKMANN: {
 		"name": "Dr Uckmann",
 		"description": "Dog Director",
-		"health": "%02d" % 25,
+		"health": "%02d" % 5,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.ALLEY: {
 		"name": "Alley Ross",
 		"description": "Scriptweaver",
-		"health": "%02d" % 25,
+		"health": "%02d" % 5,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.SILAS: {
 		"name": "Silas Vane",
 		"description": "Scavenger King",
-		"health": "%02d" % 25,
+		"health": "%02d" % 5,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.MIRA: {
 		"name": "Mira Thorne",
 		"description": "Ex-Medic",
-		"health": "%02d" % 25, 
+		"health": "%02d" % 5, 
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.KAEL: {
 		"name": "Kaelen Voss",
 		"description": "Shield Brother",
-		"health": "%02d" % 25,
+		"health": "%02d" % 5,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	}
@@ -143,22 +143,14 @@ var AVATARS = {
 
 const JUNE_OPPONENTS = [Actor.Avatar.ETHAN, Actor.Avatar.UCKMANN, Actor.Avatar.ALLEY, Actor.Avatar.MIRA, Actor.Avatar.RHEA]
 
-enum Modifier { SLOW_BLEED, REDUCED_HAND, VOLATILE_HAND, NO_DEFENSE, INFECTED_DECK, ALWAYS_FIRST, LONE_WOLF, CARD_ROT }
+enum Modifier { REDUCED_HAND, VOLATILE_HAND, SLOW_BLEED, NO_DEFENSE, INFECTED_DECK, ALWAYS_FIRST, LONE_WOLF, CARD_ROT }
 
 const MODIFIERS = {
-	Modifier.SLOW_BLEED: {
-		"id": Modifier.SLOW_BLEED,
-		"name": "Slow Bleed",
-		"description": "Take 1 damage at the end of every round.",
-		"tier": 1,
-		"multiplier": 0.5,
-		"duration": 3,
-		"amount": 1,
-	},
 	Modifier.REDUCED_HAND: {
 		"id": Modifier.REDUCED_HAND,
 		"name": "Reduced Hand",
-		"description": "Lorem",
+		"description": "Maximum hand size reduced to 6.",
+		"icon": "res://assets/modifiers/Reduced Hand.png",
 		"tier": 1,
 		"multiplier": 0.5,
 		"duration": 2,
@@ -166,15 +158,27 @@ const MODIFIERS = {
 	Modifier.VOLATILE_HAND: {
 		"id": Modifier.VOLATILE_HAND,
 		"name": "Volatile Hand",
-		"description": "Lorem",
+		"description": "Every 2 rounds, your entire hand is discarded and redrawn.",
+		"icon": "res://assets/modifiers/Volatile Hand.png",
 		"tier": 1,
 		"multiplier": 0.75,
 		"duration": 3,
 	},
+	Modifier.SLOW_BLEED: {
+		"id": Modifier.SLOW_BLEED,
+		"name": "Slow Bleed",
+		"description": "Take 1 damage at the end of every round.",
+		"icon": "res://assets/modifiers/Slow Bleed.png",
+		"tier": 1,
+		"multiplier": 1.0,
+		"duration": 4,
+		"amount": 1,
+	},
 	Modifier.NO_DEFENSE: {
 		"id": Modifier.NO_DEFENSE,
 		"name": "No Defense",
-		"description": "Lorem",
+		"description": "Defensive cards have 0 Value. Their Perks still activate.",
+		"icon": "res://assets/modifiers/No Defense.png",
 		"tier": 2,
 		"multiplier": 1.5,
 		"duration": 2,
@@ -182,8 +186,9 @@ const MODIFIERS = {
 	Modifier.INFECTED_DECK: {
 		"id": Modifier.INFECTED_DECK,
 		"name": "Infected Deck",
-		"description": "Lorem",
-		"tier": 2,
+		"description": "Your deck contains significantly more Infected cards.",
+		"icon": "res://assets/modifiers/Infected Deck.png",
+		"tier": 3,
 		"multiplier": 2.0,
 		"duration": 2,
 	},
@@ -191,6 +196,7 @@ const MODIFIERS = {
 		"id": Modifier.ALWAYS_FIRST,
 		"name": "Always First",
 		"description": "You must play first every round.",
+		"icon": "res://assets/modifiers/Always First.png",
 		"tier": 2,
 		"multiplier": 2.25,
 		"duration": 2,
@@ -199,6 +205,7 @@ const MODIFIERS = {
 		"id": Modifier.LONE_WOLF,
 		"name": "Lone Wolf",
 		"description": "Support cards are disabled. Character values increased by +50%",
+		"icon": "res://assets/modifiers/Lone Wolf.png",
 		"tier": 3,
 		"multiplier": 2.75,
 		"duration": 1,
@@ -206,7 +213,8 @@ const MODIFIERS = {
 	Modifier.CARD_ROT: {
 		"id": Modifier.CARD_ROT,
 		"name": "Card Rot",
-		"description": "Lorem",
+		"description": "Every 3 rounds, all cards in your hand lose -1 Value.",
+		"icon": "res://assets/modifiers/Card Rot.png",
 		"tier": 3,
 		"multiplier": 3.5,
 		"duration": 1,

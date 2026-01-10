@@ -9,6 +9,8 @@ extends Node2D
 @onready var opponentHead: Node2D = $opponent/head
 
 @onready var battleManager: Node = %battleManager
+@onready var battleAnimator: Node = %battleAnimator
+@onready var modifierUI: Node2D = %modifier
 
 func _ready() -> void:
 	for button in %gameOver.get_children():
@@ -133,6 +135,8 @@ func _on_continue_button_pressed() -> void:
 		GameStats.playerHealthValue = int(playerHealthLabel.text)
 		GameStats.gameMode = GameStats.Mode.LAST_STAND
 	
+	battleAnimator.handle_modifier_durations()
+	
 	_fade_with_round_reset()
 
 func _on_main_menu_button_pressed() -> void:
@@ -154,7 +158,12 @@ func _fade_with_round_reset() -> void:
 	await get_tree().create_timer(1).timeout
 	Curtain.fade_out()
 	
-	battleManager.start_new_match()
+	battleManager.prepare_opponent()
+	
+	if GameStats.numberOfWins % 3 == 0:
+		modifierUI.show_modifier_menu()
+	else:
+		battleManager.initialize_game()
 
 func _reset_game_over_ui() -> void:
 	%gameOver.visible = false

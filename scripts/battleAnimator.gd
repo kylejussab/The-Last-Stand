@@ -185,8 +185,6 @@ func set_end_game_stats(playerWon: bool):
 		score.get_node("stat6").text = str(GameStats.multiplierTotal) + "x"
 		GameStats.lastStandCurrentRoundScore = losingScore
 		score.get_node("stat7").text = "%05d" % GameStats.lastStandTotalScore
-	
-	_handle_modifier_durations()
 
 func format_time(time: float) -> String:
 	var minutes = int(time / 60)
@@ -244,9 +242,9 @@ func animate_score_tick(label, start_score: int, end_score: int):
 	
 	return tween
 
-func _handle_modifier_durations() -> void:
-	for i in range(GameStats.activeMultipliers.size() - 1, -1, -1):
-		var modifier = GameStats.activeMultipliers[i]
+func handle_modifier_durations() -> void:
+	for i in range(GameStats.activeModifiers.size() - 1, -1, -1):
+		var modifier = GameStats.activeModifiers[i]
 		
 		modifier["currentDuration"] += 1
 		

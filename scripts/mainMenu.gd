@@ -44,7 +44,7 @@ func pulse_text():
 	pulse.tween_property($pressAnywhere/text, "modulate:a", 1.0, 2.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 
 func _input(event: InputEvent) -> void:
-	if !GameStats.invitationAccepted and (event is InputEventMouseButton and event.pressed) or (event is InputEventKey and event.pressed):
+	if !GameStats.invitationAccepted and (event is InputEventMouseButton and event.pressed):
 		GameStats.invitationAccepted = true
 		_play_click()
 		
@@ -101,6 +101,8 @@ func setup_button_sounds(container: Node):
 		if child is Button:
 			child.mouse_entered.connect(_play_hover)
 			child.pressed.connect(_play_click)
+			
+			child.focus_mode = Control.FOCUS_NONE
 
 func _on_story_button_mouse_entered() -> void:
 	supplementText.text = SUPPLEMENTTEXT["Story"]

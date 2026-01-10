@@ -119,7 +119,7 @@ func _create_card_instance(cardKey: String, scenePath: String, isPlayer: bool = 
 		newCard.value = 0
 	
 	if %battleManager.loneWolfActive and isPlayer:
-		newCard.value *= 1.75
+		newCard.value *= 1.5
 	
 	newCard.get_node("value").text = str(newCard.value)
 	newCard.get_node("image").texture = load("res://assets/cards/" + cardKey + "Card.png")

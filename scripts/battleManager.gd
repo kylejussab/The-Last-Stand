@@ -62,6 +62,8 @@ func _ready() -> void:
 	$"../cardManager".connect("characterPlayed", Callable(self, "_on_player_character_played"))
 	$"../cardManager".connect("supportPlayed", Callable(self, "_on_player_support_played"))
 	
+	prepare_opponent()
+	
 	match GameStats.gameMode:
 		GameStats.Mode.JUNE_RAVEL:
 			GameStats.currentPlayer = Actor.Avatar.JUNE
@@ -77,16 +79,37 @@ func _ready() -> void:
 	GameStats.gameMode = GameStats.Mode.MODIFIER_SELECTION
 	
 	%modifier.show_modifier_menu()
-	
-	#start_new_match()
 
-func start_new_match() -> void:
+func prepare_opponent() -> void:
 	if not GameStats.replayedRound:
 		GameStats.currentOpponent = _pick_next_opponent()
 	
 	_initialize_opponent(GameStats.currentPlayer, GameStats.currentOpponent)
+
+func initialize_game() -> void:
+	%pauseIcon.show()
 	
-	await _initialize_game()
+	if infectedDeckActive:
+		$"../characterDeck".deck = Database.infectedHeavyCharacterDeck.duplicate()
+		$"../supportDeck".deck = Database.infectedHeavySupportDeck.duplicate()
+	else:
+		$"../characterDeck".deck = Database.standardCharacterDeck.duplicate()
+		$"../supportDeck".deck = Database.standardSupportDeck.duplicate()
+	
+	$"../characterDeck".deck.shuffle()
+	$"../supportDeck".deck.shuffle()
+	
+	await _draw_cards_at_start(false)
+	
+	whoStartedRound = Actor.Type.PLAYER
+	roundStage = RoundStage.PLAYER_CHARACTER
+	
+	ui.set_indicator(Actor.Type.PLAYER)
+	ui.change_mood(Actor.Type.PLAYER, Actor.Mood.THINKING)
+	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
+	
+	lockPlayerInput = false
+	GameStats.set_start_time()
 
 func add_modifier(modifier: Database.Modifier) -> void:
 	var instance = Database.MODIFIERS[modifier].duplicate(true)
@@ -157,34 +180,9 @@ func remove_modifier(modifier: Database.Modifier) -> void:
 			else:
 				maximumCharacterCardsInHand = 4
 				maximumSupportCardsInHand = 4
-			loneWolfActive = true
+			loneWolfActive = false
 
 # Privates
-func _initialize_game() -> void:
-	%pauseIcon.show()
-	
-	if infectedDeckActive:
-		$"../characterDeck".deck = Database.infectedHeavyCharacterDeck.duplicate()
-		$"../supportDeck".deck = Database.infectedHeavySupportDeck.duplicate()
-	else:
-		$"../characterDeck".deck = Database.standardCharacterDeck.duplicate()
-		$"../supportDeck".deck = Database.standardSupportDeck.duplicate()
-	
-	$"../characterDeck".deck.shuffle()
-	$"../supportDeck".deck.shuffle()
-	
-	await _draw_cards_at_start(false)
-	
-	whoStartedRound = Actor.Type.PLAYER
-	roundStage = RoundStage.PLAYER_CHARACTER
-	
-	ui.set_indicator(Actor.Type.PLAYER)
-	ui.change_mood(Actor.Type.PLAYER, Actor.Mood.THINKING)
-	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
-	
-	lockPlayerInput = false
-	GameStats.set_start_time()
-
 func _initialize_opponent(player: Actor.Avatar, opponent: Actor.Avatar) -> void:
 	ui.setup_avatar(player, Actor.Type.PLAYER)
 	
@@ -594,7 +592,7 @@ func _move_cards_to_discard(cards: Array) -> void:
 	$"../cardSlots/cardSlotSupport".occupied = false
 	$"../cardSlots/cardSlotCharacter".occupied = false
 	
-	if GameStats.roundNumber % 3 == 0 and volatileHandActive and GameStats.gameMode == GameStats.Mode.LAST_STAND:
+	if GameStats.roundNumber % 2 == 0 and volatileHandActive and GameStats.gameMode == GameStats.Mode.LAST_STAND:
 		for card in playerHand.duplicate():
 			await _place_card_in_discard(card, %playerHand)
 
