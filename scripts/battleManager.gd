@@ -274,6 +274,8 @@ func _on_player_support_played(card: Node2D) -> void:
 	
 	playerSupportCard = card
 	
+	_apply_player_support(playerSupportCard, opponentCharacterCard, playerCharacterCard)
+	
 	if whoStartedRound == Actor.Type.PLAYER:
 		_execute_opponent_support_play()
 	else:
@@ -296,6 +298,8 @@ func _execute_opponent_support_play() -> void:
 		card.cardSlot = opponentSupportCardSlot
 		_animate_opponent_playing_card(card, opponentSupportCardSlot)
 		opponentSupportCard = card
+		
+		_apply_opponent_support(opponentSupportCard, playerCharacterCard, opponentCharacterCard)
 	
 	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
 	
@@ -536,14 +540,8 @@ func _apply_end_round_perks() -> void:
 	await get_tree().create_timer(PERK_CALCULATION_TIME).timeout
 
 func _calculate_damage() -> void:
-	var playerTotal = int(playerCharacterCard.get_node("value").text)
-	var opponentTotal = int(opponentCharacterCard.get_node("value").text)
-	
-	if playerSupportCard:
-		playerTotal += int(playerSupportCard.get_node("value").text)
-	
-	if opponentSupportCard:
-		opponentTotal += int(opponentSupportCard.get_node("value").text)
+	var playerTotal = playerCharacterCard.value
+	var opponentTotal = opponentCharacterCard.value
 	
 	GameStats.totalForceExerted += playerTotal
 	GameStats.opponentForceExerted += opponentTotal
@@ -567,6 +565,30 @@ func _calculate_damage() -> void:
 	if cardRotActive and GameStats.roundNumber % 3 == 0:
 		for card in playerHand:
 			card.modify_value(-1)
+
+func _apply_player_support(support: Node2D, opponentCharacter: Node2D, playerCharacter: Node2D) -> void:
+	await get_tree().create_timer(1.0).timeout
+	
+	if Database.SUPPORTS[support.cardKey][3] == "Negative":
+		var value = support.value
+		support.modify_value(-value)
+		await opponentCharacter.modify_value(-value)
+	else:
+		var value = support.value
+		support.modify_value(-value)
+		await playerCharacter.modify_value(value)
+
+func _apply_opponent_support(support: Node2D, playerCharacter: Node2D, opponentCharacter: Node2D) -> void:
+	await get_tree().create_timer(1.0).timeout
+	
+	if Database.SUPPORTS[support.cardKey][3] == "Negative":
+		var value = support.value
+		support.modify_value(-value)
+		await playerCharacter.modify_value(-value)
+	else:
+		var value = support.value
+		support.modify_value(-value)
+		await opponentCharacter.modify_value(value)
 
 func _apply_calculation_round_perks(playerTotal: int, opponentTotal: int) -> void:
 	if playerCharacterCard.perk && playerCharacterCard.perk.timing == "calculationRound":

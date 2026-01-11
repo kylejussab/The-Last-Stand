@@ -22,6 +22,8 @@ func render_active_modifiers() -> void:
 		
 		_update_bubble_positions(0.4)
 		
+		%CardHoverSound.play()
+		
 		var pop_tween = create_tween().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 		pop_tween.tween_property(bubble, "scale", Vector2(0.24, 0.24), 0.4)
 		
@@ -30,6 +32,8 @@ func render_active_modifiers() -> void:
 func clear_modifiers() -> void:
 	while get_child_count() > 0:
 		var target_bubble = get_child(0)
+		
+		%CardHoverSound.play()
 		
 		var tween = create_tween().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
 		tween.tween_property(target_bubble, "scale", Vector2.ZERO, 0.25)

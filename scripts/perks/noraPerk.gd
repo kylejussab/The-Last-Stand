@@ -16,6 +16,8 @@ func apply_mid_perk(thisCard, _thisHand, otherCard):
 		if otherCard.cardKey != "EllieRare":
 			value = int(card.get_node("value").text)
 			value += 1
+			
+			card.value += 1
 			card.get_node("perk").text = "+1"
 		else:
 			value = int(card.get_node("value").text)

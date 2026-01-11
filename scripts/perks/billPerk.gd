@@ -15,6 +15,7 @@ func apply_end_perk(thisCharacterCard, thisSupportCard, _otherCharacterCard, _ot
 		value = int(card.get_node("value").text)
 		value += 4
 		
+		card.value += 4
 		card.get_node("perk").text = "+4"
 		card.get_node("AnimationPlayer").queue("showPerk")
 

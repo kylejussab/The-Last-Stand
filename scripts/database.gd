@@ -38,23 +38,23 @@ const CHARACTERS = { # Value, Type, Faction, Class
 	"Jessie": [5, "Character", "Jackson", "Defensive"],
 }
 
-const SUPPORTS = { # Value, Type, Class
-	"Molotov": [5, "Support", "Aggressive"],
-	"ReinforcedMelee": [2, "Support", "Aggressive/Survivor"],
-	"Rage": [6, "Support", "Aggressive"],
-	"Silencer": [4, "Support", "Stealthy/Defensive"],
-	"SmokeBomb": [4, "Support", "Crafty/Stealthy"],
-	"TrapMine": [5, "Support", "Crafty"],
-	"ScavengedParts": [2, "Support", "Survivor"],
-	"MedKit": [2, "Support", "Crafty/Defensive"],
-	"Resilience": [5, "Support", "Survivor"],
-	"Retreat": [4, "Support", "Defensive"],
-	"Bottle": [2, "Support", "Stealthy"],
-	"Brick": [2, "Support", "Stealthy"],
-	"TrainingManual": [2, "Support", "Crafty"],
-	"ShotgunShells": [3, "Support", "Survivor"],
-	"Supplements": [2, "Support", "Aggressive/Crafty/Defensive/Stealthy/Survivor"],
-	"SupplyCache": [0, "Support", "Aggressive/Crafty/Defensive/Stealthy/Survivor"],
+const SUPPORTS = { # Value, Type, Class, Positive/Negative
+	"Molotov": [5, "Support", "Aggressive", "Negative"],
+	"ReinforcedMelee": [2, "Support", "Aggressive/Survivor", "Positive"],
+	"Rage": [6, "Support", "Aggressive", "Positive"],
+	"Silencer": [4, "Support", "Stealthy/Defensive", "Negative"],
+	"SmokeBomb": [4, "Support", "Crafty/Stealthy", "Negative"],
+	"TrapMine": [5, "Support", "Crafty", "Negative"],
+	"ScavengedParts": [2, "Support", "Survivor", "Positive"],
+	"MedKit": [2, "Support", "Crafty/Defensive", "Positive"],
+	"Resilience": [5, "Support", "Survivor", "Positive"],
+	"Retreat": [4, "Support", "Defensive", "Positive"],
+	"Bottle": [2, "Support", "Stealthy", "Negative"],
+	"Brick": [2, "Support", "Stealthy", "Negative"],
+	"TrainingManual": [2, "Support", "Crafty", "Positive"],
+	"ShotgunShells": [3, "Support", "Survivor", "Positive"],
+	"Supplements": [2, "Support", "Aggressive/Crafty/Defensive/Stealthy/Survivor", "Positive"],
+	"SupplyCache": [0, "Support", "Aggressive/Crafty/Defensive/Stealthy/Survivor", "Positive"],
 }
 
 const PERKS = {
@@ -93,49 +93,49 @@ var AVATARS = {
 	Actor.Avatar.ETHAN: {
 		"name": "Ethan Hark",
 		"description": "Patrol Leader",
-		"health": "%02d" % 5,
+		"health": "%02d" % 25,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.RHEA: {
 		"name": "Rhea",
 		"description": "Matriarch",
-		"health": "%02d" % 5,
+		"health": "%02d" % 25,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.UCKMANN: {
 		"name": "Dr Uckmann",
 		"description": "Dog Director",
-		"health": "%02d" % 5,
+		"health": "%02d" % 25,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.ALLEY: {
 		"name": "Alley Ross",
 		"description": "Scriptweaver",
-		"health": "%02d" % 5,
+		"health": "%02d" % 25,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.SILAS: {
 		"name": "Silas Vane",
 		"description": "Scavenger King",
-		"health": "%02d" % 5,
+		"health": "%02d" % 25,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.MIRA: {
 		"name": "Mira Thorne",
 		"description": "Ex-Medic",
-		"health": "%02d" % 5, 
+		"health": "%02d" % 25, 
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.KAEL: {
 		"name": "Kaelen Voss",
 		"description": "Shield Brother",
-		"health": "%02d" % 5,
+		"health": "%02d" % 25,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	}
@@ -153,7 +153,7 @@ const MODIFIERS = {
 		"icon": "res://assets/modifiers/Reduced Hand.png",
 		"tier": 1,
 		"multiplier": 0.5,
-		"duration": 2,
+		"duration": 3,
 	},
 	Modifier.VOLATILE_HAND: {
 		"id": Modifier.VOLATILE_HAND,

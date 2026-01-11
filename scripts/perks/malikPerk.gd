@@ -25,7 +25,8 @@ func apply_mid_perk(thisCard, thisHand, otherCard):
 		
 		value = int(card.get_node("value").text)
 		value += total
-			
+		
+		card.value += total
 		card.get_node("perk").text = "+" + str(total)
 		card.get_node("AnimationPlayer").queue("showPerk")
 		card.get_node("value").text = str(value)

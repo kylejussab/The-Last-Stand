@@ -39,3 +39,31 @@ func _on_area_2d_mouse_entered() -> void:
 
 func _on_area_2d_mouse_exited() -> void:
 	emit_signal("hoverExited", self)
+
+func modify_value(amount: int) -> void:
+	value += amount
+	
+	if not get_node("AnimationPlayer").animation_started.is_connected(_when_animation_starts):
+		get_node("AnimationPlayer").animation_started.connect(_when_animation_starts)
+	
+	var stringSign = "+" if amount >= 0 else "" 
+	
+	get_node("perk").text = stringSign + str(amount)
+	get_node("AnimationPlayer").queue("showPerk")
+
+func _when_animation_starts(animationName: String):
+	if animationName == "showPerk":
+		_updateCardValue()
+
+func _updateCardValue():
+	var label = get_node("value")
+	var startValue = int(label.text)
+	
+	var tween = create_tween()
+	
+	tween.tween_method(
+		func(val: int): label.text = str(val),
+		startValue,
+		value,
+		0.5
+	)

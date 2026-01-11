@@ -15,6 +15,7 @@ func apply_after_calculation_perk(thisCard, _thisHand, thisTotal, otherTotal):
 		value = int(card.get_node("value").text)
 		value += 5
 		
+		card.value += 5
 		card.get_node("perk").text = "+5"
 		card.get_node("AnimationPlayer").queue("showPerk")
 		
