@@ -42,7 +42,7 @@ const SUPPORTS = { # Value, Type, Class, Positive/Negative
 	"Molotov": [5, "Support", "Aggressive", "Negative"],
 	"ReinforcedMelee": [2, "Support", "Aggressive/Survivor", "Positive"],
 	"Rage": [6, "Support", "Aggressive", "Positive"],
-	"Silencer": [4, "Support", "Stealthy/Defensive", "Negative"],
+	"Silencer": [4, "Support", "Stealthy/Defensive", "Positive"],
 	"SmokeBomb": [4, "Support", "Crafty/Stealthy", "Negative"],
 	"TrapMine": [5, "Support", "Crafty", "Negative"],
 	"ScavengedParts": [2, "Support", "Survivor", "Positive"],
@@ -93,49 +93,49 @@ var AVATARS = {
 	Actor.Avatar.ETHAN: {
 		"name": "Ethan Hark",
 		"description": "Patrol Leader",
-		"health": "%02d" % 25,
+		"health": "%02d" % 20,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.RHEA: {
 		"name": "Rhea",
 		"description": "Matriarch",
-		"health": "%02d" % 25,
+		"health": "%02d" % 20,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.UCKMANN: {
 		"name": "Dr Uckmann",
 		"description": "Dog Director",
-		"health": "%02d" % 25,
+		"health": "%02d" % 20,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.ALLEY: {
 		"name": "Alley Ross",
 		"description": "Scriptweaver",
-		"health": "%02d" % 25,
+		"health": "%02d" % 20,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.SILAS: {
 		"name": "Silas Vane",
 		"description": "Scavenger King",
-		"health": "%02d" % 25,
+		"health": "%02d" % 20,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.MIRA: {
 		"name": "Mira Thorne",
 		"description": "Ex-Medic",
-		"health": "%02d" % 25, 
+		"health": "%02d" % 20, 
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.KAEL: {
 		"name": "Kaelen Voss",
 		"description": "Shield Brother",
-		"health": "%02d" % 25,
+		"health": "%02d" % 20,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	}
@@ -143,7 +143,7 @@ var AVATARS = {
 
 const JUNE_OPPONENTS = [Actor.Avatar.ETHAN, Actor.Avatar.UCKMANN, Actor.Avatar.ALLEY, Actor.Avatar.MIRA, Actor.Avatar.RHEA]
 
-enum Modifier { REDUCED_HAND, VOLATILE_HAND, SLOW_BLEED, NO_DEFENSE, INFECTED_DECK, ALWAYS_FIRST, LONE_WOLF, CARD_ROT }
+enum Modifier { REDUCED_HAND, VOLATILE_HAND, SLOW_BLEED, NO_DEFENSE, INFECTED_DECK, ALWAYS_FIRST, LONE_WOLF, SUPPLY_LINE, CARD_ROT }
 
 const MODIFIERS = {
 	Modifier.REDUCED_HAND: {
@@ -170,14 +170,14 @@ const MODIFIERS = {
 		"description": "Take 1 damage at the end of every round.",
 		"icon": "res://assets/modifiers/Slow Bleed.png",
 		"tier": 1,
-		"multiplier": 1.0,
-		"duration": 4,
+		"multiplier": 1.25,
+		"duration": 3,
 		"amount": 1,
 	},
 	Modifier.NO_DEFENSE: {
 		"id": Modifier.NO_DEFENSE,
 		"name": "No Defense",
-		"description": "Defensive cards have 0 Value. Their Perks still activate.",
+		"description": "Defensive cards have 0 value. Their perks still activate.",
 		"icon": "res://assets/modifiers/No Defense.png",
 		"tier": 2,
 		"multiplier": 1.5,
@@ -186,9 +186,9 @@ const MODIFIERS = {
 	Modifier.INFECTED_DECK: {
 		"id": Modifier.INFECTED_DECK,
 		"name": "Infected Deck",
-		"description": "Your deck contains significantly more Infected cards.",
+		"description": "Your deck contains significantly more infected cards.",
 		"icon": "res://assets/modifiers/Infected Deck.png",
-		"tier": 3,
+		"tier": 2,
 		"multiplier": 2.0,
 		"duration": 2,
 	},
@@ -210,10 +210,19 @@ const MODIFIERS = {
 		"multiplier": 2.75,
 		"duration": 1,
 	},
+	Modifier.SUPPLY_LINE: {
+		"id": Modifier.SUPPLY_LINE,
+		"name": "Supply Line",
+		"description": "Hand contains only support cards. Your character is auto played from the deck.",
+		"icon": "res://assets/modifiers/Supply Line.png",
+		"tier": 3,
+		"multiplier": 3.0,
+		"duration": 1,
+	},
 	Modifier.CARD_ROT: {
 		"id": Modifier.CARD_ROT,
 		"name": "Card Rot",
-		"description": "Every 3 rounds, all cards in your hand lose -1 Value.",
+		"description": "Every 3 rounds, all cards in your hand lose -1 value.",
 		"icon": "res://assets/modifiers/Card Rot.png",
 		"tier": 3,
 		"multiplier": 3.5,

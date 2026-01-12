@@ -73,8 +73,10 @@ func show_stats(playerWon: bool):
 	mainMenuButton.disabled = true
 	var continueButton = gameOver.get_node("ContinueButton")
 	continueButton.disabled = true
+	var newRunButton = gameOver.get_node("NewRunButton")
+	newRunButton.disabled = true
 	
-	for node in [performance, game, score, line, replayButton, mainMenuButton, continueButton]:
+	for node in [performance, game, score, line, replayButton, mainMenuButton, continueButton, newRunButton]:
 		node.modulate.a = 0.0
 		node.visible = true
 	
@@ -84,10 +86,12 @@ func show_stats(playerWon: bool):
 	
 	if playerWon:
 		# Show the continue button
+		newRunButton.position.y = 735
 		replayButton.position.y = 805
 		mainMenuButton.position.y = 875
 		continueButton.position.y = 945
 	else:
+		newRunButton.position.y = 805
 		replayButton.position.y = 875
 		mainMenuButton.position.y = 945
 		continueButton.position.y = 1015
@@ -122,6 +126,9 @@ func show_stats(playerWon: bool):
 	animate_score_tick(score.get_node("stat7"), GameStats.lastStandTotalScore, GameStats.lastStandTotalScore + GameStats.lastStandCurrentRoundScore)
 	
 	var buttonTween = create_tween()
+	
+	buttonTween.tween_property(newRunButton, "modulate:a", 1.0, 0.6).set_trans(Tween.TRANS_SINE)
+	newRunButton.disabled = false
 	
 	buttonTween.tween_property(replayButton, "modulate:a", 1.0, 0.6).set_trans(Tween.TRANS_SINE)
 	replayButton.disabled = false

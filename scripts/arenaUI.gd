@@ -143,6 +143,12 @@ func _on_main_menu_button_pressed() -> void:
 	GameStats.gameMode = GameStats.Mode.MAIN_MENU
 	Curtain.change_scene("res://scenes/mainMenu.tscn")
 
+func _on_new_run_button_pressed() -> void:
+	GameStats.gameMode = GameStats.Mode.LAST_STAND
+	GameStats.activeModifiers.clear()
+	GameStats.multiplierTotal = 1.0
+	Curtain.change_scene("res://scenes/main.tscn")
+
 # Helpers
 func _fade_with_round_reset() -> void:
 	await Curtain.fade_in()
@@ -161,7 +167,7 @@ func _fade_with_round_reset() -> void:
 	
 	battleManager.prepare_opponent()
 	
-	if GameStats.numberOfWins % 3 == 0 and not GameStats.replayedRound:
+	if GameStats.numberOfWins % 2 == 0 and not GameStats.replayedRound:
 		modifierUI.show_modifier_menu()
 	else:
 		battleManager.initialize_game()

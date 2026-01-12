@@ -27,10 +27,6 @@ func draw_card():
 	var cardDrawn = deck[0]
 	deck.erase(cardDrawn)
 	
-	if deck.size() == 0:
-		$Area2D/CollisionShape2D.disabled = true
-		$image.visible = false
-	
 	$RichTextLabel.text = str(deck.size())
 	var cardScene = preload(PLAYER_CARD_SCENE_PATH)
 	var newCard = cardScene.instantiate()
@@ -61,9 +57,6 @@ func draw_card():
 func draw_opponent_card():
 	var cardDrawn = deck[0]
 	deck.erase(cardDrawn)
-	
-	if deck.size() == 0:
-		$image.visible = false
 	
 	$RichTextLabel.text = str(deck.size())
 	var cardScene = preload(OPPONENT_CARD_SCENE_PATH)

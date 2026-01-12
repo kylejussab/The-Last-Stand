@@ -11,7 +11,7 @@ const DISCARD_PILE_POSITION: Vector2 = Vector2(135, 292)
 
 const HALF_MAXIMUM_HAND_SIZE: int = 4
 
-var minimumCardsForReshuffle: int = 3
+var minimumCardsForReshuffle: int = 5
 
 # Modifiers
 var cardRotActive: bool = false
@@ -22,6 +22,7 @@ var volatileHandActive: bool = false
 var reducedHandActive: bool = false
 var noDefenseActive: bool = false
 var loneWolfActive: bool = false
+var supplyLineActive: bool = false
 
 var maximumCharacterCardsInHand: int = 4
 var maximumSupportCardsInHand: int = 4
@@ -108,6 +109,10 @@ func initialize_game() -> void:
 	ui.change_mood(Actor.Type.PLAYER, Actor.Mood.THINKING)
 	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
 	
+	if supplyLineActive:
+		await get_tree().create_timer(OPPONENT_THINKING_TIME).timeout
+		%cardManager.play_top_character_from_deck()
+	
 	lockPlayerInput = false
 	GameStats.set_start_time()
 	
@@ -143,12 +148,23 @@ func add_modifier(modifier: Database.Modifier) -> void:
 			minimumCardsForReshuffle = 6
 			volatileHandActive = true
 		Database.Modifier.LONE_WOLF:
+			if volatileHandActive:
+				minimumCardsForReshuffle = 10
 			if reducedHandActive:
 				maximumCharacterCardsInHand = 6
 			else:
 				maximumCharacterCardsInHand = 8
 			maximumSupportCardsInHand = 0
 			loneWolfActive = true
+		Database.Modifier.SUPPLY_LINE:
+			if volatileHandActive:
+				minimumCardsForReshuffle = 10
+			if reducedHandActive:
+				maximumSupportCardsInHand = 6
+			else:
+				maximumSupportCardsInHand = 8
+			maximumCharacterCardsInHand = 0
+			supplyLineActive = true
 
 func remove_modifier(modifier: Database.Modifier) -> void:
 	for i in range(GameStats.activeModifiers.size() - 1, -1, -1):
@@ -176,6 +192,8 @@ func remove_modifier(modifier: Database.Modifier) -> void:
 			minimumCardsForReshuffle = 3
 			volatileHandActive = false
 		Database.Modifier.LONE_WOLF:
+			if volatileHandActive:
+				minimumCardsForReshuffle = 5
 			if reducedHandActive:
 				maximumCharacterCardsInHand = 3
 				maximumSupportCardsInHand = 3
@@ -183,6 +201,16 @@ func remove_modifier(modifier: Database.Modifier) -> void:
 				maximumCharacterCardsInHand = 4
 				maximumSupportCardsInHand = 4
 			loneWolfActive = false
+		Database.Modifier.SUPPLY_LINE:
+			if volatileHandActive:
+				minimumCardsForReshuffle = 5
+			if reducedHandActive:
+				maximumCharacterCardsInHand = 3
+				maximumSupportCardsInHand = 3
+			else:
+				maximumCharacterCardsInHand = 4
+				maximumSupportCardsInHand = 4
+			supplyLineActive = false
 
 # Privates
 func _initialize_opponent(player: Actor.Avatar, opponent: Actor.Avatar) -> void:
@@ -249,6 +277,11 @@ func _execute_opponent_character_play() -> void:
 		ui.change_mood(Actor.Type.PLAYER, Actor.Mood.THINKING)
 		lockPlayerInput = false
 		roundStage = RoundStage.PLAYER_CHARACTER
+		
+		if supplyLineActive:
+			ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
+			await get_tree().create_timer(OPPONENT_THINKING_TIME).timeout
+			%cardManager.play_top_character_from_deck()
 	
 	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
 
@@ -407,6 +440,10 @@ func _start_new_round() -> void:
 		ui.set_indicator(Actor.Type.PLAYER)
 		ui.change_mood(Actor.Type.PLAYER, Actor.Mood.THINKING)
 		ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
+		
+		if supplyLineActive:
+			await get_tree().create_timer(OPPONENT_THINKING_TIME).timeout
+			%cardManager.play_top_character_from_deck()
 		
 		lockPlayerInput = false
 

@@ -27,9 +27,6 @@ func draw_card():
 	var cardDrawn = deck[0]
 	deck.erase(cardDrawn)
 	
-	if deck.size() == 0:
-		$Area2D/CollisionShape2D.disabled = true
-		$image.visible = false
 	$RichTextLabel.text = str(deck.size())
 	
 	var newCard = _create_card_instance(cardDrawn, PLAYER_CARD_SCENE_PATH, true)
@@ -43,8 +40,6 @@ func draw_opponent_card():
 	var cardDrawn = deck[0]
 	deck.erase(cardDrawn)
 	
-	if deck.size() == 0:
-		$image.visible = false
 	$RichTextLabel.text = str(deck.size())
 	
 	var newCard = _create_card_instance(cardDrawn, OPPONENT_CARD_SCENE_PATH)
@@ -137,3 +132,22 @@ func _play_shuffle_sound():
 	var randomSound = shuffleSounds.pick_random()
 	soundPlayer.stream = randomSound
 	soundPlayer.play()
+
+func spawn_top_card_node() -> Node2D:
+	if deck.is_empty():
+		return null
+	
+	var cardDrawn = deck[0]
+	deck.erase(cardDrawn)
+	
+	$RichTextLabel.text = str(deck.size())
+	
+	# Reuse your existing private helper to create the node
+	var newCard = _create_card_instance(cardDrawn, PLAYER_CARD_SCENE_PATH, true)
+	
+	# We flip it immediately so the player sees what was played
+	newCard.get_node("AnimationPlayer").play("cardFlip")
+	newCard.play_draw_sound()
+	
+	# Important: We do NOT call 'add_card_to_hand' here.
+	return newCard

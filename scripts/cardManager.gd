@@ -189,7 +189,7 @@ func move_card_on_double_click(card, cardSlot):
 		tween.tween_property(card, "position", cardSlot.position, 0.1)
 		tween.finished.connect(func(): card.play_draw_sound())
 		
-		playerHandReference.remove_card_from_hand(draggedCard)
+		playerHandReference.remove_card_from_hand(card)
 		
 		card.z_index = -1
 		card.position = cardSlot.position
@@ -210,7 +210,6 @@ func move_card_on_double_click(card, cardSlot):
 		var endTime = draggedCard.get_node("AnimationPlayer").current_animation_length
 		draggedCard.get_node("AnimationPlayer").seek(endTime, true)
 		
-		playerHandReference.remove_card_from_hand(draggedCard)
 		draggedCard = null
 
 func _play_card_hover_sound() -> void:
@@ -223,3 +222,26 @@ func _play_card_hover_sound() -> void:
 		
 	await get_tree().create_timer(.1).timeout
 	canPlayHoverSound = true
+
+func play_top_character_from_deck() -> void:
+	var card = $"../characterDeck".spawn_top_card_node()
+	
+	if card == null:
+		return
+	
+	var characterSlot = $"../cardSlots/cardSlotCharacter"
+	
+	card.z_index = 10 
+	
+	var tween = get_tree().create_tween()
+	tween.tween_property(card, "position", characterSlot.position, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	
+	tween.finished.connect(func(): 
+		card.play_draw_sound()
+		card.z_index = 0
+	)
+
+	characterSlot.occupied = true
+	card.cardSlot = characterSlot
+
+	emit_signal("characterPlayed", card)

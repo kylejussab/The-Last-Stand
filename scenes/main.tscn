@@ -1031,7 +1031,7 @@ script = ExtResource("30_5he1u")
 
 [node name="gameOver" type="Node2D" parent="arena"]
 unique_name_in_owner = true
-z_index = 200
+z_index = 500
 
 [node name="effects" type="AudioStreamPlayer2D" parent="arena/gameOver"]
 stream = ExtResource("25_2wyq8")
@@ -1796,6 +1796,26 @@ libraries = {
 &"": SubResource("AnimationLibrary_tel4y")
 }
 
+[node name="NewRunButton" type="Button" parent="arena/gameOver"]
+visible = false
+z_index = 201
+offset_left = 770.0
+offset_top = 790.0
+offset_right = 988.0
+offset_bottom = 820.0
+theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("13_a8y0u")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_a8y0u")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_jbj1t")
+theme_override_styles/hover = SubResource("StyleBoxFlat_jkv2x")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_a8y0u")
+theme_override_styles/focus = SubResource("StyleBoxFlat_y6deb")
+text = "NEW RUN"
+alignment = 0
+
 [node name="ReplayButton" type="Button" parent="arena/gameOver"]
 visible = false
 z_index = 201
@@ -1813,7 +1833,7 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_jbj1t")
 theme_override_styles/hover = SubResource("StyleBoxFlat_jkv2x")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_a8y0u")
 theme_override_styles/focus = SubResource("StyleBoxFlat_y6deb")
-text = "REPLAY"
+text = "RESTART ENCOUNTER"
 alignment = 0
 
 [node name="MainMenuButton" type="Button" parent="arena/gameOver"]
@@ -2850,6 +2870,7 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_jkv2x")
 text = "END TURN"
 
 [connection signal="timeout" from="inputManager/Timer" to="inputManager" method="_on_timer_timeout"]
+[connection signal="pressed" from="arena/gameOver/NewRunButton" to="arena" method="_on_new_run_button_pressed"]
 [connection signal="pressed" from="arena/gameOver/ReplayButton" to="arena" method="_on_replay_button_pressed"]
 [connection signal="pressed" from="arena/gameOver/MainMenuButton" to="arena" method="_on_main_menu_button_pressed"]
 [connection signal="pressed" from="arena/gameOver/ContinueButton" to="arena" method="_on_continue_button_pressed"]

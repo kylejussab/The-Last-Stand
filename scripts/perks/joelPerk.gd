@@ -6,11 +6,11 @@ var value
 func _init() -> void:
 	timing = "midRound"
 
-func apply_mid_perk(thisCard, thisHand, _otherCard):
-	thisCard.get_node("AnimationPlayer").animation_started.connect(_when_animation_starts)
-	
+func apply_mid_perk(thisCard, thisHand, _otherCard):	
 	for ellie in thisHand:
 		if ellie.cardKey == "Ellie":
+			thisCard.get_node("AnimationPlayer").animation_started.connect(_when_animation_starts)
+			
 			card = thisCard
 			
 			value = int(card.get_node("value").text)
