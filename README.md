@@ -9,6 +9,8 @@ This game is a **fan work** based on 'The Last of Us', a property of **Naughty D
 I do **not claim ownership** of any characters, names, or concepts associated with *The Last of Us*.  
 This project is **not for sale** and is **not affiliated with or endorsed by Sony or Naughty Dog**.
 
+<img width="4286" height="2411" alt="Patch Notes 0 3 1" src="https://github.com/user-attachments/assets/980f3afe-6150-4b7f-b579-e987b7d60db0" />
+
 <img width="4286" height="2411" alt="Card Design Changes" src="https://github.com/user-attachments/assets/29cc43de-d5c2-4ed1-9655-60de26fe0fd3" />
 
 ## Roadmap
