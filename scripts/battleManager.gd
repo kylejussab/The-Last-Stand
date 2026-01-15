@@ -73,7 +73,7 @@ func _ready() -> void:
 		GameStats.Mode.LAST_STAND:
 			# Maybe there should be an avatar thats always used for Last Stand
 			GameStats.currentPlayer = Actor.Avatar.JUNE
-			GameStats.playerHealthValue = 99 
+			GameStats.playerHealthValue = 20 
 	
 	ui.update_health(Actor.Type.PLAYER, GameStats.playerHealthValue, true)
 	
