@@ -64,6 +64,7 @@ func finish_drag():
 					emit_signal("supportPlayed", draggedCard)
 				
 				# Ensure its not highlighted
+				draggedCard.scale = Vector2(1, 1)
 				draggedCard.get_node("AnimationPlayer").play("hideDescription")
 				var endTime = draggedCard.get_node("AnimationPlayer").current_animation_length
 				draggedCard.get_node("AnimationPlayer").seek(endTime, true)
@@ -206,6 +207,7 @@ func move_card_on_double_click(card, cardSlot):
 			emit_signal("supportPlayed", draggedCard)
 		
 		# Ensure its not highlighted
+		draggedCard.scale = Vector2(1, 1)
 		draggedCard.get_node("AnimationPlayer").play("hideDescription")
 		var endTime = draggedCard.get_node("AnimationPlayer").current_animation_length
 		draggedCard.get_node("AnimationPlayer").seek(endTime, true)
