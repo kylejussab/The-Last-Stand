@@ -877,4 +877,7 @@ func _deal_damage(who: Actor.Type, amount: int, isDelay: bool = true) -> void:
 	currentHealth -= amount
 	ui.update_health(who, currentHealth)
 	
+	if who == Actor.Type.PLAYER:
+		GameStats.playerHealthValue = currentHealth
+	
 	await ui.play_damage_effect(who, amount)
