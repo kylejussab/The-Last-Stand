@@ -153,6 +153,9 @@ func _on_new_button_pressed() -> void:
 	GameStats.gameMode = GameStats.Mode.LAST_STAND
 	GameStats.activeModifiers.clear()
 	GameStats.multiplierTotal = 1.0
+	
+	GameStats.start_new_run_log()
+	
 	Curtain.change_scene("res://scenes/main.tscn")
 
 func _on_options_button_pressed() -> void:

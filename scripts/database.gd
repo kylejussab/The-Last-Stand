@@ -79,6 +79,8 @@ const PERKS = {
 	"Bloater": "res://scripts/perks/bloaterPerk.gd",
 	"RatKing": "res://scripts/perks/ratKingPerk.gd",
 	"TheProphet": "res://scripts/perks/theProphetPerk.gd",
+	"Emily": "res://scripts/perks/emilyPerk.gd",
+	"TommyFirefly": "res://scripts/perks/tommyFireflyPerk.gd",
 	"Alice": "res://scripts/perks/alicePerk.gd",
 	"SupplyCache": "res://scripts/perks/supplyCachePerk.gd",
 }
@@ -167,11 +169,11 @@ const MODIFIERS = {
 	Modifier.SLOW_BLEED: {
 		"id": Modifier.SLOW_BLEED,
 		"name": "Slow Bleed",
-		"description": "Take 1 damage at the end of every round.",
+		"description": "Take 1 damage at the end of every other round.",
 		"icon": "res://assets/modifiers/Slow Bleed.png",
 		"tier": 1,
 		"multiplier": 1.25,
-		"duration": 3,
+		"duration": 4,
 		"amount": 1,
 	},
 	Modifier.NO_DEFENSE: {

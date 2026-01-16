@@ -189,7 +189,7 @@ func set_end_game_stats(playerWon: bool):
 		score.get_node("stat3").text = "-"
 		score.get_node("stat4").text = "-"
 		score.get_node("stat5").text = "-"
-		score.get_node("stat6").text = str(GameStats.multiplierTotal) + "x"
+		score.get_node("stat6").text = "1.0x"
 		GameStats.lastStandCurrentRoundScore = losingScore
 		score.get_node("stat7").text = "%05d" % GameStats.lastStandTotalScore
 

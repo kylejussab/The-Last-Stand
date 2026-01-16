@@ -149,6 +149,9 @@ func _on_new_run_button_pressed() -> void:
 	GameStats.multiplierTotal = 1.0
 	GameStats.numberOfWins = 0
 	GameStats.lastStandTotalScore = 0
+	
+	GameStats.start_new_run_log()
+	
 	Curtain.change_scene("res://scenes/main.tscn")
 
 # Helpers

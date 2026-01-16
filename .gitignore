@@ -29,3 +29,6 @@ Icon?
 # Build artifacts (if you export builds into a subfolder)
 build/
 exports/
+
+# Ignore data logs
+game_balance_data.json

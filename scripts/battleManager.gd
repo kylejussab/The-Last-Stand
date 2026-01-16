@@ -73,7 +73,7 @@ func _ready() -> void:
 		GameStats.Mode.LAST_STAND:
 			# Maybe there should be an avatar thats always used for Last Stand
 			GameStats.currentPlayer = Actor.Avatar.JUNE
-			GameStats.playerHealthValue = 20 
+			GameStats.playerHealthValue = 99 
 	
 	ui.update_health(Actor.Type.PLAYER, GameStats.playerHealthValue, true)
 	
@@ -312,6 +312,7 @@ func _on_player_support_played(card: Node2D) -> void:
 	if whoStartedRound == Actor.Type.PLAYER:
 		_execute_opponent_support_play()
 	else:
+		lockPlayerInput = true
 		ui.set_indicator(Actor.Type.NONE)
 		ui.change_mood(Actor.Type.PLAYER, Actor.Mood.NEUTRAL)
 		await _apply_end_round_perks()
@@ -389,6 +390,11 @@ func _conclude_match() -> void:
 	GameStats.set_end_time()
 	GameStats.gameMode = GameStats.Mode.LAST_STAND_ROUND_COMPLETED
 	GameStats.totalInGameTimePlayed += GameStats.currentRoundDuration
+	
+	var outcome = "WIN" if ui.get_health(Actor.Type.PLAYER) > 0 else "LOSS"
+	
+	GameStats.log_battle_results(outcome)
+	
 	%pauseIcon.hide()
 	
 	var cardsToDiscard = []
@@ -450,6 +456,8 @@ func _start_new_round() -> void:
 func _on_end_turn_button_pressed() -> void:
 	ui.show_end_turn_button(false)
 	ui.change_mood(Actor.Type.PLAYER, Actor.Mood.NEUTRAL)
+	
+	lockPlayerInput = true
 	
 	if !opponentPlayedSupport:
 		_execute_opponent_support_play()
@@ -596,8 +604,8 @@ func _calculate_damage() -> void:
 	elif opponentTotal == playerTotal:
 		await _handle_lev_perk()
 	
-	if slowBleedActive:
-		await _deal_damage(Actor.Type.PLAYER, Database.MODIFIERS[Database.Modifier.SLOW_BLEED]["amount"])
+	if slowBleedActive and GameStats.roundNumber % 2 == 0 and Database.MODIFIERS.has(Database.Modifier.SLOW_BLEED):
+		await _deal_damage(Actor.Type.PLAYER, Database.MODIFIERS.get(Database.Modifier.SLOW_BLEED)["amount"])
 	
 	if cardRotActive and GameStats.roundNumber % 3 == 0:
 		for card in playerHand:
