@@ -11,7 +11,7 @@ This project is **not for sale** and is **not affiliated with or endorsed by Son
 
 <img width="4286" height="2411" alt="Patch Notes 0 3 1" src="https://github.com/user-attachments/assets/980f3afe-6150-4b7f-b579-e987b7d60db0" />
 
-<img width="4286" height="2411" alt="Card Design Changes" src="https://github.com/user-attachments/assets/29cc43de-d5c2-4ed1-9655-60de26fe0fd3" />
+<img width="4286" height="2411" alt="Card Design Changes" src="https://github.com/user-attachments/assets/769286c3-f6c6-4699-9de7-49443a0b0bc6" />
 
 ## Roadmap
 - [x] **v0.1: Initial Setup** - Basic mechanics and card spawning.
