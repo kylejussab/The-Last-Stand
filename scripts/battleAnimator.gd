@@ -61,7 +61,9 @@ func title_slam_and_slide(playerWon: bool):
 	await slideTween.finished
 
 func show_stats(playerWon: bool):
-	set_end_game_stats(playerWon)
+	await set_end_game_stats(playerWon)
+	
+	GameStats.log_battle_results("WIN" if playerWon else "LOSS")
 	
 	var performance = gameOver.get_node("performance")
 	var game = gameOver.get_node("game")
@@ -199,39 +201,50 @@ func format_time(time: float) -> String:
 	return "%02d:%02d" % [minutes, seconds]
 
 func get_card_stats(playedCards):
-	var factionCounts = {}
-	var cardCounts = {}
+	var factionImpact = {}
+	var cardImpact = {}
 
 	for card in playedCards:
 		var faction = card["faction"]
-		var mvp = card["cardKey"]
+		var key = card["cardKey"]
+		var value = card.get("value", 1) 
 		
-		factionCounts[faction] = factionCounts.get(faction, 0) + 1
-		cardCounts[mvp] = cardCounts.get(mvp, 0) + 1
+		if faction != "Support":
+			factionImpact[faction] = factionImpact.get(faction, 0) + value
+		
+		cardImpact[key] = cardImpact.get(key, 0) + value
 		
 	var topFaction = "None"
-	var highestFactionCount = 0
+	var highestFactionValue = -1
 	
-	for faction in factionCounts:
-		if factionCounts[faction] > highestFactionCount:
-			highestFactionCount = factionCounts[faction]
+	for faction in factionImpact:
+		if factionImpact[faction] > highestFactionValue:
+			highestFactionValue = factionImpact[faction]
 			topFaction = faction
 	
-	var cardKey = "None"
-	var highestCharacterCount = 0
+	var mvpKey = "None"
+	var highestCardValue = -1
 	
-	for card in cardCounts:
-		if cardCounts[card] > highestCharacterCount:
-			highestCharacterCount = cardCounts[card]
-			cardKey = card
+	for key in cardImpact:
+		if cardImpact[key] > highestCardValue:
+			highestCardValue = cardImpact[key]
+			mvpKey = key
 	
 	var cardName = ""
 	
-	for i in range(cardKey.length()):
-		var letter = cardKey[i]
-		if i > 0 and letter == letter.to_upper():
-			cardName += " "
-		cardName += letter
+	var displayOverrides = {
+		"WLFSoldier": "WLF Soldier",
+		"TommyFirefly": "Tommy (Firefly)" 
+	}
+	
+	if displayOverrides.has(mvpKey):
+		cardName = displayOverrides[mvpKey]
+	else:
+		for i in range(mvpKey.length()):
+			var letter = mvpKey[i]
+			if i > 0 and letter == letter.to_upper():
+				cardName += " "
+			cardName += letter
 	
 	return {"faction": topFaction, "card": cardName}
 

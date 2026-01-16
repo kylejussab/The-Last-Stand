@@ -151,8 +151,7 @@ func _on_last_stand_button_pressed() -> void:
 
 func _on_new_button_pressed() -> void:
 	GameStats.gameMode = GameStats.Mode.LAST_STAND
-	GameStats.activeModifiers.clear()
-	GameStats.multiplierTotal = 1.0
+	GameStats.reset_all_data()
 	
 	GameStats.start_new_run_log()
 	

@@ -307,6 +307,8 @@ func _on_player_support_played(card: Node2D) -> void:
 	
 	playerSupportCard = card
 	
+	GameStats.record_played_card("Support", playerSupportCard.cardKey, playerSupportCard.value)
+	
 	_apply_player_support(playerSupportCard, opponentCharacterCard, playerCharacterCard)
 	
 	if whoStartedRound == Actor.Type.PLAYER:
@@ -332,6 +334,8 @@ func _execute_opponent_support_play() -> void:
 		card.cardSlot = opponentSupportCardSlot
 		_animate_opponent_playing_card(card, opponentSupportCardSlot)
 		opponentSupportCard = card
+		
+		GameStats.record_played_card("Support", opponentSupportCard.cardKey, opponentSupportCard.value, true)
 		
 		_apply_opponent_support(opponentSupportCard, playerCharacterCard, opponentCharacterCard)
 	
@@ -390,10 +394,6 @@ func _conclude_match() -> void:
 	GameStats.set_end_time()
 	GameStats.gameMode = GameStats.Mode.LAST_STAND_ROUND_COMPLETED
 	GameStats.totalInGameTimePlayed += GameStats.currentRoundDuration
-	
-	var outcome = "WIN" if ui.get_health(Actor.Type.PLAYER) > 0 else "LOSS"
-	
-	GameStats.log_battle_results(outcome)
 	
 	%pauseIcon.hide()
 	
@@ -590,7 +590,9 @@ func _calculate_damage() -> void:
 	
 	GameStats.totalForceExerted += playerTotal
 	GameStats.opponentForceExerted += opponentTotal
-	GameStats.allPlayedCards.append({"faction": playerCharacterCard.faction, "cardKey": playerCharacterCard.cardKey})
+	
+	GameStats.record_played_card(playerCharacterCard.faction, playerCharacterCard.cardKey, playerTotal)
+	GameStats.record_played_card(opponentCharacterCard.faction, opponentCharacterCard.cardKey, opponentTotal, true)
 	
 	if GameStats.highestDamageDealt < playerTotal:
 		GameStats.highestDamageDealt = playerTotal

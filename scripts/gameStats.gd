@@ -23,6 +23,8 @@ var allPlayedCards: Array = []
 var multiplierTotal: float = 1.0
 var activeModifiers: Array = []
 
+var allOpponentCards: Array = []
+
 var currentRoundDuration: float = 0.0 
 var canCountDuration: bool = false
 
@@ -32,7 +34,7 @@ var replayedRound: bool = false
 
 # Data logging variables
 const LOG_FILE_PATH = "user://game_balance_data.json"
-var current_game_session_id: String = ""
+var currentGameSession: String = ""
 
 func _process(delta):
 	if canCountDuration:
@@ -51,34 +53,52 @@ func reset_round_stats():
 	opponentForceExerted = 0
 	highestDamageDealt = 0
 	roundWinsUnderdog = 0
-	allPlayedCards = []
+	lastStandCurrentRoundScore = 0
+	allPlayedCards.clear()
+	allOpponentCards.clear()
 
-func record_played_card(faction: String, cardKey: String):
-	allPlayedCards.append({"faction": faction, "cardKey": cardKey})
+func reset_all_data():
+	reset_round_stats()
+	
+	numberOfWins = 0
+	lastStandTotalScore = 0
+	totalInGameTimePlayed = 0.0
+	multiplierTotal = 1.0
+	activeModifiers.clear()
+	opponentList.clear()
+
+func record_played_card(faction: String, cardKey: String, value: int = 0, opponentCard: bool = false):
+	if !opponentCard:
+		allPlayedCards.append({"faction": faction, "cardKey": cardKey, "value": value})
+	else:
+		allOpponentCards.append({"faction": faction, "cardKey": cardKey, "value": value})
 
 # Data logging function
 func start_new_run_log():
-	current_game_session_id = str(Time.get_unix_time_from_system())
+	currentGameSession = str(Time.get_unix_time_from_system())
 
 func log_battle_results(outcome: String):
 	if not OS.is_debug_build():
 		return
 	
-	var battle_data = {
-		"round_count": roundNumber,
+	var battleData = {
+		"roundCount": roundNumber,
 		"outcome": outcome,
-		"player_hp_remaining": playerHealthValue,
-		"duration_seconds": currentRoundDuration,
-		"total_force_player": totalForceExerted,
-		"total_force_opponent": opponentForceExerted,
-		"highest_hit": highestDamageDealt,
-		"underdog_rounds": roundWinsUnderdog,
+		"playerHealthRemaining": playerHealthValue,
+		"durationInSeconds": currentRoundDuration,
+		"totalForcePlayer": totalForceExerted,
+		"totalForceOpponent": opponentForceExerted,
+		"highestDamageDealt": highestDamageDealt,
+		"underdogRounds": roundWinsUnderdog,
 		"multiplier": multiplierTotal,
-		"active_modifiers": _get_readable_modifiers(),
-		"cards_played": allPlayedCards.duplicate()
+		"activeModifiers": _get_readable_modifiers(),
+		"roundScore": lastStandCurrentRoundScore,
+		"totalScore": lastStandTotalScore + lastStandCurrentRoundScore,
+		"cardsPlayed": allPlayedCards.duplicate(),
+		"opponentCards": allOpponentCards.duplicate()
 	}
 
-	_append_to_log_file(battle_data)
+	_append_to_log_file(battleData)
 
 func _get_readable_modifiers() -> Array:
 	var readable_list = []
@@ -101,10 +121,10 @@ func _append_to_log_file(new_battle_data: Dictionary):
 			all_data = json.data
 		file.close()
 	
-	if not all_data.has(current_game_session_id):
-		all_data[current_game_session_id] = []
+	if not all_data.has(currentGameSession):
+		all_data[currentGameSession] = []
 	
-	all_data[current_game_session_id].append(new_battle_data)
+	all_data[currentGameSession].append(new_battle_data)
 	
 	var save_file = FileAccess.open(LOG_FILE_PATH, FileAccess.WRITE)
 	save_file.store_string(JSON.stringify(all_data, "\t"))
