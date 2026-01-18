@@ -856,7 +856,7 @@ stream = ExtResource("21_5q0nq")
 volume_db = -10.0
 
 [node name="image" type="Sprite2D" parent="arena"]
-position = Vector2(959.989, 540)
+position = Vector2(960, 540)
 scale = Vector2(0.24000001, 0.24000001)
 texture = ExtResource("15_yc10j")
 

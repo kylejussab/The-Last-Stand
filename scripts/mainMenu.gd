@@ -168,7 +168,10 @@ func _on_options_button_pressed() -> void:
 	optionsButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
 
 func _on_quit_button_pressed() -> void:
-	get_tree().quit()
+	if OS.has_feature("web"):
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+	else:
+		get_tree().quit()
 
 # Helpers
 func _play_hover():

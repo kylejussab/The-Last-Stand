@@ -43,6 +43,7 @@ volume_db = 20.0
 
 [node name="image" type="Sprite2D" parent="."]
 position = Vector2(960, 540)
+scale = Vector2(0.24, 0.24)
 texture = ExtResource("1_qkhwq")
 
 [node name="pressAnywhere" type="Control" parent="."]
