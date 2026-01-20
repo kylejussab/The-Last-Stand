@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://b1ue0o8lsverh"]
+[gd_scene load_steps=14 format=3 uid="uid://b1ue0o8lsverh"]
 
 [ext_resource type="Script" uid="uid://ucr1vk8xoov" path="res://scripts/card.gd" id="1_6u4wf"]
 [ext_resource type="Texture2D" uid="uid://cbgv0l1d6fl7k" path="res://assets/cards/CardBackBlank.png" id="2_kg30u"]
@@ -9,19 +9,6 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
 size = Vector2(146, 204)
-
-[sub_resource type="SystemFont" id="SystemFont_kg30u"]
-font_names = PackedStringArray("SF Pro")
-font_weight = 900
-subpixel_positioning = 0
-
-[sub_resource type="FontVariation" id="FontVariation_sy11y"]
-base_font = SubResource("SystemFont_kg30u")
-variation_opentype = {
-1869640570: 28,
-2003072104: 50,
-2003265652: 999
-}
 
 [sub_resource type="Animation" id="Animation_sy11y"]
 length = 0.001
@@ -479,9 +466,10 @@ vertical_alignment = 1
 [node name="line" type="ColorRect" parent="."]
 modulate = Color(1, 1, 1, 0)
 offset_left = -45.0
-offset_top = -97.0
+offset_top = -96.0
 offset_right = -44.0
-offset_bottom = -82.0
+offset_bottom = -81.0
+pivot_offset = Vector2(0.5, 7.5)
 
 [node name="perk" type="RichTextLabel" parent="."]
 modulate = Color(1, 1, 1, 0)
@@ -489,9 +477,11 @@ offset_left = -74.0
 offset_top = -100.0
 offset_right = -36.0
 offset_bottom = -77.0
-theme_override_fonts/normal_font = SubResource("FontVariation_sy11y")
+scale = Vector2(0.75, 1)
+pivot_offset = Vector2(0, 11.5)
+theme_override_fonts/normal_font = ExtResource("4_6ligt")
 theme_override_font_sizes/normal_font_size = 16
-text = "+9"
+text = "+99"
 vertical_alignment = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
