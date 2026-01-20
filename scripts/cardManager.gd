@@ -36,6 +36,7 @@ func start_drag(card):
 		draggedCard = card
 		draggedCard.play_draw_sound()
 		card.scale = Vector2(1, 1)
+		card.z_index += 10
 
 func finish_drag():
 	draggedCard.scale = Vector2(1.05, 1.05)
@@ -65,6 +66,7 @@ func finish_drag():
 				
 				# Ensure its not highlighted
 				draggedCard.scale = Vector2(1, 1)
+				draggedCard.z_index -= 10
 				draggedCard.get_node("AnimationPlayer").play("hideDescription")
 				var endTime = draggedCard.get_node("AnimationPlayer").current_animation_length
 				draggedCard.get_node("AnimationPlayer").seek(endTime, true)
