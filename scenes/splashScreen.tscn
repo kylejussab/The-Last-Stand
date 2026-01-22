@@ -1,8 +1,144 @@
-[gd_scene load_steps=4 format=3 uid="uid://cl8rvsmifx6fm"]
+[gd_scene load_steps=10 format=3 uid="uid://cl8rvsmifx6fm"]
 
 [ext_resource type="Script" uid="uid://dmasc8kmsscj8" path="res://scripts/splashScreen.gd" id="1_ec0dw"]
 [ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://assets/fonts/SF-Pro-Display-Black.otf" id="1_nvlgv"]
 [ext_resource type="FontFile" uid="uid://di1dchl37cfhu" path="res://assets/fonts/SF-Pro-Display-Semibold.otf" id="2_ec0dw"]
+[ext_resource type="Texture2D" uid="uid://b37xhslxrgg87" path="res://assets/mainMenu/Godot Icon Infected.png" id="4_by7hm"]
+[ext_resource type="Texture2D" uid="uid://bae6pmughasc" path="res://assets/mainMenu/Godot Icon White.png" id="5_sc32q"]
+[ext_resource type="Texture2D" uid="uid://davp4bfmvrmfd" path="res://assets/mainMenu/Title Icon.png" id="6_sc32q"]
+
+[sub_resource type="Animation" id="Animation_e38wm"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("GodotWhite:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Text:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("GodotWhite:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.17, 0.17)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("GodotInfected:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.17, 0.17)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("GodotInfected:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(960, 540)]
+}
+
+[sub_resource type="Animation" id="Animation_ctuba"]
+resource_name = "flickerOut"
+length = 4.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("GodotWhite:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.5, 0.8, 0.85, 1.1, 1.2, 1.5, 1.8, 1.9, 2.25, 2.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0.8), Color(1, 1, 1, 1), Color(1, 1, 1, 0.29803923), Color(1, 1, 1, 0.9019608), Color(1, 1, 1, 0.2), Color(1, 1, 1, 0.5647059), Color(1, 1, 1, 0.5019608), Color(1, 1, 1, 0.101960786), Color(1, 1, 1, 0.4), Color(1, 1, 1, 0.050980393), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Text:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(2.15, 4.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("GodotWhite:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.5, 0.8, 0.85, 1.1, 1.2, 1.5, 1.8, 2, 2.25, 2.3, 2.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0.17, 0.17), Vector2(0.167, 0.167), Vector2(0.17, 0.17), Vector2(0.165, 0.165), Vector2(0.17, 0.17), Vector2(0.16, 0.16), Vector2(0.17, 0.17), Vector2(0.165, 0.165), Vector2(0.158, 0.158), Vector2(0.17, 0.17), Vector2(0.17, 0.17), Vector2(0.178, 0.178), Vector2(0.17, 0.17)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("GodotInfected:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.5, 0.8, 0.85, 1.1, 1.2, 1.5, 1.8, 2, 2.25, 2.3, 2.5, 3.39, 3.41, 3.45, 3.55, 3.6, 3.65, 3.7, 3.73, 3.77),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0.17, 0.17), Vector2(0.167, 0.167), Vector2(0.17, 0.17), Vector2(0.165, 0.165), Vector2(0.17, 0.17), Vector2(0.16, 0.16), Vector2(0.17, 0.17), Vector2(0.165, 0.165), Vector2(0.158, 0.158), Vector2(0.17, 0.17), Vector2(0.17, 0.17), Vector2(0.178, 0.178), Vector2(0.17, 0.17), Vector2(0.17, 0.17), Vector2(0.175, 0.175), Vector2(0.17, 0.17), Vector2(0.17, 0.17), Vector2(0.18, 0.18), Vector2(0.17, 0.17), Vector2(0.17, 0.17), Vector2(0.19, 0.19), Vector2(0.17, 0.17)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("GodotInfected:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.5, 0.6, 0.8, 0.9, 0.96, 1.1, 1.2, 1.5, 1.65, 1.8, 1.9, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(960, 540), Vector2(961, 541), Vector2(959, 539), Vector2(961, 541.5), Vector2(959, 538.5), Vector2(961, 542), Vector2(962, 541), Vector2(959, 538), Vector2(957, 539), Vector2(960, 540), Vector2(961, 542), Vector2(958.5, 538), Vector2(959, 539), Vector2(960, 540)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mbfij"]
+_data = {
+&"RESET": SubResource("Animation_e38wm"),
+&"flickerOut": SubResource("Animation_ctuba")
+}
 
 [node name="SplashScreen" type="Node2D"]
 script = ExtResource("1_ec0dw")
@@ -22,9 +158,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_top = 300.0
+offset_top = 420.0
 offset_right = 1920.0
-offset_bottom = 355.0
+offset_bottom = 475.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
@@ -43,15 +179,15 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = 450.0
-offset_top = 420.0
+offset_top = 540.0
 offset_right = 1470.0
-offset_bottom = 720.0
+offset_bottom = 740.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
 theme_override_colors/default_color = Color(0.76872903, 0.76872903, 0.7687288, 1)
 theme_override_fonts/normal_font = ExtResource("2_ec0dw")
-theme_override_font_sizes/normal_font_size = 24
+theme_override_font_sizes/normal_font_size = 20
 text = "THIS IS A NON-PROFIT FAN PROJECT CREATED FOR PORTFOLIO AND EDUCATIONAL PURPOSES. THE LAST OF US IS A REGISTERED TRADEMARK OF SONY INTERACTIVE ENTERTAINMENT LLC.
 
 THIS WORK IS NOT FOR SALE, AND NO COPYRIGHT INFRINGEMENT IS INTENDED. THIS PROJECT IS NOT AFFILIATED WITH, AUTHORIZED, OR ENDORSED BY NAUGHTY DOG OR SONY INTERACTIVE ENTERTAINMENT. ALL ASSETS BELONG TO THEIR RESPECTIVE OWNERS."
@@ -66,88 +202,68 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_top = 480.0
+offset_top = 540.0
 offset_right = 1920.0
-offset_bottom = 535.0
+offset_bottom = 595.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
 theme_override_colors/default_color = Color(1, 1, 1, 1)
 theme_override_fonts/normal_font = ExtResource("1_nvlgv")
 theme_override_fonts/bold_font = ExtResource("1_nvlgv")
-theme_override_font_sizes/normal_font_size = 40
-text = "A GAME MADE BY ME"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Name" type="RichTextLabel" parent="MadeBy"]
-modulate = Color(1, 1, 1, 0)
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_top = 545.0
-offset_right = 1920.0
-offset_bottom = 600.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(150, 25)
-theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_fonts/normal_font = ExtResource("1_nvlgv")
-theme_override_fonts/bold_font = ExtResource("1_nvlgv")
-theme_override_font_sizes/normal_font_size = 40
-text = "KYLE JUSSAB"
+theme_override_font_sizes/normal_font_size = 30
+text = "A GAME MADE BY ME, KYLE JUSSAB"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="MadeWith" type="Node2D" parent="."]
 visible = false
 
-[node name="Heading" type="RichTextLabel" parent="MadeWith"]
+[node name="GodotInfected" type="Sprite2D" parent="MadeWith"]
+position = Vector2(960, 540)
+scale = Vector2(0.17, 0.17)
+texture = ExtResource("4_by7hm")
+
+[node name="GodotWhite" type="Sprite2D" parent="MadeWith"]
+position = Vector2(960, 540)
+scale = Vector2(0.17, 0.17)
+texture = ExtResource("5_sc32q")
+
+[node name="Text" type="RichTextLabel" parent="MadeWith"]
+modulate = Color(1, 1, 1, 0)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_top = 480.0
-offset_right = 1920.0
-offset_bottom = 535.0
+offset_left = 450.0
+offset_top = 850.0
+offset_right = 1470.0
+offset_bottom = 900.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_fonts/normal_font = ExtResource("1_nvlgv")
-theme_override_fonts/bold_font = ExtResource("1_nvlgv")
-theme_override_font_sizes/normal_font_size = 40
-text = "Made with Godot (Probably will be an image)"
+theme_override_colors/default_color = Color(0.76872903, 0.76872903, 0.7687288, 1)
+theme_override_fonts/normal_font = ExtResource("2_ec0dw")
+theme_override_font_sizes/normal_font_size = 16
+text = "STILL IN ACTIVE DEVELOPMENT"
 horizontal_alignment = 1
-vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="MadeWith"]
+libraries = {
+&"": SubResource("AnimationLibrary_mbfij")
+}
 
 [node name="TitleScreen" type="Node2D" parent="."]
 visible = false
 
-[node name="Heading" type="RichTextLabel" parent="TitleScreen"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_top = 480.0
-offset_right = 1920.0
-offset_bottom = 535.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(150, 25)
-theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_fonts/normal_font = ExtResource("1_nvlgv")
-theme_override_fonts/bold_font = ExtResource("1_nvlgv")
-theme_override_font_sizes/normal_font_size = 40
-text = "The Last of Us: The Last Stand (image as well)"
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="Logo" type="Sprite2D" parent="TitleScreen"]
+position = Vector2(960, 540)
+scale = Vector2(0.24, 0.24)
+texture = ExtResource("6_sc32q")
 
 [node name="fader" type="ColorRect" parent="."]
+visible = false
 offset_right = 1920.0
 offset_bottom = 1080.0
 color = Color(0, 0, 0, 1)
