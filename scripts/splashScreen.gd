@@ -17,10 +17,6 @@ func _ready() -> void:
 	fade_out()
 	
 	await get_tree().create_timer(5).timeout
-	#var nameTween = create_tween()
-	#nameTween.tween_property($MadeBy/Name, "modulate:a", 1.0, 1)
-	#await nameTween.finished
-	#await get_tree().create_timer(2).timeout
 	
 	await fade_in()
 	
@@ -30,12 +26,12 @@ func _ready() -> void:
 	# Made with Godot
 	fade_out()
 	
-	await get_tree().create_timer(1).timeout
+	await get_tree().create_timer(2).timeout
 	
 	$MadeWith/AnimationPlayer.play("flickerOut")
 	
 	# Potential animation in here
-	await get_tree().create_timer(7).timeout
+	await get_tree().create_timer(6).timeout
 	
 	await fade_in()
 	
