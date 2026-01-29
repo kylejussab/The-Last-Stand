@@ -88,13 +88,13 @@ func show_stats(playerWon: bool):
 	
 	if playerWon:
 		# Show the continue button
-		newRunButton.position.y = 735
+		continueButton.position.y = 735
 		replayButton.position.y = 805
-		mainMenuButton.position.y = 875
-		continueButton.position.y = 945
+		newRunButton.position.y = 875
+		mainMenuButton.position.y = 945
 	else:
-		newRunButton.position.y = 805
-		replayButton.position.y = 875
+		replayButton.position.y = 805
+		newRunButton.position.y = 875
 		mainMenuButton.position.y = 945
 		continueButton.position.y = 1015
 	
@@ -129,18 +129,18 @@ func show_stats(playerWon: bool):
 	
 	var buttonTween = create_tween()
 	
-	buttonTween.tween_property(newRunButton, "modulate:a", 1.0, 0.6).set_trans(Tween.TRANS_SINE)
-	newRunButton.disabled = false
+	if playerWon:
+		buttonTween.tween_property(continueButton, "modulate:a", 1.0, 0.6).set_trans(Tween.TRANS_SINE)
+		continueButton.disabled = false
 	
 	buttonTween.tween_property(replayButton, "modulate:a", 1.0, 0.6).set_trans(Tween.TRANS_SINE)
 	replayButton.disabled = false
 	
+	buttonTween.tween_property(newRunButton, "modulate:a", 1.0, 0.6).set_trans(Tween.TRANS_SINE)
+	newRunButton.disabled = false
+	
 	buttonTween.tween_property(mainMenuButton, "modulate:a", 1.0, 0.6).set_trans(Tween.TRANS_SINE)
 	mainMenuButton.disabled = false
-	
-	if playerWon:
-		buttonTween.tween_property(continueButton, "modulate:a", 1.0, 0.6).set_trans(Tween.TRANS_SINE)
-		continueButton.disabled = false
 	
 	await buttonTween.finished
 

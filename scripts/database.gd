@@ -155,7 +155,7 @@ const MODIFIERS = {
 		"icon": "res://assets/modifiers/Reduced Hand.png",
 		"tier": 1,
 		"multiplier": 0.5,
-		"duration": 3,
+		"duration": 1, #3
 	},
 	Modifier.VOLATILE_HAND: {
 		"id": Modifier.VOLATILE_HAND,
