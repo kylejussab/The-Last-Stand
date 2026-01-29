@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cl8rvsmifx6fm"]
+[gd_scene load_steps=15 format=3 uid="uid://cl8rvsmifx6fm"]
 
 [ext_resource type="Script" uid="uid://dmasc8kmsscj8" path="res://scripts/splashScreen.gd" id="1_ec0dw"]
 [ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://assets/fonts/SF-Pro-Display-Black.otf" id="1_nvlgv"]
@@ -6,6 +6,26 @@
 [ext_resource type="Texture2D" uid="uid://b37xhslxrgg87" path="res://assets/mainMenu/Godot Icon Infected.png" id="4_by7hm"]
 [ext_resource type="Texture2D" uid="uid://bae6pmughasc" path="res://assets/mainMenu/Godot Icon White.png" id="5_sc32q"]
 [ext_resource type="Texture2D" uid="uid://davp4bfmvrmfd" path="res://assets/mainMenu/Title Icon.png" id="6_sc32q"]
+
+[sub_resource type="FontVariation" id="FontVariation_sc32q"]
+base_font = ExtResource("1_nvlgv")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_ctuba"]
+base_font = ExtResource("2_ec0dw")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_e38wm"]
+base_font = ExtResource("1_nvlgv")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_mbfij"]
+base_font = ExtResource("1_nvlgv")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_b2cbq"]
+base_font = ExtResource("2_ec0dw")
+spacing_glyph = 1
 
 [sub_resource type="Animation" id="Animation_e38wm"]
 length = 0.001
@@ -165,8 +185,7 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
 theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_fonts/normal_font = ExtResource("1_nvlgv")
-theme_override_fonts/bold_font = ExtResource("1_nvlgv")
+theme_override_fonts/normal_font = SubResource("FontVariation_sc32q")
 theme_override_font_sizes/normal_font_size = 40
 text = "DISCLAIMER"
 horizontal_alignment = 1
@@ -186,7 +205,7 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
 theme_override_colors/default_color = Color(0.76872903, 0.76872903, 0.7687288, 1)
-theme_override_fonts/normal_font = ExtResource("2_ec0dw")
+theme_override_fonts/normal_font = SubResource("FontVariation_ctuba")
 theme_override_font_sizes/normal_font_size = 20
 text = "THIS IS A NON-PROFIT FAN PROJECT CREATED FOR PORTFOLIO AND EDUCATIONAL PURPOSES. THE LAST OF US IS A REGISTERED TRADEMARK OF SONY INTERACTIVE ENTERTAINMENT LLC.
 
@@ -209,8 +228,7 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
 theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_fonts/normal_font = ExtResource("1_nvlgv")
-theme_override_fonts/bold_font = ExtResource("1_nvlgv")
+theme_override_fonts/normal_font = SubResource("FontVariation_e38wm")
 theme_override_font_sizes/normal_font_size = 30
 text = "A GAME MADE BY ME, KYLE JUSSAB"
 horizontal_alignment = 1
@@ -242,8 +260,7 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
 theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_fonts/normal_font = ExtResource("1_nvlgv")
-theme_override_fonts/bold_font = ExtResource("1_nvlgv")
+theme_override_fonts/normal_font = SubResource("FontVariation_mbfij")
 theme_override_font_sizes/normal_font_size = 20
 text = "MADE WITH GODOT"
 horizontal_alignment = 1
@@ -264,7 +281,7 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
 theme_override_colors/default_color = Color(0.76872903, 0.76872903, 0.7687288, 1)
-theme_override_fonts/normal_font = ExtResource("2_ec0dw")
+theme_override_fonts/normal_font = SubResource("FontVariation_b2cbq")
 theme_override_font_sizes/normal_font_size = 16
 text = "STILL IN ACTIVE DEVELOPMENT"
 horizontal_alignment = 1

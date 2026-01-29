@@ -1,4 +1,4 @@
-[gd_scene load_steps=73 format=3 uid="uid://dgb52shq4jcyg"]
+[gd_scene load_steps=159 format=3 uid="uid://dgb52shq4jcyg"]
 
 [ext_resource type="Script" uid="uid://dgl6h7ryesfn8" path="res://scripts/cardManager.gd" id="1_0wfyh"]
 [ext_resource type="Script" uid="uid://c3p2rmoacsirj" path="res://scripts/inputManager.gd" id="1_o6xl0"]
@@ -42,6 +42,21 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jyhfs"]
 size = Vector2(140, 196)
+
+[sub_resource type="FontVariation" id="FontVariation_c6pm6"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_5he1u"]
+base_font = ExtResource("15_jkv2x")
+
+[sub_resource type="FontVariation" id="FontVariation_5poiv"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_2cjbq"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
 
 [sub_resource type="Animation" id="Animation_5q0nq"]
 length = 0.001
@@ -151,6 +166,21 @@ _data = {
 &"showDamage": SubResource("Animation_qkpxi")
 }
 
+[sub_resource type="FontVariation" id="FontVariation_chjal"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_cjqg0"]
+base_font = ExtResource("15_jkv2x")
+
+[sub_resource type="FontVariation" id="FontVariation_vchkt"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_txyw0"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
 [sub_resource type="Animation" id="Animation_muem4"]
 length = 0.001
 tracks/0/type = "value"
@@ -259,6 +289,158 @@ _data = {
 &"showDamage": SubResource("Animation_jbj1t")
 }
 
+[sub_resource type="FontVariation" id="FontVariation_vc5cj"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_nvyfr"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_ty1g6"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_j2jfr"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_bjg73"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_bu4jf"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_o7ddy"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_0loja"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_ids8r"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_dnhof"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_1v6qk"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_augu2"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_tm6hj"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_kf5aa"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_t5ykj"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_e755i"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_ro3en"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_od4ux"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_xhfw6"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_1epgm"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_152kg"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_r4e17"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_y57op"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_mlv25"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_a82wo"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_gdvew"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_kjtvk"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_xrs0c"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_xljpf"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_j4bwh"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_ksmap"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_ygd8o"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_2s0kr"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_xaipn"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_ndrjj"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_ih3m7"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_11yus"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_b6ruc"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
 [sub_resource type="Animation" id="Animation_fv21b"]
 length = 0.001
 tracks/0/type = "value"
@@ -344,6 +526,10 @@ _data = {
 &"showScoreUpdate": SubResource("Animation_yq6so")
 }
 
+[sub_resource type="FontVariation" id="FontVariation_155or"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a8y0u"]
 bg_color = Color(0, 0, 0, 0)
 
@@ -356,10 +542,30 @@ bg_color = Color(0.08627451, 0.08627451, 0.08627451, 0)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_a8y0u"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jkv2x"]
+
+[sub_resource type="FontVariation" id="FontVariation_vtx2l"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y6deb"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jkv2x"]
+[sub_resource type="FontVariation" id="FontVariation_63lxy"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_fjhjs"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_bfu41"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_r4ag1"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yq6so"]
 bg_color = Color(0, 0, 0, 0)
@@ -375,6 +581,26 @@ bg_color = Color(0.08627451, 0.08627451, 0.08627451, 0)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5q0nq"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
+[sub_resource type="FontVariation" id="FontVariation_v0wtd"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_sgvw8"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_6nfnn"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_4ue30"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_k42av"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dgi5k"]
 bg_color = Color(0, 0, 0, 0)
 
@@ -388,6 +614,75 @@ bg_color = Color(0.08627451, 0.08627451, 0.08627451, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pibwh"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="FontVariation" id="FontVariation_gr8w0"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_673bd"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_akjxb"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_vrx01"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_1uevf"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_tc087"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_73205"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_0tljd"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_mgpkq"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_xmrkg"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_1hbcg"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_m4o51"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_wvlrk"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_engxj"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_raiwf"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_roort"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_gm02q"]
+fallbacks = Array[Font]([ExtResource("15_jkv2x")])
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j8jky"]
 size = Vector2(319, 426)
@@ -524,6 +819,50 @@ _data = {
 &"RESET": SubResource("Animation_pibwh"),
 &"showMultiplier": SubResource("Animation_fuf3a")
 }
+
+[sub_resource type="FontVariation" id="FontVariation_07pt3"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_37xlc"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_83607"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_vny5k"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_8lcmr"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_ga3rw"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_f5chs"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_eh25q"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_joh2r"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_yton5"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_4ahvx"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
 
 [sub_resource type="Animation" id="Animation_5he1u"]
 length = 0.001
@@ -704,6 +1043,10 @@ _data = {
 &"RESET": SubResource("Animation_5he1u"),
 &"hideUI": SubResource("Animation_c6pm6")
 }
+
+[sub_resource type="FontVariation" id="FontVariation_2cr71"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
 
 [node name="main" type="Node2D"]
 
@@ -886,7 +1229,7 @@ offset_left = 1703.0
 offset_top = 353.0
 offset_right = 1883.0
 offset_bottom = 380.0
-theme_override_fonts/font = ExtResource("13_a8y0u")
+theme_override_fonts/font = SubResource("FontVariation_c6pm6")
 theme_override_font_sizes/font_size = 22
 text = "Opponent Name"
 vertical_alignment = 1
@@ -896,7 +1239,7 @@ offset_left = 1703.0
 offset_top = 378.0
 offset_right = 1883.0
 offset_bottom = 395.0
-theme_override_fonts/font = ExtResource("15_jkv2x")
+theme_override_fonts/font = SubResource("FontVariation_5he1u")
 theme_override_font_sizes/font_size = 12
 text = "Short Description"
 vertical_alignment = 1
@@ -906,7 +1249,7 @@ offset_left = 1781.0
 offset_top = 396.0
 offset_right = 1850.0
 offset_bottom = 435.0
-theme_override_fonts/font = ExtResource("13_a8y0u")
+theme_override_fonts/font = SubResource("FontVariation_5poiv")
 theme_override_font_sizes/font_size = 32
 text = "99"
 horizontal_alignment = 2
@@ -924,7 +1267,7 @@ offset_left = 1790.0
 offset_top = 396.0
 offset_right = 1865.0
 offset_bottom = 435.0
-theme_override_fonts/font = ExtResource("13_a8y0u")
+theme_override_fonts/font = SubResource("FontVariation_2cjbq")
 theme_override_font_sizes/font_size = 32
 text = "99"
 horizontal_alignment = 2
@@ -968,7 +1311,7 @@ offset_left = 1703.0
 offset_top = 497.0
 offset_right = 1883.0
 offset_bottom = 524.0
-theme_override_fonts/font = ExtResource("13_a8y0u")
+theme_override_fonts/font = SubResource("FontVariation_chjal")
 theme_override_font_sizes/font_size = 22
 text = "Player Name"
 vertical_alignment = 1
@@ -978,7 +1321,7 @@ offset_left = 1703.0
 offset_top = 523.0
 offset_right = 1883.0
 offset_bottom = 540.0
-theme_override_fonts/font = ExtResource("15_jkv2x")
+theme_override_fonts/font = SubResource("FontVariation_cjqg0")
 theme_override_font_sizes/font_size = 12
 text = "Short Description"
 vertical_alignment = 1
@@ -988,7 +1331,7 @@ offset_left = 1781.0
 offset_top = 541.0
 offset_right = 1850.0
 offset_bottom = 580.0
-theme_override_fonts/font = ExtResource("13_a8y0u")
+theme_override_fonts/font = SubResource("FontVariation_vchkt")
 theme_override_font_sizes/font_size = 32
 text = "99"
 horizontal_alignment = 2
@@ -1006,7 +1349,7 @@ offset_left = 1790.0
 offset_top = 541.0
 offset_right = 1865.0
 offset_bottom = 580.0001
-theme_override_fonts/font = ExtResource("13_a8y0u")
+theme_override_fonts/font = SubResource("FontVariation_txyw0")
 theme_override_font_sizes/font_size = 32
 text = "-99"
 horizontal_alignment = 2
@@ -1057,8 +1400,7 @@ offset_bottom = 130.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = ExtResource("13_a8y0u")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_vc5cj")
 theme_override_font_sizes/normal_font_size = 32
 text = "SURVIVED"
 horizontal_alignment = 1
@@ -1085,8 +1427,7 @@ offset_right = 665.0
 offset_bottom = 130.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_fonts/normal_font = ExtResource("13_a8y0u")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_nvyfr")
 theme_override_font_sizes/normal_font_size = 32
 text = "99"
 horizontal_alignment = 2
@@ -1104,8 +1445,7 @@ offset_bottom = 190.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = ExtResource("13_a8y0u")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_ty1g6")
 theme_override_font_sizes/normal_font_size = 20
 text = "PERFORMANCE"
 
@@ -1129,8 +1469,7 @@ offset_bottom = 240.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_j2jfr")
 theme_override_font_sizes/normal_font_size = 20
 text = "Total force exerted"
 
@@ -1147,8 +1486,7 @@ offset_bottom = 240.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_bjg73")
 theme_override_font_sizes/normal_font_size = 20
 text = "**"
 horizontal_alignment = 2
@@ -1166,8 +1504,7 @@ offset_bottom = 280.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_bu4jf")
 theme_override_font_sizes/normal_font_size = 20
 text = "Opponent force exerted"
 
@@ -1184,8 +1521,7 @@ offset_bottom = 280.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_o7ddy")
 theme_override_font_sizes/normal_font_size = 20
 text = "**"
 horizontal_alignment = 2
@@ -1203,8 +1539,7 @@ offset_bottom = 320.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_0loja")
 theme_override_font_sizes/normal_font_size = 20
 text = "Rounds played"
 
@@ -1221,8 +1556,7 @@ offset_bottom = 320.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_ids8r")
 theme_override_font_sizes/normal_font_size = 20
 text = "**"
 horizontal_alignment = 2
@@ -1240,8 +1574,7 @@ offset_bottom = 360.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_dnhof")
 theme_override_font_sizes/normal_font_size = 20
 text = "Time elapsed"
 
@@ -1258,8 +1591,7 @@ offset_bottom = 360.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_1v6qk")
 theme_override_font_sizes/normal_font_size = 20
 text = "**"
 horizontal_alignment = 2
@@ -1277,8 +1609,7 @@ offset_bottom = 400.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_augu2")
 theme_override_font_sizes/normal_font_size = 20
 text = "Momentum"
 
@@ -1295,8 +1626,7 @@ offset_bottom = 400.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_tm6hj")
 theme_override_font_sizes/normal_font_size = 20
 text = "**"
 horizontal_alignment = 2
@@ -1317,8 +1647,7 @@ offset_bottom = 460.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = ExtResource("13_a8y0u")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_kf5aa")
 theme_override_font_sizes/normal_font_size = 20
 text = "GAME"
 
@@ -1342,8 +1671,7 @@ offset_bottom = 510.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_t5ykj")
 theme_override_font_sizes/normal_font_size = 20
 text = "Most valuable card"
 
@@ -1360,8 +1688,7 @@ offset_bottom = 510.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_e755i")
 theme_override_font_sizes/normal_font_size = 20
 text = "lorem"
 horizontal_alignment = 2
@@ -1379,8 +1706,7 @@ offset_bottom = 550.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_ro3en")
 theme_override_font_sizes/normal_font_size = 20
 text = "Most played faction"
 
@@ -1397,8 +1723,7 @@ offset_bottom = 550.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_od4ux")
 theme_override_font_sizes/normal_font_size = 20
 text = "lorem"
 horizontal_alignment = 2
@@ -1416,8 +1741,7 @@ offset_bottom = 590.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_xhfw6")
 theme_override_font_sizes/normal_font_size = 20
 text = "Highest damage dealt"
 
@@ -1434,8 +1758,7 @@ offset_bottom = 590.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_1epgm")
 theme_override_font_sizes/normal_font_size = 20
 text = "**"
 horizontal_alignment = 2
@@ -1453,8 +1776,7 @@ offset_bottom = 630.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_152kg")
 theme_override_font_sizes/normal_font_size = 20
 text = "Round wins with weaker character"
 
@@ -1471,8 +1793,7 @@ offset_bottom = 630.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_r4e17")
 theme_override_font_sizes/normal_font_size = 20
 text = "**"
 horizontal_alignment = 2
@@ -1493,8 +1814,7 @@ offset_bottom = 690.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = ExtResource("13_a8y0u")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_y57op")
 theme_override_font_sizes/normal_font_size = 20
 text = "SCORE"
 
@@ -1518,8 +1838,7 @@ offset_bottom = 740.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_mlv25")
 theme_override_font_sizes/normal_font_size = 20
 text = "Victory"
 
@@ -1536,8 +1855,7 @@ offset_bottom = 740.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_a82wo")
 theme_override_font_sizes/normal_font_size = 20
 text = "**"
 horizontal_alignment = 2
@@ -1555,8 +1873,7 @@ offset_bottom = 780.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_gdvew")
 theme_override_font_sizes/normal_font_size = 20
 text = "Force difference"
 
@@ -1573,8 +1890,7 @@ offset_bottom = 780.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_kjtvk")
 theme_override_font_sizes/normal_font_size = 20
 text = "**"
 horizontal_alignment = 2
@@ -1592,8 +1908,7 @@ offset_bottom = 820.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_xrs0c")
 theme_override_font_sizes/normal_font_size = 20
 text = "Efficiency"
 
@@ -1610,8 +1925,7 @@ offset_bottom = 820.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_xljpf")
 theme_override_font_sizes/normal_font_size = 20
 text = "**"
 horizontal_alignment = 2
@@ -1629,8 +1943,7 @@ offset_bottom = 860.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_j4bwh")
 theme_override_font_sizes/normal_font_size = 20
 text = "Underdog round wins"
 
@@ -1647,8 +1960,7 @@ offset_bottom = 860.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_ksmap")
 theme_override_font_sizes/normal_font_size = 20
 text = "**"
 horizontal_alignment = 2
@@ -1666,8 +1978,7 @@ offset_bottom = 900.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_ygd8o")
 theme_override_font_sizes/normal_font_size = 20
 text = "Momentum bonus"
 
@@ -1684,8 +1995,7 @@ offset_bottom = 900.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_2s0kr")
 theme_override_font_sizes/normal_font_size = 20
 text = "**"
 horizontal_alignment = 2
@@ -1703,8 +2013,7 @@ offset_bottom = 940.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_xaipn")
 theme_override_font_sizes/normal_font_size = 20
 text = "Modifier multiplier"
 
@@ -1721,8 +2030,7 @@ offset_bottom = 940.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_ndrjj")
 theme_override_font_sizes/normal_font_size = 20
 text = "**"
 horizontal_alignment = 2
@@ -1740,8 +2048,7 @@ offset_bottom = 980.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_ih3m7")
 theme_override_font_sizes/normal_font_size = 20
 text = "Total score"
 
@@ -1758,8 +2065,7 @@ offset_bottom = 980.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_11yus")
 theme_override_font_sizes/normal_font_size = 20
 text = "*****"
 horizontal_alignment = 2
@@ -1785,8 +2091,7 @@ offset_bottom = 980.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_b6ruc")
 theme_override_font_sizes/normal_font_size = 20
 text = "+99"
 horizontal_alignment = 2
@@ -1795,6 +2100,46 @@ horizontal_alignment = 2
 libraries = {
 &"": SubResource("AnimationLibrary_tel4y")
 }
+
+[node name="ContinueButton" type="Button" parent="arena/gameOver"]
+visible = false
+z_index = 201
+offset_left = 770.0
+offset_top = 930.0
+offset_right = 875.0
+offset_bottom = 960.0
+theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = SubResource("FontVariation_155or")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_a8y0u")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_jbj1t")
+theme_override_styles/hover = SubResource("StyleBoxFlat_jkv2x")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_a8y0u")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_jkv2x")
+text = "CONTINUE"
+alignment = 0
+
+[node name="ReplayButton" type="Button" parent="arena/gameOver"]
+visible = false
+z_index = 201
+offset_left = 770.0
+offset_top = 790.0
+offset_right = 988.0
+offset_bottom = 820.0
+theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = SubResource("FontVariation_vtx2l")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_a8y0u")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_jbj1t")
+theme_override_styles/hover = SubResource("StyleBoxFlat_jkv2x")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_a8y0u")
+theme_override_styles/focus = SubResource("StyleBoxFlat_y6deb")
+text = "RESTART ENCOUNTER"
+alignment = 0
 
 [node name="NewRunButton" type="Button" parent="arena/gameOver"]
 visible = false
@@ -1806,7 +2151,7 @@ offset_bottom = 820.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("13_a8y0u")
+theme_override_fonts/font = SubResource("FontVariation_63lxy")
 theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxFlat_a8y0u")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_jbj1t")
@@ -1814,26 +2159,6 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_jkv2x")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_a8y0u")
 theme_override_styles/focus = SubResource("StyleBoxFlat_y6deb")
 text = "NEW RUN"
-alignment = 0
-
-[node name="ReplayButton" type="Button" parent="arena/gameOver"]
-visible = false
-z_index = 201
-offset_left = 770.0
-offset_top = 790.0
-offset_right = 840.0
-offset_bottom = 820.0
-theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
-theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("13_a8y0u")
-theme_override_font_sizes/font_size = 20
-theme_override_styles/normal = SubResource("StyleBoxFlat_a8y0u")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_jbj1t")
-theme_override_styles/hover = SubResource("StyleBoxFlat_jkv2x")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_a8y0u")
-theme_override_styles/focus = SubResource("StyleBoxFlat_y6deb")
-text = "RESTART ENCOUNTER"
 alignment = 0
 
 [node name="MainMenuButton" type="Button" parent="arena/gameOver"]
@@ -1846,7 +2171,7 @@ offset_bottom = 890.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("13_a8y0u")
+theme_override_fonts/font = SubResource("FontVariation_fjhjs")
 theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxFlat_a8y0u")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_jbj1t")
@@ -1854,26 +2179,6 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_jkv2x")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_a8y0u")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_jkv2x")
 text = "MAIN MENU"
-alignment = 0
-
-[node name="ContinueButton" type="Button" parent="arena/gameOver"]
-visible = false
-z_index = 201
-offset_left = 770.0
-offset_top = 930.0
-offset_right = 861.0
-offset_bottom = 960.0
-theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
-theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("13_a8y0u")
-theme_override_font_sizes/font_size = 20
-theme_override_styles/normal = SubResource("StyleBoxFlat_a8y0u")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_jbj1t")
-theme_override_styles/hover = SubResource("StyleBoxFlat_jkv2x")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_a8y0u")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_jkv2x")
-text = "CONTINUE"
 alignment = 0
 
 [node name="pause" type="Node2D" parent="arena"]
@@ -1907,8 +2212,7 @@ offset_right = 320.0
 offset_bottom = 165.0
 pivot_offset = Vector2(150, 25)
 theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_fonts/normal_font = ExtResource("13_a8y0u")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_bfu41")
 theme_override_font_sizes/normal_font_size = 24
 text = "PAUSED"
 vertical_alignment = 1
@@ -1923,7 +2227,7 @@ offset_bottom = 215.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("13_a8y0u")
+theme_override_fonts/font = SubResource("FontVariation_r4ag1")
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_yq6so")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_fv21b")
@@ -1943,7 +2247,7 @@ offset_bottom = 265.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("13_a8y0u")
+theme_override_fonts/font = SubResource("FontVariation_v0wtd")
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_yq6so")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_fv21b")
@@ -1963,7 +2267,7 @@ offset_bottom = 315.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("13_a8y0u")
+theme_override_fonts/font = SubResource("FontVariation_sgvw8")
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_yq6so")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_fv21b")
@@ -1983,7 +2287,7 @@ offset_bottom = 365.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("13_a8y0u")
+theme_override_fonts/font = SubResource("FontVariation_6nfnn")
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_yq6so")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_fv21b")
@@ -2016,8 +2320,7 @@ offset_right = 320.0
 offset_bottom = 165.0
 pivot_offset = Vector2(150, 25)
 theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_fonts/normal_font = ExtResource("13_a8y0u")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_4ue30")
 theme_override_font_sizes/normal_font_size = 24
 text = "OPTIONS"
 vertical_alignment = 1
@@ -2032,7 +2335,7 @@ offset_bottom = 215.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("13_a8y0u")
+theme_override_fonts/font = SubResource("FontVariation_k42av")
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_dgi5k")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_j8jky")
@@ -2052,7 +2355,7 @@ offset_bottom = 265.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("13_a8y0u")
+theme_override_fonts/font = SubResource("FontVariation_gr8w0")
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_dgi5k")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_j8jky")
@@ -2072,7 +2375,7 @@ offset_bottom = 315.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("13_a8y0u")
+theme_override_fonts/font = SubResource("FontVariation_673bd")
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_dgi5k")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_j8jky")
@@ -2111,8 +2414,7 @@ offset_right = 700.0
 offset_bottom = 165.0
 pivot_offset = Vector2(150, 25)
 theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_fonts/normal_font = ExtResource("13_a8y0u")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_akjxb")
 theme_override_font_sizes/normal_font_size = 24
 text = "RESTART ENCOUNTER"
 vertical_alignment = 1
@@ -2127,12 +2429,11 @@ anchor_bottom = 0.5
 offset_left = -540.0
 offset_top = -90.0
 offset_right = 140.0
-offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
 theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/normal_font = SubResource("FontVariation_vrx01")
 theme_override_font_sizes/normal_font_size = 24
 text = "Restart the current encounter? 
 All earned progress from previous encounters has been saved."
@@ -2147,7 +2448,7 @@ offset_bottom = 305.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("13_a8y0u")
+theme_override_fonts/font = SubResource("FontVariation_1uevf")
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_yq6so")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_fv21b")
@@ -2167,7 +2468,7 @@ offset_bottom = 305.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("13_a8y0u")
+theme_override_fonts/font = SubResource("FontVariation_tc087")
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_yq6so")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_fv21b")
@@ -2206,8 +2507,7 @@ offset_right = 700.0
 offset_bottom = 165.0
 pivot_offset = Vector2(150, 25)
 theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_fonts/normal_font = ExtResource("13_a8y0u")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_73205")
 theme_override_font_sizes/normal_font_size = 24
 text = "QUIT TO MAIN MENU"
 vertical_alignment = 1
@@ -2227,7 +2527,7 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
 theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
+theme_override_fonts/normal_font = SubResource("FontVariation_0tljd")
 theme_override_font_sizes/normal_font_size = 24
 text = "Quit to the main menu? 
 All progress has been saved."
@@ -2242,7 +2542,7 @@ offset_bottom = 305.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("13_a8y0u")
+theme_override_fonts/font = SubResource("FontVariation_mgpkq")
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_yq6so")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_fv21b")
@@ -2262,7 +2562,7 @@ offset_bottom = 305.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("13_a8y0u")
+theme_override_fonts/font = SubResource("FontVariation_xmrkg")
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_yq6so")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_fv21b")
@@ -2304,8 +2604,7 @@ offset_bottom = 215.00018
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(960, 25)
-theme_override_fonts/normal_font = ExtResource("13_a8y0u")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_1hbcg")
 theme_override_font_sizes/normal_font_size = 32
 text = "PICK YOUR POISON"
 horizontal_alignment = 1
@@ -2322,8 +2621,7 @@ offset_bottom = 249.99997
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_m4o51")
 theme_override_font_sizes/normal_font_size = 24
 text = "You must select AT LEAST one modifier."
 horizontal_alignment = 1
@@ -2372,8 +2670,7 @@ offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_fonts/normal_font = ExtResource("13_a8y0u")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_wvlrk")
 theme_override_font_sizes/normal_font_size = 20
 text = "MODIFIER NAME"
 horizontal_alignment = 1
@@ -2391,8 +2688,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_engxj")
 theme_override_font_sizes/normal_font_size = 16
 text = "Lorem ipsum
 Lorem ipsum
@@ -2413,8 +2709,7 @@ offset_bottom = 130.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_fonts/normal_font = ExtResource("13_a8y0u")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_raiwf")
 theme_override_font_sizes/normal_font_size = 18
 text = "+9.99x"
 horizontal_alignment = 1
@@ -2441,8 +2736,7 @@ offset_bottom = 130.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_fonts/normal_font = ExtResource("13_a8y0u")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_roort")
 theme_override_font_sizes/normal_font_size = 18
 text = "9 Games"
 horizontal_alignment = 1
@@ -2462,8 +2756,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_gm02q")
 theme_override_font_sizes/normal_font_size = 16
 text = "SELECTED"
 horizontal_alignment = 1
@@ -2528,8 +2821,7 @@ offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_fonts/normal_font = ExtResource("13_a8y0u")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_07pt3")
 theme_override_font_sizes/normal_font_size = 20
 text = "MODIFIER NAME"
 horizontal_alignment = 1
@@ -2547,8 +2839,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_37xlc")
 theme_override_font_sizes/normal_font_size = 16
 text = "Lorem ipsum
 Lorem ipsum
@@ -2569,8 +2860,7 @@ offset_bottom = 130.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_fonts/normal_font = ExtResource("13_a8y0u")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_83607")
 theme_override_font_sizes/normal_font_size = 18
 text = "+9.99x"
 horizontal_alignment = 1
@@ -2597,8 +2887,7 @@ offset_bottom = 130.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_fonts/normal_font = ExtResource("13_a8y0u")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_vny5k")
 theme_override_font_sizes/normal_font_size = 18
 text = "9 Games"
 horizontal_alignment = 1
@@ -2618,8 +2907,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_8lcmr")
 theme_override_font_sizes/normal_font_size = 16
 text = "SELECTED"
 horizontal_alignment = 1
@@ -2683,8 +2971,7 @@ offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_fonts/normal_font = ExtResource("13_a8y0u")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_ga3rw")
 theme_override_font_sizes/normal_font_size = 20
 text = "MODIFIER NAME"
 horizontal_alignment = 1
@@ -2702,8 +2989,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_f5chs")
 theme_override_font_sizes/normal_font_size = 16
 text = "Lorem ipsum
 Lorem ipsum
@@ -2724,8 +3010,7 @@ offset_bottom = 130.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_fonts/normal_font = ExtResource("13_a8y0u")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_eh25q")
 theme_override_font_sizes/normal_font_size = 18
 text = "+9.99x"
 horizontal_alignment = 1
@@ -2752,8 +3037,7 @@ offset_bottom = 130.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_fonts/normal_font = ExtResource("13_a8y0u")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_joh2r")
 theme_override_font_sizes/normal_font_size = 18
 text = "9 Games"
 horizontal_alignment = 1
@@ -2773,8 +3057,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
-theme_override_fonts/normal_font = ExtResource("15_jkv2x")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_yton5")
 theme_override_font_sizes/normal_font_size = 16
 text = "SELECTED"
 horizontal_alignment = 1
@@ -2804,7 +3087,7 @@ offset_bottom = 860.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("13_a8y0u")
+theme_override_fonts/font = SubResource("FontVariation_4ahvx")
 theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxFlat_a8y0u")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_jbj1t")
@@ -2841,8 +3124,7 @@ offset_bottom = 1055.0
 grow_horizontal = 0
 grow_vertical = 0
 theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_fonts/normal_font = ExtResource("13_a8y0u")
-theme_override_fonts/bold_font = ExtResource("13_a8y0u")
+theme_override_fonts/normal_font = SubResource("FontVariation_2cr71")
 theme_override_font_sizes/normal_font_size = 16
 text = "PAUSE"
 fit_content = true
@@ -2870,10 +3152,10 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_jkv2x")
 text = "END TURN"
 
 [connection signal="timeout" from="inputManager/Timer" to="inputManager" method="_on_timer_timeout"]
-[connection signal="pressed" from="arena/gameOver/NewRunButton" to="arena" method="_on_new_run_button_pressed"]
-[connection signal="pressed" from="arena/gameOver/ReplayButton" to="arena" method="_on_replay_button_pressed"]
-[connection signal="pressed" from="arena/gameOver/MainMenuButton" to="arena" method="_on_main_menu_button_pressed"]
 [connection signal="pressed" from="arena/gameOver/ContinueButton" to="arena" method="_on_continue_button_pressed"]
+[connection signal="pressed" from="arena/gameOver/ReplayButton" to="arena" method="_on_replay_button_pressed"]
+[connection signal="pressed" from="arena/gameOver/NewRunButton" to="arena" method="_on_new_run_button_pressed"]
+[connection signal="pressed" from="arena/gameOver/MainMenuButton" to="arena" method="_on_main_menu_button_pressed"]
 [connection signal="pressed" from="arena/pause/mainButtonContainer/OptionsButton" to="arena/pause" method="_on_options_button_pressed"]
 [connection signal="pressed" from="arena/pause/mainButtonContainer/RestartButton" to="arena/pause" method="_on_restart_button_pressed"]
 [connection signal="pressed" from="arena/pause/mainButtonContainer/MainMenuButton" to="arena/pause" method="_on_main_menu_button_pressed"]

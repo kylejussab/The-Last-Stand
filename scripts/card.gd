@@ -5,6 +5,7 @@ signal hoverExited(card)
 
 var cardSlot
 var cardKey: String
+var nameText: String
 var type
 var value: int
 var role: String

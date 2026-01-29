@@ -5,6 +5,7 @@ signal hoverExited(card)
 
 var cardSlot: Node2D
 var cardKey: String
+var nameText: String
 var type
 var handPosition: Vector2
 var value: int

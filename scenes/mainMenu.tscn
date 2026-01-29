@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://btdd4ppvwtnvy"]
+[gd_scene load_steps=34 format=3 uid="uid://btdd4ppvwtnvy"]
 
 [ext_resource type="Script" uid="uid://bmorqef62jko2" path="res://scripts/mainMenu.gd" id="1_l7wge"]
 [ext_resource type="Texture2D" uid="uid://bmewebekh15ca" path="res://assets/mainMenu/main.png" id="1_qkhwq"]
@@ -8,6 +8,14 @@
 [ext_resource type="AudioStream" uid="uid://cufo3kt8n8vs2" path="res://assets/sounds/ui/buttonHover.wav" id="3_ldpc3"]
 [ext_resource type="AudioStream" uid="uid://b3d3fqc8ee6t7" path="res://assets/sounds/ui/buttonBack.wav" id="4_y35fp"]
 [ext_resource type="Texture2D" uid="uid://be0aihjd72rmo" path="res://assets/ui/RightClickIcon.png" id="7_ldpc3"]
+
+[sub_resource type="FontVariation" id="FontVariation_y35fp"]
+base_font = ExtResource("3_48ign")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_dj72i"]
+base_font = ExtResource("2_3d1i7")
+spacing_glyph = 1
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_48ign"]
 bg_color = Color(0, 0, 0, 0)
@@ -22,6 +30,78 @@ bg_color = Color(0.08627451, 0.08627451, 0.08627451, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ldpc3"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="FontVariation" id="FontVariation_6b2wv"]
+base_font = ExtResource("2_3d1i7")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_tov5d"]
+base_font = ExtResource("2_3d1i7")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_epn8x"]
+base_font = ExtResource("2_3d1i7")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_vt84v"]
+base_font = ExtResource("2_3d1i7")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_lam2r"]
+base_font = ExtResource("2_3d1i7")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_amia2"]
+base_font = ExtResource("2_3d1i7")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_25e00"]
+base_font = ExtResource("2_3d1i7")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_jfr2g"]
+base_font = ExtResource("2_3d1i7")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_5i7h7"]
+base_font = ExtResource("2_3d1i7")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_6c1hc"]
+base_font = ExtResource("2_3d1i7")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_k0jpb"]
+base_font = ExtResource("2_3d1i7")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_ewahu"]
+base_font = ExtResource("2_3d1i7")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_d7xfv"]
+base_font = ExtResource("2_3d1i7")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_6aseq"]
+base_font = ExtResource("2_3d1i7")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_tlicg"]
+base_font = ExtResource("2_3d1i7")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_808lr"]
+base_font = ExtResource("2_3d1i7")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_uwljm"]
+base_font = ExtResource("3_48ign")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_1anpv"]
+base_font = ExtResource("2_3d1i7")
+spacing_glyph = 1
 
 [node name="MainMenu" type="Node2D"]
 script = ExtResource("1_l7wge")
@@ -59,7 +139,7 @@ offset_top = 520.0
 offset_right = 581.0
 offset_bottom = 560.0
 theme_override_colors/default_color = Color(0.68235296, 0.68235296, 0.68235296, 1)
-theme_override_fonts/normal_font = ExtResource("3_48ign")
+theme_override_fonts/normal_font = SubResource("FontVariation_y35fp")
 theme_override_font_sizes/normal_font_size = 24
 text = "CLICK ANYWHERE"
 vertical_alignment = 1
@@ -81,7 +161,7 @@ offset_bottom = 455.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("2_3d1i7")
+theme_override_fonts/font = SubResource("FontVariation_dj72i")
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_48ign")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_l7wge")
@@ -101,7 +181,7 @@ offset_bottom = 505.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("2_3d1i7")
+theme_override_fonts/font = SubResource("FontVariation_6b2wv")
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_48ign")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_l7wge")
@@ -121,7 +201,7 @@ offset_bottom = 555.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("2_3d1i7")
+theme_override_fonts/font = SubResource("FontVariation_tov5d")
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_48ign")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_l7wge")
@@ -141,7 +221,7 @@ offset_bottom = 605.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("2_3d1i7")
+theme_override_fonts/font = SubResource("FontVariation_epn8x")
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_48ign")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_l7wge")
@@ -162,7 +242,7 @@ offset_bottom = 655.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("2_3d1i7")
+theme_override_fonts/font = SubResource("FontVariation_vt84v")
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_48ign")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_l7wge")
@@ -195,8 +275,7 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
 theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_fonts/normal_font = ExtResource("2_3d1i7")
-theme_override_fonts/bold_font = ExtResource("2_3d1i7")
+theme_override_fonts/normal_font = SubResource("FontVariation_lam2r")
 theme_override_font_sizes/normal_font_size = 24
 text = "STORY"
 vertical_alignment = 1
@@ -211,7 +290,7 @@ offset_bottom = 455.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("2_3d1i7")
+theme_override_fonts/font = SubResource("FontVariation_amia2")
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_48ign")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_l7wge")
@@ -231,7 +310,7 @@ offset_bottom = 505.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("2_3d1i7")
+theme_override_fonts/font = SubResource("FontVariation_25e00")
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_48ign")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_l7wge")
@@ -251,7 +330,7 @@ offset_bottom = 555.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("2_3d1i7")
+theme_override_fonts/font = SubResource("FontVariation_jfr2g")
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_48ign")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_l7wge")
@@ -284,8 +363,7 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
 theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_fonts/normal_font = ExtResource("2_3d1i7")
-theme_override_fonts/bold_font = ExtResource("2_3d1i7")
+theme_override_fonts/normal_font = SubResource("FontVariation_5i7h7")
 theme_override_font_sizes/normal_font_size = 24
 text = "LAST STAND"
 vertical_alignment = 1
@@ -300,7 +378,7 @@ offset_bottom = 455.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("2_3d1i7")
+theme_override_fonts/font = SubResource("FontVariation_6c1hc")
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_48ign")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_l7wge")
@@ -320,7 +398,7 @@ offset_bottom = 505.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("2_3d1i7")
+theme_override_fonts/font = SubResource("FontVariation_k0jpb")
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_48ign")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_l7wge")
@@ -340,7 +418,7 @@ offset_bottom = 555.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("2_3d1i7")
+theme_override_fonts/font = SubResource("FontVariation_ewahu")
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_48ign")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_l7wge")
@@ -373,8 +451,7 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
 theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_fonts/normal_font = ExtResource("2_3d1i7")
-theme_override_fonts/bold_font = ExtResource("2_3d1i7")
+theme_override_fonts/normal_font = SubResource("FontVariation_d7xfv")
 theme_override_font_sizes/normal_font_size = 24
 text = "OPTIONS"
 vertical_alignment = 1
@@ -389,7 +466,7 @@ offset_bottom = 455.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("2_3d1i7")
+theme_override_fonts/font = SubResource("FontVariation_6aseq")
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_48ign")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_l7wge")
@@ -409,7 +486,7 @@ offset_bottom = 505.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("2_3d1i7")
+theme_override_fonts/font = SubResource("FontVariation_tlicg")
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_48ign")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_l7wge")
@@ -429,7 +506,7 @@ offset_bottom = 555.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("2_3d1i7")
+theme_override_fonts/font = SubResource("FontVariation_808lr")
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_48ign")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_l7wge")
@@ -453,7 +530,7 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
 theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
-theme_override_fonts/normal_font = ExtResource("3_48ign")
+theme_override_fonts/normal_font = SubResource("FontVariation_uwljm")
 theme_override_font_sizes/normal_font_size = 24
 
 [node name="pauseIcon" type="Node2D" parent="."]
@@ -479,8 +556,7 @@ grow_horizontal = 0
 grow_vertical = 0
 mouse_filter = 2
 theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_fonts/normal_font = ExtResource("2_3d1i7")
-theme_override_fonts/bold_font = ExtResource("2_3d1i7")
+theme_override_fonts/normal_font = SubResource("FontVariation_1anpv")
 theme_override_font_sizes/normal_font_size = 16
 text = "BACK"
 fit_content = true

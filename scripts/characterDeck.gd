@@ -109,6 +109,7 @@ func _create_card_instance(cardKey: String, scenePath: String, isPlayer: bool = 
 	newCard.type = data[1]
 	newCard.faction = data[2]
 	newCard.role = data[3]
+	newCard.nameText = data[4]
 	
 	if %battleManager.noDefenseActive and "Defensive" in newCard.role and isPlayer:
 		newCard.value = 0
@@ -117,6 +118,7 @@ func _create_card_instance(cardKey: String, scenePath: String, isPlayer: bool = 
 		newCard.value *= 1.5
 	
 	newCard.get_node("value").text = str(newCard.value)
+	newCard.get_node("name").text = newCard.nameText
 	newCard.get_node("image").texture = load("res://assets/cards/" + cardKey + "Card.png")
 	newCard.get_node("imageBack").texture = load("res://assets/cards/CardBackBlank.png")
 
@@ -124,6 +126,31 @@ func _create_card_instance(cardKey: String, scenePath: String, isPlayer: bool = 
 		newCard.perk = load(cardDatabaseReference.PERKS[cardKey]).new()
 		newCard.get_node("supportingText/text").texture = load("res://assets/cardDescriptions/" + cardKey + ".png")
 
+	# Icons
+	var iconsNode = newCard.get_node("icons")
+	
+	var factionPath = "res://assets/cardIcons/" + newCard.faction + ".png" 
+	iconsNode.get_node("faction").texture = load(factionPath)
+
+	var perkList = newCard.role.split("/") if newCard.role else []
+	
+	var activePerks = []
+	for perk in perkList:
+		if perk != "": activePerks.append(perk)
+	
+	var perkSprites = [iconsNode.get_node("perk1"), iconsNode.get_node("perk2")]
+	
+	if activePerks.is_empty() or activePerks.size() == 5:
+		for sprite in perkSprites:
+			sprite.visible = false
+	else:
+		for i in range(perkSprites.size()):
+			if i < activePerks.size():
+				perkSprites[i].visible = true
+				perkSprites[i].texture = load("res://assets/cardIcons/" + activePerks[i] + ".png")
+			else:
+				perkSprites[i].visible = false
+	
 	$"../cardManager".add_child(newCard)
 	
 	return newCard
@@ -142,12 +169,9 @@ func spawn_top_card_node() -> Node2D:
 	
 	$RichTextLabel.text = str(deck.size())
 	
-	# Reuse your existing private helper to create the node
 	var newCard = _create_card_instance(cardDrawn, PLAYER_CARD_SCENE_PATH, true)
 	
-	# We flip it immediately so the player sees what was played
 	newCard.get_node("AnimationPlayer").play("cardFlip")
 	newCard.play_draw_sound()
 	
-	# Important: We do NOT call 'add_card_to_hand' here.
 	return newCard

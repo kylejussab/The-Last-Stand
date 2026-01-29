@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://b1ue0o8lsverh"]
+[gd_scene load_steps=20 format=3 uid="uid://b1ue0o8lsverh"]
 
 [ext_resource type="Script" uid="uid://ucr1vk8xoov" path="res://scripts/card.gd" id="1_6u4wf"]
 [ext_resource type="Texture2D" uid="uid://cbgv0l1d6fl7k" path="res://assets/cards/CardBackBlank.png" id="2_kg30u"]
@@ -6,9 +6,24 @@
 [ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://assets/fonts/SF-Pro-Display-Black.otf" id="4_6ligt"]
 [ext_resource type="Texture2D" uid="uid://d4kwo20uewt85" path="res://assets/cards/BlackCard.png" id="5_6ligt"]
 [ext_resource type="Texture2D" uid="uid://q3k7xnaleked" path="res://assets/cardDescriptions/Abby.png" id="6_8w5pg"]
+[ext_resource type="Texture2D" uid="uid://bvx2xo56idmcx" path="res://assets/cardIcons/Crafty.png" id="7_nvopj"]
+[ext_resource type="Texture2D" uid="uid://dgdk6y2h230rb" path="res://assets/cardIcons/Defensive.png" id="8_1yd6c"]
+[ext_resource type="Texture2D" uid="uid://ckyjgdo1fykjj" path="res://assets/cardIcons/Jackson.png" id="9_1yd6c"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
 size = Vector2(146, 204)
+
+[sub_resource type="FontVariation" id="FontVariation_8w5pg"]
+base_font = ExtResource("4_6ligt")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_nvopj"]
+base_font = ExtResource("4_6ligt")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_6ligt"]
+base_font = ExtResource("4_6ligt")
+spacing_glyph = 3
 
 [sub_resource type="Animation" id="Animation_sy11y"]
 length = 0.001
@@ -451,15 +466,15 @@ texture = ExtResource("3_sy11y")
 shape = SubResource("RectangleShape2D_rjlel")
 
 [node name="value" type="RichTextLabel" parent="."]
-offset_left = -70.0
+offset_left = -70.5
 offset_top = -100.0
-offset_right = -46.0
+offset_right = -46.5
 offset_bottom = -77.0
-scale = Vector2(0.75, 1)
+scale = Vector2(0.7, 1)
 pivot_offset = Vector2(12, 11.5)
 mouse_filter = 2
-theme_override_fonts/normal_font = ExtResource("4_6ligt")
-text = "9"
+theme_override_fonts/normal_font = SubResource("FontVariation_8w5pg")
+text = "99"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -477,12 +492,42 @@ offset_left = -74.0
 offset_top = -100.0
 offset_right = -36.0
 offset_bottom = -77.0
-scale = Vector2(0.75, 1)
+scale = Vector2(0.7, 1)
 pivot_offset = Vector2(0, 11.5)
-theme_override_fonts/normal_font = ExtResource("4_6ligt")
+theme_override_fonts/normal_font = SubResource("FontVariation_nvopj")
 theme_override_font_sizes/normal_font_size = 16
 text = "+99"
 vertical_alignment = 1
+
+[node name="name" type="RichTextLabel" parent="."]
+offset_left = 56.5
+offset_top = -107.0
+offset_right = 326.5
+offset_bottom = -47.0
+rotation = 1.5707964
+scale = Vector2(0.7, 1)
+pivot_offset = Vector2(0, 11.5)
+mouse_filter = 2
+theme_override_fonts/normal_font = SubResource("FontVariation_6ligt")
+theme_override_font_sizes/normal_font_size = 16
+text = "EXAMPLE"
+
+[node name="icons" type="Node2D" parent="."]
+
+[node name="perk1" type="Sprite2D" parent="icons"]
+position = Vector2(-58.5, -66)
+scale = Vector2(0.095, 0.095)
+texture = ExtResource("7_nvopj")
+
+[node name="perk2" type="Sprite2D" parent="icons"]
+position = Vector2(-58.5, -43.5)
+scale = Vector2(0.095, 0.095)
+texture = ExtResource("8_1yd6c")
+
+[node name="faction" type="Sprite2D" parent="icons"]
+position = Vector2(-58.5, 88.4)
+scale = Vector2(0.12, 0.12)
+texture = ExtResource("9_1yd6c")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

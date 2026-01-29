@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bfdpci145kulq"]
+[gd_scene load_steps=13 format=3 uid="uid://bfdpci145kulq"]
 
 [ext_resource type="Texture2D" uid="uid://wxpfmhill25v" path="res://assets/modifiers/bubbleBackground.png" id="1_8pitj"]
 [ext_resource type="Script" uid="uid://b3v0arxnlrrsl" path="res://scripts/modifierBubble.gd" id="1_ic7ix"]
@@ -9,6 +9,18 @@
 bg_color = Color(0, 0, 0, 1)
 corner_radius_top_left = 40
 corner_radius_bottom_left = 40
+
+[sub_resource type="FontVariation" id="FontVariation_ic7ix"]
+base_font = ExtResource("1_u888h")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_h4x4q"]
+base_font = ExtResource("1_u888h")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_yku8q"]
+base_font = ExtResource("1_u888h")
+spacing_glyph = 1
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_u888h"]
 
@@ -246,8 +258,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_fonts/normal_font = ExtResource("1_u888h")
-theme_override_fonts/bold_font = ExtResource("1_u888h")
+theme_override_fonts/normal_font = SubResource("FontVariation_ic7ix")
 theme_override_font_sizes/normal_font_size = 40
 text = "MODIFIER NAME"
 horizontal_alignment = 1
@@ -267,8 +278,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_fonts/normal_font = ExtResource("1_u888h")
-theme_override_fonts/bold_font = ExtResource("1_u888h")
+theme_override_fonts/normal_font = SubResource("FontVariation_h4x4q")
 theme_override_font_sizes/normal_font_size = 40
 text = "+9.99x"
 horizontal_alignment = 1
@@ -297,8 +307,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_fonts/normal_font = ExtResource("1_u888h")
-theme_override_fonts/bold_font = ExtResource("1_u888h")
+theme_override_fonts/normal_font = SubResource("FontVariation_yku8q")
 theme_override_font_sizes/normal_font_size = 40
 text = "9 Games"
 horizontal_alignment = 1

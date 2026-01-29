@@ -28,27 +28,9 @@ func draw_card():
 	deck.erase(cardDrawn)
 	
 	$RichTextLabel.text = str(deck.size())
-	var cardScene = preload(PLAYER_CARD_SCENE_PATH)
-	var newCard = cardScene.instantiate()
-	var cardImagePath = str("res://assets/cards/" + cardDrawn + "Card.png")
-	newCard.cardKey = cardDrawn
-	newCard.position = SUPPORT_DECK_POSITION
 	
-	# Add the perk
-	if cardDatabaseReference.PERKS.has(cardDrawn):
-		newCard.perk = load(cardDatabaseReference.PERKS[cardDrawn]).new()
-		newCard.get_node("supportingText").get_node("text").texture = load("res://assets/cardDescriptions/" + cardDrawn + ".png")
+	var newCard = _create_card_instance(cardDrawn, PLAYER_CARD_SCENE_PATH, true)
 	
-	newCard.get_node("image").texture = load(cardImagePath)
-	newCard.get_node("imageBack").texture = load("res://assets/cards/CardBackBlank.png")
-	newCard.get_node("value").text = str(cardDatabaseReference.SUPPORTS[cardDrawn][0])
-	newCard.value = cardDatabaseReference.SUPPORTS[cardDrawn][0]
-	newCard.type = cardDatabaseReference.SUPPORTS[cardDrawn][1]
-	newCard.role = cardDatabaseReference.SUPPORTS[cardDrawn][2]
-	newCard.canBePlayed = false
-	
-	$"../cardManager".add_child(newCard)
-	newCard.name = "Card"
 	$"../playerHand".add_card_to_hand(newCard, CARD_DRAW_SPEED)
 	
 	newCard.get_node("AnimationPlayer").play("cardFlip")
@@ -59,30 +41,12 @@ func draw_opponent_card():
 	deck.erase(cardDrawn)
 	
 	$RichTextLabel.text = str(deck.size())
-	var cardScene = preload(OPPONENT_CARD_SCENE_PATH)
-	var newCard = cardScene.instantiate()
-	var cardImagePath = str("res://assets/cards/" + cardDrawn + "Card.png")
-	newCard.cardKey = cardDrawn
-	newCard.position = SUPPORT_DECK_POSITION
 	
-	# Add the perk
-	if cardDatabaseReference.PERKS.has(cardDrawn):
-		newCard.perk = load(cardDatabaseReference.PERKS[cardDrawn]).new()
+	var newCard = _create_card_instance(cardDrawn, OPPONENT_CARD_SCENE_PATH, false)
 	
-	newCard.get_node("image").texture = load(cardImagePath)
-	newCard.get_node("imageBack").texture = load("res://assets/cards/CardBackBlank.png")
-	newCard.get_node("value").text = str(cardDatabaseReference.SUPPORTS[cardDrawn][0])
-	newCard.value = cardDatabaseReference.SUPPORTS[cardDrawn][0]
-	newCard.type = cardDatabaseReference.SUPPORTS[cardDrawn][1]
-	newCard.role = cardDatabaseReference.SUPPORTS[cardDrawn][2]
-	newCard.canBePlayed = false
-	
-	$"../cardManager".add_child(newCard)
-	newCard.name = "Card"
 	$"../opponentHand".add_card_to_hand(newCard, CARD_DRAW_SPEED)
 	newCard.play_draw_sound()
 	
-	# This if statement hides and shows the cards (In place for now, for debugging)
 	if $"../battleManager".showOpponentsCards:
 		newCard.get_node("AnimationPlayer").play("cardFlip")
 	else:
@@ -122,3 +86,56 @@ func play_shuffle_sound():
 	var randomSound = shuffleSounds.pick_random()
 	soundPlayer.stream = randomSound
 	soundPlayer.play()
+
+# Privates
+func _create_card_instance(cardKey: String, scenePath: String, isPlayer: bool = false) -> Node2D:
+	var cardScene = load(scenePath)
+	var newCard = cardScene.instantiate()
+	
+	newCard.cardKey = cardKey
+	newCard.position = SUPPORT_DECK_POSITION
+	newCard.name = "Card"
+	newCard.canBePlayed = false
+
+	var data = cardDatabaseReference.SUPPORTS[cardKey]
+	newCard.value = data[0]
+	newCard.type = data[1]
+	newCard.role = data[2]
+	newCard.nameText = data[4]
+	
+	newCard.get_node("value").text = str(newCard.value)
+	newCard.get_node("name").text = newCard.nameText
+	newCard.get_node("image").texture = load("res://assets/cards/" + cardKey + "Card.png")
+	newCard.get_node("imageBack").texture = load("res://assets/cards/CardBackBlank.png")
+
+	if cardDatabaseReference.PERKS.has(cardKey):
+		newCard.perk = load(cardDatabaseReference.PERKS[cardKey]).new()
+		if isPlayer:
+			newCard.get_node("supportingText/text").texture = load("res://assets/cardDescriptions/" + cardKey + ".png")
+	
+	var iconsNode = newCard.get_node("icons")
+	
+	iconsNode.get_node("faction").visible = false
+	
+	var perkList = newCard.role.split("/") if newCard.role else []
+	
+	var activePerks = []
+	for perk in perkList:
+		if perk != "": activePerks.append(perk)
+	
+	var perkSprites = [iconsNode.get_node("perk1"), iconsNode.get_node("perk2")]
+	
+	if activePerks.is_empty() or activePerks.size() == 5:
+		for sprite in perkSprites:
+			sprite.visible = false
+	else:
+		for i in range(perkSprites.size()):
+			if i < activePerks.size():
+				perkSprites[i].visible = true
+				perkSprites[i].texture = load("res://assets/cardIcons/" + activePerks[i] + ".png")
+			else:
+				perkSprites[i].visible = false
+
+	$"../cardManager".add_child(newCard)
+	
+	return newCard
