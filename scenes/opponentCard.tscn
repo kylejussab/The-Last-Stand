@@ -1,14 +1,14 @@
-[gd_scene load_steps=20 format=3 uid="uid://bn88i42vic2bw"]
+[gd_scene load_steps=21 format=3 uid="uid://bn88i42vic2bw"]
 
 [ext_resource type="Script" uid="uid://df6vntpyt6v25" path="res://scripts/opponentCard.gd" id="1_6ngam"]
 [ext_resource type="Texture2D" uid="uid://cbgv0l1d6fl7k" path="res://assets/cards/CardBackBlank.png" id="2_4jfu0"]
 [ext_resource type="Texture2D" uid="uid://xm6j3gsou8ve" path="res://assets/cards/ExampleCard.png" id="3_3qk15"]
 [ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://assets/fonts/SF-Pro-Display-Black.otf" id="4_3qk15"]
 [ext_resource type="Texture2D" uid="uid://d4kwo20uewt85" path="res://assets/cards/BlackCard.png" id="4_uqoa2"]
-[ext_resource type="Texture2D" uid="uid://q3k7xnaleked" path="res://assets/cardDescriptions/Abby.png" id="5_3qk15"]
 [ext_resource type="Texture2D" uid="uid://bvx2xo56idmcx" path="res://assets/cardIcons/Crafty.png" id="5_6rjld"]
 [ext_resource type="Texture2D" uid="uid://dgdk6y2h230rb" path="res://assets/cardIcons/Defensive.png" id="6_fgn7q"]
 [ext_resource type="Texture2D" uid="uid://ckyjgdo1fykjj" path="res://assets/cardIcons/Jackson.png" id="7_eh2lv"]
+[ext_resource type="FontFile" uid="uid://di1dchl37cfhu" path="res://assets/fonts/SF-Pro-Display-Semibold.otf" id="10_fgn7q"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6ngam"]
 size = Vector2(146, 204)
@@ -186,19 +186,19 @@ tracks/12/keys = {
 tracks/13/type = "value"
 tracks/13/imported = false
 tracks/13/enabled = true
-tracks/13/path = NodePath("supportingText/text:position")
+tracks/13/path = NodePath("name:modulate")
 tracks/13/interp = 1
 tracks/13/loop_wrap = true
 tracks/13/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(0, -35)]
+"values": [Color(1, 1, 1, 0)]
 }
 tracks/14/type = "value"
 tracks/14/imported = false
 tracks/14/enabled = true
-tracks/14/path = NodePath("supportingText/text:modulate")
+tracks/14/path = NodePath("icons:modulate")
 tracks/14/interp = 1
 tracks/14/loop_wrap = true
 tracks/14/keys = {
@@ -210,19 +210,19 @@ tracks/14/keys = {
 tracks/15/type = "value"
 tracks/15/imported = false
 tracks/15/enabled = true
-tracks/15/path = NodePath("name:modulate")
+tracks/15/path = NodePath("supportingText/perkText:position")
 tracks/15/interp = 1
 tracks/15/loop_wrap = true
 tracks/15/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Color(1, 1, 1, 0)]
+"values": [Vector2(-65, -5)]
 }
 tracks/16/type = "value"
 tracks/16/imported = false
 tracks/16/enabled = true
-tracks/16/path = NodePath("icons:modulate")
+tracks/16/path = NodePath("supportingText/perkText:modulate")
 tracks/16/interp = 1
 tracks/16/loop_wrap = true
 tracks/16/keys = {
@@ -381,31 +381,31 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0, 0.3),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Color(1, 1, 1, 0.74509805), Color(1, 1, 1, 0)]
+"values": [Color(1, 1, 1, 0.8627451), Color(1, 1, 1, 0)]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("supportingText/text:position")
+tracks/4/path = NodePath("supportingText/perkText:modulate")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
 "times": PackedFloat32Array(0, 0.075, 0.3),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(0, 0), Vector2(0, -35), Vector2(0, -35)]
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 0)]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("supportingText/text:modulate")
+tracks/5/path = NodePath("supportingText/perkText:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
 "times": PackedFloat32Array(0, 0.075, 0.3),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0), Color(1, 1, 1, 0)]
+"values": [Vector2(-65, 30), Vector2(-65, -5), Vector2(-65, -5)]
 }
 
 [sub_resource type="Animation" id="Animation_i0l4a"]
@@ -457,24 +457,24 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0, 0.3),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0.74509805)]
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0.8627451)]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("supportingText/text:position")
+tracks/4/path = NodePath("supportingText/perkText:position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
 "times": PackedFloat32Array(0, 0.25, 0.3),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(0, -35), Vector2(0, -35), Vector2(0, 0)]
+"values": [Vector2(-65, -5), Vector2(-65, -5), Vector2(-65, 30)]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("supportingText/text:modulate")
+tracks/5/path = NodePath("supportingText/perkText:modulate")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -555,6 +555,9 @@ _data = {
 &"showDescription": SubResource("Animation_i0l4a"),
 &"showPerk": SubResource("Animation_4jfu0")
 }
+
+[sub_resource type="FontVariation" id="FontVariation_eh2lv"]
+base_font = ExtResource("10_fgn7q")
 
 [node name="card" type="Node2D"]
 position = Vector2(150, 920)
@@ -654,11 +657,19 @@ modulate = Color(1, 1, 1, 0)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("4_uqoa2")
 
-[node name="text" type="Sprite2D" parent="supportingText"]
+[node name="perkText" type="RichTextLabel" parent="supportingText"]
 modulate = Color(1, 1, 1, 0)
-position = Vector2(0, -35)
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("5_3qk15")
+offset_left = -65.0
+offset_top = -5.0
+offset_right = 65.0
+offset_bottom = 47.0
+pivot_offset = Vector2(75, 7.5)
+theme_override_fonts/normal_font = SubResource("FontVariation_eh2lv")
+theme_override_font_sizes/normal_font_size = 10
+bbcode_enabled = true
+text = "+2 for each [img width=12]res://assets/cardIcons/Infected.png[/img] in hand
+"
+horizontal_alignment = 1
 
 [node name="ColorRect" type="ColorRect" parent="supportingText"]
 anchors_preset = 8

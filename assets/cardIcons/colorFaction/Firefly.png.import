@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b342ao7nkpyq4"
-path="res://.godot/imported/SupplyCache.png-dbfe92a25c13d01b08033a7cd152a894.ctex"
+uid="uid://b2pm8cdc83i61"
+path="res://.godot/imported/Firefly.png-939ec5cf6240a009a18e10c61db98379.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/cardDescriptions/SupplyCache.png"
-dest_files=["res://.godot/imported/SupplyCache.png-dbfe92a25c13d01b08033a7cd152a894.ctex"]
+source_file="res://assets/cardIcons/colorFaction/Firefly.png"
+dest_files=["res://.godot/imported/Firefly.png-939ec5cf6240a009a18e10c61db98379.ctex"]
 
 [params]
 

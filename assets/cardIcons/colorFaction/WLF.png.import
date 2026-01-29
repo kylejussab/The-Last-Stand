@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://uegyxkra2xbb"
-path="res://.godot/imported/FireflySoldier.png-124e96d173b98d65809284b3a209fe24.ctex"
+uid="uid://bg8nj88v04ewt"
+path="res://.godot/imported/WLF.png-75f5080fe613364654ec415ba703c7a1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/cardDescriptions/FireflySoldier.png"
-dest_files=["res://.godot/imported/FireflySoldier.png-124e96d173b98d65809284b3a209fe24.ctex"]
+source_file="res://assets/cardIcons/colorFaction/WLF.png"
+dest_files=["res://.godot/imported/WLF.png-75f5080fe613364654ec415ba703c7a1.ctex"]
 
 [params]
 

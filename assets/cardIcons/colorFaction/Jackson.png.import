@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://1gtv0t4f8vtc"
-path="res://.godot/imported/Clicker.png-8bb9c693b26771c31889589c63168687.ctex"
+uid="uid://rvbt8l3ifac4"
+path="res://.godot/imported/Jackson.png-d47901088949116c21bc73aa5be3efe0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/cardDescriptions/Clicker.png"
-dest_files=["res://.godot/imported/Clicker.png-8bb9c693b26771c31889589c63168687.ctex"]
+source_file="res://assets/cardIcons/colorFaction/Jackson.png"
+dest_files=["res://.godot/imported/Jackson.png-d47901088949116c21bc73aa5be3efe0.ctex"]
 
 [params]
 

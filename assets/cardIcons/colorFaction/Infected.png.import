@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://be6lp43f7qybt"
-path="res://.godot/imported/Nora.png-49310c3022209e4996e910b70a56b4d1.ctex"
+uid="uid://iudybi0tp6ni"
+path="res://.godot/imported/Infected.png-ce553e829eeefa7f76d557eacf816496.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/cardDescriptions/Nora.png"
-dest_files=["res://.godot/imported/Nora.png-49310c3022209e4996e910b70a56b4d1.ctex"]
+source_file="res://assets/cardIcons/colorFaction/Infected.png"
+dest_files=["res://.godot/imported/Infected.png-ce553e829eeefa7f76d557eacf816496.ctex"]
 
 [params]
 

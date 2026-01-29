@@ -6,6 +6,21 @@ const CARD_DRAW_SPEED = 0.2
 
 const CHARACTER_DECK_POSITION = Vector2(135, 796)
 
+const ICON_SIZE = 12 #Note that it should be +2 the font size # Will be tied to font size MAX = 14
+
+const KEYWORD_ICONS = {
+	"Aggressive": "res://assets/cardIcons/Aggressive.png",
+	"Defensive": "res://assets/cardIcons/Defensive.png",
+	"Stealthy": "res://assets/cardIcons/Stealthy.png",
+	"Survivor": "res://assets/cardIcons/Survivor.png",
+	"Crafty": "res://assets/cardIcons/Crafty.png",
+	"Seraphite": "res://assets/cardIcons/colorFaction/Seraphite.png",
+	"WLF": "res://assets/cardIcons/colorFaction/WLF.png",
+	"Firefly": "res://assets/cardIcons/colorFaction/Firefly.png",
+	"Jackson": "res://assets/cardIcons/colorFaction/Jackson.png",
+	"Infected": "res://assets/cardIcons/colorFaction/Infected.png"
+}
+
 @onready var soundPlayer = $AudioStreamPlayer2D
 
 var shuffleSounds = [
@@ -121,11 +136,17 @@ func _create_card_instance(cardKey: String, scenePath: String, isPlayer: bool = 
 	newCard.get_node("name").text = newCard.nameText
 	newCard.get_node("image").texture = load("res://assets/cards/" + cardKey + "Card.png")
 	newCard.get_node("imageBack").texture = load("res://assets/cards/CardBackBlank.png")
-
+	
+	if data.size() > 5:
+		var rawText = data[5]
+		var formattedText = _format_perk_text(rawText)
+		newCard.get_node("supportingText/perkText").text = formattedText
+	else:
+		newCard.get_node("supportingText/perkText").text = ""
+	
 	if cardDatabaseReference.PERKS.has(cardKey):
 		newCard.perk = load(cardDatabaseReference.PERKS[cardKey]).new()
-		newCard.get_node("supportingText/text").texture = load("res://assets/cardDescriptions/" + cardKey + ".png")
-
+	
 	# Icons
 	var iconsNode = newCard.get_node("icons")
 	
@@ -154,6 +175,16 @@ func _create_card_instance(cardKey: String, scenePath: String, isPlayer: bool = 
 	$"../cardManager".add_child(newCard)
 	
 	return newCard
+
+func _format_perk_text(raw_text: String) -> String:
+	var rich_text = raw_text
+	for keyword in KEYWORD_ICONS:
+		if keyword in rich_text:
+			var icon_path = KEYWORD_ICONS[keyword]
+			# width=%d sets the size to ICON_SIZE (10)
+			var replacement = "[img height=%d]%s[/img]" % [ICON_SIZE, icon_path]
+			rich_text = rich_text.replace(keyword, replacement)
+	return rich_text
 
 func _play_shuffle_sound():
 	var randomSound = shuffleSounds.pick_random()

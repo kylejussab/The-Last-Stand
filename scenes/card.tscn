@@ -1,14 +1,14 @@
-[gd_scene load_steps=20 format=3 uid="uid://b1ue0o8lsverh"]
+[gd_scene load_steps=21 format=3 uid="uid://b1ue0o8lsverh"]
 
 [ext_resource type="Script" uid="uid://ucr1vk8xoov" path="res://scripts/card.gd" id="1_6u4wf"]
 [ext_resource type="Texture2D" uid="uid://cbgv0l1d6fl7k" path="res://assets/cards/CardBackBlank.png" id="2_kg30u"]
 [ext_resource type="Texture2D" uid="uid://xm6j3gsou8ve" path="res://assets/cards/ExampleCard.png" id="3_sy11y"]
 [ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://assets/fonts/SF-Pro-Display-Black.otf" id="4_6ligt"]
 [ext_resource type="Texture2D" uid="uid://d4kwo20uewt85" path="res://assets/cards/BlackCard.png" id="5_6ligt"]
-[ext_resource type="Texture2D" uid="uid://q3k7xnaleked" path="res://assets/cardDescriptions/Abby.png" id="6_8w5pg"]
 [ext_resource type="Texture2D" uid="uid://bvx2xo56idmcx" path="res://assets/cardIcons/Crafty.png" id="7_nvopj"]
 [ext_resource type="Texture2D" uid="uid://dgdk6y2h230rb" path="res://assets/cardIcons/Defensive.png" id="8_1yd6c"]
 [ext_resource type="Texture2D" uid="uid://ckyjgdo1fykjj" path="res://assets/cardIcons/Jackson.png" id="9_1yd6c"]
+[ext_resource type="FontFile" uid="uid://di1dchl37cfhu" path="res://assets/fonts/SF-Pro-Display-Semibold.otf" id="10_we8pq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
 size = Vector2(146, 204)
@@ -138,31 +138,31 @@ tracks/8/keys = {
 tracks/9/type = "value"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("supportingText/text:position")
+tracks/9/path = NodePath("line:modulate")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(0, -35)]
+"values": [Color(1, 1, 1, 0)]
 }
 tracks/10/type = "value"
 tracks/10/imported = false
 tracks/10/enabled = true
-tracks/10/path = NodePath("supportingText/text:modulate")
+tracks/10/path = NodePath("supportingText/perkText:position")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Color(1, 1, 1, 0)]
+"values": [Vector2(-65, 25)]
 }
 tracks/11/type = "value"
 tracks/11/imported = false
 tracks/11/enabled = true
-tracks/11/path = NodePath("line:modulate")
+tracks/11/path = NodePath("supportingText/perkText:modulate")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/keys = {
@@ -285,24 +285,24 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0, 0.3),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Color(1, 1, 1, 0.74509805), Color(1, 1, 1, 0)]
+"values": [Color(1, 1, 1, 0.8627451), Color(1, 1, 1, 0)]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("supportingText/text:position")
+tracks/4/path = NodePath("supportingText/perkText:position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
 "times": PackedFloat32Array(0, 0.075, 0.3),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(0, 0), Vector2(0, -35), Vector2(0, -35)]
+"values": [Vector2(-65, 30), Vector2(-65, -5), Vector2(-65, -5)]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("supportingText/text:modulate")
+tracks/5/path = NodePath("supportingText/perkText:modulate")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -361,24 +361,24 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0, 0.3),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0.74509805)]
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0.8627451)]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("supportingText/text:position")
+tracks/4/path = NodePath("supportingText/perkText:position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
 "times": PackedFloat32Array(0, 0.25, 0.3),
-"transitions": PackedFloat32Array(1, 1, 0.4061261),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(0, -35), Vector2(0, -35), Vector2(0, 0)]
+"values": [Vector2(-65, -5), Vector2(-65, -5), Vector2(-65, 30)]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("supportingText/text:modulate")
+tracks/5/path = NodePath("supportingText/perkText:modulate")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -447,6 +447,9 @@ _data = {
 &"showDescription": SubResource("Animation_nvopj"),
 &"showPerk": SubResource("Animation_6ligt")
 }
+
+[sub_resource type="FontVariation" id="FontVariation_4wvaf"]
+base_font = ExtResource("10_we8pq")
 
 [node name="card" type="Node2D"]
 position = Vector2(150, 920)
@@ -543,11 +546,18 @@ modulate = Color(1, 1, 1, 0)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("5_6ligt")
 
-[node name="text" type="Sprite2D" parent="supportingText"]
+[node name="perkText" type="RichTextLabel" parent="supportingText"]
 modulate = Color(1, 1, 1, 0)
-position = Vector2(0, -35)
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("6_8w5pg")
+offset_left = -65.0
+offset_top = 25.0
+offset_right = 65.0
+offset_bottom = 76.99998
+pivot_offset = Vector2(75, 7.5)
+theme_override_fonts/normal_font = SubResource("FontVariation_4wvaf")
+theme_override_font_sizes/normal_font_size = 10
+bbcode_enabled = true
+text = "+1 for each [img width=10]res://assets/cardIcons/Infected.png[/img] in hand and +2 if opposing card is [img width=10]res://assets/cardIcons/Infected.png[/img]"
+horizontal_alignment = 1
 
 [node name="ColorRect" type="ColorRect" parent="supportingText"]
 anchors_preset = 8
