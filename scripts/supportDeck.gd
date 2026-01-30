@@ -6,7 +6,15 @@ const CARD_DRAW_SPEED = 0.2
 
 const SUPPORT_DECK_POSITION = Vector2(135, 548)
 
-const ICON_SIZE = 12 # Will be tied to font size
+var CARD_TEXT_SIZE = 16
+var DESCRIPTION_TEXT_SIZE = 10
+var DESCRIPTION_ICON_SIZE = 12
+
+var PERK_ICON_SCALE = 0.095
+var FACTION_ICON_SCALE = 0.12
+var PERK_ICON_ONE_Y_POSITION = -66
+var PERK_ICON_TWO_Y_POSITION = -43.5
+var PERK_LINE_Y_SIZE = 15
 
 const KEYWORD_ICONS = {
 	"Aggressive": "res://assets/cardIcons/Aggressive.png",
@@ -37,6 +45,8 @@ var cardDatabaseReference
 func _ready() -> void:
 	$RichTextLabel.text = str(deck.size())
 	cardDatabaseReference = preload("res://scripts/database.gd")
+	
+	apply_card_scale()
 
 func draw_card():
 	var cardDrawn = deck[0]
@@ -118,20 +128,30 @@ func _create_card_instance(cardKey: String, scenePath: String, _isPlayer: bool =
 	newCard.role = data[2]
 	newCard.nameText = data[4]
 	
-	newCard.get_node("value").text = str(newCard.value)
-	newCard.get_node("name").text = newCard.nameText
+	var valueNode = newCard.get_node("value")
+	valueNode.text = str(newCard.value)
+	valueNode.add_theme_font_size_override("normal_font_size", CARD_TEXT_SIZE)
+	
+	var nameNode = newCard.get_node("name")
+	nameNode.text = newCard.nameText
+	nameNode.add_theme_font_size_override("normal_font_size", CARD_TEXT_SIZE)
+	
 	newCard.get_node("image").texture = load("res://assets/cards/" + cardKey + "Card.png")
 	newCard.get_node("imageBack").texture = load("res://assets/cards/CardBackBlank.png")
 	
 	if data.size() > 5:
 		var rawText = data[5]
 		var formattedText = _format_perk_text(rawText)
-		newCard.get_node("supportingText/perkText").text = formattedText
+		var perkLabel = newCard.get_node("supportingText/perkText")
+		perkLabel.text = formattedText
+		perkLabel.add_theme_font_size_override("normal_font_size", DESCRIPTION_TEXT_SIZE)
 	else:
 		newCard.get_node("supportingText/perkText").text = ""
 	
 	if cardDatabaseReference.PERKS.has(cardKey):
 		newCard.perk = load(cardDatabaseReference.PERKS[cardKey]).new()
+	
+	newCard.get_node("line").size.y = PERK_LINE_Y_SIZE
 	
 	var iconsNode = newCard.get_node("icons")
 	
@@ -145,6 +165,9 @@ func _create_card_instance(cardKey: String, scenePath: String, _isPlayer: bool =
 	
 	var perkSprites = [iconsNode.get_node("perk1"), iconsNode.get_node("perk2")]
 	
+	iconsNode.get_node("perk1").position = Vector2(-58.5, PERK_ICON_ONE_Y_POSITION)
+	iconsNode.get_node("perk2").position = Vector2(-58.5, PERK_ICON_TWO_Y_POSITION)
+	
 	if activePerks.is_empty() or activePerks.size() == 5:
 		for sprite in perkSprites:
 			sprite.visible = false
@@ -153,6 +176,7 @@ func _create_card_instance(cardKey: String, scenePath: String, _isPlayer: bool =
 			if i < activePerks.size():
 				perkSprites[i].visible = true
 				perkSprites[i].texture = load("res://assets/cardIcons/" + activePerks[i] + ".png")
+				perkSprites[i].scale = Vector2(PERK_ICON_SCALE, PERK_ICON_SCALE)
 			else:
 				perkSprites[i].visible = false
 
@@ -165,7 +189,71 @@ func _format_perk_text(raw_text: String) -> String:
 	for keyword in KEYWORD_ICONS:
 		if keyword in rich_text:
 			var icon_path = KEYWORD_ICONS[keyword]
-			# width=%d sets the size to ICON_SIZE (10)
-			var replacement = "[img height=%d]%s[/img]" % [ICON_SIZE, icon_path]
+			var replacement = "[img height=%d]%s[/img]" % [DESCRIPTION_ICON_SIZE, icon_path]
 			rich_text = rich_text.replace(keyword, replacement)
 	return rich_text
+
+func apply_card_scale():
+	match AccessibilityData.currentCardUISize:
+		AccessibilityData.CardUISize.SMALL:
+			CARD_TEXT_SIZE = 16
+			DESCRIPTION_TEXT_SIZE = 10
+			DESCRIPTION_ICON_SIZE = 12
+			
+			PERK_ICON_SCALE = 0.095
+			PERK_ICON_ONE_Y_POSITION = -66
+			PERK_ICON_TWO_Y_POSITION = -43.5
+			FACTION_ICON_SCALE = 0.12
+			PERK_LINE_Y_SIZE = 15
+		AccessibilityData.CardUISize.MEDIUM:
+			CARD_TEXT_SIZE = 20
+			DESCRIPTION_TEXT_SIZE = 12
+			DESCRIPTION_ICON_SIZE = 14
+			
+			PERK_ICON_SCALE = 0.117
+			PERK_ICON_ONE_Y_POSITION = -61
+			PERK_ICON_TWO_Y_POSITION = -33.5
+			FACTION_ICON_SCALE = 0.145
+			PERK_LINE_Y_SIZE = 17.5
+		AccessibilityData.CardUISize.LARGE:
+			CARD_TEXT_SIZE = 24
+			DESCRIPTION_TEXT_SIZE = 14
+			DESCRIPTION_ICON_SIZE = 16
+			
+			PERK_ICON_SCALE = 0.15
+			PERK_ICON_ONE_Y_POSITION = -56
+			PERK_ICON_TWO_Y_POSITION = -28.5
+			FACTION_ICON_SCALE = 0.17
+			PERK_LINE_Y_SIZE = 20
+	
+	_update_all_active_cards()
+
+func _update_all_active_cards():
+	var card_manager = $"../cardManager"
+	if not card_manager: return
+
+	for card in card_manager.get_children():		
+		card.get_node("value").add_theme_font_size_override("normal_font_size", CARD_TEXT_SIZE)
+		card.get_node("name").add_theme_font_size_override("normal_font_size", CARD_TEXT_SIZE)
+		
+		if card.has_node("perk"):
+			card.get_node("perk").add_theme_font_size_override("normal_font_size", CARD_TEXT_SIZE)
+		
+		if card.has_node("supportingText/perkText") and cardDatabaseReference.SUPPORTS.has(card.cardKey):
+			var data = cardDatabaseReference.SUPPORTS[card.cardKey]
+			if data.size() > 5:
+				var formatted_text = _format_perk_text(data[5])
+				var perk_label = card.get_node("supportingText/perkText")
+				perk_label.text = formatted_text
+				perk_label.add_theme_font_size_override("normal_font_size", DESCRIPTION_TEXT_SIZE)
+		
+		var perkOne = card.get_node("icons/perk1")
+		var perkTwo = card.get_node("icons/perk2")
+		
+		perkOne.scale = Vector2(PERK_ICON_SCALE, PERK_ICON_SCALE)
+		perkOne.position = Vector2(-58.5, PERK_ICON_ONE_Y_POSITION)
+		
+		perkTwo.scale = Vector2(PERK_ICON_SCALE, PERK_ICON_SCALE)
+		perkTwo.position = Vector2(-58.5, PERK_ICON_TWO_Y_POSITION)
+		
+		card.get_node("line").size.y = PERK_LINE_Y_SIZE

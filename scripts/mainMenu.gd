@@ -5,6 +5,9 @@ extends Node2D
 @onready var storyButtonContainer = $storyButtonContainer
 @onready var lastStandButtonContainer = $lastStandButtonContainer
 @onready var optionsButtonContainer = $optionsButtonContainer
+@onready var accessibilityMenuContainer = $accessibilityMenuContainer
+@onready var accessibilityMainContainer = $accessibilityMenuContainer/mainContainer
+@onready var accessibilityCardsContainer = $accessibilityMenuContainer/cardsContainer
 
 @onready var supplementText = $supplementText
 
@@ -26,6 +29,7 @@ func _ready() -> void:
 	setup_button_sounds(storyButtonContainer)
 	setup_button_sounds(lastStandButtonContainer)
 	setup_button_sounds(optionsButtonContainer)
+	setup_button_sounds(accessibilityMenuContainer.get_node("mainContainer"))
 	
 	if GameStats.invitationAccepted:
 		$pressAnywhere.hide()
@@ -95,6 +99,23 @@ func _input(event: InputEvent) -> void:
 			
 			mainButtonContainer.show()
 			mainButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
+		elif currentNavigation == "Accessibility":
+			currentNavigation = "Options"
+			accessibilityMenuContainer.hide()
+			accessibilityMenuContainer.process_mode = Node.PROCESS_MODE_DISABLED
+			
+			optionsButtonContainer.show()
+			optionsButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
+		elif currentNavigation == "Accessibility/Cards":
+			currentNavigation = "Accessibility"
+			
+			accessibilityMenuContainer.get_node("Heading").text = "ACCESSIBILITY"
+			
+			accessibilityCardsContainer.hide()
+			accessibilityCardsContainer.process_mode = Node.PROCESS_MODE_DISABLED
+			
+			accessibilityMainContainer.show()
+			accessibilityMainContainer.process_mode = Node.PROCESS_MODE_INHERIT
 
 func setup_button_sounds(container: Node):
 	for child in container.get_children():
@@ -161,11 +182,33 @@ func _on_options_button_pressed() -> void:
 	$pauseIcon.show()
 	currentNavigation = "Options"
 	
+	backgroundImage.texture = null
+	
 	mainButtonContainer.hide()
 	mainButtonContainer.process_mode = Node.PROCESS_MODE_DISABLED
 	
 	optionsButtonContainer.show()
 	optionsButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
+
+func _on_accessibility_button_pressed() -> void:
+	currentNavigation = "Accessibility"
+	
+	optionsButtonContainer.hide()
+	optionsButtonContainer.process_mode = Node.PROCESS_MODE_DISABLED
+	
+	accessibilityMenuContainer.show()
+	accessibilityMenuContainer.process_mode = Node.PROCESS_MODE_INHERIT
+
+func _on_cards_button_pressed() -> void:
+	currentNavigation = "Accessibility/Cards"
+	
+	accessibilityMenuContainer.get_node("Heading").text = "ACCESSIBILITY   >   CARDS"
+	
+	accessibilityMainContainer.hide()
+	accessibilityMainContainer.process_mode = Node.PROCESS_MODE_DISABLED
+	
+	accessibilityCardsContainer.show()
+	accessibilityCardsContainer.process_mode = Node.PROCESS_MODE_INHERIT
 
 func _on_quit_button_pressed() -> void:
 	if OS.has_feature("web"):

@@ -9,7 +9,7 @@ const CHARACTERS = { # Value, Type, Faction, Class, Card Name Text, Perk Text
 	"Lyra": [2, "Character", "Seraphite", "Survivor", "LYRA"],
 	"SeraphiteBrute": [5, "Character", "Seraphite", "Aggressive", "SERAPHITE BRUTE"],
 	
-	"Abby": [6, "Character", "WLF", "Aggressive", "ABBY", "+2 if opposing card is Aggressive +1 if opposing card is Infected"],
+	"Abby": [6, "Character", "WLF", "Aggressive", "ABBY", "+2 if opposing card is Aggressive and +1 if opposing card is Infected"],
 	"Manny": [4, "Character", "WLF", "Defensive", "MANNY", "equal value and +2 if opposing card is Aggressive or Defensive"],
 	"Nora": [4, "Character", "WLF", "Stealthy", "NORA", "+1 if opposing card is Crafty"],
 	"Li": [3, "Character", "WLF", "Survivor", "LI"],
@@ -28,7 +28,7 @@ const CHARACTERS = { # Value, Type, Faction, Class, Card Name Text, Perk Text
 	"Clicker": [5, "Character", "Infected", "Aggressive", "CLICKER", "-2 to opponent health on round win"],
 	"Bloater": [4, "Character", "Infected", "Defensive", "BLOATER", "-4 to opponent health on round loss of 2 or more"],
 	"RatKing": [8, "Character", "Infected", "Aggressive", "RAT KING", "-4 to opponent health on round win"],
-	"Malik": [3, "Character", "Infected", "Survivor", "MALIK", "+1 for each Infected in hand +2 if opposing card is Infected"],
+	"Malik": [3, "Character", "Infected", "Survivor", "MALIK", "+1 for each Infected in hand and +2 if opposing card is Infected"],
 	
 	"Joel": [6, "Character", "Jackson", "Crafty/Defensive", "JOEL", "+4 if Ellie in hand"],
 	"Ellie": [5, "Character", "Jackson", "Crafty/Stealthy", "ELLIE", "-1 to opponent, if opposing card is Stealthy"],

@@ -121,12 +121,18 @@ position = Vector2(770, 790)
 stream = ExtResource("4_y35fp")
 volume_db = 20.0
 
+[node name="backgroundRectangle" type="ColorRect" parent="."]
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0, 0, 0, 1)
+
 [node name="image" type="Sprite2D" parent="."]
 position = Vector2(960, 540)
 scale = Vector2(0.24, 0.24)
 texture = ExtResource("1_qkhwq")
 
 [node name="pressAnywhere" type="Control" parent="."]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -516,6 +522,151 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_ldpc3")
 text = "ACCESSIBILITY"
 alignment = 0
 
+[node name="accessibilityMenuContainer" type="Control" parent="."]
+process_mode = 4
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="fade" type="ColorRect" parent="accessibilityMenuContainer"]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0, 0, 0, 0.9019608)
+
+[node name="Heading" type="RichTextLabel" parent="accessibilityMenuContainer"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 100.0
+offset_top = 330.0
+offset_right = 650.0
+offset_bottom = 385.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_d7xfv")
+theme_override_font_sizes/normal_font_size = 24
+text = "ACCESSIBILITY"
+vertical_alignment = 1
+
+[node name="mainContainer" type="Control" parent="accessibilityMenuContainer"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="CardsButton" type="Button" parent="accessibilityMenuContainer/mainContainer"]
+z_index = 201
+layout_mode = 0
+offset_left = 140.0
+offset_top = 400.0
+offset_right = 229.0
+offset_bottom = 455.0
+theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = SubResource("FontVariation_6aseq")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_48ign")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_l7wge")
+theme_override_styles/hover = SubResource("StyleBoxFlat_7nrmo")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_clbkb")
+theme_override_styles/focus = SubResource("StyleBoxFlat_ldpc3")
+text = "CARDS"
+alignment = 0
+
+[node name="SubtitlesButton" type="Button" parent="accessibilityMenuContainer/mainContainer"]
+z_index = 201
+layout_mode = 0
+offset_left = 140.0
+offset_top = 450.0
+offset_right = 279.0
+offset_bottom = 505.0
+theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = SubResource("FontVariation_tlicg")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_48ign")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_l7wge")
+theme_override_styles/hover = SubResource("StyleBoxFlat_7nrmo")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_clbkb")
+theme_override_styles/focus = SubResource("StyleBoxFlat_ldpc3")
+text = "SUBTITLES"
+alignment = 0
+
+[node name="cardsContainer" type="Control" parent="accessibilityMenuContainer"]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="StyleLabel" type="RichTextLabel" parent="accessibilityMenuContainer/cardsContainer"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 120.0
+offset_top = 380.0
+offset_right = 320.0
+offset_bottom = 435.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_d7xfv")
+theme_override_font_sizes/normal_font_size = 24
+text = "STYLE"
+vertical_alignment = 1
+
+[node name="TextAndIconsLabel" type="RichTextLabel" parent="accessibilityMenuContainer/cardsContainer"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 120.0
+offset_top = 430.0
+offset_right = 420.0
+offset_bottom = 485.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_d7xfv")
+theme_override_font_sizes/normal_font_size = 24
+text = "TEXT AND ICON SIZE"
+vertical_alignment = 1
+
+[node name="AnimationsLabel" type="RichTextLabel" parent="accessibilityMenuContainer/cardsContainer"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 120.0
+offset_top = 480.0
+offset_right = 320.0
+offset_bottom = 535.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_d7xfv")
+theme_override_font_sizes/normal_font_size = 24
+text = "ANIMATIONS"
+vertical_alignment = 1
+
 [node name="supplementText" type="RichTextLabel" parent="."]
 anchors_preset = 8
 anchor_left = 0.5
@@ -575,3 +726,5 @@ vertical_alignment = 1
 [connection signal="mouse_exited" from="storyButtonContainer/JuneButton" to="." method="_on_june_button_mouse_exited"]
 [connection signal="pressed" from="storyButtonContainer/JuneButton" to="." method="_on_june_button_pressed"]
 [connection signal="pressed" from="lastStandButtonContainer/NewButton" to="." method="_on_new_button_pressed"]
+[connection signal="pressed" from="optionsButtonContainer/AccessibilityButton" to="." method="_on_accessibility_button_pressed"]
+[connection signal="pressed" from="accessibilityMenuContainer/mainContainer/CardsButton" to="." method="_on_cards_button_pressed"]
