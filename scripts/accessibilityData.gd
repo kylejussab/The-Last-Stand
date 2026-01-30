@@ -1,9 +1,9 @@
 extends Node
 
-enum CardStyle { DEFAULT, MINIMAL, NO_ARTWORK }
+enum CardStyle { DEFAULT, NO_ARTWORK, MINIMAL }
 
 enum CardUISize { SMALL, MEDIUM, LARGE }
 
 var currentCardStyle: CardStyle = CardStyle.DEFAULT
-var currentCardUISize: CardUISize = CardUISize.SMALL
-var animationsEnabled: bool = true
+var currentCardUISize: CardUISize = CardUISize.MEDIUM
+var animationsDisabled: bool = true

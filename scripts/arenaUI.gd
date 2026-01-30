@@ -28,7 +28,7 @@ func update_health(who: Actor.Type, value: int, instant: bool = false) -> void:
 	if who == Actor.Type.PLAYER:
 		Database.AVATARS[GameStats.currentPlayer].health = value
 	
-	if Settings.reduceAnimations or instant:
+	if AccessibilityData.animationsDisabled or instant:
 		label.text = "%02d" % value
 	else:
 		var tween = create_tween()

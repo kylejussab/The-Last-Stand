@@ -24,6 +24,9 @@ const SUPPLEMENTTEXT = {
 	"June": "What is the cost of doing what you believe is right?"
 }
 
+# Card for Accessibility Card Graphics
+var previewCard: Node2D = null
+
 func _ready() -> void:
 	setup_button_sounds(mainButtonContainer)
 	setup_button_sounds(storyButtonContainer)
@@ -109,13 +112,14 @@ func _input(event: InputEvent) -> void:
 		elif currentNavigation == "Accessibility/Cards":
 			currentNavigation = "Accessibility"
 			
-			accessibilityMenuContainer.get_node("Heading").text = "ACCESSIBILITY"
+			accessibilityMenuContainer.get_node("Heading").text = "OPTIONS   >   ACCESSIBILITY"
 			
 			accessibilityCardsContainer.hide()
 			accessibilityCardsContainer.process_mode = Node.PROCESS_MODE_DISABLED
 			
 			accessibilityMainContainer.show()
 			accessibilityMainContainer.process_mode = Node.PROCESS_MODE_INHERIT
+			_clear_preview_card()
 
 func setup_button_sounds(container: Node):
 	for child in container.get_children():
@@ -202,19 +206,85 @@ func _on_accessibility_button_pressed() -> void:
 func _on_cards_button_pressed() -> void:
 	currentNavigation = "Accessibility/Cards"
 	
-	accessibilityMenuContainer.get_node("Heading").text = "ACCESSIBILITY   >   CARDS"
+	accessibilityMenuContainer.get_node("Heading").text = "OPTIONS   >   ACCESSIBILITY   >   CARDS"
 	
 	accessibilityMainContainer.hide()
 	accessibilityMainContainer.process_mode = Node.PROCESS_MODE_DISABLED
 	
 	accessibilityCardsContainer.show()
 	accessibilityCardsContainer.process_mode = Node.PROCESS_MODE_INHERIT
+	
+	update_preview_card()
 
 func _on_quit_button_pressed() -> void:
 	if OS.has_feature("web"):
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 	else:
 		get_tree().quit()
+
+# Privates
+func update_preview_card():
+	if previewCard != null:
+		previewCard.queue_free()
+	
+	var card_scene = load("res://scenes/card.tscn")
+	previewCard = card_scene.instantiate()
+	
+	previewCard.scale = Vector2(2, 2)
+	previewCard.position = Vector2(1450, 540)
+	
+	previewCard.cardKey = "Clicker"
+	previewCard.value = 5
+	previewCard.type = "Character"
+	previewCard.faction = "Infected"
+	previewCard.role = "Aggressive"
+	previewCard.nameText = "CLICKER"
+	previewCard.perkDescription = "-2 to opponent health on round win"
+	
+	previewCard.get_node("value").text = str(previewCard.value)
+	previewCard.get_node("name").text = previewCard.nameText
+	previewCard.get_node("imageBack").texture = load("res://assets/cards/CardBackBlank.png")
+	
+	previewCard.get_node("icons/faction").texture = load("res://assets/cardIcons/Infected.png")
+	
+	accessibilityCardsContainer.add_child(previewCard)
+	
+	var adapter = Control.new()
+	adapter.name = "UI_Input_Adapter"
+	previewCard.add_child(adapter)
+	
+	var size = load("res://assets/cards/CardBackBlank.png").get_size() * 0.2
+	adapter.size = size
+	adapter.position = -(size / 2)
+	
+	adapter.mouse_entered.connect(_on_preview_hover_entered.bind(previewCard))
+	adapter.mouse_exited.connect(_on_preview_hover_exited.bind(previewCard))
+	previewCard.update_visuals()
+
+func _clear_preview_card():
+	if previewCard != null:
+		previewCard.queue_free()
+		previewCard = null
+
+func _on_preview_hover_entered(card_node):
+	var tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	tween.tween_property(card_node, "scale", Vector2(2.35, 2.35), 0.1)
+	
+	if card_node.has_node("AnimationPlayer"):
+		if card_node.get_node("AnimationPlayer").has_animation("showDescription"):
+			card_node.get_node("AnimationPlayer").play("showDescription")
+			
+	card_node.z_index = 10
+
+func _on_preview_hover_exited(card_node):
+	var tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	tween.tween_property(card_node, "scale", Vector2(2, 2), 0.1)
+	
+	if card_node.has_node("AnimationPlayer"):
+		if card_node.get_node("AnimationPlayer").has_animation("hideDescription"):
+			card_node.get_node("AnimationPlayer").play("hideDescription")
+			
+	card_node.z_index = 0
 
 # Helpers
 func _play_hover():

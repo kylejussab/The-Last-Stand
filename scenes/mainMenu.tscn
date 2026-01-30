@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://btdd4ppvwtnvy"]
+[gd_scene load_steps=38 format=3 uid="uid://btdd4ppvwtnvy"]
 
 [ext_resource type="Script" uid="uid://bmorqef62jko2" path="res://scripts/mainMenu.gd" id="1_l7wge"]
 [ext_resource type="Texture2D" uid="uid://bmewebekh15ca" path="res://assets/mainMenu/main.png" id="1_qkhwq"]
@@ -8,6 +8,10 @@
 [ext_resource type="AudioStream" uid="uid://cufo3kt8n8vs2" path="res://assets/sounds/ui/buttonHover.wav" id="3_ldpc3"]
 [ext_resource type="AudioStream" uid="uid://b3d3fqc8ee6t7" path="res://assets/sounds/ui/buttonBack.wav" id="4_y35fp"]
 [ext_resource type="Texture2D" uid="uid://be0aihjd72rmo" path="res://assets/ui/RightClickIcon.png" id="7_ldpc3"]
+[ext_resource type="Script" uid="uid://yb10rqecj0pw" path="res://scripts/cardStyleSelect.gd" id="8_epn8x"]
+[ext_resource type="Texture2D" uid="uid://cf8imluhjhkne" path="res://assets/mainMenu/ArrowLeft.png" id="8_tov5d"]
+[ext_resource type="Texture2D" uid="uid://cxd55axo1w2rm" path="res://assets/mainMenu/ArrowLeftPressed.png" id="9_epn8x"]
+[ext_resource type="Script" uid="uid://bhtjov1bciv1h" path="res://scripts/cardSizeSelect.gd" id="11_epn8x"]
 
 [sub_resource type="FontVariation" id="FontVariation_y35fp"]
 base_font = ExtResource("3_48ign")
@@ -132,7 +136,6 @@ scale = Vector2(0.24, 0.24)
 texture = ExtResource("1_qkhwq")
 
 [node name="pressAnywhere" type="Control" parent="."]
-visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -529,11 +532,13 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+mouse_filter = 2
 
 [node name="fade" type="ColorRect" parent="accessibilityMenuContainer"]
 layout_mode = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
+mouse_filter = 2
 color = Color(0, 0, 0, 0.9019608)
 
 [node name="Heading" type="RichTextLabel" parent="accessibilityMenuContainer"]
@@ -553,7 +558,7 @@ pivot_offset = Vector2(150, 25)
 theme_override_colors/default_color = Color(1, 1, 1, 1)
 theme_override_fonts/normal_font = SubResource("FontVariation_d7xfv")
 theme_override_font_sizes/normal_font_size = 24
-text = "ACCESSIBILITY"
+text = "OPTIONS   >   ACCESSIBILITY"
 vertical_alignment = 1
 
 [node name="mainContainer" type="Control" parent="accessibilityMenuContainer"]
@@ -606,6 +611,7 @@ visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+mouse_filter = 2
 
 [node name="StyleLabel" type="RichTextLabel" parent="accessibilityMenuContainer/cardsContainer"]
 layout_mode = 1
@@ -666,6 +672,110 @@ theme_override_fonts/normal_font = SubResource("FontVariation_d7xfv")
 theme_override_font_sizes/normal_font_size = 24
 text = "ANIMATIONS"
 vertical_alignment = 1
+
+[node name="CardStyleSelect" type="Control" parent="accessibilityMenuContainer/cardsContainer"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("8_epn8x")
+
+[node name="StyleDescriptionLabel" type="RichTextLabel" parent="accessibilityMenuContainer/cardsContainer/CardStyleSelect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 616.0
+offset_top = 380.0
+offset_right = 910.0
+offset_bottom = 435.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_d7xfv")
+theme_override_font_sizes/normal_font_size = 24
+text = "DEFAULT"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="LeftButton" type="TextureButton" parent="accessibilityMenuContainer/cardsContainer/CardStyleSelect"]
+layout_mode = 0
+offset_left = 940.0
+offset_top = 368.0
+offset_right = 1076.0
+offset_bottom = 504.0
+scale = Vector2(0.25, 0.25)
+pivot_offset = Vector2(51, 59)
+texture_normal = ExtResource("8_tov5d")
+texture_hover = ExtResource("9_epn8x")
+stretch_mode = 5
+
+[node name="RightButton" type="TextureButton" parent="accessibilityMenuContainer/cardsContainer/CardStyleSelect"]
+layout_mode = 0
+offset_left = 990.0
+offset_top = 368.0
+offset_right = 1126.0
+offset_bottom = 504.0
+scale = Vector2(0.25, 0.25)
+pivot_offset = Vector2(51, 59)
+texture_normal = ExtResource("8_tov5d")
+texture_hover = ExtResource("9_epn8x")
+stretch_mode = 5
+flip_h = true
+
+[node name="CardSizeSelect" type="Control" parent="accessibilityMenuContainer/cardsContainer"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("11_epn8x")
+
+[node name="SizeDescriptionLabel" type="RichTextLabel" parent="accessibilityMenuContainer/cardsContainer/CardSizeSelect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 616.0
+offset_top = 430.0
+offset_right = 910.0
+offset_bottom = 485.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_d7xfv")
+theme_override_font_sizes/normal_font_size = 24
+text = "DEFAULT"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="LeftButton" type="TextureButton" parent="accessibilityMenuContainer/cardsContainer/CardSizeSelect"]
+layout_mode = 0
+offset_left = 940.0
+offset_top = 418.0
+offset_right = 1076.0
+offset_bottom = 554.0
+scale = Vector2(0.25, 0.25)
+pivot_offset = Vector2(51, 59)
+texture_normal = ExtResource("8_tov5d")
+texture_hover = ExtResource("9_epn8x")
+stretch_mode = 5
+
+[node name="RightButton" type="TextureButton" parent="accessibilityMenuContainer/cardsContainer/CardSizeSelect"]
+layout_mode = 0
+offset_left = 990.0
+offset_top = 418.0
+offset_right = 1126.0
+offset_bottom = 554.0
+scale = Vector2(0.25, 0.25)
+pivot_offset = Vector2(51, 59)
+texture_normal = ExtResource("8_tov5d")
+texture_hover = ExtResource("9_epn8x")
+stretch_mode = 5
+flip_h = true
 
 [node name="supplementText" type="RichTextLabel" parent="."]
 anchors_preset = 8
@@ -728,3 +838,7 @@ vertical_alignment = 1
 [connection signal="pressed" from="lastStandButtonContainer/NewButton" to="." method="_on_new_button_pressed"]
 [connection signal="pressed" from="optionsButtonContainer/AccessibilityButton" to="." method="_on_accessibility_button_pressed"]
 [connection signal="pressed" from="accessibilityMenuContainer/mainContainer/CardsButton" to="." method="_on_cards_button_pressed"]
+[connection signal="pressed" from="accessibilityMenuContainer/cardsContainer/CardStyleSelect/LeftButton" to="accessibilityMenuContainer/cardsContainer/CardStyleSelect" method="_on_left_button_pressed"]
+[connection signal="pressed" from="accessibilityMenuContainer/cardsContainer/CardStyleSelect/RightButton" to="accessibilityMenuContainer/cardsContainer/CardStyleSelect" method="_on_right_button_pressed"]
+[connection signal="pressed" from="accessibilityMenuContainer/cardsContainer/CardSizeSelect/LeftButton" to="accessibilityMenuContainer/cardsContainer/CardSizeSelect" method="_on_left_button_pressed"]
+[connection signal="pressed" from="accessibilityMenuContainer/cardsContainer/CardSizeSelect/RightButton" to="accessibilityMenuContainer/cardsContainer/CardSizeSelect" method="_on_right_button_pressed"]

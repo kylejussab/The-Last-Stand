@@ -36,7 +36,7 @@ func start_drag(card):
 		draggedCard = card
 		draggedCard.play_draw_sound()
 		card.scale = Vector2(1, 1)
-		card.z_index += 10
+		card.z_index += 50
 
 func finish_drag():
 	draggedCard.scale = Vector2(1.05, 1.05)
@@ -52,7 +52,7 @@ func finish_drag():
 			else:
 				playerHandReference.remove_card_from_hand(draggedCard)
 				
-				draggedCard.z_index = -1
+				draggedCard.z_index = -50
 				draggedCard.position = cardSlot.position
 				#draggedCard.get_node("Area2D/CollisionShape2D").disabled = true
 				cardSlot.occupied = true
@@ -66,13 +66,13 @@ func finish_drag():
 				
 				# Ensure its not highlighted
 				draggedCard.scale = Vector2(1, 1)
-				draggedCard.z_index -= 10
 				draggedCard.get_node("AnimationPlayer").play("hideDescription")
 				var endTime = draggedCard.get_node("AnimationPlayer").current_animation_length
 				draggedCard.get_node("AnimationPlayer").seek(endTime, true)
 				
 				draggedCard = null
 				return
+		
 	
 	playerHandReference.add_card_to_hand(draggedCard, DEFAULT_CARD_MOVE_SPEED)
 	draggedCard = null
@@ -140,20 +140,18 @@ func highlight_card(card, hovered: bool):
 	
 	if hovered:
 		card.scale = Vector2(1.35, 1.35)
-		card.z_index = 2
 		if card.perk and !draggedCard:
 			card.get_node("AnimationPlayer").play("showDescription")
 			
-			if Settings.reduceAnimations:
+			if AccessibilityData.animationsDisabled:
 				var endTime = card.get_node("AnimationPlayer").current_animation_length
 				card.get_node("AnimationPlayer").seek(endTime, true)
 	else:
 		card.scale = Vector2(1, 1)
-		card.z_index = 1
 		if card.perk:
 			card.get_node("AnimationPlayer").play("hideDescription")
 			
-			if Settings.reduceAnimations:
+			if AccessibilityData.animationsDisabled:
 				var endTime = card.get_node("AnimationPlayer").current_animation_length
 				card.get_node("AnimationPlayer").seek(endTime, true)
 

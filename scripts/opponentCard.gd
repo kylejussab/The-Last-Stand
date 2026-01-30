@@ -1,5 +1,27 @@
 extends Node2D
 
+var CARD_TEXT_SIZE = 16
+var DESCRIPTION_TEXT_SIZE = 10
+var DESCRIPTION_ICON_SIZE = 12
+var PERK_ICON_SCALE = 0.095
+var FACTION_ICON_SCALE = 0.12
+var PERK_ICON_ONE_Y_POSITION = -66
+var PERK_ICON_TWO_Y_POSITION = -43.5
+var PERK_LINE_Y_SIZE = 15
+
+const KEYWORD_ICONS = {
+	"Aggressive": "res://assets/cardIcons/Aggressive.png",
+	"Defensive": "res://assets/cardIcons/Defensive.png",
+	"Stealthy": "res://assets/cardIcons/Stealthy.png",
+	"Survivor": "res://assets/cardIcons/Survivor.png",
+	"Crafty": "res://assets/cardIcons/Crafty.png",
+	"Seraphite": "res://assets/cardIcons/colorFaction/Seraphite.png",
+	"WLF": "res://assets/cardIcons/colorFaction/WLF.png",
+	"Firefly": "res://assets/cardIcons/colorFaction/Firefly.png",
+	"Jackson": "res://assets/cardIcons/colorFaction/Jackson.png",
+	"Infected": "res://assets/cardIcons/colorFaction/Infected.png"
+}
+
 signal hoverEntered(card)
 signal hoverExited(card)
 
@@ -14,6 +36,7 @@ var faction: String
 var perk
 var perkValueAtRoundEnd
 var canBePlayed: bool
+var perkDescription: String
 
 @onready var soundPlayer = $AudioStreamPlayer2D
 
@@ -28,7 +51,92 @@ var canBePlayed: bool
 ]
 
 func _ready() -> void:
-	get_parent().connect_card_signals(self)
+	if get_parent().has_method("connect_card_signals"):
+		get_parent().connect_card_signals(self)
+
+func update_visuals():
+	_apply_accessibility_settings()
+	
+	if has_node("value"):
+		$value.add_theme_font_size_override("normal_font_size", CARD_TEXT_SIZE)
+	if has_node("name"):
+		$name.add_theme_font_size_override("normal_font_size", CARD_TEXT_SIZE)
+	if has_node("perk"):
+		$perk.add_theme_font_size_override("normal_font_size", CARD_TEXT_SIZE)
+	
+	if has_node("supportingText/perkText"):
+		if perkDescription != "":
+			var formatted_text = _format_perk_text(perkDescription)
+			$supportingText/perkText.text = formatted_text
+			$supportingText/perkText.add_theme_font_size_override("normal_font_size", DESCRIPTION_TEXT_SIZE)
+		else:
+			$supportingText/perkText.text = ""
+	
+	if has_node("icons"):
+		var perkOne = $icons.get_node("perk1")
+		var perkTwo = $icons.get_node("perk2")
+		
+		perkOne.scale = Vector2(PERK_ICON_SCALE, PERK_ICON_SCALE)
+		perkOne.position = Vector2(-58.5, PERK_ICON_ONE_Y_POSITION)
+		
+		perkTwo.scale = Vector2(PERK_ICON_SCALE, PERK_ICON_SCALE)
+		perkTwo.position = Vector2(-58.5, PERK_ICON_TWO_Y_POSITION)
+		
+		if $icons.has_node("faction"):
+			$icons.get_node("faction").scale = Vector2(FACTION_ICON_SCALE, FACTION_ICON_SCALE)
+	
+	if has_node("line"):
+		$line.size.y = PERK_LINE_Y_SIZE
+		
+	_update_art_style()
+
+func _apply_accessibility_settings():
+	match AccessibilityData.currentCardUISize:
+		AccessibilityData.CardUISize.SMALL:
+			CARD_TEXT_SIZE = 16
+			DESCRIPTION_TEXT_SIZE = 10
+			DESCRIPTION_ICON_SIZE = 12
+			PERK_ICON_SCALE = 0.095
+			PERK_ICON_ONE_Y_POSITION = -66
+			PERK_ICON_TWO_Y_POSITION = -43.5
+			FACTION_ICON_SCALE = 0.12
+			PERK_LINE_Y_SIZE = 15
+		AccessibilityData.CardUISize.MEDIUM:
+			CARD_TEXT_SIZE = 20
+			DESCRIPTION_TEXT_SIZE = 12
+			DESCRIPTION_ICON_SIZE = 14
+			PERK_ICON_SCALE = 0.117
+			PERK_ICON_ONE_Y_POSITION = -61
+			PERK_ICON_TWO_Y_POSITION = -33.5
+			FACTION_ICON_SCALE = 0.145
+			PERK_LINE_Y_SIZE = 17.5
+		AccessibilityData.CardUISize.LARGE:
+			CARD_TEXT_SIZE = 24
+			DESCRIPTION_TEXT_SIZE = 14
+			DESCRIPTION_ICON_SIZE = 16
+			PERK_ICON_SCALE = 0.15
+			PERK_ICON_ONE_Y_POSITION = -56
+			PERK_ICON_TWO_Y_POSITION = -28.5
+			FACTION_ICON_SCALE = 0.17
+			PERK_LINE_Y_SIZE = 20
+
+func _update_art_style():
+	if not has_node("image"): return
+	
+	match AccessibilityData.currentCardStyle:
+		AccessibilityData.CardStyle.NO_ARTWORK:
+			$image.texture = load("res://assets/cards/" + faction + ".png")
+		_:
+			$image.texture = load("res://assets/cards/" + cardKey + "Card.png")
+
+func _format_perk_text(rawText: String) -> String:
+	var richText = rawText
+	for keyword in KEYWORD_ICONS:
+		if keyword in richText:
+			var iconPath = KEYWORD_ICONS[keyword]
+			var replacement = "[img height=%d]%s[/img]" % [DESCRIPTION_ICON_SIZE, iconPath]
+			richText = richText.replace(keyword, replacement)
+	return richText
 
 func play_draw_sound():
 	var randomSound = drawSounds.pick_random()

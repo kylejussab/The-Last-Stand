@@ -452,7 +452,6 @@ _data = {
 base_font = ExtResource("10_we8pq")
 
 [node name="card" type="Node2D"]
-position = Vector2(150, 920)
 script = ExtResource("1_6u4wf")
 
 [node name="imageBack" type="Sprite2D" parent="."]
