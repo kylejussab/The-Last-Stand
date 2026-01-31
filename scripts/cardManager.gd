@@ -139,7 +139,9 @@ func highlight_card(card, hovered: bool):
 	_play_card_hover_sound()
 	
 	if hovered:
-		card.scale = Vector2(1.35, 1.35)
+		if !AccessibilityData.animationsDisabled:
+			card.scale = Vector2(1.35, 1.35)
+		
 		if card.perk and !draggedCard:
 			card.get_node("AnimationPlayer").play("showDescription")
 			
@@ -147,7 +149,9 @@ func highlight_card(card, hovered: bool):
 				var endTime = card.get_node("AnimationPlayer").current_animation_length
 				card.get_node("AnimationPlayer").seek(endTime, true)
 	else:
-		card.scale = Vector2(1, 1)
+		if !AccessibilityData.animationsDisabled:
+			card.scale = Vector2(1, 1)
+			
 		if card.perk:
 			card.get_node("AnimationPlayer").play("hideDescription")
 			

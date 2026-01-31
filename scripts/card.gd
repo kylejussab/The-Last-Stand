@@ -124,7 +124,7 @@ func _apply_accessibility_settings():
 
 func _apply_visibility_settings():
 	if has_node("name"): $name.visible = true
-	if has_node("icons/faction"): $icons/faction.visible = true
+	if faction != "Support": $icons/faction.visible = true
 	
 	if AccessibilityData.currentCardStyle == AccessibilityData.CardStyle.MINIMAL:
 		if has_node("name"): $name.visible = false

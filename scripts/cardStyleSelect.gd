@@ -8,7 +8,7 @@ const ARROW = preload("res://assets/mainMenu/ArrowLeft.png")
 const ARROW_HOVER = preload("res://assets/mainMenu/ArrowLeftPressed.png")
 const ARROW_EMPTY = preload("res://assets/mainMenu/ArrowLeftNone.png")
 
-var STYLE_LABELS = ["DEFAULT", "NO CHARACTER", "MINIMAL"]
+var STYLE_LABELS = ["Default", "No Character", "Minimal"]
 
 func _ready():
 	leftButton.mouse_entered.connect(_play_hover.bind(leftButton))
@@ -69,7 +69,7 @@ func _play_hover(btn: TextureButton):
 	if btn.texture_normal == ARROW_EMPTY:
 		return
 		
-	$"../../../ButtonHoverSound".play()
+	%ButtonHoverSound.play()
 
 func _play_click():
-	$"../../../ButtonClickSound".play()
+	%ButtonClickSound.play()

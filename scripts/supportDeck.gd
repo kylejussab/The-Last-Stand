@@ -102,6 +102,7 @@ func _create_card_instance(cardKey: String, scenePath: String, _isPlayer: bool =
 	newCard.type = data[1]
 	newCard.role = data[2]
 	newCard.nameText = data[4]
+	newCard.faction = "Support"
 	
 	# Pass raw perk text if available
 	if data.size() > 5:
@@ -116,7 +117,7 @@ func _create_card_instance(cardKey: String, scenePath: String, _isPlayer: bool =
 	
 	# --- ICON SETUP ---
 	var iconsNode = newCard.get_node("icons")
-	iconsNode.get_node("faction").visible = false # Support cards hide faction
+	iconsNode.get_node("faction").visible = false
 	
 	var perkList = newCard.role.split("/") if newCard.role else []
 	var activePerks = []

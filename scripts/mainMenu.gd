@@ -267,22 +267,36 @@ func _clear_preview_card():
 		previewCard = null
 
 func _on_preview_hover_entered(card_node):
-	var tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	tween.tween_property(card_node, "scale", Vector2(2.35, 2.35), 0.1)
+	%CardHoverSound.play()
+	
+	if !AccessibilityData.animationsDisabled:
+		var tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+		tween.tween_property(card_node, "scale", Vector2(2.35, 2.35), 0.1)
 	
 	if card_node.has_node("AnimationPlayer"):
 		if card_node.get_node("AnimationPlayer").has_animation("showDescription"):
 			card_node.get_node("AnimationPlayer").play("showDescription")
 			
+			if AccessibilityData.animationsDisabled:
+				var endTime = card_node.get_node("AnimationPlayer").current_animation_length
+				card_node.get_node("AnimationPlayer").seek(endTime, true)
+			
 	card_node.z_index = 10
 
 func _on_preview_hover_exited(card_node):
-	var tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	tween.tween_property(card_node, "scale", Vector2(2, 2), 0.1)
+	%CardHoverSound.play()
+	
+	if !AccessibilityData.animationsDisabled:
+		var tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+		tween.tween_property(card_node, "scale", Vector2(2, 2), 0.1)
 	
 	if card_node.has_node("AnimationPlayer"):
 		if card_node.get_node("AnimationPlayer").has_animation("hideDescription"):
 			card_node.get_node("AnimationPlayer").play("hideDescription")
+			
+			if AccessibilityData.animationsDisabled:
+				var endTime = card_node.get_node("AnimationPlayer").current_animation_length
+				card_node.get_node("AnimationPlayer").seek(endTime, true)
 			
 	card_node.z_index = 0
 

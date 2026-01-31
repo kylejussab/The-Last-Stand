@@ -6,4 +6,4 @@ enum CardUISize { SMALL, MEDIUM, LARGE }
 
 var currentCardStyle: CardStyle = CardStyle.DEFAULT
 var currentCardUISize: CardUISize = CardUISize.MEDIUM
-var animationsDisabled: bool = true
+var animationsDisabled: bool = false
