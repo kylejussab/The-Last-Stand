@@ -12,7 +12,7 @@ func play_character_card(opponent_hand, _player_hand):
 	# Find highest-value card
 	var highest = characters[0]
 	for card in characters:
-		if int(card.get_node("value").text) > int(highest.get_node("value").text):
+		if card.value > highest.value:
 			highest = card
 	
 	# 70% chance: choose highest

@@ -36,6 +36,8 @@ var replayedRound: bool = false
 const LOG_FILE_PATH = "user://game_balance_data.json"
 var currentGameSession: String = ""
 
+var currentBattleSeed: int = 0
+
 func _process(delta):
 	if canCountDuration:
 		currentRoundDuration += delta

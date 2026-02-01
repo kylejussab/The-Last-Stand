@@ -170,7 +170,7 @@ const MODIFIERS = {
 		"id": Modifier.GUERRILA_TACTICS,
 		"name": "Guerrila Tactics",
 		"description": "Consecutive character cards cannot be the same faction or type.",
-		"icon": "res://assets/modifiers/Stale Tactics.png",
+		"icon": "res://assets/modifiers/Guerrila Tactics.png",
 		"tier": 1,
 		"multiplier": 1.0,
 		"duration": 3,

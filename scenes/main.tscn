@@ -1079,11 +1079,13 @@ one_shot = true
 [node name="cardSlots" type="Node2D" parent="."]
 
 [node name="cardSlotSupport" parent="cardSlots" instance=ExtResource("3_sugp2")]
+unique_name_in_owner = true
 z_index = -2
 position = Vector2(619.2, 455)
 script = ExtResource("4_tipki")
 
 [node name="cardSlotCharacter" parent="cardSlots" instance=ExtResource("3_sugp2")]
+unique_name_in_owner = true
 z_index = -2
 position = Vector2(825.5, 455)
 script = ExtResource("4_jyhfs")

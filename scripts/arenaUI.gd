@@ -190,6 +190,8 @@ func _reset_board_state() -> void:
 	%playerHand.playerHand.clear()
 	%opponentHand.opponentHand.clear()
 	
+	%cardSlotSupport.occupied = false
+	%cardSlotCharacter.occupied = false
 	# Clean up older scene children
 	for card in %cardManager.get_children():
 		card.queue_free()

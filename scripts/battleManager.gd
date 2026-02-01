@@ -62,8 +62,6 @@ var discardedCardZIndex: int = 1
 var showOpponentsCards: bool = false
 
 func _ready() -> void:
-	randomize() # Resets the seed
-	
 	$"../battleTimer".wait_time = OPPONENT_THINKING_TIME
 	$"../cardManager".connect("characterPlayed", Callable(self, "_on_player_character_played"))
 	$"../cardManager".connect("supportPlayed", Callable(self, "_on_player_support_played"))
@@ -93,6 +91,13 @@ func prepare_opponent() -> void:
 	_initialize_opponent(GameStats.currentPlayer, GameStats.currentOpponent)
 
 func initialize_game() -> void:
+	if GameStats.replayedRound:
+		seed(GameStats.currentBattleSeed)
+	else:
+		randomize() 
+		GameStats.currentBattleSeed = randi()
+		seed(GameStats.currentBattleSeed)
+		
 	%pauseIcon.show()
 	
 	if infectedDeckActive:

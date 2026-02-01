@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://qeni05i2t78u"
-path="res://.godot/imported/Lock Base Stale Tactics.png-9f611355db0f9015aba2d82ab13398e2.ctex"
+uid="uid://e1pvs7f03co4"
+path="res://.godot/imported/Guerrila Tactics.png-1e42478813ff96b7334059c61ff64089.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/Lock Base Stale Tactics.png"
-dest_files=["res://.godot/imported/Lock Base Stale Tactics.png-9f611355db0f9015aba2d82ab13398e2.ctex"]
+source_file="res://assets/modifiers/Guerrila Tactics.png"
+dest_files=["res://.godot/imported/Guerrila Tactics.png-1e42478813ff96b7334059c61ff64089.ctex"]
 
 [params]
 
