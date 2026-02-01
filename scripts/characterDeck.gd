@@ -23,7 +23,7 @@ func _ready() -> void:
 	$RichTextLabel.text = str(deck.size())
 	cardDatabaseReference = preload("res://scripts/database.gd")
 
-func draw_card():
+func draw_card() -> Tween:
 	var cardDrawn = deck[0]
 	deck.erase(cardDrawn)
 	
@@ -31,10 +31,12 @@ func draw_card():
 	
 	var newCard = _create_card_instance(cardDrawn, PLAYER_CARD_SCENE_PATH, true)
 	
-	$"../playerHand".add_card_to_hand(newCard, CARD_DRAW_SPEED)
+	var tween = $"../playerHand".add_card_to_hand(newCard, CARD_DRAW_SPEED)
 	
 	newCard.get_node("AnimationPlayer").play("cardFlip")
 	newCard.play_draw_sound()
+	
+	return tween
 
 func draw_opponent_card():
 	var cardDrawn = deck[0]
@@ -113,6 +115,19 @@ func _create_card_instance(cardKey: String, scenePath: String, isPlayer: bool = 
 	
 	if data.size() > 5:
 		newCard.perkDescription = data[5]
+	
+	if %battleManager.loudNoiseActive and "Stealthy" in newCard.role and isPlayer:
+		var roles = Array(newCard.role.split("/"))
+		
+		roles.erase("Stealthy")
+		
+		if not roles.has("Aggressive"):
+			roles.append("Aggressive")
+		
+		roles.sort()
+		newCard.role = "/".join(roles)
+	if %battleManager.loudNoiseActive and "Aggressive" in newCard.role and isPlayer:
+		newCard.value -= 1
 	
 	if %battleManager.noDefenseActive and "Defensive" in newCard.role and isPlayer:
 		newCard.value = 0

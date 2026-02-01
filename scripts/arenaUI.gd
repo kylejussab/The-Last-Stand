@@ -159,6 +159,7 @@ func _fade_with_round_reset() -> void:
 	%pauseIcon/text.text = "PAUSE"
 	change_mood(Actor.Type.PLAYER, Actor.Mood.NEUTRAL)
 	change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
+	set_indicator(Actor.Type.NONE)
 	_reset_game_over_ui()
 	_reset_board_state()
 	

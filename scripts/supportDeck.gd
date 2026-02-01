@@ -88,7 +88,7 @@ func play_shuffle_sound():
 	soundPlayer.play()
 
 # Privates
-func _create_card_instance(cardKey: String, scenePath: String, _isPlayer: bool = false) -> Node2D:
+func _create_card_instance(cardKey: String, scenePath: String, isPlayer: bool = false) -> Node2D:
 	var cardScene = load(scenePath)
 	var newCard = cardScene.instantiate()
 	
@@ -107,7 +107,21 @@ func _create_card_instance(cardKey: String, scenePath: String, _isPlayer: bool =
 	# Pass raw perk text if available
 	if data.size() > 5:
 		newCard.perkDescription = data[5]
-
+	
+	if %battleManager.loudNoiseActive and "Stealthy" in newCard.role and isPlayer:
+		var roles = Array(newCard.role.split("/"))
+		
+		if roles.size() != 5:
+			roles.erase("Stealthy")
+			
+			if not roles.has("Aggressive"):
+				roles.append("Aggressive")
+			
+			roles.sort()
+			newCard.role = "/".join(roles)
+	if %battleManager.loudNoiseActive and "Aggressive" in newCard.role and isPlayer and newCard.role.split("/").size() != 5:
+		newCard.value -= 1
+	
 	newCard.get_node("value").text = str(newCard.value)
 	newCard.get_node("name").text = newCard.nameText
 	newCard.get_node("imageBack").texture = load("res://assets/cards/CardBackBlank.png")
@@ -115,7 +129,6 @@ func _create_card_instance(cardKey: String, scenePath: String, _isPlayer: bool =
 	if cardDatabaseReference.PERKS.has(cardKey):
 		newCard.perk = load(cardDatabaseReference.PERKS[cardKey]).new()
 	
-	# --- ICON SETUP ---
 	var iconsNode = newCard.get_node("icons")
 	iconsNode.get_node("faction").visible = false
 	
@@ -135,10 +148,9 @@ func _create_card_instance(cardKey: String, scenePath: String, _isPlayer: bool =
 				perkSprites[i].texture = load("res://assets/cardIcons/" + activePerks[i] + ".png")
 			else:
 				perkSprites[i].visible = false
-
-	# --- THE MAGIC VISUAL UPDATE ---
+	
 	newCard.update_visuals()
-
+	
 	$"../cardManager".add_child(newCard)
 	return newCard
 

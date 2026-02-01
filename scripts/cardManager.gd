@@ -108,6 +108,17 @@ func connect_card_signals(card):
 func on_card_hover_enter(card):
 	if draggedCard: return
 	
+	var isCardDisabled: bool = false
+	
+	if "type" in card and card.type == "Character" and card.canBePlayed == false:
+		isCardDisabled = true
+
+	if isCardDisabled:
+		if hoveredCard:
+			highlight_card(hoveredCard, false)
+		hoveredCard = null
+		return
+	
 	if hoveredCard and hoveredCard != card:
 		highlight_card(hoveredCard, false)
 	
@@ -183,7 +194,7 @@ func auto_play_card(card):
 		var characterSlot = $"../cardSlots/cardSlotCharacter"
 		var supportSlot = $"../cardSlots/cardSlotSupport"
 		
-		if card.type == "Character" && !characterSlot.occupied:
+		if card.type == "Character" && !characterSlot.occupied && card.canBePlayed:
 			move_card_on_double_click(card, characterSlot)
 		elif card.type == "Support" && $"../battleManager".playerCharacterCard && card.canBePlayed:
 			move_card_on_double_click(card, supportSlot)

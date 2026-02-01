@@ -1,4 +1,4 @@
-[gd_scene load_steps=159 format=3 uid="uid://dgb52shq4jcyg"]
+[gd_scene load_steps=160 format=3 uid="uid://dgb52shq4jcyg"]
 
 [ext_resource type="Script" uid="uid://dgl6h7ryesfn8" path="res://scripts/cardManager.gd" id="1_0wfyh"]
 [ext_resource type="Script" uid="uid://c3p2rmoacsirj" path="res://scripts/inputManager.gd" id="1_o6xl0"]
@@ -27,6 +27,7 @@
 [ext_resource type="Texture2D" uid="uid://d2oxvh8kvsjse" path="res://assets/arenaHeads/JuneHappy.png" id="18_pm3ni"]
 [ext_resource type="AudioStream" uid="uid://b3d3fqc8ee6t7" path="res://assets/sounds/ui/buttonBack.wav" id="20_qkpxi"]
 [ext_resource type="AudioStream" uid="uid://b2sa8g17hxiwa" path="res://assets/sounds/cards/hover.wav" id="21_5q0nq"]
+[ext_resource type="AudioStream" uid="uid://cdqholmjoftew" path="res://assets/sounds/cards/lock.wav" id="22_5he1u"]
 [ext_resource type="Texture2D" uid="uid://dxbmvsoua68c4" path="res://assets/ui/GameOverOverlay.png" id="22_jscy8"]
 [ext_resource type="AudioStream" uid="uid://bams0u5k7sdgr" path="res://assets/sounds/ui/buttonClick.wav" id="23_y6deb"]
 [ext_resource type="AudioStream" uid="uid://cufo3kt8n8vs2" path="res://assets/sounds/ui/buttonHover.wav" id="24_og1vs"]
@@ -1198,6 +1199,10 @@ unique_name_in_owner = true
 stream = ExtResource("21_5q0nq")
 volume_db = -10.0
 
+[node name="CardLockSound" type="AudioStreamPlayer2D" parent="arena"]
+unique_name_in_owner = true
+stream = ExtResource("22_5he1u")
+
 [node name="image" type="Sprite2D" parent="arena"]
 position = Vector2(960, 540)
 scale = Vector2(0.24000001, 0.24000001)
@@ -2183,7 +2188,7 @@ alignment = 0
 
 [node name="pause" type="Node2D" parent="arena"]
 visible = false
-z_index = 201
+z_index = 601
 script = ExtResource("30_fv21b")
 
 [node name="overlay" type="ColorRect" parent="arena/pause"]

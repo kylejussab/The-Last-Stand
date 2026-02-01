@@ -15,14 +15,19 @@ var minimumCardsForReshuffle: int = 5
 
 # Modifiers
 var cardRotActive: bool = false
+var guerrilaTacticsActive: bool = false
 var infectedDeckActive: bool = false
 var slowBleedActive: bool = false
 var alwaysFirstActive: bool = false
 var volatileHandActive: bool = false
 var reducedHandActive: bool = false
 var noDefenseActive: bool = false
+var loudNoiseActive: bool = false
 var loneWolfActive: bool = false
 var supplyLineActive: bool = false
+
+var previousRoundFaction: String = ""
+var previousRoundRoles: Array = []
 
 var maximumCharacterCardsInHand: int = 4
 var maximumSupportCardsInHand: int = 4
@@ -130,6 +135,10 @@ func add_modifier(modifier: Database.Modifier) -> void:
 			cardRotActive = true
 		Database.Modifier.NO_DEFENSE:
 			noDefenseActive = true
+		Database.Modifier.LOUD_NOISE:
+			loudNoiseActive = true
+		Database.Modifier.GUERRILA_TACTICS:
+			guerrilaTacticsActive = true
 		Database.Modifier.INFECTED_DECK:
 			infectedDeckActive = true
 		Database.Modifier.REDUCED_HAND:
@@ -178,6 +187,12 @@ func remove_modifier(modifier: Database.Modifier) -> void:
 			cardRotActive = false
 		Database.Modifier.NO_DEFENSE:
 			noDefenseActive = false
+		Database.Modifier.LOUD_NOISE:
+			loudNoiseActive = false
+		Database.Modifier.GUERRILA_TACTICS:
+			guerrilaTacticsActive = false
+			previousRoundFaction = ""
+			previousRoundRoles.clear()
 		Database.Modifier.INFECTED_DECK:
 			infectedDeckActive = false
 		Database.Modifier.REDUCED_HAND:
@@ -422,6 +437,9 @@ func _conclude_match() -> void:
 	discardedCardZIndex = 1
 
 func _start_new_round() -> void:
+	previousRoundFaction = playerCharacterCard.faction
+	previousRoundRoles = Array(playerCharacterCard.role.split("/"))
+	
 	playerCharacterCard = null
 	playerSupportCard = null
 	opponentCharacterCard = null
@@ -433,6 +451,8 @@ func _start_new_round() -> void:
 	
 	# Shuffle cards from discard back into decks if needed
 	await _repopulate_decks()
+	
+	_apply_guerrila_tactics_restrictions()
 	
 	if GameStats.roundNumber % 2 == 0 and !alwaysFirstActive:
 		whoStartedRound = Actor.Type.OPPONENT
@@ -729,7 +749,6 @@ func _repopulate_hand(hand: Array, who: Actor.Type) -> void:
 			supportDeckReference.draw_opponent_card()
 			supportCount += 1
 			await get_tree().create_timer(CARD_MOVE_SPEED).timeout
-	
 	lockPlayerInput = false
 
 func _repopulate_decks(endGame: bool = false) -> void:
@@ -877,7 +896,76 @@ func _deal_damage(who: Actor.Type, amount: int, isDelay: bool = true) -> void:
 	currentHealth -= amount
 	ui.update_health(who, currentHealth)
 	
-	if who == Actor.Type.PLAYER:
-		GameStats.playerHealthValue = currentHealth
-	
 	await ui.play_damage_effect(who, amount)
+
+func _apply_guerrila_tactics_restrictions() -> void:
+	for card in playerHand:
+		if card.type == "Character":
+			card.canBePlayed = true
+	
+	if not guerrilaTacticsActive or previousRoundFaction == "":
+		for card in playerHand:
+			if card.type == "Character":
+				_animate_card_unlock(card)
+		return
+	
+	var cards_to_lock: Array = []
+	
+	for card in playerHand:
+		if card.type == "Character":
+			var isRestricted: bool = false
+			
+			if card.faction == previousRoundFaction:
+				isRestricted = true
+			
+			if not isRestricted:
+				var currentCardRoles = card.role.split("/")
+				for role in currentCardRoles:
+					if role in previousRoundRoles:
+						isRestricted = true
+						break
+			
+			if isRestricted:
+				cards_to_lock.append(card)
+	
+	var totalCharacters: int = 0
+	for card in playerHand:
+		if is_instance_valid(card) and card.type == "Character":
+			totalCharacters += 1
+			
+	
+	var fail_safe_active = (totalCharacters > 0 and cards_to_lock.size() == totalCharacters)
+	
+	if fail_safe_active:
+		for card in cards_to_lock:
+			card.canBePlayed = false
+			_animate_card_lock(card)
+		
+		await get_tree().create_timer(0.5).timeout
+		
+		for card in playerHand:
+			if card.type == "Character":
+				card.canBePlayed = true
+				_animate_card_unlock(card)
+				
+	else:
+		for card in playerHand:
+			if card.type == "Character":
+				if card in cards_to_lock:
+					card.canBePlayed = false
+					_animate_card_lock(card)
+				else:
+					card.canBePlayed = true
+					_animate_card_unlock(card)
+
+func _animate_card_lock(card):
+	if card.get_node("lockIcon/top").modulate.a < 0.9:
+		card.get_node("AnimationPlayer").play("lock")
+		await get_tree().create_timer(0.35).timeout
+		%CardLockSound.play()
+
+func _animate_card_unlock(card):
+	if card.get_node("lockIcon/top").modulate.a > 0.1:
+		card.get_node("AnimationPlayer").play_backwards("lock")
+		await get_tree().create_timer(0.35).timeout
+		%CardLockSound.play()

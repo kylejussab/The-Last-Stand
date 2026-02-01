@@ -145,17 +145,17 @@ var AVATARS = {
 
 const JUNE_OPPONENTS = [Actor.Avatar.ETHAN, Actor.Avatar.UCKMANN, Actor.Avatar.ALLEY, Actor.Avatar.MIRA, Actor.Avatar.RHEA]
 
-enum Modifier { REDUCED_HAND, VOLATILE_HAND, SLOW_BLEED, NO_DEFENSE, INFECTED_DECK, ALWAYS_FIRST, LONE_WOLF, SUPPLY_LINE, CARD_ROT }
+enum Modifier { REDUCED_HAND, VOLATILE_HAND, GUERRILA_TACTICS, SLOW_BLEED, NO_DEFENSE, LOUD_NOISE, INFECTED_DECK, ALWAYS_FIRST, LONE_WOLF, SUPPLY_LINE, CARD_ROT }
 
 const MODIFIERS = {
 	Modifier.REDUCED_HAND: {
 		"id": Modifier.REDUCED_HAND,
 		"name": "Reduced Hand",
-		"description": "Maximum hand size reduced to 6.",
+		"description": "Your maximum hand size is reduced to 6.",
 		"icon": "res://assets/modifiers/Reduced Hand.png",
 		"tier": 1,
 		"multiplier": 0.5,
-		"duration": 1, #3
+		"duration": 3,
 	},
 	Modifier.VOLATILE_HAND: {
 		"id": Modifier.VOLATILE_HAND,
@@ -164,6 +164,15 @@ const MODIFIERS = {
 		"icon": "res://assets/modifiers/Volatile Hand.png",
 		"tier": 1,
 		"multiplier": 0.75,
+		"duration": 3,
+	},
+	Modifier.GUERRILA_TACTICS: {
+		"id": Modifier.GUERRILA_TACTICS,
+		"name": "Guerrila Tactics",
+		"description": "Consecutive character cards cannot be the same faction or type.",
+		"icon": "res://assets/modifiers/Stale Tactics.png",
+		"tier": 1,
+		"multiplier": 1.0,
 		"duration": 3,
 	},
 	Modifier.SLOW_BLEED: {
@@ -179,10 +188,19 @@ const MODIFIERS = {
 	Modifier.NO_DEFENSE: {
 		"id": Modifier.NO_DEFENSE,
 		"name": "No Defense",
-		"description": "Defensive cards have 0 value. Their perks still activate.",
+		"description": "Your defensive character cards have 0 value. Their perks still activate.",
 		"icon": "res://assets/modifiers/No Defense.png",
 		"tier": 2,
 		"multiplier": 1.5,
+		"duration": 2,
+	},
+	Modifier.LOUD_NOISE: {
+		"id": Modifier.LOUD_NOISE,
+		"name": "Loud Noise",
+		"description": "All your stealth cards become aggressive. All your aggressive cards lose -1 value.",
+		"icon": "res://assets/modifiers/Loud Noise.png",
+		"tier": 2,
+		"multiplier": 1.75,
 		"duration": 2,
 	},
 	Modifier.INFECTED_DECK: {
@@ -206,7 +224,7 @@ const MODIFIERS = {
 	Modifier.LONE_WOLF: {
 		"id": Modifier.LONE_WOLF,
 		"name": "Lone Wolf",
-		"description": "Support cards are disabled. Character values increased by +50%",
+		"description": "Your support cards are disabled. Character values increased by +50%",
 		"icon": "res://assets/modifiers/Lone Wolf.png",
 		"tier": 3,
 		"multiplier": 2.75,
@@ -215,7 +233,7 @@ const MODIFIERS = {
 	Modifier.SUPPLY_LINE: {
 		"id": Modifier.SUPPLY_LINE,
 		"name": "Supply Line",
-		"description": "Hand contains only support cards. Your character is auto played from the deck.",
+		"description": "Your hand contains only support cards. Your character is auto played from the deck.",
 		"icon": "res://assets/modifiers/Supply Line.png",
 		"tier": 3,
 		"multiplier": 3.0,

@@ -249,7 +249,7 @@ func get_card_stats(playedCards):
 	return {"faction": topFaction, "card": cardName}
 
 func animate_score_tick(label, start_score: int, end_score: int):
-	var duration = 0.0 if AccessibilityData.animationsEnabled else 2.0 
+	var duration = 0.0 if AccessibilityData.animationsDisabled else 2.0 
 
 	var tween = create_tween()
 	

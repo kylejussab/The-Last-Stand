@@ -10,7 +10,9 @@ var centerScreenX: float
 func _ready() -> void:
 	centerScreenX = get_viewport().get_visible_rect().size.x / 2
 
-func add_card_to_hand(card, speed):
+func add_card_to_hand(card, speed) -> Tween:
+	var resultingTween: Tween
+	
 	if card not in playerHand:
 		if card.type == "Character":
 			var split_index = 0
@@ -22,11 +24,13 @@ func add_card_to_hand(card, speed):
 			playerHand.insert(split_index, card)
 		else:
 			playerHand.append(card)
-		update_hand_positions(speed)
+		resultingTween = update_hand_positions(speed)
 		
 		card.get_node("Area2D/CollisionShape2D").disabled = false
 	else:
 		animate_card_to_position(card, card.handPosition, DEFAULT_CARD_MOVE_SPEED)
+	
+	return resultingTween
 
 func remove_card_from_hand(card):
 	if card in playerHand:
@@ -38,14 +42,19 @@ func calculate_card_position(index):
 	var cardPosition = centerScreenX + index * CARD_WIDTH - offset / 2.0
 	return cardPosition
 
-func update_hand_positions(speed):
+func update_hand_positions(speed) -> Tween:
+	var lastTween: Tween
+	
 	for i in range(playerHand.size()):
 		var newPosition = Vector2(calculate_card_position(i), HAND_Y_POSITION)
 		var card = playerHand[i]
 		card.handPosition = newPosition
 		
-		animate_card_to_position(card, newPosition, speed)
+		lastTween = animate_card_to_position(card, newPosition, speed)
+	
+	return lastTween
 
-func animate_card_to_position(card, newPosition, speed):
+func animate_card_to_position(card, newPosition, speed) -> Tween:
 	var tween = get_tree().create_tween()
 	tween.tween_property(card, "position", newPosition, speed)
+	return tween
