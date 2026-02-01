@@ -145,7 +145,7 @@ var AVATARS = {
 
 const JUNE_OPPONENTS = [Actor.Avatar.ETHAN, Actor.Avatar.UCKMANN, Actor.Avatar.ALLEY, Actor.Avatar.MIRA, Actor.Avatar.RHEA]
 
-enum Modifier { REDUCED_HAND, VOLATILE_HAND, GUERRILA_TACTICS, SLOW_BLEED, NO_DEFENSE, LOUD_NOISE, INFECTED_DECK, ALWAYS_FIRST, LONE_WOLF, SUPPLY_LINE, CARD_ROT }
+enum Modifier { REDUCED_HAND, VOLATILE_HAND, GUERRILLA_TACTICS, SLOW_BLEED, NO_DEFENSE, LOUD_NOISE, INFECTED_DECK, ALWAYS_FIRST, LONE_WOLF, SUPPLY_LINE, CARD_ROT }
 
 const MODIFIERS = {
 	Modifier.REDUCED_HAND: {
@@ -166,11 +166,11 @@ const MODIFIERS = {
 		"multiplier": 0.75,
 		"duration": 3,
 	},
-	Modifier.GUERRILA_TACTICS: {
-		"id": Modifier.GUERRILA_TACTICS,
-		"name": "Guerrila Tactics",
+	Modifier.GUERRILLA_TACTICS: {
+		"id": Modifier.GUERRILLA_TACTICS,
+		"name": "Guerrilla Tactics",
 		"description": "Consecutive character cards cannot be the same faction or type.",
-		"icon": "res://assets/modifiers/Guerrila Tactics.png",
+		"icon": "res://assets/modifiers/Guerrilla Tactics.png",
 		"tier": 1,
 		"multiplier": 1.0,
 		"duration": 3,

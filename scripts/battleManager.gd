@@ -15,7 +15,7 @@ var minimumCardsForReshuffle: int = 5
 
 # Modifiers
 var cardRotActive: bool = false
-var guerrilaTacticsActive: bool = false
+var guerrillaTacticsActive: bool = false
 var infectedDeckActive: bool = false
 var slowBleedActive: bool = false
 var alwaysFirstActive: bool = false
@@ -142,8 +142,8 @@ func add_modifier(modifier: Database.Modifier) -> void:
 			noDefenseActive = true
 		Database.Modifier.LOUD_NOISE:
 			loudNoiseActive = true
-		Database.Modifier.GUERRILA_TACTICS:
-			guerrilaTacticsActive = true
+		Database.Modifier.GUERRILLA_TACTICS:
+			guerrillaTacticsActive = true
 		Database.Modifier.INFECTED_DECK:
 			infectedDeckActive = true
 		Database.Modifier.REDUCED_HAND:
@@ -194,12 +194,8 @@ func remove_modifier(modifier: Database.Modifier) -> void:
 			noDefenseActive = false
 		Database.Modifier.LOUD_NOISE:
 			loudNoiseActive = false
-		Database.Modifier.GUERRILA_TACTICS:
-			guerrilaTacticsActive = false
-			previousRoundFaction = ""
-			previousRoundRoles.clear()
-		Database.Modifier.INFECTED_DECK:
-			infectedDeckActive = false
+		Database.Modifier.GUERRILLA_TACTICS:
+			guerrillaTacticsActive = false
 		Database.Modifier.REDUCED_HAND:
 			reducedHandActive = false
 			maximumCharacterCardsInHand = 4
@@ -457,7 +453,7 @@ func _start_new_round() -> void:
 	# Shuffle cards from discard back into decks if needed
 	await _repopulate_decks()
 	
-	_apply_guerrila_tactics_restrictions()
+	_apply_guerrilla_tactics_restrictions()
 	
 	if GameStats.roundNumber % 2 == 0 and !alwaysFirstActive:
 		whoStartedRound = Actor.Type.OPPONENT
@@ -903,12 +899,12 @@ func _deal_damage(who: Actor.Type, amount: int, isDelay: bool = true) -> void:
 	
 	await ui.play_damage_effect(who, amount)
 
-func _apply_guerrila_tactics_restrictions() -> void:
+func _apply_guerrilla_tactics_restrictions() -> void:
 	for card in playerHand:
 		if card.type == "Character":
 			card.canBePlayed = true
 	
-	if not guerrilaTacticsActive or previousRoundFaction == "":
+	if not guerrillaTacticsActive or previousRoundFaction == "":
 		for card in playerHand:
 			if card.type == "Character":
 				_animate_card_unlock(card)

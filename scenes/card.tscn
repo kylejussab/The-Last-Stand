@@ -7,7 +7,7 @@
 [ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://assets/fonts/SF-Pro-Display-Black.otf" id="4_6ligt"]
 [ext_resource type="Texture2D" uid="uid://d4kwo20uewt85" path="res://assets/cards/BlackCard.png" id="5_6ligt"]
 [ext_resource type="Texture2D" uid="uid://d1gq86jxjk63s" path="res://assets/ui/Lock Base.png" id="5_u8dfr"]
-[ext_resource type="Texture2D" uid="uid://e1pvs7f03co4" path="res://assets/modifiers/Guerrila Tactics.png" id="6_u8dfr"]
+[ext_resource type="Texture2D" uid="uid://e1pvs7f03co4" path="res://assets/modifiers/Guerrilla Tactics.png" id="6_u8dfr"]
 [ext_resource type="Texture2D" uid="uid://bvx2xo56idmcx" path="res://assets/cardIcons/Crafty.png" id="7_nvopj"]
 [ext_resource type="Texture2D" uid="uid://dgdk6y2h230rb" path="res://assets/cardIcons/Defensive.png" id="8_1yd6c"]
 [ext_resource type="Texture2D" uid="uid://ckyjgdo1fykjj" path="res://assets/cardIcons/Jackson.png" id="9_1yd6c"]
