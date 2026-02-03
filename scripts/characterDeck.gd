@@ -164,7 +164,7 @@ func _create_card_instance(cardKey: String, scenePath: String, isPlayer: bool = 
 				perkSprites[i].visible = false
 	
 	newCard.update_visuals()
-
+	
 	$"../cardManager".add_child(newCard)
 	return newCard
 

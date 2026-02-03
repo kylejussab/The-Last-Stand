@@ -134,6 +134,9 @@ func _select_modifiers() -> void:
 		if not modifier["id"] in activeIdModifiers:
 			var tier = modifier["tier"]
 			
+			if modifier.has("healthCost") and GameStats.playerHealthValue <= modifier["healthCost"]:
+				continue
+			
 			if availableModifiers.has(tier):
 				availableModifiers[tier].append(modifier)
 	

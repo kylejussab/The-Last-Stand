@@ -145,7 +145,7 @@ var AVATARS = {
 
 const JUNE_OPPONENTS = [Actor.Avatar.ETHAN, Actor.Avatar.UCKMANN, Actor.Avatar.ALLEY, Actor.Avatar.MIRA, Actor.Avatar.RHEA]
 
-enum Modifier { REDUCED_HAND, VOLATILE_HAND, GUERRILLA_TACTICS, SLOW_BLEED, NO_DEFENSE, LOUD_NOISE, INFECTED_DECK, ALWAYS_FIRST, LONE_WOLF, SUPPLY_LINE, CARD_ROT }
+enum Modifier { REDUCED_HAND, VOLATILE_HAND, GUERRILLA_TACTICS, SLOW_BLEED, NO_DEFENSE, LOUD_NOISE, INFECTED_DECK, ALWAYS_FIRST, FORSAKEN_HONOR, LONE_WOLF, SUPPLY_LINE, CARD_ROT }
 
 const MODIFIERS = {
 	Modifier.REDUCED_HAND: {
@@ -220,6 +220,16 @@ const MODIFIERS = {
 		"tier": 2,
 		"multiplier": 2.25,
 		"duration": 2,
+	},
+	Modifier.FORSAKEN_HONOR: {
+		"id": Modifier.FORSAKEN_HONOR,
+		"name": "Forsaken Honor",
+		"description": "Lose 20 health. Your card’s faction and type are hidden from the opponent.",
+		"icon": "res://assets/modifiers/Forsaken Honor.png",
+		"tier": 3,
+		"multiplier": 1.0,
+		"duration": 2,
+		"healthCost": 20,
 	},
 	Modifier.LONE_WOLF: {
 		"id": Modifier.LONE_WOLF,

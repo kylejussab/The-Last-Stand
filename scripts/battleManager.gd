@@ -25,6 +25,7 @@ var noDefenseActive: bool = false
 var loudNoiseActive: bool = false
 var loneWolfActive: bool = false
 var supplyLineActive: bool = false
+var forsakenHonorActive: bool = false
 
 var previousRoundFaction: String = ""
 var previousRoundRoles: Array = []
@@ -146,6 +147,9 @@ func add_modifier(modifier: Database.Modifier) -> void:
 			guerrillaTacticsActive = true
 		Database.Modifier.INFECTED_DECK:
 			infectedDeckActive = true
+		Database.Modifier.FORSAKEN_HONOR:
+			forsakenHonorActive = true
+			ui.update_health(Actor.Type.PLAYER, GameStats.playerHealthValue - 20)
 		Database.Modifier.REDUCED_HAND:
 			reducedHandActive = true
 			if loneWolfActive:
@@ -196,6 +200,8 @@ func remove_modifier(modifier: Database.Modifier) -> void:
 			loudNoiseActive = false
 		Database.Modifier.GUERRILLA_TACTICS:
 			guerrillaTacticsActive = false
+		Database.Modifier.FORSAKEN_HONOR:
+			forsakenHonorActive = false
 		Database.Modifier.REDUCED_HAND:
 			reducedHandActive = false
 			maximumCharacterCardsInHand = 4
@@ -566,8 +572,21 @@ func _apply_mid_round_perks() -> void:
 		await playerCharacterCard.perk.apply_mid_perk(playerCharacterCard, playerHand, opponentCharacterCard)
 	
 	if opponentCharacterCard.perk && opponentCharacterCard.perk.timing == "midRound":
+		# Temporary hiding for forsaken honor perk
+		var playerRealRole = playerCharacterCard.role
+		var playerRealFaction = playerCharacterCard.faction
+		
+		if forsakenHonorActive:
+			playerCharacterCard.role = "Unknown"
+			playerCharacterCard.faction = "Unknown"
+		
 		await get_tree().create_timer(PERK_CALCULATION_TIME).timeout
 		await opponentCharacterCard.perk.apply_mid_perk(opponentCharacterCard, opponentHand, playerCharacterCard)
+		
+		if forsakenHonorActive:
+			playerCharacterCard.role = playerRealRole
+			playerCharacterCard.faction = playerRealFaction
+			_update_playable_support_cards()
 	
 	# Handle the runner perk
 	_handle_runner_perk()
@@ -594,7 +613,20 @@ func _apply_end_round_perks() -> void:
 		await playerCharacterCard.perk.apply_end_perk(playerCharacterCard, playerSupportCard, opponentCharacterCard, opponentSupportCard, playerHand)
 	
 	if opponentCharacterCard.perk && opponentCharacterCard.perk.timing == "endRound":
+		# Temporary hiding for forsaken honor perk
+		var playerRealRole = playerCharacterCard.role
+		var playerRealFaction = playerCharacterCard.faction
+		
+		if forsakenHonorActive:
+			playerCharacterCard.role = "Unknown"
+			playerCharacterCard.faction = "Unknown"
+			
 		await opponentCharacterCard.perk.apply_end_perk(opponentCharacterCard, opponentSupportCard, playerCharacterCard, playerSupportCard, opponentHand)
+		
+		if forsakenHonorActive:
+			playerCharacterCard.role = playerRealRole
+			playerCharacterCard.faction = playerRealFaction
+			_update_playable_support_cards()
 	
 	# Check for the supply cache
 	if playerSupportCard && playerSupportCard.perk && playerSupportCard.perk.timing == "endRound":
