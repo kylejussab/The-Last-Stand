@@ -1,14 +1,16 @@
 extends Node2D
 
-@onready var playerNameLabel = $player/name
-@onready var playerHealthLabel = $player/value
-@onready var playerHead = $player/head
+@onready var playerNameLabel: Label = $player/name
+@onready var playerHealthLabel: Label = $player/value
+@onready var playerHead: Node2D = $player/head
 
-@onready var opponentNameLabel = $opponent/name
-@onready var opponentHealthLabel = $opponent/value
-@onready var opponentHead = $opponent/head
+@onready var opponentNameLabel: Label = $opponent/name
+@onready var opponentHealthLabel: Label = $opponent/value
+@onready var opponentHead: Node2D = $opponent/head
 
-@onready var battleManager = %battleManager
+@onready var battleManager: Node = %battleManager
+@onready var battleAnimator: Node = %battleAnimator
+@onready var modifierUI: Node2D = %modifier
 
 func _ready() -> void:
 	for button in %gameOver.get_children():
@@ -26,12 +28,12 @@ func update_health(who: Actor.Type, value: int, instant: bool = false) -> void:
 	if who == Actor.Type.PLAYER:
 		Database.AVATARS[GameStats.currentPlayer].health = value
 	
-	if Settings.reduceAnimations or instant:
-		label.text = str(value)
+	if AccessibilityData.animationsDisabled or instant:
+		label.text = "%02d" % value
 	else:
 		var tween = create_tween()
 		tween.tween_method(
-			func(val: int): label.text = str(val),
+			func(val: int): label.text = ("-" if val < 0 else "") + "%02d" % abs(val),
 			startValue,
 			value,
 			1.0
@@ -116,42 +118,62 @@ func show_end_turn_button(visibility: bool = true) -> void:
 	%EndTurnButton.visible = visibility
 	%EndTurnButton.disabled = !visibility
 
-# Helpers
+# Privates
 func _on_replay_button_pressed() -> void:
 	GameStats.replayedRound = true
-	GameStats.gameMode = "Last Stand"
+	
+	if GameStats.gameMode == GameStats.Mode.LAST_STAND_ROUND_COMPLETED:
+		GameStats.gameMode = GameStats.Mode.LAST_STAND
+	
 	_fade_with_round_reset()
 
 func _on_continue_button_pressed() -> void:
-	GameStats.currentOpponent = _get_next_opponent()
-	GameStats.playerHealthValue = int(playerHealthLabel.text)
 	GameStats.replayedRound = false
 	GameStats.lastStandTotalScore += GameStats.lastStandCurrentRoundScore
-	GameStats.gameMode = "Last Stand"
+	
+	if GameStats.gameMode == GameStats.Mode.LAST_STAND_ROUND_COMPLETED:
+		GameStats.playerHealthValue = int(playerHealthLabel.text)
+		GameStats.gameMode = GameStats.Mode.LAST_STAND
+	
+	battleAnimator.handle_modifier_durations()
+	
 	_fade_with_round_reset()
 
 func _on_main_menu_button_pressed() -> void:
-	GameStats.gameMode = "Main Menu"
+	GameStats.gameMode = GameStats.Mode.MAIN_MENU
 	Curtain.change_scene("res://scenes/mainMenu.tscn")
 
+func _on_new_run_button_pressed() -> void:
+	GameStats.gameMode = GameStats.Mode.LAST_STAND
+	GameStats.reset_all_data()
+	
+	GameStats.start_new_run_log()
+	
+	Curtain.change_scene("res://scenes/main.tscn")
+
+# Helpers
 func _fade_with_round_reset() -> void:
 	await Curtain.fade_in()
 	
+	%bubbleContainer.clear_modifiers()
 	%pauseIcon/text.text = "PAUSE"
-	
 	change_mood(Actor.Type.PLAYER, Actor.Mood.NEUTRAL)
 	change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
-	
+	set_indicator(Actor.Type.NONE)
 	_reset_game_over_ui()
 	_reset_board_state()
 	
 	update_health(Actor.Type.PLAYER, GameStats.playerHealthValue, true)
-	battleManager.setupArena(GameStats.currentPlayer, GameStats.currentOpponent)
-	await get_tree().create_timer(1).timeout
 	
+	await get_tree().create_timer(1).timeout
 	Curtain.fade_out()
 	
-	battleManager.resetArena()
+	battleManager.prepare_opponent()
+	
+	if GameStats.numberOfWins % 2 == 0 and not GameStats.replayedRound:
+		modifierUI.show_modifier_menu()
+	else:
+		battleManager.initialize_game()
 
 func _reset_game_over_ui() -> void:
 	%gameOver.visible = false
@@ -165,25 +187,11 @@ func _reset_board_state() -> void:
 	battleManager.lockPlayerInput = true
 	show_end_turn_button(false)
 	GameStats.reset_round_stats()
-	%playerHand.playerHand = []
-	%opponentHand.opponentHand = []
+	%playerHand.playerHand.clear()
+	%opponentHand.opponentHand.clear()
 	
+	%cardSlotSupport.occupied = false
+	%cardSlotCharacter.occupied = false
 	# Clean up older scene children
 	for card in %cardManager.get_children():
 		card.queue_free()
-
-func _get_next_opponent() -> Actor.Avatar:
-	if GameStats.opponentList.is_empty():
-		var list = Database.AVATARS.keys()
-		list.erase(GameStats.currentPlayer)
-		
-		if GameStats.currentOpponent in list and list.size() > 1:
-			list.erase(GameStats.currentOpponent)
-			list.shuffle()
-			list.push_back(GameStats.currentOpponent)
-		else:
-			list.shuffle()
-		
-		GameStats.opponentList = list
-	
-	return GameStats.opponentList.pop_front()

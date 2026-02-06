@@ -15,141 +15,37 @@ var shuffleSounds = [
 	preload("res://assets/sounds/cards/shuffle_4.wav")
 ]
 
-#var deck = [
-	#"TheProphet",
-	#"Emily",
-	#"Ezra",
-	#"Lyra",
-	#"SeraphiteBrute",
-	#"Alice",
-	#"Eugene",
-	#"Riley",
-	#"Bill",
-	#"Runner",
-	#"Tommy",
-	#"Nora",
-	#"Lev",
-	#"RatKing",
-	#"Stalker",
-	#"Clicker",
-	#"Stalker",
-	#"Yara",
-	#"Dina",
-	#"Bloater",
-	#"Joel",
-	#"Marlene",
-	#"Malik",
-	#"Jessie",
-	#"Ellie",
-	#"Abby",
-	#"FireflySoldier",
-	#"FireflySoldier",
-	#"Isaac",
-	#"WLFSoldier",
-	#"TommyFirefly",
-	#"Manny",
-	#"Li",
-	#"Runner",
-	#"Runner",
-	#"Stalker",
-#]
-
-var deck = [
-	"Runner", "Runner", "Runner", "Runner",
-	"Stalker", "Stalker", "Stalker",
-	"FireflySoldier", "FireflySoldier", "FireflySoldier",
-	"WLFSoldier", "WLFSoldier",
-	"SeraphiteBrute", "SeraphiteBrute",
-	
-	"Clicker", "Clicker",
-	"Bloater",
-	"Emily", "Ezra", "Lev", "Yara",
-	"Nora", "Manny", "Alice",
-	"Bill", "Dina", "Jessie", "Tommy", "TommyFirefly",
-	"Riley", "Eugene", "Malik",
-	
-	"Joel",
-	"Ellie",
-	"Abby",
-	"Isaac",
-	"TheProphet",
-	"Marlene",
-	"RatKing",
-]
+var deck: Array
 
 var cardDatabaseReference
 
 func _ready() -> void:
-	deck.shuffle()
-	
 	$RichTextLabel.text = str(deck.size())
 	cardDatabaseReference = preload("res://scripts/database.gd")
 
-func draw_card():
+func draw_card() -> Tween:
 	var cardDrawn = deck[0]
 	deck.erase(cardDrawn)
 	
-	if deck.size() == 0:
-		$Area2D/CollisionShape2D.disabled = true
-		$image.visible = false
-	
 	$RichTextLabel.text = str(deck.size())
-	var cardScene = preload(PLAYER_CARD_SCENE_PATH)
-	var newCard = cardScene.instantiate()
-	var cardImagePath = str("res://assets/cards/" + cardDrawn + "Card.png")
-	newCard.cardKey = cardDrawn
-	newCard.position = CHARACTER_DECK_POSITION
 	
-	# Add the perk
-	if cardDatabaseReference.PERKS.has(cardDrawn):
-		newCard.perk = load(cardDatabaseReference.PERKS[cardDrawn]).new()
-		newCard.get_node("supportingText").get_node("text").texture = load("res://assets/cardDescriptions/" + cardDrawn + ".png")
+	var newCard = _create_card_instance(cardDrawn, PLAYER_CARD_SCENE_PATH, true)
 	
-	newCard.get_node("image").texture = load(cardImagePath)
-	newCard.get_node("imageBack").texture = load("res://assets/cards/CardBackBlank.png")
-	newCard.get_node("value").text = str(cardDatabaseReference.CHARACTERS[cardDrawn][0])
-	newCard.value = cardDatabaseReference.CHARACTERS[cardDrawn][0]
-	newCard.type = cardDatabaseReference.CHARACTERS[cardDrawn][1]
-	newCard.faction = cardDatabaseReference.CHARACTERS[cardDrawn][2]
-	newCard.role = cardDatabaseReference.CHARACTERS[cardDrawn][3]
-	newCard.canBePlayed = true
-	
-	$"../cardManager".add_child(newCard)
-	newCard.name = "Card"
-	$"../playerHand".add_card_to_hand(newCard, CARD_DRAW_SPEED)
+	var tween = $"../playerHand".add_card_to_hand(newCard, CARD_DRAW_SPEED)
 	
 	newCard.get_node("AnimationPlayer").play("cardFlip")
 	newCard.play_draw_sound()
+	
+	return tween
 
 func draw_opponent_card():
 	var cardDrawn = deck[0]
 	deck.erase(cardDrawn)
 	
-	if deck.size() == 0:
-		$image.visible = false
-	
 	$RichTextLabel.text = str(deck.size())
-	var cardScene = preload(OPPONENT_CARD_SCENE_PATH)
-	var newCard = cardScene.instantiate()
-	var cardImagePath = str("res://assets/cards/" + cardDrawn + "Card.png")
-	newCard.cardKey = cardDrawn
-	newCard.position = CHARACTER_DECK_POSITION
 	
-	# Add the perk
-	if cardDatabaseReference.PERKS.has(cardDrawn):
-		newCard.perk = load(cardDatabaseReference.PERKS[cardDrawn]).new()
+	var newCard = _create_card_instance(cardDrawn, OPPONENT_CARD_SCENE_PATH)
 	
-	newCard.get_node("image").texture = load(cardImagePath)
-	newCard.get_node("imageBack").texture = load("res://assets/cards/CardBackBlank.png")
-	newCard.get_node("value").text = str(cardDatabaseReference.CHARACTERS[cardDrawn][0])
-	newCard.value = cardDatabaseReference.CHARACTERS[cardDrawn][0]
-	newCard.type = cardDatabaseReference.CHARACTERS[cardDrawn][1]
-	newCard.faction = cardDatabaseReference.CHARACTERS[cardDrawn][2]
-	newCard.role = cardDatabaseReference.CHARACTERS[cardDrawn][3]
-	newCard.canBePlayed = true
-	
-	$"../cardManager".add_child(newCard)
-	newCard.name = "Card"
 	$"../opponentHand".add_card_to_hand(newCard, CARD_DRAW_SPEED)
 	newCard.play_draw_sound()
 	
@@ -160,13 +56,24 @@ func draw_opponent_card():
 		newCard.get_node("image").visible = false
 
 func reshuffle_from_discards(discardedCards):
+	var processedNodes = []
+
 	for card in discardedCards:
+		if not is_instance_valid(card):
+			continue
+		
+		if card in processedNodes:
+			continue
+		
+		processedNodes.append(card)
+		
 		deck.append(card.cardKey)
 		
 		card.play_draw_sound()
 		await move_card_back_to_deck(card)
 		
-		card.queue_free()
+		if is_instance_valid(card):
+			card.queue_free()
 		
 	deck.shuffle()
 	
@@ -175,7 +82,7 @@ func reshuffle_from_discards(discardedCards):
 	tween.tween_property($image, "scale", Vector2(0.288, 0.288), 0.15)
 	await tween.finished
 	
-	play_shuffle_sound()
+	_play_shuffle_sound()
 	
 	await get_tree().create_timer(0.2).timeout
 	var tween_back = create_tween().set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
@@ -189,7 +96,103 @@ func move_card_back_to_deck(card):
 	tween.tween_property(card, "position", CHARACTER_DECK_POSITION, 0.1)
 	await tween.finished
 
-func play_shuffle_sound():
+# Privates
+func _create_card_instance(cardKey: String, scenePath: String, isPlayer: bool = false) -> Node2D:
+	var cardScene = load(scenePath)
+	var newCard = cardScene.instantiate()
+	
+	newCard.cardKey = cardKey
+	newCard.position = CHARACTER_DECK_POSITION
+	newCard.name = "Card"
+	newCard.canBePlayed = true
+
+	var data = cardDatabaseReference.CHARACTERS[cardKey]
+	newCard.value = data[0]
+	newCard.type = data[1]
+	newCard.faction = data[2]
+	newCard.role = data[3]
+	newCard.nameText = data[4]
+	
+	if data.size() > 5:
+		newCard.perkDescription = data[5]
+	
+	if %battleManager.loudNoiseActive and "Stealthy" in newCard.role and isPlayer:
+		var roles = Array(newCard.role.split("/"))
+		
+		roles.erase("Stealthy")
+		
+		if not roles.has("Aggressive"):
+			roles.append("Aggressive")
+		
+		roles.sort()
+		newCard.role = "/".join(roles)
+	if %battleManager.loudNoiseActive and "Aggressive" in newCard.role and isPlayer:
+		newCard.value -= 1
+	
+	if %battleManager.noDefenseActive and "Defensive" in newCard.role and isPlayer:
+		newCard.value = 0
+	if %battleManager.loneWolfActive and isPlayer:
+		newCard.value *= 1.5
+	
+	newCard.get_node("value").text = str(newCard.value)
+	newCard.get_node("name").text = newCard.nameText
+	
+	newCard.get_node("imageBack").texture = load("res://assets/cards/CardBackBlank.png")
+	
+	if cardDatabaseReference.PERKS.has(cardKey):
+		newCard.perk = load(cardDatabaseReference.PERKS[cardKey]).new()
+	
+	var iconsNode = newCard.get_node("icons")
+	var factionPath = "res://assets/cardIcons/" + newCard.faction + ".png" 
+	iconsNode.get_node("faction").texture = load(factionPath)
+
+	var perkList = newCard.role.split("/") if newCard.role else []
+	var activePerks = []
+	for perk in perkList:
+		if perk != "": activePerks.append(perk)
+	
+	var perkSprites = [iconsNode.get_node("perk1"), iconsNode.get_node("perk2")]
+	
+	if activePerks.is_empty() or activePerks.size() == 5:
+		for sprite in perkSprites: sprite.visible = false
+	else:
+		for i in range(perkSprites.size()):
+			if i < activePerks.size():
+				perkSprites[i].visible = true
+				perkSprites[i].texture = load("res://assets/cardIcons/" + activePerks[i] + ".png")
+			else:
+				perkSprites[i].visible = false
+	
+	newCard.update_visuals()
+	
+	$"../cardManager".add_child(newCard)
+	return newCard
+
+func _play_shuffle_sound():
 	var randomSound = shuffleSounds.pick_random()
 	soundPlayer.stream = randomSound
 	soundPlayer.play()
+
+func spawn_top_card_node() -> Node2D:
+	if deck.is_empty():
+		return null
+	
+	var cardDrawn = deck[0]
+	deck.erase(cardDrawn)
+	
+	$RichTextLabel.text = str(deck.size())
+	
+	var newCard = _create_card_instance(cardDrawn, PLAYER_CARD_SCENE_PATH, true)
+	
+	newCard.get_node("AnimationPlayer").play("cardFlip")
+	newCard.play_draw_sound()
+	
+	return newCard
+
+func apply_card_accessibility_changes():
+	var card_manager = $"../cardManager"
+	if not card_manager: return
+
+	for card in card_manager.get_children():
+		if card.has_method("update_visuals"):
+			card.update_visuals()

@@ -1,60 +1,60 @@
 extends Node2D
 
-const CHARACTERS = { # Value, Type, Faction, Class
-	"Yara": [4, "Character", "Seraphite", "Stealthy"],
-	"Lev": [3, "Character", "Seraphite", "Stealthy/Survivor"],
-	"TheProphet": [6, "Character", "Seraphite", "Stealthy/Defensive"],
-	"Emily": [4, "Character", "Seraphite", "Survivor"],
-	"Ezra": [3, "Character", "Seraphite", "Crafty/Defensive"],
-	"Lyra": [2, "Character", "Seraphite", "Survivor"],
-	"SeraphiteBrute": [5, "Character", "Seraphite", "Aggressive"],
+const CHARACTERS = { # Value, Type, Faction, Class, Card Name Text, Perk Text
+	"Yara": [4, "Character", "Seraphite", "Stealthy", "YARA", "+2 to Lev (if in hand) on round win"],
+	"Lev": [3, "Character", "Seraphite", "Stealthy/Survivor", "LEV", "+5 if round ties"],
+	"TheProphet": [6, "Character", "Seraphite", "Defensive/Stealthy", "THE PROPHET", "+2 if opposing card is Aggressive or Stealthy"],
+	"Emily": [4, "Character", "Seraphite", "Survivor", "EMILY", "+1 for each Seraphite in hand"],
+	"Ezra": [3, "Character", "Seraphite", "Crafty/Defensive", "EZRA"],
+	"Lyra": [2, "Character", "Seraphite", "Survivor", "LYRA"],
+	"SeraphiteBrute": [5, "Character", "Seraphite", "Aggressive", "SERAPHITE BRUTE"],
 	
-	"Abby": [6, "Character", "WLF", "Aggressive"],
-	"Manny": [4, "Character", "WLF", "Defensive"],
-	"Nora": [4, "Character", "WLF", "Stealthy"],
-	"Li": [3, "Character", "WLF", "Survivor"],
-	"WLFSoldier": [3, "Character", "WLF", "Survivor"],
-	"Isaac": [6, "Character", "WLF", "Aggressive/Defensive"],
-	"Alice": [2, "Character", "WLF", "Survivor/Stealthy"],
+	"Abby": [6, "Character", "WLF", "Aggressive", "ABBY", "+2 if opposing card is Aggressive and +1 if opposing card is Infected"],
+	"Manny": [4, "Character", "WLF", "Defensive", "MANNY", "equal value and +2 if opposing card is Aggressive or Defensive"],
+	"Nora": [4, "Character", "WLF", "Stealthy", "NORA", "+1 if opposing card is Crafty"],
+	"Li": [3, "Character", "WLF", "Survivor", "LI"],
+	"WLFSoldier": [3, "Character", "WLF", "Survivor", "WLF SOLDIER", "-3 to opponent, if opposing card is Survivor"],
+	"Isaac": [6, "Character", "WLF", "Aggressive/Defensive", "ISAAC", "+2 if opposing card is Seraphite"],
+	"Alice": [2, "Character", "WLF", "Stealthy/Survivor", "ALICE", "+2 if opposing card is Infected"],
 	
-	"Marlene": [5, "Character", "Firefly", "Crafty"],
-	"FireflySoldier": [2, "Character", "Firefly", "Defensive"],
-	"TommyFirefly": [4, "Character", "Firefly", "Survivor"],
-	"Eugene": [3, "Character", "Firefly", "Crafty/Survivor"],
-	"Riley": [3, "Character", "Firefly", "Stealthy"],
+	"Marlene": [5, "Character", "Firefly", "Crafty", "MARLENE", "+1 if opposing card is Survivor or Stealthy"],
+	"FireflySoldier": [2, "Character", "Firefly", "Defensive", "FIREFLY SOLDIER", "+6 if Marlene in hand"],
+	"TommyFirefly": [4, "Character", "Firefly", "Survivor", "TOMMY", "+3 if no Firefly in hand"],
+	"Eugene": [3, "Character", "Firefly", "Crafty/Survivor", "EUGENE"],
+	"Riley": [3, "Character", "Firefly", "Stealthy", "RILEY"],
 	
-	"Runner": [2, "Character", "Infected", "Aggressive"],
-	"Stalker": [3, "Character", "Infected", "Stealthy"],
-	"Clicker": [5, "Character", "Infected", "Aggressive"],
-	"Bloater": [4, "Character", "Infected", "Defensive"],
-	"RatKing": [8, "Character", "Infected", "Aggressive"],
-	"Malik": [3, "Character", "Infected", "Survivor"],
+	"Runner": [2, "Character", "Infected", "Aggressive", "RUNNER", "gain the value of all runners in hand, and discard them"],
+	"Stalker": [3, "Character", "Infected", "Stealthy", "STALKER", "+2 for each Infected in hand"],
+	"Clicker": [5, "Character", "Infected", "Aggressive", "CLICKER", "-2 to opponent health on round win"],
+	"Bloater": [4, "Character", "Infected", "Defensive", "BLOATER", "-4 to opponent health on round loss of 2 or more"],
+	"RatKing": [8, "Character", "Infected", "Aggressive", "RAT KING", "-4 to opponent health on round win"],
+	"Malik": [3, "Character", "Infected", "Survivor", "MALIK", "+1 for each Infected in hand and +2 if opposing card is Infected"],
 	
-	"Joel": [6, "Character", "Jackson", "Crafty/Defensive"],
-	"Ellie": [5, "Character", "Jackson", "Stealthy/Crafty"],
-	"Dina": [3, "Character", "Jackson", "Stealthy"],
-	"Tommy": [5, "Character", "Jackson", "Aggressive"],
-	"Bill": [4, "Character", "Jackson", "Crafty"],
-	"Jessie": [5, "Character", "Jackson", "Defensive"],
+	"Joel": [6, "Character", "Jackson", "Crafty/Defensive", "JOEL", "+4 if Ellie in hand"],
+	"Ellie": [5, "Character", "Jackson", "Crafty/Stealthy", "ELLIE", "-1 to opponent, if opposing card is Stealthy"],
+	"Dina": [3, "Character", "Jackson", "Stealthy", "DINA", "+2 if opposing card is Defensive"],
+	"Tommy": [5, "Character", "Jackson", "Aggressive", "TOMMY"],
+	"Bill": [4, "Character", "Jackson", "Crafty", "BILL", "+4 if played support card is Trap Mine"],
+	"Jessie": [5, "Character", "Jackson", "Defensive", "JESSIE", "-1 to opponent, if opposing card is Aggressive"],
 }
 
-const SUPPORTS = { # Value, Type, Class
-	"Molotov": [5, "Support", "Aggressive"],
-	"ReinforcedMelee": [2, "Support", "Aggressive/Survivor"],
-	"Rage": [6, "Support", "Aggressive"],
-	"Silencer": [4, "Support", "Stealthy/Defensive"],
-	"SmokeBomb": [4, "Support", "Crafty/Stealthy"],
-	"TrapMine": [5, "Support", "Crafty"],
-	"ScavengedParts": [2, "Support", "Survivor"],
-	"MedKit": [2, "Support", "Crafty/Defensive"],
-	"Resilience": [5, "Support", "Survivor"],
-	"Retreat": [4, "Support", "Defensive"],
-	"Bottle": [2, "Support", "Stealthy"],
-	"Brick": [2, "Support", "Stealthy"],
-	"TrainingManual": [2, "Support", "Crafty"],
-	"ShotgunShells": [3, "Support", "Survivor"],
-	"Supplements": [2, "Support", "Aggressive/Crafty/Defensive/Stealthy/Survivor"],
-	"SupplyCache": [0, "Support", "Aggressive/Crafty/Defensive/Stealthy/Survivor"],
+const SUPPORTS = { # Value, Type, Class, Positive/Negative, Card Name Text, Perk Text
+	"Molotov": [5, "Support", "Aggressive", "Negative", "MOLOTOV"],
+	"ReinforcedMelee": [2, "Support", "Aggressive/Survivor", "Positive", "REINFORCED MELEE"],
+	"Rage": [6, "Support", "Aggressive", "Positive", "RAGE"],
+	"Silencer": [4, "Support", "Defensive/Stealthy", "Positive", "SILENCER"],
+	"SmokeBomb": [4, "Support", "Crafty/Stealthy", "Negative", "SMOKE BOMB"],
+	"TrapMine": [5, "Support", "Crafty", "Negative", "TRAP MINE"],
+	"ScavengedParts": [2, "Support", "Survivor", "Positive", "SCAVENGED PARTS"],
+	"MedKit": [2, "Support", "Crafty/Defensive", "Positive", "MEDKIT"],
+	"Resilience": [5, "Support", "Survivor", "Positive", "RESILIENCE"],
+	"Retreat": [4, "Support", "Defensive", "Positive", "RETREAT"],
+	"Bottle": [2, "Support", "Stealthy", "Negative", "BOTTLE"],
+	"Brick": [2, "Support", "Stealthy", "Negative", "BRICK"],
+	"TrainingManual": [2, "Support", "Crafty", "Positive", "TRAINING MANUAL"],
+	"ShotgunShells": [3, "Support", "Survivor", "Positive", "SHOTGUN SHELLS"],
+	"Supplements": [2, "Support", "Aggressive/Crafty/Defensive/Stealthy/Survivor", "Positive", "SUPPLEMENTS"],
+	"SupplyCache": [0, "Support", "Aggressive/Crafty/Defensive/Stealthy/Survivor", "Positive", "SUPPLY CACHE", "+2 to random card in hand"],
 }
 
 const PERKS = {
@@ -79,6 +79,8 @@ const PERKS = {
 	"Bloater": "res://scripts/perks/bloaterPerk.gd",
 	"RatKing": "res://scripts/perks/ratKingPerk.gd",
 	"TheProphet": "res://scripts/perks/theProphetPerk.gd",
+	"Emily": "res://scripts/perks/emilyPerk.gd",
+	"TommyFirefly": "res://scripts/perks/tommyFireflyPerk.gd",
 	"Alice": "res://scripts/perks/alicePerk.gd",
 	"SupplyCache": "res://scripts/perks/supplyCachePerk.gd",
 }
@@ -87,35 +89,267 @@ var AVATARS = {
 	Actor.Avatar.JUNE: {
 		"name": "June Ravel",
 		"description": "Former Firefly",
-		"health": 35,
+		"health": "%02d" % 35,
 		"headPath": "res://assets/arenaHeads/"
 	},
 	Actor.Avatar.ETHAN: {
 		"name": "Ethan Hark",
 		"description": "Patrol Leader",
-		"health": 20,
+		"health": "%02d" % 20,
+		"headPath": "res://assets/arenaHeads/",
+		"arenaPath": "res://assets/arenas/"
+	},
+	Actor.Avatar.RHEA: {
+		"name": "Rhea",
+		"description": "Matriarch",
+		"health": "%02d" % 20,
+		"headPath": "res://assets/arenaHeads/",
+		"arenaPath": "res://assets/arenas/"
+	},
+	Actor.Avatar.UCKMANN: {
+		"name": "Dr Uckmann",
+		"description": "Dog Director",
+		"health": "%02d" % 20,
+		"headPath": "res://assets/arenaHeads/",
+		"arenaPath": "res://assets/arenas/"
+	},
+	Actor.Avatar.ALLEY: {
+		"name": "Alley Ross",
+		"description": "Scriptweaver",
+		"health": "%02d" % 20,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.SILAS: {
 		"name": "Silas Vane",
 		"description": "Scavenger King",
-		"health": 20, # 50 is too high, possibly for a final boss, but not a character in this mode
+		"health": "%02d" % 20,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.MIRA: {
 		"name": "Mira Thorne",
 		"description": "Ex-Medic",
-		"health": 20, #25
+		"health": "%02d" % 20, 
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.KAEL: {
 		"name": "Kaelen Voss",
 		"description": "Shield Brother",
-		"health": 20, #45,
+		"health": "%02d" % 20,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	}
 }
+
+const JUNE_OPPONENTS = [Actor.Avatar.ETHAN, Actor.Avatar.UCKMANN, Actor.Avatar.ALLEY, Actor.Avatar.MIRA, Actor.Avatar.RHEA]
+
+enum Modifier { REDUCED_HAND, VOLATILE_HAND, GUERRILLA_TACTICS, SLOW_BLEED, NO_DEFENSE, LOUD_NOISE, INFECTED_DECK, ALWAYS_FIRST, FORSAKEN_HONOR, LONE_WOLF, SUPPLY_LINE, CARD_ROT }
+
+const MODIFIERS = {
+	Modifier.REDUCED_HAND: {
+		"id": Modifier.REDUCED_HAND,
+		"name": "Reduced Hand",
+		"description": "Your maximum hand size is reduced to 6.",
+		"icon": "res://assets/modifiers/Reduced Hand.png",
+		"tier": 1,
+		"multiplier": 0.5,
+		"duration": 3,
+	},
+	Modifier.VOLATILE_HAND: {
+		"id": Modifier.VOLATILE_HAND,
+		"name": "Volatile Hand",
+		"description": "Every 2 rounds, your entire hand is discarded and redrawn.",
+		"icon": "res://assets/modifiers/Volatile Hand.png",
+		"tier": 1,
+		"multiplier": 0.75,
+		"duration": 3,
+	},
+	Modifier.GUERRILLA_TACTICS: {
+		"id": Modifier.GUERRILLA_TACTICS,
+		"name": "Guerrilla Tactics",
+		"description": "Consecutive character cards cannot be the same faction or type.",
+		"icon": "res://assets/modifiers/Guerrilla Tactics.png",
+		"tier": 1,
+		"multiplier": 1.0,
+		"duration": 3,
+	},
+	Modifier.SLOW_BLEED: {
+		"id": Modifier.SLOW_BLEED,
+		"name": "Slow Bleed",
+		"description": "Take 1 damage at the end of every other round.",
+		"icon": "res://assets/modifiers/Slow Bleed.png",
+		"tier": 1,
+		"multiplier": 1.25,
+		"duration": 4,
+		"amount": 1,
+	},
+	Modifier.NO_DEFENSE: {
+		"id": Modifier.NO_DEFENSE,
+		"name": "No Defense",
+		"description": "Your defensive character cards have 0 value. Their perks still activate.",
+		"icon": "res://assets/modifiers/No Defense.png",
+		"tier": 2,
+		"multiplier": 1.5,
+		"duration": 2,
+	},
+	Modifier.LOUD_NOISE: {
+		"id": Modifier.LOUD_NOISE,
+		"name": "Loud Noise",
+		"description": "All your stealth cards become aggressive. All your aggressive cards lose -1 value.",
+		"icon": "res://assets/modifiers/Loud Noise.png",
+		"tier": 2,
+		"multiplier": 1.75,
+		"duration": 2,
+	},
+	Modifier.INFECTED_DECK: {
+		"id": Modifier.INFECTED_DECK,
+		"name": "Infected Deck",
+		"description": "Your deck contains significantly more infected cards.",
+		"icon": "res://assets/modifiers/Infected Deck.png",
+		"tier": 2,
+		"multiplier": 2.0,
+		"duration": 2,
+	},
+	Modifier.ALWAYS_FIRST: {
+		"id": Modifier.ALWAYS_FIRST,
+		"name": "Always First",
+		"description": "You must play first every round.",
+		"icon": "res://assets/modifiers/Always First.png",
+		"tier": 2,
+		"multiplier": 2.25,
+		"duration": 2,
+	},
+	Modifier.FORSAKEN_HONOR: {
+		"id": Modifier.FORSAKEN_HONOR,
+		"name": "Forsaken Honor",
+		"description": "Lose 20 health. Your card’s faction and type are hidden from the opponent.",
+		"icon": "res://assets/modifiers/Forsaken Honor.png",
+		"tier": 3,
+		"multiplier": 1.0,
+		"duration": 2,
+		"healthCost": 20,
+	},
+	Modifier.LONE_WOLF: {
+		"id": Modifier.LONE_WOLF,
+		"name": "Lone Wolf",
+		"description": "Your support cards are disabled. Character values increased by +50%",
+		"icon": "res://assets/modifiers/Lone Wolf.png",
+		"tier": 3,
+		"multiplier": 2.75,
+		"duration": 1,
+	},
+	Modifier.SUPPLY_LINE: {
+		"id": Modifier.SUPPLY_LINE,
+		"name": "Supply Line",
+		"description": "Your hand contains only support cards. Your character is auto played from the deck.",
+		"icon": "res://assets/modifiers/Supply Line.png",
+		"tier": 3,
+		"multiplier": 3.0,
+		"duration": 1,
+	},
+	Modifier.CARD_ROT: {
+		"id": Modifier.CARD_ROT,
+		"name": "Card Rot",
+		"description": "Every 3 rounds, all cards in your hand lose -1 value.",
+		"icon": "res://assets/modifiers/Card Rot.png",
+		"tier": 3,
+		"multiplier": 3.5,
+		"duration": 1,
+	},
+} 
+
+var standardCharacterDeck = [
+	"Runner", "Runner", "Runner", "Runner",
+	"Stalker", "Stalker", "Stalker",
+	"FireflySoldier", "FireflySoldier", "FireflySoldier",
+	"WLFSoldier", "WLFSoldier",
+	"SeraphiteBrute", "SeraphiteBrute",
+	
+	"Clicker", "Clicker",
+	"Bloater",
+	"Emily", "Ezra", "Lev", "Yara",
+	"Nora", "Manny", "Alice",
+	"Bill", "Dina", "Jessie", "Tommy", "TommyFirefly",
+	"Riley", "Eugene", "Malik",
+	
+	"Joel",
+	"Ellie",
+	"Abby",
+	"Isaac",
+	"TheProphet",
+	"Marlene",
+	"RatKing",
+]
+
+var standardSupportDeck = [
+	"Brick", "Brick",
+	"Bottle", "Bottle",
+	"ScavengedParts", "ScavengedParts", "ScavengedParts",
+	"Supplements", "Supplements",
+	"SupplyCache", "SupplyCache",
+	
+	"MedKit", "MedKit",
+	"SmokeBomb", "SmokeBomb",
+	"Silencer", "Silencer",
+	"ReinforcedMelee", "ReinforcedMelee",
+	"TrainingManual",
+	"Retreat",
+	"Resilience",
+	"ShotgunShells",
+	
+	"Molotov",
+	"Rage",
+	"TrapMine",
+]
+
+var infectedHeavyCharacterDeck = [
+	"Runner", "Runner", "Runner", "Runner", "Runner", "Runner",
+	"Stalker", "Stalker", "Stalker", "Stalker", "Stalker",
+	"Clicker", "Clicker", "Clicker",
+	"Bloater", "Bloater",
+	"Malik", "Malik",
+	
+	"Runner", "Runner", "Runner", "Runner",
+	"Stalker", "Stalker", "Stalker",
+	"FireflySoldier",
+	"WLFSoldier",
+	"SeraphiteBrute",
+	
+	"Clicker", "Clicker",
+	"Bloater",
+	"Emily", "Ezra", "Lev", "Yara",
+	"Nora", "Manny", "Alice",
+	"Bill", "Dina", "Jessie", "Tommy", "TommyFirefly",
+	"Riley", "Eugene", "Malik",
+	
+	"Joel",
+	"Ellie",
+	"Abby",
+	"Isaac",
+	"TheProphet",
+	"Marlene",
+	"RatKing",
+]
+
+var infectedHeavySupportDeck = [
+	"Brick", "Brick", "Brick", 
+	"Bottle", "Bottle", "Bottle",
+	
+	"Supplements", "Supplements", "Supplements",
+	"SupplyCache", "SupplyCache", "SupplyCache",
+	
+	"Molotov", "Molotov", 
+	"Rage", "Rage", "Rage",
+	"ReinforcedMelee", "ReinforcedMelee", "ReinforcedMelee",
+	
+	"ScavengedParts", "ScavengedParts",
+	"Resilience",
+	"ShotgunShells",
+	
+	"MedKit", "MedKit",
+	"SmokeBomb", "SmokeBomb",
+	"Silencer", 
+	"TrapMine",
+]

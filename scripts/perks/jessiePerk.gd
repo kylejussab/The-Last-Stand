@@ -15,6 +15,7 @@ func apply_mid_perk(_thisCard, _thisHand, otherCard):
 		value = int(card.get_node("value").text)
 		value -= 1
 		
+		card.value -= 1
 		card.get_node("perk").text = "-1"
 		card.get_node("AnimationPlayer").queue("showPerk")
 
@@ -23,4 +24,14 @@ func _when_animation_starts(name: String):
 		updateCardValue()
 
 func updateCardValue():
-	card.get_node("value").text = str(value)
+	var label = card.get_node("value")
+	var startValue = int(label.text)
+	
+	var tween = card.create_tween()
+	
+	tween.tween_method(
+		func(val: int): label.text = str(val),
+		startValue,
+		value,
+		0.5
+	)

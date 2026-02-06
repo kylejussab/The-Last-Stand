@@ -12,6 +12,8 @@ var screenSize: Vector2
 var hoveredCard: Node2D = null
 var playerHandReference: Node
 
+var canPlayHoverSound: bool = true
+
 @onready var battleManager = %battleManager
 
 func _ready() -> void:
@@ -27,10 +29,14 @@ func _process(_delta: float) -> void:
 		draggedCard.position = Vector2(clamp(mousePosition.x, 0, screenSize.x), clamp(mousePosition.y, 0, screenSize.y))
 
 func start_drag(card):
-	if !$"../battleManager".lockPlayerInput:
+	if not "cardSlot" in card:
+		return
+	
+	if !battleManager.lockPlayerInput and card.cardSlot == null:
 		draggedCard = card
 		draggedCard.play_draw_sound()
 		card.scale = Vector2(1, 1)
+		card.z_index += 50
 
 func finish_drag():
 	draggedCard.scale = Vector2(1.05, 1.05)
@@ -41,14 +47,14 @@ func finish_drag():
 	if cardSlot and not cardSlot.occupied and draggedCard.canBePlayed:
 		if draggedCard.type == cardSlot.type:
 			# Only allow a support card play after a character card
-			if draggedCard.type == "Support" && !$"../battleManager".playerCharacterCard:
+			if draggedCard.type == "Support" && !battleManager.playerCharacterCard:
 				pass
 			else:
 				playerHandReference.remove_card_from_hand(draggedCard)
 				
-				draggedCard.z_index = -1
+				draggedCard.z_index = -50
 				draggedCard.position = cardSlot.position
-				draggedCard.get_node("Area2D/CollisionShape2D").disabled = true
+				#draggedCard.get_node("Area2D/CollisionShape2D").disabled = true
 				cardSlot.occupied = true
 				draggedCard.cardSlot = cardSlot
 				
@@ -59,12 +65,14 @@ func finish_drag():
 					emit_signal("supportPlayed", draggedCard)
 				
 				# Ensure its not highlighted
+				draggedCard.scale = Vector2(1, 1)
 				draggedCard.get_node("AnimationPlayer").play("hideDescription")
 				var endTime = draggedCard.get_node("AnimationPlayer").current_animation_length
 				draggedCard.get_node("AnimationPlayer").seek(endTime, true)
 				
 				draggedCard = null
 				return
+		
 	
 	playerHandReference.add_card_to_hand(draggedCard, DEFAULT_CARD_MOVE_SPEED)
 	draggedCard = null
@@ -100,6 +108,17 @@ func connect_card_signals(card):
 func on_card_hover_enter(card):
 	if draggedCard: return
 	
+	var isCardDisabled: bool = false
+	
+	if "type" in card and card.type == "Character" and card.canBePlayed == false:
+		isCardDisabled = true
+
+	if isCardDisabled:
+		if hoveredCard:
+			highlight_card(hoveredCard, false)
+		hoveredCard = null
+		return
+	
 	if hoveredCard and hoveredCard != card:
 		highlight_card(hoveredCard, false)
 	
@@ -116,22 +135,38 @@ func on_card_hover_exit(card):
 			on_card_hover_enter(newCardHovered)
 
 func highlight_card(card, hovered: bool):
-	if hovered && !battleManager.lockPlayerInput:
-		card.scale = Vector2(1.35, 1.35)
-		card.z_index = 2
-		if card.perk && !draggedCard && !battleManager.lockPlayerInput:
+	if not "cardKey" in card:
+		return
+		
+	var animationPlayer = card.get_node("AnimationPlayer")
+	
+	if battleManager.lockPlayerInput:
+		return
+		
+	if animationPlayer and animationPlayer.is_playing():
+		if animationPlayer.current_animation == "showPerk" or animationPlayer.current_animation == "cardFlip":
+			return
+	
+	_play_card_hover_sound()
+	
+	if hovered:
+		if !AccessibilityData.animationsDisabled:
+			card.scale = Vector2(1.35, 1.35)
+		
+		if card.perk and !draggedCard:
 			card.get_node("AnimationPlayer").play("showDescription")
 			
-			if Settings.reduceAnimations:
+			if AccessibilityData.animationsDisabled:
 				var endTime = card.get_node("AnimationPlayer").current_animation_length
 				card.get_node("AnimationPlayer").seek(endTime, true)
 	else:
-		card.scale = Vector2(1, 1)
-		card.z_index = 1
-		if card.perk && !battleManager.lockPlayerInput:
+		if !AccessibilityData.animationsDisabled:
+			card.scale = Vector2(1, 1)
+			
+		if card.perk:
 			card.get_node("AnimationPlayer").play("hideDescription")
 			
-			if Settings.reduceAnimations:
+			if AccessibilityData.animationsDisabled:
 				var endTime = card.get_node("AnimationPlayer").current_animation_length
 				card.get_node("AnimationPlayer").seek(endTime, true)
 
@@ -141,6 +176,9 @@ func get_top_card(cards):
 	
 	for i in range(1, cards.size()):
 		var currentCard = cards[i].collider.get_parent()
+		if "type" not in currentCard: # Filters out anything that isn't a card
+			continue
+		
 		if currentCard.z_index > topCardZIndex:
 			topCard = currentCard
 			topCardZIndex = currentCard.z_index
@@ -156,7 +194,7 @@ func auto_play_card(card):
 		var characterSlot = $"../cardSlots/cardSlotCharacter"
 		var supportSlot = $"../cardSlots/cardSlotSupport"
 		
-		if card.type == "Character" && !characterSlot.occupied:
+		if card.type == "Character" && !characterSlot.occupied && card.canBePlayed:
 			move_card_on_double_click(card, characterSlot)
 		elif card.type == "Support" && $"../battleManager".playerCharacterCard && card.canBePlayed:
 			move_card_on_double_click(card, supportSlot)
@@ -167,11 +205,11 @@ func move_card_on_double_click(card, cardSlot):
 		tween.tween_property(card, "position", cardSlot.position, 0.1)
 		tween.finished.connect(func(): card.play_draw_sound())
 		
-		playerHandReference.remove_card_from_hand(draggedCard)
+		playerHandReference.remove_card_from_hand(card)
 		
 		card.z_index = -1
 		card.position = cardSlot.position
-		card.get_node("Area2D/CollisionShape2D").disabled = true
+		#card.get_node("Area2D/CollisionShape2D").disabled = true
 		cardSlot.occupied = true
 		card.cardSlot = cardSlot
 		
@@ -184,9 +222,43 @@ func move_card_on_double_click(card, cardSlot):
 			emit_signal("supportPlayed", draggedCard)
 		
 		# Ensure its not highlighted
+		draggedCard.scale = Vector2(1, 1)
 		draggedCard.get_node("AnimationPlayer").play("hideDescription")
 		var endTime = draggedCard.get_node("AnimationPlayer").current_animation_length
 		draggedCard.get_node("AnimationPlayer").seek(endTime, true)
 		
-		playerHandReference.remove_card_from_hand(draggedCard)
 		draggedCard = null
+
+func _play_card_hover_sound() -> void:
+	if %CardHoverSound.playing:
+		return
+	
+	if canPlayHoverSound:
+		%CardHoverSound.play()
+		canPlayHoverSound = false
+		
+	await get_tree().create_timer(.1).timeout
+	canPlayHoverSound = true
+
+func play_top_character_from_deck() -> void:
+	var card = $"../characterDeck".spawn_top_card_node()
+	
+	if card == null:
+		return
+	
+	var characterSlot = $"../cardSlots/cardSlotCharacter"
+	
+	card.z_index = 10 
+	
+	var tween = get_tree().create_tween()
+	tween.tween_property(card, "position", characterSlot.position, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	
+	tween.finished.connect(func(): 
+		card.play_draw_sound()
+		card.z_index = 0
+	)
+
+	characterSlot.occupied = true
+	card.cardSlot = characterSlot
+
+	emit_signal("characterPlayed", card)

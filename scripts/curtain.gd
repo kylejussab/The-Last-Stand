@@ -6,7 +6,7 @@ func _ready() -> void:
 	color_rect.modulate.a = 0.0
 	color_rect.visible = false
 
-func change_scene(target_path: String) -> void:
+func change_scene(target_path: String, fadeOutDuration: float = 1.0) -> void:
 	color_rect.visible = true
 	var inTween = create_tween()
 	inTween.tween_property(color_rect, "modulate:a", 1.0, 1)
@@ -18,7 +18,7 @@ func change_scene(target_path: String) -> void:
 	await get_tree().process_frame
 	
 	var outTween = create_tween()
-	outTween.tween_property(color_rect, "modulate:a", 0.0, 1)
+	outTween.tween_property(color_rect, "modulate:a", 0.0, fadeOutDuration)
 	
 	await outTween.finished
 	color_rect.visible = false

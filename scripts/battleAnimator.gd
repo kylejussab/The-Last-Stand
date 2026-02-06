@@ -17,6 +17,9 @@ func title_slam_and_slide(playerWon: bool):
 	gameOver.get_node("overlay").visible = true
 	gameOver.get_node("title").visible = true
 	
+	if playerWon:
+		GameStats.numberOfWins += 1
+	
 	var resultLabel = gameOver.get_node("title")
 	resultLabel.text = "SURVIVED" if playerWon else "DEFEATED"
 	resultLabel.pivot_offset = resultLabel.size / 2
@@ -44,7 +47,7 @@ func title_slam_and_slide(playerWon: bool):
 	
 	await slamTween.finished
 	
-	await get_tree().create_timer(1.5).timeout
+	await get_tree().create_timer(1).timeout
 	
 	var slideTween = create_tween().set_parallel(true)
 	var targetPosition = Vector2(150, 80)
@@ -58,7 +61,9 @@ func title_slam_and_slide(playerWon: bool):
 	await slideTween.finished
 
 func show_stats(playerWon: bool):
-	set_end_game_stats(playerWon)
+	await set_end_game_stats(playerWon)
+	
+	GameStats.log_battle_results("WIN" if playerWon else "LOSS")
 	
 	var performance = gameOver.get_node("performance")
 	var game = gameOver.get_node("game")
@@ -70,8 +75,10 @@ func show_stats(playerWon: bool):
 	mainMenuButton.disabled = true
 	var continueButton = gameOver.get_node("ContinueButton")
 	continueButton.disabled = true
+	var newRunButton = gameOver.get_node("NewRunButton")
+	newRunButton.disabled = true
 	
-	for node in [performance, game, score, line, replayButton, mainMenuButton, continueButton]:
+	for node in [performance, game, score, line, replayButton, mainMenuButton, continueButton, newRunButton]:
 		node.modulate.a = 0.0
 		node.visible = true
 	
@@ -81,11 +88,13 @@ func show_stats(playerWon: bool):
 	
 	if playerWon:
 		# Show the continue button
+		continueButton.position.y = 735
 		replayButton.position.y = 805
-		mainMenuButton.position.y = 875
-		continueButton.position.y = 945
+		newRunButton.position.y = 875
+		mainMenuButton.position.y = 945
 	else:
-		replayButton.position.y = 875
+		replayButton.position.y = 805
+		newRunButton.position.y = 875
 		mainMenuButton.position.y = 945
 		continueButton.position.y = 1015
 	
@@ -120,15 +129,18 @@ func show_stats(playerWon: bool):
 	
 	var buttonTween = create_tween()
 	
-	buttonTween.tween_property(replayButton, "modulate:a", 1.0, 0.6).set_trans(Tween.TRANS_SINE)
-	replayButton.disabled = false
-	
-	buttonTween.tween_property(mainMenuButton, "modulate:a", 1.0, 0.6).set_trans(Tween.TRANS_SINE)
-	mainMenuButton.disabled = false
-	
 	if playerWon:
 		buttonTween.tween_property(continueButton, "modulate:a", 1.0, 0.6).set_trans(Tween.TRANS_SINE)
 		continueButton.disabled = false
+	
+	buttonTween.tween_property(replayButton, "modulate:a", 1.0, 0.6).set_trans(Tween.TRANS_SINE)
+	replayButton.disabled = false
+	
+	buttonTween.tween_property(newRunButton, "modulate:a", 1.0, 0.6).set_trans(Tween.TRANS_SINE)
+	newRunButton.disabled = false
+	
+	buttonTween.tween_property(mainMenuButton, "modulate:a", 1.0, 0.6).set_trans(Tween.TRANS_SINE)
+	mainMenuButton.disabled = false
 	
 	await buttonTween.finished
 
@@ -136,6 +148,7 @@ func show_stats(playerWon: bool):
 func set_end_game_stats(playerWon: bool):
 	# Performance stats
 	var performance = gameOver.get_node("performance")
+	performance.get_node("wins").text = "%02d" % GameStats.numberOfWins
 	performance.get_node("stat1").text = str(GameStats.totalForceExerted)
 	performance.get_node("stat2").text = str(GameStats.opponentForceExerted)
 	performance.get_node("stat3").text = str(GameStats.roundNumber)
@@ -156,8 +169,8 @@ func set_end_game_stats(playerWon: bool):
 	var score = gameOver.get_node("score")
 	if playerWon:
 		score.get_node("stat1text").text = "Victory"
-		var winingBase = 20
-		score.get_node("stat1").text = str(winingBase)
+		var winningBase = 20
+		score.get_node("stat1").text = str(winningBase)
 		var force = GameStats.totalForceExerted - GameStats.opponentForceExerted
 		score.get_node("stat2").text = str(force)
 		var efficiency = (9 - GameStats.roundNumber) * 5 # 9 as an average number of rounds
@@ -166,21 +179,21 @@ func set_end_game_stats(playerWon: bool):
 		score.get_node("stat4").text = str(underdog)
 		score.get_node("stat5").text = str(int(momentum))
 		# Multiplier
-		score.get_node("stat6").text = "**"
-		GameStats.lastStandCurrentRoundScore = winingBase + force + efficiency + underdog + int(momentum)
-		score.get_node("stat7").text = str(GameStats.lastStandTotalScore)
+		score.get_node("stat6").text = str(GameStats.multiplierTotal) + "x"
+		GameStats.lastStandCurrentRoundScore = int((winningBase + force + efficiency + underdog + momentum) * GameStats.multiplierTotal)
+		score.get_node("stat7").text = "%05d" % GameStats.lastStandTotalScore
 	else:
 		score.get_node("stat1text").text = "Defeat"
 		@warning_ignore("integer_division")
-		var losingScore = str(int(GameStats.totalForceExerted) / 10)
-		score.get_node("stat1").text = losingScore
+		var losingScore = int(GameStats.totalForceExerted / 10)
+		score.get_node("stat1").text = str(losingScore)
 		score.get_node("stat2").text = "-"
 		score.get_node("stat3").text = "-"
 		score.get_node("stat4").text = "-"
 		score.get_node("stat5").text = "-"
-		score.get_node("stat6").text = "**"
+		score.get_node("stat6").text = "1.0x"
 		GameStats.lastStandCurrentRoundScore = losingScore
-		score.get_node("stat7").text = str(GameStats.lastStandTotalScore)
+		score.get_node("stat7").text = "%05d" % GameStats.lastStandTotalScore
 
 func format_time(time: float) -> String:
 	var minutes = int(time / 60)
@@ -188,52 +201,72 @@ func format_time(time: float) -> String:
 	return "%02d:%02d" % [minutes, seconds]
 
 func get_card_stats(playedCards):
-	var factionCounts = {}
-	var cardCounts = {}
+	var factionImpact = {}
+	var cardImpact = {}
 
 	for card in playedCards:
 		var faction = card["faction"]
-		var mvp = card["cardKey"]
+		var key = card["cardKey"]
+		var value = card.get("value", 1) 
 		
-		factionCounts[faction] = factionCounts.get(faction, 0) + 1
-		cardCounts[mvp] = cardCounts.get(mvp, 0) + 1
+		if faction != "Support":
+			factionImpact[faction] = factionImpact.get(faction, 0) + value
+		
+		cardImpact[key] = cardImpact.get(key, 0) + value
 		
 	var topFaction = "None"
-	var highestFactionCount = 0
+	var highestFactionValue = -1
 	
-	for faction in factionCounts:
-		if factionCounts[faction] > highestFactionCount:
-			highestFactionCount = factionCounts[faction]
+	for faction in factionImpact:
+		if factionImpact[faction] > highestFactionValue:
+			highestFactionValue = factionImpact[faction]
 			topFaction = faction
 	
-	var cardKey = "None"
-	var highestCharacterCount = 0
+	var mvpKey = "None"
+	var highestCardValue = -1
 	
-	for card in cardCounts:
-		if cardCounts[card] > highestCharacterCount:
-			highestCharacterCount = cardCounts[card]
-			cardKey = card
+	for key in cardImpact:
+		if cardImpact[key] > highestCardValue:
+			highestCardValue = cardImpact[key]
+			mvpKey = key
 	
 	var cardName = ""
 	
-	for i in range(cardKey.length()):
-		var letter = cardKey[i]
-		if i > 0 and letter == letter.to_upper():
-			cardName += " "
-		cardName += letter
+	var displayOverrides = {
+		"WLFSoldier": "WLF Soldier",
+		"TommyFirefly": "Tommy (Firefly)" 
+	}
+	
+	if displayOverrides.has(mvpKey):
+		cardName = displayOverrides[mvpKey]
+	else:
+		for i in range(mvpKey.length()):
+			var letter = mvpKey[i]
+			if i > 0 and letter == letter.to_upper():
+				cardName += " "
+			cardName += letter
 	
 	return {"faction": topFaction, "card": cardName}
 
 func animate_score_tick(label, start_score: int, end_score: int):
-	var duration = 0.0 if Settings.reduceAnimations else 2.0 
+	var duration = 0.0 if AccessibilityData.animationsDisabled else 2.0 
 
 	var tween = create_tween()
 	
 	tween.tween_method(
-		func(val: int): label.text = str(val),
+		func(val: int): label.text = "%05d" % val,
 		start_score,
 		end_score,
 		duration
 	).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT) 
 	
 	return tween
+
+func handle_modifier_durations() -> void:
+	for i in range(GameStats.activeModifiers.size() - 1, -1, -1):
+		var modifier = GameStats.activeModifiers[i]
+		
+		modifier["currentDuration"] += 1
+		
+		if modifier["currentDuration"] >= modifier["duration"]:
+			%battleManager.remove_modifier(modifier["id"])

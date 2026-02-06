@@ -1,28 +1,20 @@
-**Current Version:** `v0.2.2` (UI/UX Update)
+**Current Version:** `v0.3.1` (Last Stand Mode)
 
 <img width="5335" height="1780" alt="Last Stand Banner" src="https://github.com/user-attachments/assets/07732bec-68d5-4e32-acb5-a529d0c1e090" />
 
 A fan-made card game inspired by 'The Last of Us'.
+<br>
+[Play on Itch.io](https://kylejussab.itch.io/the-last-stand) or [read about its development on kylejussab.com](https://kylejussab.com/tloutls).
+
 
 ## Disclaimer
 This game is a **fan work** based on 'The Last of Us', a property of **Naughty Dog and Sony Interactive Entertainment**.  
 I do **not claim ownership** of any characters, names, or concepts associated with *The Last of Us*.  
 This project is **not for sale** and is **not affiliated with or endorsed by Sony or Naughty Dog**.
 
-## Change log [v0.2.2]
-#### Added
-- Right-click/Escape to pause. Includes sound-connected buttons and state-management that freezes in-game timers.
-- New card designs, card backs, and temporary arena backgrounds.
-- Sequential left-to-right card drawing, shuffling sequences, and animated stat reveals.
-- Implemented hover/click sounds for all UI elements and card-specific SFX.
-- Comprehensive end-game screen with "Last Stand" score tracking and replay logic.
-#### Changed/Refactored
-- Refactored `battleManager` and `arenaUI` for better modularity and cleaner signal handling.
-- Updated descriptions and added hover-state perk/keyword tooltips.
-- Cleaned up Main Menu navigation and scene transition logic.
-#### Fixed
-- Fixed a bug where card nodes persisted in the `cardManager` after a round reset.
-- Fixed shuffle and repopulate deck animations to prevent visual overlapping.
+<img width="4286" height="2411" alt="Patch Notes 0 3 1" src="https://github.com/user-attachments/assets/980f3afe-6150-4b7f-b579-e987b7d60db0" />
+
+<img width="4286" height="2411" alt="Card Design Changes" src="https://github.com/user-attachments/assets/769286c3-f6c6-4699-9de7-49443a0b0bc6" />
 
 ## Roadmap
 - [x] **v0.1: Initial Setup** - Basic mechanics and card spawning.
@@ -35,7 +27,7 @@ This project is **not for sale** and is **not affiliated with or endorsed by Son
     - [x] **v0.2.2:** - Scene transition logic and board cleanup fixes.
 
 - [ ] **v0.3: Last Stand** - Modifiers and endless mode logic.
-    - [ ] **v0.3.1:** - Random round-based gameplay modifiers.
+    - [x] **v0.3.1:** - Random round-based gameplay modifiers.
     - [ ] **v0.3.2:** - Difficulty curves and endless mode progression.
 
 - [ ] **v0.4: Opponent AI** - Multiple AIs, AI improvements and alignment with character playstyles.
