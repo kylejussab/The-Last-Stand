@@ -3,6 +3,9 @@
 <img width="5335" height="1780" alt="Last Stand Banner" src="https://github.com/user-attachments/assets/07732bec-68d5-4e32-acb5-a529d0c1e090" />
 
 A fan-made card game inspired by 'The Last of Us'.
+<br>
+[Play on Itch.io](https://kylejussab.itch.io/the-last-stand) or [read about its development on kylejussab.com](https://kylejussab.com/tloutls).
+
 
 ## Disclaimer
 This game is a **fan work** based on 'The Last of Us', a property of **Naughty Dog and Sony Interactive Entertainment**.  
