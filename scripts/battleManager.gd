@@ -331,7 +331,7 @@ func _on_player_support_played(card: Node2D) -> void:
 	
 	GameStats.record_played_card("Support", playerSupportCard.cardKey, playerSupportCard.value)
 	
-	_apply_player_support(playerSupportCard, opponentCharacterCard, playerCharacterCard)
+	await _apply_player_support(playerSupportCard, opponentCharacterCard, playerCharacterCard)
 	
 	if whoStartedRound == Actor.Type.PLAYER:
 		_execute_opponent_support_play()
@@ -359,7 +359,7 @@ func _execute_opponent_support_play() -> void:
 		
 		GameStats.record_played_card("Support", opponentSupportCard.cardKey, opponentSupportCard.value, true)
 		
-		_apply_opponent_support(opponentSupportCard, playerCharacterCard, opponentCharacterCard)
+		await _apply_opponent_support(opponentSupportCard, playerCharacterCard, opponentCharacterCard)
 	
 	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
 	
