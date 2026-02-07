@@ -44,7 +44,12 @@ var opponentCharacterCard: Node2D
 var opponentSupportCard: Node2D
 
 var opponentPlayedSupport: bool = false
-var lockPlayerInput: bool = true
+var lockPlayerInput: bool = true:
+	set(value):
+		lockPlayerInput = value
+		if value == true:
+			if is_instance_valid(%cardManager):
+				%cardManager.force_unhighlight_all_cards()
 
 enum RoundStage { PLAYER_CHARACTER, OPPONENT_CHARACTER, PLAYER_SUPPORT, OPPONENT_SUPPORT, END_CALCULATION }
 
@@ -81,9 +86,8 @@ func _ready() -> void:
 	
 	ui.update_health(Actor.Type.PLAYER, GameStats.playerHealthValue, true)
 	
-	GameStats.gameMode = GameStats.Mode.MODIFIER_SELECTION
-	
-	%modifier.show_modifier_menu()
+	GameStats.gameMode = GameStats.Mode.LAST_STAND
+	initialize_game()
 
 func prepare_opponent() -> void:
 	if not GameStats.replayedRound:

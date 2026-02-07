@@ -170,7 +170,8 @@ func _fade_with_round_reset() -> void:
 	
 	battleManager.prepare_opponent()
 	
-	if GameStats.numberOfWins % 2 == 0 and not GameStats.replayedRound:
+	if GameStats.numberOfWins % 2 == 1 and not GameStats.replayedRound:
+		GameStats.gameMode = GameStats.Mode.MODIFIER_SELECTION
 		modifierUI.show_modifier_menu()
 	else:
 		battleManager.initialize_game()

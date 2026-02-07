@@ -262,3 +262,27 @@ func play_top_character_from_deck() -> void:
 	card.cardSlot = characterSlot
 
 	emit_signal("characterPlayed", card)
+
+# Used to stop hovering when player input is locked
+func force_unhighlight_all_cards() -> void:
+	if hoveredCard and is_instance_valid(hoveredCard):
+		_reset_card_visuals(hoveredCard)
+		hoveredCard = null
+	
+	if "playerHand" in playerHandReference:
+		for card in playerHandReference.playerHand:
+			if is_instance_valid(card):
+				_reset_card_visuals(card)
+
+# Reset without audio
+func _reset_card_visuals(card: Node2D) -> void:
+	if !AccessibilityData.animationsDisabled:
+		card.scale = Vector2(1, 1)
+	
+	if card.perk:
+		if card.get_node("AnimationPlayer").current_animation == "showDescription": 
+			card.get_node("AnimationPlayer").play("hideDescription")
+			
+			if AccessibilityData.animationsDisabled:
+				var endTime = card.get_node("AnimationPlayer").current_animation_length
+				card.get_node("AnimationPlayer").seek(endTime, true)
