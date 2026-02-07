@@ -95,47 +95,15 @@ func _on_options_button_pressed() -> void:
 	$OptionsButtonContainer.show()
 	$OptionsButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
 
-func _on_restart_button_pressed() -> void:
-	currentNavigation = "Restart Confirmation"
-	$mainButtonContainer.hide()
-	$mainButtonContainer.process_mode = Node.PROCESS_MODE_DISABLED
-	
-	$restartConfirmation.show()
-	$restartConfirmation.process_mode = Node.PROCESS_MODE_INHERIT
-
-func _on_restart_yes_button_pressed() -> void:
+func _on_restart_button_hold_complete() -> void:
 	get_tree().paused = false
-	ui._on_replay_button_pressed()
+	ui._on_replay_button_hold_complete()
 	hide()
 
-func _on_restart_no_button_pressed() -> void:
-	$restartConfirmation.hide()
-	$restartConfirmation.process_mode = Node.PROCESS_MODE_DISABLED
-	
-	$mainButtonContainer.show()
-	$mainButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
-	currentNavigation = "Main"
-
-func _on_main_menu_button_pressed() -> void:
-	currentNavigation = "Main Menu Confirmation"
-	$mainButtonContainer.hide()
-	$mainButtonContainer.process_mode = Node.PROCESS_MODE_DISABLED
-	
-	$mainMenuConfirmation.show()
-	$mainMenuConfirmation.process_mode = Node.PROCESS_MODE_INHERIT
-
-func _on_main_menu_yes_button_pressed() -> void:
+func _on_main_menu_button_hold_complete() -> void:
 	get_tree().paused = false 
-	ui._on_main_menu_button_pressed()
+	ui._on_main_menu_button_hold_complete()
 	hide()
-
-func _on_main_menu_no_button_pressed() -> void:
-	$mainMenuConfirmation.hide()
-	$mainMenuConfirmation.process_mode = Node.PROCESS_MODE_DISABLED
-	
-	$mainButtonContainer.show()
-	$mainButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
-	currentNavigation = "Main"
 
 # Helpers
 func connect_buttons(node: Node) -> void:

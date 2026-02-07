@@ -68,6 +68,8 @@ var discardedCardZIndex: int = 1
 var showOpponentsCards: bool = false
 
 func _ready() -> void:
+	GameStats.replayedRound = false
+	
 	$"../battleTimer".wait_time = OPPONENT_THINKING_TIME
 	$"../cardManager".connect("characterPlayed", Callable(self, "_on_player_character_played"))
 	$"../cardManager".connect("supportPlayed", Callable(self, "_on_player_support_played"))

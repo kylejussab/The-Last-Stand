@@ -119,14 +119,6 @@ func show_end_turn_button(visibility: bool = true) -> void:
 	%EndTurnButton.disabled = !visibility
 
 # Privates
-func _on_replay_button_pressed() -> void:
-	GameStats.replayedRound = true
-	
-	if GameStats.gameMode == GameStats.Mode.LAST_STAND_ROUND_COMPLETED:
-		GameStats.gameMode = GameStats.Mode.LAST_STAND
-	
-	_fade_with_round_reset()
-
 func _on_continue_button_pressed() -> void:
 	GameStats.replayedRound = false
 	GameStats.lastStandTotalScore += GameStats.lastStandCurrentRoundScore
@@ -139,17 +131,25 @@ func _on_continue_button_pressed() -> void:
 	
 	_fade_with_round_reset()
 
-func _on_main_menu_button_pressed() -> void:
-	GameStats.gameMode = GameStats.Mode.MAIN_MENU
-	Curtain.change_scene("res://scenes/mainMenu.tscn")
+func _on_replay_button_hold_complete() -> void:
+	GameStats.replayedRound = true
+	
+	if GameStats.gameMode == GameStats.Mode.LAST_STAND_ROUND_COMPLETED:
+		GameStats.gameMode = GameStats.Mode.LAST_STAND
+	
+	_fade_with_round_reset()
 
-func _on_new_run_button_pressed() -> void:
+func _on_new_run_button_hold_complete() -> void:
 	GameStats.gameMode = GameStats.Mode.LAST_STAND
 	GameStats.reset_all_data()
 	
 	GameStats.start_new_run_log()
 	
 	Curtain.change_scene("res://scenes/main.tscn")
+
+func _on_main_menu_button_hold_complete() -> void:
+	GameStats.gameMode = GameStats.Mode.MAIN_MENU
+	Curtain.change_scene("res://scenes/mainMenu.tscn")
 
 # Helpers
 func _fade_with_round_reset() -> void:
