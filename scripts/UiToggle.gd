@@ -47,6 +47,10 @@ func _on_toggled(buttonState: bool):
 	
 	if owner.has_method("update_preview_card"):
 		owner.update_preview_card()
+	else:
+		var pauseMenu = find_parent("pause") 
+		if pauseMenu and pauseMenu.has_method("update_preview_card"):
+			pauseMenu.update_preview_card()
 
 func _on_mouse_entered():
 	_set_element_color(knob, KNOB_COLOR_HOVER)

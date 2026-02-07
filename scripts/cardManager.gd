@@ -276,6 +276,9 @@ func force_unhighlight_all_cards() -> void:
 
 # Reset without audio
 func _reset_card_visuals(card: Node2D) -> void:
+	if not "perk" in card: 
+		return
+		
 	if !AccessibilityData.animationsDisabled:
 		card.scale = Vector2(1, 1)
 	
