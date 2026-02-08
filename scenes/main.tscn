@@ -1,4 +1,4 @@
-[gd_scene load_steps=170 format=3 uid="uid://dgb52shq4jcyg"]
+[gd_scene load_steps=175 format=3 uid="uid://dgb52shq4jcyg"]
 
 [ext_resource type="Script" uid="uid://dgl6h7ryesfn8" path="res://scripts/cardManager.gd" id="1_0wfyh"]
 [ext_resource type="Script" uid="uid://c3p2rmoacsirj" path="res://scripts/inputManager.gd" id="1_o6xl0"]
@@ -12,18 +12,21 @@
 [ext_resource type="PackedScene" uid="uid://cedct6rr8lclv" path="res://scenes/opponentCardSlot.tscn" id="6_85g3d"]
 [ext_resource type="Script" uid="uid://dwr382qynby8f" path="res://scripts/battleManager.gd" id="10_choun"]
 [ext_resource type="Script" uid="uid://conm4253y3tth" path="res://scripts/oppponentHand.gd" id="11_ya4ey"]
-[ext_resource type="Texture2D" uid="uid://c3mm1hh841f3a" path="res://assets/cards/CardBackCharacter.png" id="11_yc10j"]
 [ext_resource type="Script" uid="uid://che0dt2kvp0wy" path="res://scripts/supportDeck.gd" id="12_eb6dy"]
 [ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://assets/fonts/SF-Pro-Display-Black.otf" id="13_a8y0u"]
-[ext_resource type="Texture2D" uid="uid://jh2lrbkjb6tx" path="res://assets/cards/CardBackSupport.png" id="13_jscy8"]
+[ext_resource type="Texture2D" uid="uid://brrupu340jnfx" path="res://assets/cards/DeckBack.png" id="13_ty1g6"]
+[ext_resource type="Texture2D" uid="uid://codfjgt3u16vl" path="res://assets/cards/DeckCharacterText.png" id="14_j2jfr"]
 [ext_resource type="AudioStream" uid="uid://dy7mjokw0gggp" path="res://assets/sounds/ui/damage.wav" id="15_2wyq8"]
+[ext_resource type="Texture2D" uid="uid://daom81ntbh7ja" path="res://assets/cards/DeckViewText.png" id="15_bjg73"]
 [ext_resource type="Texture2D" uid="uid://xni81jo33g8f" path="res://assets/arenaHeads/JuneNeutral.png" id="15_gqmmt"]
 [ext_resource type="FontFile" uid="uid://di1dchl37cfhu" path="res://assets/fonts/SF-Pro-Display-Semibold.otf" id="15_jkv2x"]
 [ext_resource type="Texture2D" uid="uid://cc4u4mqtyb8xx" path="res://assets/arenas/EthanArena.png" id="15_yc10j"]
 [ext_resource type="Script" uid="uid://buunfomhxxyfm" path="res://scripts/arenaUI.gd" id="16_2f3dj"]
 [ext_resource type="Texture2D" uid="uid://dgqjpfbqq0f4p" path="res://assets/arenas/ActiveIndicator.png" id="16_muem4"]
 [ext_resource type="Texture2D" uid="uid://bpqj5m7tiyln" path="res://assets/arenaHeads/JuneHurt.png" id="16_yc10j"]
+[ext_resource type="Texture2D" uid="uid://bp72tjgvjowxr" path="res://assets/cards/DeckSupportText.png" id="17_bu4jf"]
 [ext_resource type="Texture2D" uid="uid://crwpvlesiqi0o" path="res://assets/arenaHeads/JuneThinking.png" id="17_jscy8"]
+[ext_resource type="Script" uid="uid://cwakiodvp7ji5" path="res://scripts/viewDeck.gd" id="18_j2jfr"]
 [ext_resource type="Texture2D" uid="uid://d2oxvh8kvsjse" path="res://assets/arenaHeads/JuneHappy.png" id="18_pm3ni"]
 [ext_resource type="AudioStream" uid="uid://b3d3fqc8ee6t7" path="res://assets/sounds/ui/buttonBack.wav" id="20_qkpxi"]
 [ext_resource type="AudioStream" uid="uid://b2sa8g17hxiwa" path="res://assets/sounds/cards/hover.wav" id="21_5q0nq"]
@@ -50,6 +53,14 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jyhfs"]
 size = Vector2(140, 196)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ty1g6"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j2jfr"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
 
 [sub_resource type="FontVariation" id="FontVariation_c6pm6"]
 base_font = ExtResource("13_a8y0u")
@@ -1135,7 +1146,16 @@ script = ExtResource("5_tefeu")
 [node name="image" type="Sprite2D" parent="characterDeck"]
 position = Vector2(0, 3.8146973e-06)
 scale = Vector2(0.188, 0.188)
-texture = ExtResource("11_yc10j")
+texture = ExtResource("13_ty1g6")
+
+[node name="mainText" type="Sprite2D" parent="characterDeck"]
+scale = Vector2(0.188, 0.188)
+texture = ExtResource("14_j2jfr")
+
+[node name="hoverText" type="Sprite2D" parent="characterDeck"]
+visible = false
+scale = Vector2(0.188, 0.188)
+texture = ExtResource("15_bjg73")
 
 [node name="Area2D" type="Area2D" parent="characterDeck"]
 collision_layer = 3
@@ -1145,7 +1165,6 @@ collision_mask = 3
 shape = SubResource("RectangleShape2D_jyhfs")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="characterDeck"]
-visible = false
 offset_left = -70.0
 offset_top = 99.0
 offset_right = 70.0
@@ -1164,7 +1183,16 @@ script = ExtResource("12_eb6dy")
 [node name="image" type="Sprite2D" parent="supportDeck"]
 position = Vector2(0, 3.8146973e-06)
 scale = Vector2(0.188, 0.188)
-texture = ExtResource("13_jscy8")
+texture = ExtResource("13_ty1g6")
+
+[node name="mainText" type="Sprite2D" parent="supportDeck"]
+scale = Vector2(0.188, 0.188)
+texture = ExtResource("17_bu4jf")
+
+[node name="hoverText" type="Sprite2D" parent="supportDeck"]
+visible = false
+scale = Vector2(0.188, 0.188)
+texture = ExtResource("15_bjg73")
 
 [node name="Area2D" type="Area2D" parent="supportDeck"]
 collision_layer = 3
@@ -1174,7 +1202,6 @@ collision_mask = 3
 shape = SubResource("RectangleShape2D_jyhfs")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="supportDeck"]
-visible = false
 offset_left = -70.0
 offset_top = 99.0
 offset_right = 70.0
@@ -1184,6 +1211,37 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="supportDeck"]
+
+[node name="viewDeckUI" type="Control" parent="."]
+unique_name_in_owner = true
+z_index = 400
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+script = ExtResource("18_j2jfr")
+
+[node name="overlay" type="Panel" parent="viewDeckUI"]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ty1g6")
+
+[node name="viewPanel" type="Control" parent="viewDeckUI"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+
+[node name="background" type="Panel" parent="viewDeckUI/viewPanel"]
+layout_mode = 0
+offset_top = 165.0
+offset_right = 700.0
+offset_bottom = 915.0
+pivot_offset = Vector2(0, 375)
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_j2jfr")
 
 [node name="arena" type="Node2D" parent="."]
 unique_name_in_owner = true
@@ -2251,6 +2309,7 @@ fill_mode = 4
 texture_progress = ExtResource("35_nvyfr")
 
 [node name="pause" type="Node2D" parent="arena"]
+unique_name_in_owner = true
 visible = false
 z_index = 601
 script = ExtResource("30_fv21b")
@@ -3368,6 +3427,13 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_jkv2x")
 text = "END TURN"
 
 [connection signal="timeout" from="inputManager/Timer" to="inputManager" method="_on_timer_timeout"]
+[connection signal="input_event" from="characterDeck/Area2D" to="characterDeck" method="_on_mouse_pressed"]
+[connection signal="mouse_entered" from="characterDeck/Area2D" to="characterDeck" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="characterDeck/Area2D" to="characterDeck" method="_on_mouse_exited"]
+[connection signal="input_event" from="supportDeck/Area2D" to="supportDeck" method="_on_mouse_pressed"]
+[connection signal="mouse_entered" from="supportDeck/Area2D" to="supportDeck" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="supportDeck/Area2D" to="supportDeck" method="_on_mouse_exited"]
+[connection signal="gui_input" from="viewDeckUI/overlay" to="viewDeckUI" method="_on_overlay_click"]
 [connection signal="pressed" from="arena/gameOver/ContinueButton" to="arena" method="_on_continue_button_pressed"]
 [connection signal="hold_complete" from="arena/gameOver/ReplayButton" to="arena" method="_on_replay_button_hold_complete"]
 [connection signal="hold_complete" from="arena/gameOver/NewRunButton" to="arena" method="_on_new_run_button_hold_complete"]

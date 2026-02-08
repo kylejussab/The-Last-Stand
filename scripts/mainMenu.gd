@@ -174,7 +174,7 @@ func _on_last_stand_button_pressed() -> void:
 	lastStandButtonContainer.show()
 	lastStandButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
 
-func _on_new_button_pressed() -> void:
+func _on_new_button_hold_complete() -> void:
 	GameStats.gameMode = GameStats.Mode.LAST_STAND
 	GameStats.reset_all_data()
 	

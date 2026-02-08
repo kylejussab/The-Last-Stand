@@ -20,6 +20,9 @@ func _input(event):
 			battleManager.lockPlayerInput = true
 			if currentNavigation == "Main":
 				toggle_pause()
+			elif currentNavigation == "View Deck": # This is changed by the viewDeck script
+				currentNavigation = "Main"
+				battleManager.lockPlayerInput = false
 			elif currentNavigation == "Options":
 				_play_back_sound()
 				$OptionsButtonContainer.hide()
