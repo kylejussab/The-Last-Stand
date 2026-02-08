@@ -1165,6 +1165,7 @@ collision_mask = 3
 shape = SubResource("RectangleShape2D_jyhfs")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="characterDeck"]
+visible = false
 offset_left = -70.0
 offset_top = 99.0
 offset_right = 70.0
@@ -1202,6 +1203,7 @@ collision_mask = 3
 shape = SubResource("RectangleShape2D_jyhfs")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="supportDeck"]
+visible = false
 offset_left = -70.0
 offset_top = 99.0
 offset_right = 70.0
@@ -1214,6 +1216,7 @@ vertical_alignment = 1
 
 [node name="viewDeckUI" type="Control" parent="."]
 unique_name_in_owner = true
+visible = false
 z_index = 400
 layout_mode = 3
 anchors_preset = 0
@@ -1230,18 +1233,35 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_ty1g6")
 
 [node name="viewPanel" type="Control" parent="viewDeckUI"]
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_top = 165.0
+offset_right = 490.0
+offset_bottom = 915.0
 mouse_filter = 2
 
 [node name="background" type="Panel" parent="viewDeckUI/viewPanel"]
 layout_mode = 0
-offset_top = 165.0
-offset_right = 700.0
-offset_bottom = 915.0
+offset_right = 490.0
+offset_bottom = 750.0
 pivot_offset = Vector2(0, 375)
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_j2jfr")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="viewDeckUI/viewPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+vertical_scroll_mode = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="viewDeckUI/viewPanel/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="viewDeckUI"]
 
 [node name="arena" type="Node2D" parent="."]
 unique_name_in_owner = true
@@ -3433,7 +3453,6 @@ text = "END TURN"
 [connection signal="input_event" from="supportDeck/Area2D" to="supportDeck" method="_on_mouse_pressed"]
 [connection signal="mouse_entered" from="supportDeck/Area2D" to="supportDeck" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="supportDeck/Area2D" to="supportDeck" method="_on_mouse_exited"]
-[connection signal="gui_input" from="viewDeckUI/overlay" to="viewDeckUI" method="_on_overlay_click"]
 [connection signal="pressed" from="arena/gameOver/ContinueButton" to="arena" method="_on_continue_button_pressed"]
 [connection signal="hold_complete" from="arena/gameOver/ReplayButton" to="arena" method="_on_replay_button_hold_complete"]
 [connection signal="hold_complete" from="arena/gameOver/NewRunButton" to="arena" method="_on_new_run_button_hold_complete"]

@@ -9,6 +9,7 @@ const SUPPORT_DECK_POSITION = Vector2(135, 548)
 @onready var soundPlayer = $AudioStreamPlayer2D
 
 var isHovered: bool = false
+var canPlayHoverSound: bool = true
 
 var shuffleSounds = [
 	preload("res://assets/sounds/cards/shuffle_1.wav"),
@@ -166,6 +167,7 @@ func apply_card_accessibility_changes():
 
 func _on_mouse_entered():
 	if !%battleManager.lockPlayerInput:
+		_play_card_hover_sound()
 		isHovered = true
 		
 		$mainText.hide()
@@ -182,11 +184,13 @@ func _on_mouse_exited():
 		$mainText.show()
 		var tween = create_tween()
 		tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.1)
+		
+		_play_card_hover_sound()
 
 func _on_mouse_pressed(_viewport, event, _shape_idx):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and !%battleManager.lockPlayerInput and event.pressed:
 		%viewDeckUI.isViewDeckActive = true
-		%viewDeckUI.open_deck_view()
+		%viewDeckUI.open_deck_view(self)
 
 func force_reset_visuals():
 	isHovered = false
@@ -195,3 +199,14 @@ func force_reset_visuals():
 	
 	var tween = create_tween()
 	tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.1)
+
+func _play_card_hover_sound() -> void:
+	if %CardHoverSound.playing:
+		return
+	
+	if canPlayHoverSound:
+		%CardHoverSound.play()
+		canPlayHoverSound = false
+		
+	await get_tree().create_timer(.1).timeout
+	canPlayHoverSound = true

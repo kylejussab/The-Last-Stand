@@ -260,7 +260,7 @@ const MODIFIERS = {
 	},
 } 
 
-var standardCharacterDeck = [
+const standardCharacterDeck = [
 	"Runner", "Runner", "Runner", "Runner",
 	"Stalker", "Stalker", "Stalker",
 	"FireflySoldier", "FireflySoldier", "FireflySoldier",
@@ -283,7 +283,7 @@ var standardCharacterDeck = [
 	"RatKing",
 ]
 
-var standardSupportDeck = [
+const standardSupportDeck = [
 	"Brick", "Brick",
 	"Bottle", "Bottle",
 	"ScavengedParts", "ScavengedParts", "ScavengedParts",
@@ -304,7 +304,7 @@ var standardSupportDeck = [
 	"TrapMine",
 ]
 
-var infectedHeavyCharacterDeck = [
+const infectedHeavyCharacterDeck = [
 	"Runner", "Runner", "Runner", "Runner", "Runner", "Runner",
 	"Stalker", "Stalker", "Stalker", "Stalker", "Stalker",
 	"Clicker", "Clicker", "Clicker",
@@ -333,7 +333,7 @@ var infectedHeavyCharacterDeck = [
 	"RatKing",
 ]
 
-var infectedHeavySupportDeck = [
+const infectedHeavySupportDeck = [
 	"Brick", "Brick", "Brick", 
 	"Bottle", "Bottle", "Bottle",
 	
