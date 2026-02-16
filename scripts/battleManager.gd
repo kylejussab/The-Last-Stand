@@ -593,6 +593,10 @@ func _apply_mid_round_perks() -> void:
 		var playerRealFaction = playerCharacterCard.faction
 		
 		if forsakenHonorActive:
+			if opponentCharacterCard.perk.has_method("would_perk_trigger") and opponentCharacterCard.perk.would_perk_trigger(opponentCharacterCard, opponentHand, playerCharacterCard):
+				playerCharacterCard.get_node("AnimationPlayer").play("forsakenHonor")
+				await playerCharacterCard.get_node("AnimationPlayer").animation_finished
+			
 			playerCharacterCard.role = "Unknown"
 			playerCharacterCard.faction = "Unknown"
 		
@@ -634,6 +638,10 @@ func _apply_end_round_perks() -> void:
 		var playerRealFaction = playerCharacterCard.faction
 		
 		if forsakenHonorActive:
+			if opponentCharacterCard.perk.has_method("would_perk_trigger") and opponentCharacterCard.perk.would_perk_trigger(opponentCharacterCard, opponentSupportCard, playerCharacterCard, playerSupportCard, opponentHand):
+				playerCharacterCard.get_node("AnimationPlayer").play("forsakenHonor")
+				await playerCharacterCard.get_node("AnimationPlayer").animation_finished
+			
 			playerCharacterCard.role = "Unknown"
 			playerCharacterCard.faction = "Unknown"
 			
@@ -680,6 +688,7 @@ func _calculate_damage() -> void:
 	
 	if cardRotActive and GameStats.roundNumber % 3 == 0:
 		for card in playerHand:
+			card.get_node("AnimationPlayer").queue("cardRot")
 			card.modify_value(-1)
 
 func _apply_player_support(support: Node2D, opponentCharacter: Node2D, playerCharacter: Node2D) -> void:

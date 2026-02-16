@@ -6,3 +6,10 @@ func _init() -> void:
 func apply_mid_perk(_thisCard, _thisHand, otherCard):
 	if otherCard.role.contains("Aggressive"):
 		otherCard.modify_value(-1)
+
+# Function used for forsaken honor check
+func would_perk_trigger(_thisCard, _thisHand, otherCard) -> bool:
+	if otherCard.role.contains("Aggressive"):
+		return true
+	else:
+		return false
