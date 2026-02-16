@@ -17,6 +17,7 @@ var minimumCardsForReshuffle: int = 5
 var cardRotActive: bool = false
 var guerrillaTacticsActive: bool = false
 var infectedDeckActive: bool = false
+var humanityRestoredActive: bool = false
 var slowBleedActive: bool = false
 var alwaysFirstActive: bool = false
 var volatileHandActive: bool = false
@@ -110,6 +111,9 @@ func initialize_game() -> void:
 	if infectedDeckActive:
 		$"../characterDeck".deck = Database.infectedHeavyCharacterDeck.duplicate()
 		$"../supportDeck".deck = Database.infectedHeavySupportDeck.duplicate()
+	elif humanityRestoredActive: 
+		$"../characterDeck".deck = Database.humanityRestoredCharacterDeck.duplicate()
+		$"../supportDeck".deck = Database.standardSupportDeck.duplicate()
 	else:
 		$"../characterDeck".deck = Database.standardCharacterDeck.duplicate()
 		$"../supportDeck".deck = Database.standardSupportDeck.duplicate()
@@ -153,6 +157,8 @@ func add_modifier(modifier: Database.Modifier) -> void:
 			guerrillaTacticsActive = true
 		Database.Modifier.INFECTED_DECK:
 			infectedDeckActive = true
+		Database.Modifier.HUMANITY_RESTORED:
+			humanityRestoredActive = true
 		Database.Modifier.FORSAKEN_HONOR:
 			forsakenHonorActive = true
 			ui.update_health(Actor.Type.PLAYER, GameStats.playerHealthValue - 20)
@@ -204,6 +210,10 @@ func remove_modifier(modifier: Database.Modifier) -> void:
 			noDefenseActive = false
 		Database.Modifier.LOUD_NOISE:
 			loudNoiseActive = false
+		Database.Modifier.INFECTED_DECK:
+			infectedDeckActive = false
+		Database.Modifier.HUMANITY_RESTORED:
+			humanityRestoredActive = false
 		Database.Modifier.GUERRILLA_TACTICS:
 			guerrillaTacticsActive = false
 		Database.Modifier.FORSAKEN_HONOR:

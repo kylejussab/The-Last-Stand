@@ -185,7 +185,7 @@ var AVATARS = {
 
 const JUNE_OPPONENTS = [Actor.Avatar.ETHAN, Actor.Avatar.UCKMANN, Actor.Avatar.ALLEY, Actor.Avatar.MIRA, Actor.Avatar.RHEA]
 
-enum Modifier { REDUCED_HAND, VOLATILE_HAND, GUERRILLA_TACTICS, SLOW_BLEED, NO_DEFENSE, LOUD_NOISE, INFECTED_DECK, ALWAYS_FIRST, FORSAKEN_HONOR, LONE_WOLF, SUPPLY_LINE, CARD_ROT }
+enum Modifier { REDUCED_HAND, VOLATILE_HAND, GUERRILLA_TACTICS, SLOW_BLEED, NO_DEFENSE, LOUD_NOISE, INFECTED_DECK, HUMANITY_RESTORED, ALWAYS_FIRST, FORSAKEN_HONOR, LONE_WOLF, SUPPLY_LINE, CARD_ROT }
 
 const MODIFIERS = {
 	Modifier.REDUCED_HAND: {
@@ -252,6 +252,15 @@ const MODIFIERS = {
 		"multiplier": 2.0,
 		"duration": 2,
 	},
+	Modifier.HUMANITY_RESTORED: {
+		"id": Modifier.HUMANITY_RESTORED,
+		"name": "Humanity Restored",
+		"description": "Your deck reflects an alternate world where the cure was found.",
+		"icon": "res://assets/modifiers/Humanity Restored.png",
+		"tier": 2,
+		"multiplier": 2.0,
+		"duration": 2,
+	},
 	Modifier.ALWAYS_FIRST: {
 		"id": Modifier.ALWAYS_FIRST,
 		"name": "Always First",
@@ -300,28 +309,28 @@ const MODIFIERS = {
 	},
 } 
 
-#const standardCharacterDeck = [
-	#"Runner", "Runner", "Runner", "Runner",
-	#"Stalker", "Stalker", "Stalker",
-	#"FireflySoldier", "FireflySoldier", "FireflySoldier",
-	#"WLFSoldier", "WLFSoldier",
-	#"SeraphiteBrute", "SeraphiteBrute",
-	#
-	#"Clicker", "Clicker",
-	#"Bloater",
-	#"Emily", "Ezra", "Lev", "Yara",
-	#"Nora", "Manny", "Alice", "Li",
-	#"Bill", "Dina", "Jessie", "Tommy", "TommyFirefly",
-	#"Riley", "Eugene", "Malik",
-	#
-	#"Joel",
-	#"Ellie",
-	#"Abby",
-	#"Isaac",
-	#"TheProphet",
-	#"Marlene",
-	#"RatKing",
-#]
+const standardCharacterDeck = [
+	"Runner", "Runner", "Runner", "Runner",
+	"Stalker", "Stalker", "Stalker",
+	"FireflySoldier", "FireflySoldier", "FireflySoldier",
+	"WLFSoldier", "WLFSoldier",
+	"SeraphiteBrute", "SeraphiteBrute",
+	
+	"Clicker", "Clicker",
+	"Bloater",
+	"Emily", "Ezra", "Lev", "Yara",
+	"Nora", "Manny", "Alice", "Li",
+	"Bill", "Dina", "Jessie", "Tommy", "TommyFirefly",
+	"Riley", "Eugene", "Malik",
+	
+	"Joel",
+	"Ellie",
+	"Abby",
+	"Isaac",
+	"TheProphet",
+	"Marlene",
+	"RatKing",
+]
 
 const standardSupportDeck = [
 	"Brick", "Brick",
@@ -394,27 +403,7 @@ const infectedHeavySupportDeck = [
 	"TrapMine",
 ]
 
-#const humanityRestoredCharacterDeck = [
-	#"FireflySoldier", "FireflySoldier", "FireflySoldier", "FireflySoldier", "FireflySoldier", "FireflySoldier",
-	#"Marlene", "Jerry", "AbbyFirefly", 
-	#"Maria", "TommyFirefly", 
-	#"Riley", "Eugene", 
-	#
-	#"WLFSoldier", "WLFSoldier", "WLFSoldier", "WLFSoldier",
-	#"Isaac", "Owen", "Mel", 
-	#"Manny", "Nora", "Alice",
-	#
-	#"SeraphiteBrute", "SeraphiteBrute", "SeraphiteBrute", "SeraphiteBrute",
-	#"TheProphet", "Emily", "Ezra", "Lev", "Yara", "Lyra",
-	#
-	#"JoelSmuggler", "Tess", 
-	#"BillSmuggler", 
-	#"LiSmuggler", 
-	#"Hunter", "Hunter"
-#]
-
-# Used for now, for testing
-const standardCharacterDeck = [
+const humanityRestoredCharacterDeck = [
 	"FireflySoldierHumanity", "FireflySoldierHumanity", "FireflySoldierHumanity", "FireflySoldierHumanity",
 	"Marlene", "Jerry", "AbbyFirefly", 
 	"Maria", "TommyFireflyHumanity", 

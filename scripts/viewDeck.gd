@@ -60,6 +60,8 @@ func open_deck_view(deckCaller = null):
 			
 			if %battleManager.infectedDeckActive:
 				deckData = cardDatabase.infectedHeavyCharacterDeck.duplicate()
+			elif %battleManager.humanityRestoredActive:
+				deckData = cardDatabase.humanityRestoredCharacterDeck.duplicate()
 			else:
 				deckData = cardDatabase.standardCharacterDeck.duplicate()
 			_populate_character_deck(deckData)
