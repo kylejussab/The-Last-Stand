@@ -234,7 +234,17 @@ func get_card_stats(playedCards):
 	
 	var displayOverrides = {
 		"WLFSoldier": "WLF Soldier",
-		"TommyFirefly": "Tommy (Firefly)" 
+		"TommyFirefly": "Tommy",
+		"JoelSmuggler": "Joel",
+		"BillSmuggler": "Bill",
+		"LiSmuggler": "Li",
+		"AbbyFirefly": "Abby",
+		"AliceHumanity": "Alice",
+		"FireflySoldierHumanity": "Firefly Soldier",
+		"WLFSoldierHumanity": "WLF Soldier",
+		"IsaacHumanity": "Isaac",
+		"TommyFireflyHumanity": "Tommy",
+		"RileyHumanity": "Riley",
 	}
 	
 	if displayOverrides.has(mvpKey):
