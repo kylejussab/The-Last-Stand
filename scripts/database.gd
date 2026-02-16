@@ -1,6 +1,7 @@
 extends Node2D
 
 const CHARACTERS = { # Value, Type, Faction, Class, Card Name Text, Perk Text
+	# Seraphite
 	"Yara": [4, "Character", "Seraphite", "Stealthy", "YARA", "+2 to Lev (if in hand) on round win"],
 	"Lev": [3, "Character", "Seraphite", "Stealthy/Survivor", "LEV", "+5 if round ties"],
 	"TheProphet": [6, "Character", "Seraphite", "Defensive/Stealthy", "THE PROPHET", "+2 if opposing card is Aggressive or Stealthy"],
@@ -9,6 +10,7 @@ const CHARACTERS = { # Value, Type, Faction, Class, Card Name Text, Perk Text
 	"Lyra": [2, "Character", "Seraphite", "Survivor", "LYRA"],
 	"SeraphiteBrute": [5, "Character", "Seraphite", "Aggressive", "SERAPHITE BRUTE"],
 	
+	# WLF
 	"Abby": [6, "Character", "WLF", "Aggressive", "ABBY", "+2 if opposing card is Aggressive and +1 if opposing card is Infected"],
 	"Manny": [4, "Character", "WLF", "Defensive", "MANNY", "equal value and +2 if opposing card is Aggressive or Defensive"],
 	"Nora": [4, "Character", "WLF", "Stealthy", "NORA", "+1 if opposing card is Crafty"],
@@ -17,12 +19,14 @@ const CHARACTERS = { # Value, Type, Faction, Class, Card Name Text, Perk Text
 	"Isaac": [6, "Character", "WLF", "Aggressive/Defensive", "ISAAC", "+2 if opposing card is Seraphite"],
 	"Alice": [2, "Character", "WLF", "Stealthy/Survivor", "ALICE", "+2 if opposing card is Infected"],
 	
+	# Firefly
 	"Marlene": [5, "Character", "Firefly", "Crafty", "MARLENE", "+1 if opposing card is Survivor or Stealthy"],
 	"FireflySoldier": [2, "Character", "Firefly", "Defensive", "FIREFLY SOLDIER", "+6 if Marlene in hand"],
 	"TommyFirefly": [4, "Character", "Firefly", "Survivor", "TOMMY", "+3 if no Firefly in hand"],
 	"Eugene": [3, "Character", "Firefly", "Crafty/Survivor", "EUGENE"],
-	"Riley": [3, "Character", "Firefly", "Stealthy", "RILEY"],
+	"Riley": [3, "Character", "Firefly", "Stealthy", "RILEY", "+3 if Ellie in hand"],
 	
+	# Infected
 	"Runner": [2, "Character", "Infected", "Aggressive", "RUNNER", "gain the value of all runners in hand, and discard them"],
 	"Stalker": [3, "Character", "Infected", "Stealthy", "STALKER", "+2 for each Infected in hand"],
 	"Clicker": [5, "Character", "Infected", "Aggressive", "CLICKER", "-2 to opponent health on round win"],
@@ -30,12 +34,33 @@ const CHARACTERS = { # Value, Type, Faction, Class, Card Name Text, Perk Text
 	"RatKing": [8, "Character", "Infected", "Aggressive", "RAT KING", "-4 to opponent health on round win"],
 	"Malik": [3, "Character", "Infected", "Survivor", "MALIK", "+1 for each Infected in hand and +2 if opposing card is Infected"],
 	
+	# Jackson
 	"Joel": [6, "Character", "Jackson", "Crafty/Defensive", "JOEL", "+4 if Ellie in hand"],
 	"Ellie": [5, "Character", "Jackson", "Crafty/Stealthy", "ELLIE", "-1 to opponent, if opposing card is Stealthy"],
 	"Dina": [3, "Character", "Jackson", "Stealthy", "DINA", "+2 if opposing card is Defensive"],
 	"Tommy": [5, "Character", "Jackson", "Aggressive", "TOMMY"],
 	"Bill": [4, "Character", "Jackson", "Crafty", "BILL", "+4 if played support card is Trap Mine"],
 	"Jessie": [5, "Character", "Jackson", "Defensive", "JESSIE", "-1 to opponent, if opposing card is Aggressive"],
+	
+	# New / altered cards based on humanity restored modifier
+	"JoelSmuggler": [6, "Character", "Smuggler", "Aggressive", "JOEL", "+2 if opposing card is Aggressive or Defensive or Survivor"],
+	"BillSmuggler": [4, "Character", "Smuggler", "Crafty", "BILL", "+4 if played support card is Trap Mine"],
+	"LiSmuggler": [3, "Character", "Smuggler", "Survivor", "LI", "+2 if opposing card is Survivor"],
+	"Tess": [5, "Character", "Smuggler", "Crafty/Survivor", "TESS", "+4 if Joel in hand, and Joel gains +2"],
+	"Hunter": [3, "Character", "Smuggler", "Aggressive/Survivor", "HUNTER", "+3 if no other Smuggler in hand"],
+	
+	"Owen": [4, "Character", "WLF", "Stealthy", "OWEN", "take 0 health damage on round loss"],
+	"Mel": [3, "Character", "WLF", "Survivor", "MEL", "+2 to random character card in hand on round win"],
+	"Maria": [4, "Character", "Firefly", "Defensive", "MARIA"],
+	"Jerry": [2, "Character", "Firefly", "Defensive", "JERRY", "+2 to all Firefly in hand on round loss"],
+	"AbbyFirefly": [4, "Character", "Firefly", "Survivor", "ABBY"],
+	
+	"AliceHumanity": [2, "Character", "WLF", "Stealthy/Survivor", "ALICE", "+2 if opposing card is Stealthy"],
+	"FireflySoldierHumanity": [2, "Character", "Firefly", "Defensive", "FIREFLY SOLDIER", "+3 if at least one Firefly in hand"],
+	"WLFSoldierHumanity": [3, "Character", "WLF", "Survivor", "WLF SOLDIER", "-2 to opponent, if opposing card is Firefly or Seraphite"],
+	"IsaacHumanity": [6, "Character", "WLF", "Aggressive/Defensive", "ISAAC", "+2 if opposing card is Firefly"],
+	"TommyFireflyHumanity": [4, "Character", "Firefly", "Survivor", "TOMMY"],
+	"RileyHumanity": [3, "Character", "Firefly", "Stealthy", "RILEY", "+4 if played support card is Bottle or Brick"],
 }
 
 const SUPPORTS = { # Value, Type, Class, Positive/Negative, Card Name Text, Perk Text
@@ -83,6 +108,21 @@ const PERKS = {
 	"TommyFirefly": "res://scripts/perks/tommyFireflyPerk.gd",
 	"Alice": "res://scripts/perks/alicePerk.gd",
 	"SupplyCache": "res://scripts/perks/supplyCachePerk.gd",
+	"Riley": "res://scripts/perks/rileyPerk.gd",
+	
+	"JoelSmuggler": "res://scripts/perks/joelSmugglerPerk.gd",
+	"BillSmuggler": "res://scripts/perks/billPerk.gd",
+	"Tess": "res://scripts/perks/tessPerk.gd",
+	"Hunter": "res://scripts/perks/hunterPerk.gd",
+	"Mel": "res://scripts/perks/melPerk.gd",
+	"LiSmuggler": "res://scripts/perks/liSmugglerPerk.gd",
+	"Jerry": "res://scripts/perks/jerryPerk.gd",
+	"AliceHumanity": "res://scripts/perks/aliceHumanityPerk.gd",
+	"FireflySoldierHumanity": "res://scripts/perks/fireflySoldierHumanityPerk.gd",
+	"WLFSoldierHumanity": "res://scripts/perks/wlfSoldierHumanityPerk.gd",
+	"IsaacHumanity": "res://scripts/perks/isaacHumanityPerk.gd",
+	"Owen": "res://scripts/perks/owenPerk.gd",
+	"RileyHumanity": "res://scripts/perks/rileyHumanityPerk.gd",
 }
 
 var AVATARS = {
@@ -260,28 +300,28 @@ const MODIFIERS = {
 	},
 } 
 
-const standardCharacterDeck = [
-	"Runner", "Runner", "Runner", "Runner",
-	"Stalker", "Stalker", "Stalker",
-	"FireflySoldier", "FireflySoldier", "FireflySoldier",
-	"WLFSoldier", "WLFSoldier",
-	"SeraphiteBrute", "SeraphiteBrute",
-	
-	"Clicker", "Clicker",
-	"Bloater",
-	"Emily", "Ezra", "Lev", "Yara",
-	"Nora", "Manny", "Alice",
-	"Bill", "Dina", "Jessie", "Tommy", "TommyFirefly",
-	"Riley", "Eugene", "Malik",
-	
-	"Joel",
-	"Ellie",
-	"Abby",
-	"Isaac",
-	"TheProphet",
-	"Marlene",
-	"RatKing",
-]
+#const standardCharacterDeck = [
+	#"Runner", "Runner", "Runner", "Runner",
+	#"Stalker", "Stalker", "Stalker",
+	#"FireflySoldier", "FireflySoldier", "FireflySoldier",
+	#"WLFSoldier", "WLFSoldier",
+	#"SeraphiteBrute", "SeraphiteBrute",
+	#
+	#"Clicker", "Clicker",
+	#"Bloater",
+	#"Emily", "Ezra", "Lev", "Yara",
+	#"Nora", "Manny", "Alice", "Li",
+	#"Bill", "Dina", "Jessie", "Tommy", "TommyFirefly",
+	#"Riley", "Eugene", "Malik",
+	#
+	#"Joel",
+	#"Ellie",
+	#"Abby",
+	#"Isaac",
+	#"TheProphet",
+	#"Marlene",
+	#"RatKing",
+#]
 
 const standardSupportDeck = [
 	"Brick", "Brick",
@@ -320,7 +360,7 @@ const infectedHeavyCharacterDeck = [
 	"Clicker", "Clicker",
 	"Bloater",
 	"Emily", "Ezra", "Lev", "Yara",
-	"Nora", "Manny", "Alice",
+	"Nora", "Manny", "Alice", "Li",
 	"Bill", "Dina", "Jessie", "Tommy", "TommyFirefly",
 	"Riley", "Eugene", "Malik",
 	
@@ -352,4 +392,43 @@ const infectedHeavySupportDeck = [
 	"SmokeBomb", "SmokeBomb",
 	"Silencer", 
 	"TrapMine",
+]
+
+#const humanityRestoredCharacterDeck = [
+	#"FireflySoldier", "FireflySoldier", "FireflySoldier", "FireflySoldier", "FireflySoldier", "FireflySoldier",
+	#"Marlene", "Jerry", "AbbyFirefly", 
+	#"Maria", "TommyFirefly", 
+	#"Riley", "Eugene", 
+	#
+	#"WLFSoldier", "WLFSoldier", "WLFSoldier", "WLFSoldier",
+	#"Isaac", "Owen", "Mel", 
+	#"Manny", "Nora", "Alice",
+	#
+	#"SeraphiteBrute", "SeraphiteBrute", "SeraphiteBrute", "SeraphiteBrute",
+	#"TheProphet", "Emily", "Ezra", "Lev", "Yara", "Lyra",
+	#
+	#"JoelSmuggler", "Tess", 
+	#"BillSmuggler", 
+	#"LiSmuggler", 
+	#"Hunter", "Hunter"
+#]
+
+# Used for now, for testing
+const standardCharacterDeck = [
+	"FireflySoldierHumanity", "FireflySoldierHumanity", "FireflySoldierHumanity", "FireflySoldierHumanity",
+	"Marlene", "Jerry", "AbbyFirefly", 
+	"Maria", "TommyFireflyHumanity", 
+	"RileyHumanity", "Eugene", 
+	
+	"WLFSoldierHumanity", "WLFSoldierHumanity", "WLFSoldierHumanity", "WLFSoldierHumanity",
+	"IsaacHumanity", "Owen", "Mel", 
+	"Manny", "Nora", "AliceHumanity",
+	
+	"SeraphiteBrute", "SeraphiteBrute", "SeraphiteBrute",
+	"TheProphet", "Emily", "Ezra", "Lev", "Yara", "Lyra",
+	
+	"JoelSmuggler", "Tess", 
+	"BillSmuggler", 
+	"LiSmuggler", 
+	"Hunter", "Hunter"
 ]

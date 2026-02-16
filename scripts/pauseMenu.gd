@@ -204,6 +204,15 @@ func _update_all_game_card_visuals():
 	
 	for card in opponentHand:
 		card.update_visuals()
+	
+	if %battleManager.playerCharacterCard:
+		%battleManager.playerCharacterCard.update_visuals()
+	if %battleManager.opponentCharacterCard:
+		%battleManager.opponentCharacterCard.update_visuals()
+	if %battleManager.playerSupportCard:
+		%battleManager.playerSupportCard.update_visuals()
+	if %battleManager.opponentSupportCard:
+		%battleManager.opponentSupportCard.update_visuals()
 
 func _on_preview_hover_entered(card_node):
 	%CardHoverSound.play()

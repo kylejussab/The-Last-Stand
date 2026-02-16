@@ -56,10 +56,13 @@ func _ready() -> void:
 
 func update_visuals():
 	_apply_accessibility_settings()
+	_apply_visibility_settings()
 	
 	if has_node("value"):
+		$value.text = str(value)
 		$value.add_theme_font_size_override("normal_font_size", CARD_TEXT_SIZE)
 	if has_node("name"):
+		$name.text = nameText
 		$name.add_theme_font_size_override("normal_font_size", CARD_TEXT_SIZE)
 	if has_node("perk"):
 		$perk.add_theme_font_size_override("normal_font_size", CARD_TEXT_SIZE)
@@ -84,6 +87,26 @@ func update_visuals():
 		
 		if $icons.has_node("faction"):
 			$icons.get_node("faction").scale = Vector2(FACTION_ICON_SCALE, FACTION_ICON_SCALE)
+			
+			if faction in KEYWORD_ICONS:
+				$icons.get_node("faction").texture = load("res://assets/cardIcons/" + faction + ".png")
+		
+		if role != null and role != "":
+			var roles = role.split("/")
+			
+			if roles.size() > 0 and roles.size() <= 2:
+				if roles[0] in KEYWORD_ICONS:
+					perkOne.texture = load(KEYWORD_ICONS[roles[0]])
+					perkOne.visible = true
+				
+				if roles.size() > 1 and roles[1] in KEYWORD_ICONS:
+					perkTwo.texture = load(KEYWORD_ICONS[roles[1]])
+					perkTwo.visible = true
+				else:
+					perkTwo.visible = false
+			else:
+				perkOne.visible = false
+				perkTwo.visible = false
 	
 	if has_node("line"):
 		$line.size.y = PERK_LINE_Y_SIZE
@@ -119,6 +142,14 @@ func _apply_accessibility_settings():
 			PERK_ICON_TWO_Y_POSITION = -28.5
 			FACTION_ICON_SCALE = 0.17
 			PERK_LINE_Y_SIZE = 20
+
+func _apply_visibility_settings():
+	if has_node("name"): $name.visible = true
+	if faction != "Support": $icons/faction.visible = true
+	
+	if AccessibilityData.currentCardStyle == AccessibilityData.CardStyle.MINIMAL:
+		if has_node("name"): $name.visible = false
+		if has_node("icons/faction"): $icons/faction.visible = false
 
 func _update_art_style():
 	if not has_node("image"): return

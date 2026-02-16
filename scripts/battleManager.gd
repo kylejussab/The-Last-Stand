@@ -675,6 +675,9 @@ func _calculate_damage() -> void:
 func _apply_player_support(support: Node2D, opponentCharacter: Node2D, playerCharacter: Node2D) -> void:
 	await get_tree().create_timer(1.0).timeout
 	
+	if support.cardKey == "SupplyCache": # 0 card, no need to change value by 0
+		return
+	
 	if Database.SUPPORTS[support.cardKey][3] == "Negative":
 		var value = support.value
 		support.modify_value(-value)
@@ -686,6 +689,9 @@ func _apply_player_support(support: Node2D, opponentCharacter: Node2D, playerCha
 
 func _apply_opponent_support(support: Node2D, playerCharacter: Node2D, opponentCharacter: Node2D) -> void:
 	await get_tree().create_timer(1.0).timeout
+	
+	if support.cardKey == "SupplyCache": # 0 card, no need to change value by 0
+		return
 	
 	if Database.SUPPORTS[support.cardKey][3] == "Negative":
 		var value = support.value
@@ -889,6 +895,10 @@ func _handle_player_win(playerTotal: int, opponentTotal: int) -> void:
 	ui.change_mood(Actor.Type.PLAYER, Actor.Mood.HAPPY)
 	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.HURT)
 	
+	if opponentCharacterCard.cardKey == "Owen":
+		await get_tree().create_timer(PERK_CALCULATION_TIME_AFTER_ROUND_END).timeout
+		return
+	
 	await _deal_damage(Actor.Type.OPPONENT, damage, false)
 	
 	await _handle_bloater_perk(Actor.Type.PLAYER)
@@ -904,6 +914,10 @@ func _handle_opponent_win(playerTotal: int, opponentTotal: int) -> void:
 	
 	ui.change_mood(Actor.Type.PLAYER, Actor.Mood.HURT)
 	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.HAPPY)
+	
+	if playerCharacterCard.cardKey == "Owen":
+		await get_tree().create_timer(PERK_CALCULATION_TIME_AFTER_ROUND_END).timeout
+		return
 	
 	await _deal_damage(Actor.Type.PLAYER, damage, false)
 	

@@ -169,16 +169,13 @@ func _add_visual_card(key, grid, isCharacter):
 		card.nameText = data[4]
 		if data.size() > 5: card.perkDescription = data[5]
 		card.faction = "Support" 
-
+	
 	card.process_mode = Node.PROCESS_MODE_DISABLED
 	card.scale = CARD_SCALE
 	card.position = wrapper.custom_minimum_size / 2
 	
 	if card.has_node("Area2D"): card.get_node("Area2D").queue_free()
 	if card.has_method("update_visuals"): card.update_visuals()
-	
-	if card.has_node("value"): card.get_node("value").text = str(card.value)
-	if card.has_node("name"): card.get_node("name").text = card.nameText
 	
 	if card is Control: card.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	
