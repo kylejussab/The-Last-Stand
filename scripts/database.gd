@@ -185,7 +185,7 @@ var AVATARS = {
 
 const JUNE_OPPONENTS = [Actor.Avatar.ETHAN, Actor.Avatar.UCKMANN, Actor.Avatar.ALLEY, Actor.Avatar.MIRA, Actor.Avatar.RHEA]
 
-enum Modifier { REDUCED_HAND, VOLATILE_HAND, GUERRILLA_TACTICS, SLOW_BLEED, NO_DEFENSE, LOUD_NOISE, INFECTED_DECK, HUMANITY_RESTORED, ALWAYS_FIRST, FORSAKEN_HONOR, LONE_WOLF, SUPPLY_LINE, CARD_ROT }
+enum Modifier { REDUCED_HAND, VOLATILE_HAND, CALCULATED_RISK, DEEP_WOUNDS, HEAVY_HITTER, GUERRILLA_TACTICS, SLOW_BLEED, NO_DEFENSE, LOUD_NOISE, OVER_EXERTION, INFECTED_DECK, HUMANITY_RESTORED, ALWAYS_FIRST, FORSAKEN_HONOR, STACKED_ODDS, LONE_WOLF, SUPPLY_LINE, DESPERATE_MEASURES, CARD_ROT, FRIENDLY_FIRE }
 
 const MODIFIERS = {
 	Modifier.REDUCED_HAND: {
@@ -204,6 +204,33 @@ const MODIFIERS = {
 		"icon": "res://assets/modifiers/Volatile Hand.png",
 		"tier": 1,
 		"multiplier": 0.75,
+		"duration": 3,
+	},
+	Modifier.CALCULATED_RISK: {
+		"id": Modifier.CALCULATED_RISK,
+		"name": "Calculated Risk",
+		"description": "Winning a round by a margin of exactly 1 deals +3 damage to the opponent's health.",
+		"icon": "res://assets/modifiers/Calculated Risk.png",
+		"tier": 1,
+		"multiplier": 0.75,
+		"duration": 4,
+	},
+	Modifier.DEEP_WOUNDS: {
+		"id": Modifier.DEEP_WOUNDS,
+		"name": "Deep Wounds",
+		"description": "Take +2 additional damage if you lose a round by 5 or more.",
+		"icon": "res://assets/modifiers/Deep Wounds.png",
+		"tier": 1,
+		"multiplier": 1.0,
+		"duration": 3,
+	},
+	Modifier.HEAVY_HITTER: {
+		"id": Modifier.HEAVY_HITTER,
+		"name": "Heavy Hitter",
+		"description": "Take +1 additional damage if you play a character with a base value of 5 or more.",
+		"icon": "res://assets/modifiers/Heavy Hitter.png",
+		"tier": 1,
+		"multiplier": 1.0,
 		"duration": 3,
 	},
 	Modifier.GUERRILLA_TACTICS: {
@@ -243,6 +270,15 @@ const MODIFIERS = {
 		"multiplier": 1.75,
 		"duration": 2,
 	},
+	Modifier.OVER_EXERTION: {
+		"id": Modifier.OVER_EXERTION,
+		"name": "Over-Exertion",
+		"description": "Deal +2 damage to the opponent if your final value is 10 or higher, but take +1 damage.",
+		"icon": "res://assets/modifiers/Over Exertion.png",
+		"tier": 2,
+		"multiplier": 2.0,
+		"duration": 3,
+	},
 	Modifier.INFECTED_DECK: {
 		"id": Modifier.INFECTED_DECK,
 		"name": "Infected Deck",
@@ -276,9 +312,18 @@ const MODIFIERS = {
 		"description": "Lose 20 health. Your card’s faction and type are hidden from the opponent.",
 		"icon": "res://assets/modifiers/Forsaken Honor.png",
 		"tier": 3,
-		"multiplier": 1.0,
+		"multiplier": 1.5,
 		"duration": 2,
 		"healthCost": 20,
+	},
+	Modifier.STACKED_ODDS: {
+		"id": Modifier.STACKED_ODDS,
+		"name": "Stacked Odds",
+		"description": "The opponent gains +1 to their card value at the end of every round.",
+		"icon": "res://assets/modifiers/Stacked Odds.png",
+		"tier": 3,
+		"multiplier": 2.0,
+		"duration": 2,
 	},
 	Modifier.LONE_WOLF: {
 		"id": Modifier.LONE_WOLF,
@@ -298,11 +343,29 @@ const MODIFIERS = {
 		"multiplier": 3.0,
 		"duration": 1,
 	},
+	Modifier.DESPERATE_MEASURES: {
+		"id": Modifier.DESPERATE_MEASURES,
+		"name": "Desperate Measures",
+		"description": "Support cards ignore type requirements, but take +3 damage if it’s a mismatch.",
+		"icon": "res://assets/modifiers/Desperate Measures.png",
+		"tier": 3,
+		"multiplier": 3.0,
+		"duration": 1,
+	},
 	Modifier.CARD_ROT: {
 		"id": Modifier.CARD_ROT,
 		"name": "Card Rot",
 		"description": "Every 3 rounds, all cards in your hand lose -1 value.",
 		"icon": "res://assets/modifiers/Card Rot.png",
+		"tier": 3,
+		"multiplier": 3.5,
+		"duration": 1,
+	},
+	Modifier.FRIENDLY_FIRE: {
+		"id": Modifier.FRIENDLY_FIRE,
+		"name": "Friendly Fire",
+		"description": "Your card's value is halved if your faction matches the opponent’s.",
+		"icon": "res://assets/modifiers/Friendly Fire.png",
 		"tier": 3,
 		"multiplier": 3.5,
 		"duration": 1,

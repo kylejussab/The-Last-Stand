@@ -27,6 +27,13 @@ var loudNoiseActive: bool = false
 var loneWolfActive: bool = false
 var supplyLineActive: bool = false
 var forsakenHonorActive: bool = false
+var calculatedRiskActive: bool = false
+var deepWoundsActive: bool = false
+var heavyHitterActive: bool = false
+var overExertionActive: bool = false
+var stackedOddsActive: bool = false
+var friendlyFireActive: bool = false
+var desperateMeasuresActive: bool = false
 
 var previousRoundFaction: String = ""
 var previousRoundRoles: Array = []
@@ -153,6 +160,20 @@ func add_modifier(modifier: Database.Modifier) -> void:
 			noDefenseActive = true
 		Database.Modifier.LOUD_NOISE:
 			loudNoiseActive = true
+		Database.Modifier.CALCULATED_RISK:
+			calculatedRiskActive = true
+		Database.Modifier.DEEP_WOUNDS:
+			deepWoundsActive = true
+		Database.Modifier.HEAVY_HITTER:
+			heavyHitterActive = true
+		Database.Modifier.OVER_EXERTION:
+			overExertionActive = true
+		Database.Modifier.STACKED_ODDS:
+			stackedOddsActive = true
+		Database.Modifier.FRIENDLY_FIRE:
+			friendlyFireActive = true
+		Database.Modifier.DESPERATE_MEASURES:
+			desperateMeasuresActive = true
 		Database.Modifier.GUERRILLA_TACTICS:
 			guerrillaTacticsActive = true
 		Database.Modifier.INFECTED_DECK:
@@ -210,6 +231,20 @@ func remove_modifier(modifier: Database.Modifier) -> void:
 			noDefenseActive = false
 		Database.Modifier.LOUD_NOISE:
 			loudNoiseActive = false
+		Database.Modifier.CALCULATED_RISK:
+			calculatedRiskActive = false
+		Database.Modifier.DEEP_WOUNDS:
+			deepWoundsActive = false
+		Database.Modifier.HEAVY_HITTER:
+			heavyHitterActive = false
+		Database.Modifier.OVER_EXERTION:
+			overExertionActive = false
+		Database.Modifier.STACKED_ODDS:
+			stackedOddsActive = false
+		Database.Modifier.FRIENDLY_FIRE:
+			friendlyFireActive = false
+		Database.Modifier.DESPERATE_MEASURES:
+			desperateMeasuresActive = false
 		Database.Modifier.INFECTED_DECK:
 			infectedDeckActive = false
 		Database.Modifier.HUMANITY_RESTORED:
@@ -395,6 +430,17 @@ func _execute_opponent_support_play() -> void:
 
 func _transition_to_resolution_phase() -> void:
 	roundStage = RoundStage.END_CALCULATION
+	
+	if desperateMeasuresActive and !_is_player_support_matched():
+		playerCharacterCard.get_node("ModifierIndicator").texture = load("res://assets/modifiers/Desperate Measures.png")
+		playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
+		await _deal_damage(Actor.Type.PLAYER, 3)
+	
+	if stackedOddsActive:
+		opponentCharacterCard.get_node("ModifierIndicator").texture = load("res://assets/modifiers/Stacked Odds.png")
+		opponentCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
+		opponentCharacterCard.modify_value(1)
+	
 	await _calculate_damage()
 	await get_tree().create_timer(END_ROUND_TIME).timeout
 	
@@ -583,6 +629,13 @@ func _animate_opponent_playing_card(opponentCard: Node2D, opponentCardSlot: Node
 	$"../opponentHand".remove_card_from_hand(opponentCard)
 
 func _apply_mid_round_perks() -> void:
+	if friendlyFireActive and playerCharacterCard.faction == opponentCharacterCard.faction:
+		playerCharacterCard.get_node("ModifierIndicator").texture = load("res://assets/modifiers/Friendly Fire.png")
+		playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
+		await playerCharacterCard.get_node("AnimationPlayer").animation_finished
+		await playerCharacterCard.modify_value(-int(ceil(playerCharacterCard.value / 2.0)))
+		await get_tree().create_timer(0.3).timeout
+	
 	if playerCharacterCard.perk && playerCharacterCard.perk.timing == "midRound":
 		await get_tree().create_timer(PERK_CALCULATION_TIME).timeout
 		await playerCharacterCard.perk.apply_mid_perk(playerCharacterCard, playerHand, opponentCharacterCard)
@@ -594,7 +647,8 @@ func _apply_mid_round_perks() -> void:
 		
 		if forsakenHonorActive:
 			if opponentCharacterCard.perk.has_method("would_perk_trigger") and opponentCharacterCard.perk.would_perk_trigger(opponentCharacterCard, opponentHand, playerCharacterCard):
-				playerCharacterCard.get_node("AnimationPlayer").play("forsakenHonor")
+				playerCharacterCard.get_node("ModifierIndicator").texture = load("res://assets/modifiers/Forsaken Honor.png")
+				playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
 				await playerCharacterCard.get_node("AnimationPlayer").animation_finished
 			
 			playerCharacterCard.role = "Unknown"
@@ -608,6 +662,11 @@ func _apply_mid_round_perks() -> void:
 			playerCharacterCard.faction = playerRealFaction
 			_update_playable_support_cards()
 	
+	if heavyHitterActive && playerCharacterCard.value >= 5:
+		playerCharacterCard.get_node("ModifierIndicator").texture = load("res://assets/modifiers/Heavy Hitter.png")
+		playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
+		await _deal_damage(Actor.Type.PLAYER, 1)
+	
 	# Handle the runner perk
 	_handle_runner_perk()
 
@@ -615,10 +674,13 @@ func _update_playable_support_cards() -> void:
 	var playerCharacterCardRoles = playerCharacterCard.role.split("/")
 	for card in playerHand:
 		if is_instance_valid(card) and card.type == "Support":
-			var playerSupportCardRoles = card.role.split("/")
-			for role in playerCharacterCardRoles:
-				if role in playerSupportCardRoles:
-					card.canBePlayed = true
+			if desperateMeasuresActive:
+				card.canBePlayed = true
+			else:
+				var playerSupportCardRoles = card.role.split("/")
+				for role in playerCharacterCardRoles:
+					if role in playerSupportCardRoles:
+						card.canBePlayed = true
 	
 	var opponentCharacterCardRoles = opponentCharacterCard.role.split("/")
 	for card in opponentHand:
@@ -639,7 +701,8 @@ func _apply_end_round_perks() -> void:
 		
 		if forsakenHonorActive:
 			if opponentCharacterCard.perk.has_method("would_perk_trigger") and opponentCharacterCard.perk.would_perk_trigger(opponentCharacterCard, opponentSupportCard, playerCharacterCard, playerSupportCard, opponentHand):
-				playerCharacterCard.get_node("AnimationPlayer").play("forsakenHonor")
+				playerCharacterCard.get_node("ModifierIndicator").texture = load("res://assets/modifiers/Forsaken Honor.png")
+				playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
 				await playerCharacterCard.get_node("AnimationPlayer").animation_finished
 			
 			playerCharacterCard.role = "Unknown"
@@ -676,6 +739,12 @@ func _calculate_damage() -> void:
 	
 	_apply_calculation_round_perks(playerTotal, opponentTotal)
 	
+	if playerTotal >= 10 && overExertionActive:
+		playerCharacterCard.get_node("ModifierIndicator").texture = load("res://assets/modifiers/Over Exertion.png")
+		playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
+		_deal_damage(Actor.Type.PLAYER, 1)
+		await _deal_damage(Actor.Type.OPPONENT, 2)
+	
 	if playerTotal > opponentTotal:
 		await _handle_player_win(playerTotal, opponentTotal)
 	elif opponentTotal > playerTotal:
@@ -688,7 +757,8 @@ func _calculate_damage() -> void:
 	
 	if cardRotActive and GameStats.roundNumber % 3 == 0:
 		for card in playerHand:
-			card.get_node("AnimationPlayer").queue("cardRot")
+			card.get_node("ModifierIndicator").texture = load("res://assets/modifiers/Card Rot.png")
+			card.get_node("AnimationPlayer").queue("modifierIndicator")
 			card.modify_value(-1)
 
 func _apply_player_support(support: Node2D, opponentCharacter: Node2D, playerCharacter: Node2D) -> void:
@@ -924,7 +994,12 @@ func _handle_player_win(playerTotal: int, opponentTotal: int) -> void:
 	
 	if playerCharacterCard.perkValueAtRoundEnd: # Any non-special perks that need triggering on round end
 		await _deal_damage(Actor.Type.OPPONENT, playerCharacterCard.perkValueAtRoundEnd)
-
+	
+	if calculatedRiskActive and damage == 1:
+		playerCharacterCard.get_node("ModifierIndicator").texture = load("res://assets/modifiers/Calculated Risk.png")
+		playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
+		await _deal_damage(Actor.Type.OPPONENT, 3)
+	
 	if playerCharacterCard.value < opponentCharacterCard.value:
 		GameStats.roundWinsUnderdog += 1
 
@@ -944,6 +1019,11 @@ func _handle_opponent_win(playerTotal: int, opponentTotal: int) -> void:
 	
 	if opponentCharacterCard.perkValueAtRoundEnd: # Any non-special perks that need triggering on round end
 		await _deal_damage(Actor.Type.PLAYER, opponentCharacterCard.perkValueAtRoundEnd)
+	
+	if deepWoundsActive and damage >= 5:
+		playerCharacterCard.get_node("ModifierIndicator").texture = load("res://assets/modifiers/Deep Wounds.png")
+		playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
+		await _deal_damage(Actor.Type.PLAYER, 2)
 
 func _handle_bloater_perk(winner: Actor.Type) -> void:
 	if winner == Actor.Type.PLAYER:
@@ -1041,3 +1121,16 @@ func _animate_card_unlock(card):
 		card.get_node("AnimationPlayer").play_backwards("lock")
 		await get_tree().create_timer(0.35).timeout
 		%CardLockSound.play()
+
+func _is_player_support_matched() -> bool:
+	if playerSupportCard == null: 
+		return true
+	
+	var characterRoles = playerCharacterCard.role.split("/")
+	var supportRoles = playerSupportCard.role.split("/")
+	
+	for role in characterRoles:
+		if role in supportRoles:
+			return true
+		
+	return false
