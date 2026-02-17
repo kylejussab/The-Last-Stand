@@ -318,7 +318,7 @@ func _on_player_character_played(card: Node2D) -> void:
 	
 	# If the opponent started the round
 	if opponentCharacterCard != null:
-		_apply_mid_round_perks()
+		await _apply_mid_round_perks()
 		_transition_to_support_phase()
 	else:
 		roundStage = RoundStage.OPPONENT_CHARACTER
@@ -343,7 +343,7 @@ func _execute_opponent_character_play() -> void:
 	# If the player started the round
 	if playerCharacterCard != null:
 		ui.show_end_turn_button()
-		_apply_mid_round_perks()
+		await _apply_mid_round_perks()
 		_transition_to_support_phase()
 
 	else:
@@ -629,12 +629,12 @@ func _animate_opponent_playing_card(opponentCard: Node2D, opponentCardSlot: Node
 	$"../opponentHand".remove_card_from_hand(opponentCard)
 
 func _apply_mid_round_perks() -> void:
-	if friendlyFireActive and playerCharacterCard.faction == opponentCharacterCard.faction:
-		playerCharacterCard.get_node("ModifierIndicator").texture = load("res://assets/modifiers/Friendly Fire.png")
-		playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
-		await playerCharacterCard.get_node("AnimationPlayer").animation_finished
-		await playerCharacterCard.modify_value(-int(ceil(playerCharacterCard.value / 2.0)))
+	if friendlyFireActive and (playerCharacterCard.faction == opponentCharacterCard.faction):
 		await get_tree().create_timer(0.3).timeout
+		playerCharacterCard.get_node("ModifierIndicator").texture = load("res://assets/modifiers/Friendly Fire.png")
+		playerCharacterCard.get_node("AnimationPlayer").queue("modifierIndicator")
+		playerCharacterCard.modify_value(-int(ceil(playerCharacterCard.value / 2.0)))
+		await playerCharacterCard.get_node("AnimationPlayer").animation_finished
 	
 	if playerCharacterCard.perk && playerCharacterCard.perk.timing == "midRound":
 		await get_tree().create_timer(PERK_CALCULATION_TIME).timeout

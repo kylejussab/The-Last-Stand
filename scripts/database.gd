@@ -218,7 +218,7 @@ const MODIFIERS = {
 	Modifier.DEEP_WOUNDS: {
 		"id": Modifier.DEEP_WOUNDS,
 		"name": "Deep Wounds",
-		"description": "Take +2 additional damage if you lose a round by 5 or more.",
+		"description": "Take +2 damage if you lose a round by 5 or more.",
 		"icon": "res://assets/modifiers/Deep Wounds.png",
 		"tier": 1,
 		"multiplier": 1.0,
@@ -227,7 +227,7 @@ const MODIFIERS = {
 	Modifier.HEAVY_HITTER: {
 		"id": Modifier.HEAVY_HITTER,
 		"name": "Heavy Hitter",
-		"description": "Take +1 additional damage if you play a character with a base value of 5 or more.",
+		"description": "Take +1 damage if you play a character with a base value of 5 or more.",
 		"icon": "res://assets/modifiers/Heavy Hitter.png",
 		"tier": 1,
 		"multiplier": 1.0,

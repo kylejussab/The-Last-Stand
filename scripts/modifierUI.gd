@@ -119,17 +119,12 @@ func show_modifier_menu() -> void:
 func _select_modifiers() -> void:
 	if not is_node_ready():
 		await ready
-		
-	var availableModifiers = {
-		1: [],
-		2: [],
-		3: []
-	}
 	
+	var availableByTier = { 1: [], 2: [], 3: [] }
 	var activeIdModifiers = []
 	for active in GameStats.activeModifiers:
 		activeIdModifiers.append(active["id"])
-
+	
 	for modifier in Database.MODIFIERS.values():
 		if not modifier["id"] in activeIdModifiers:
 			var tier = modifier["tier"]
@@ -137,24 +132,28 @@ func _select_modifiers() -> void:
 			if modifier.has("healthCost") and GameStats.playerHealthValue <= modifier["healthCost"]:
 				continue
 			
-			if availableModifiers.has(tier):
-				availableModifiers[tier].append(modifier)
+			if availableByTier.has(tier):
+				availableByTier[tier].append(modifier)
 	
-	if availableModifiers[1].size() > 0:
-		tierOneModifier = availableModifiers[1].pick_random()
-		_update_slot_ui(tierOneModifier, slotOne)
+	tierOneModifier = _pick_weighted_modifier(availableByTier[1])
+	tierTwoModifier = _pick_weighted_modifier(availableByTier[2])
+	tierThreeModifier = _pick_weighted_modifier(availableByTier[3])
 	
-	if availableModifiers[2].size() > 0:
-		tierTwoModifier = availableModifiers[2].pick_random()
-		_update_slot_ui(tierTwoModifier, slotTwo)
-
-	if availableModifiers[3].size() > 0:
-		tierThreeModifier = availableModifiers[3].pick_random()
-		_update_slot_ui(tierThreeModifier, slotThree)
+	var currentPicks = [tierOneModifier.id, tierTwoModifier.id, tierThreeModifier.id]
 	
-	$"Slot 1/visuals/ReelWindow".setup_reel(availableModifiers[1])
-	$"Slot 2/visuals/ReelWindow".setup_reel(availableModifiers[2])
-	$"Slot 3/visuals/ReelWindow".setup_reel(availableModifiers[3])
+	GameStats.lastOfferedModifierIds.append_array(currentPicks)
+	
+	if GameStats.lastOfferedModifierIds.size() >= 12: # currently 60% of the entire list (20 mods)
+		GameStats.lastOfferedModifierIds.clear()
+		GameStats.lastOfferedModifierIds.append_array(currentPicks)
+	
+	_update_slot_ui(tierOneModifier, slotOne)
+	_update_slot_ui(tierTwoModifier, slotTwo)
+	_update_slot_ui(tierThreeModifier, slotThree)
+	
+	$"Slot 1/visuals/ReelWindow".setup_reel(availableByTier[1])
+	$"Slot 2/visuals/ReelWindow".setup_reel(availableByTier[2])
+	$"Slot 3/visuals/ReelWindow".setup_reel(availableByTier[3])
 
 func _update_slot_ui(modifier, slot) -> void:
 	slot.get_node("visuals/text/name").text = modifier.name
@@ -190,6 +189,24 @@ func _animate_single_slot(slot: Node2D, modifierData: Dictionary) -> void:
 	tween.parallel().tween_property(slot.get_node("visuals/text"), "position:y", -60.0, 0.6).as_relative().set_ease(Tween.EASE_OUT).set_delay(0.1)
 	
 	tween.tween_callback(func(): slot.get_node("AnimationPlayer").play("showMultiplier"))
+
+func _pick_weighted_modifier(tierPool: Array) -> Dictionary:
+	if tierPool.is_empty(): 
+		return {}
+	
+	# 80% chance to try and pick something "fresh" (not shown last time)
+	if randf() < 0.8:
+		var freshPool = []
+		for modifier in tierPool:
+			if not modifier.id in GameStats.lastOfferedModifierIds:
+				freshPool.append(modifier)
+		
+		# Fallback if too many "fresh" picks were chosen
+		if not freshPool.is_empty():
+			return freshPool.pick_random()
+
+	# 20% chance (or ultiamte fallback) for pure randomness
+	return tierPool.pick_random()
 
 # Signals
 func _on_slot1_area_2d_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:

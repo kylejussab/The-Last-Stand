@@ -32,6 +32,8 @@ var lastStandTotalScore: int = 0
 var lastStandCurrentRoundScore: int = 0
 var replayedRound: bool = false
 
+var lastOfferedModifierIds: Array = [] # Used for weighted randomness with modifier selection
+
 # Data logging variables
 const LOG_FILE_PATH = "user://game_balance_data.json"
 var currentGameSession: String = ""
