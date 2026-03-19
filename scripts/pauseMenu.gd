@@ -98,10 +98,34 @@ func _on_options_button_pressed() -> void:
 	$OptionsButtonContainer.show()
 	$OptionsButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
 
+func _on_display_button_pressed() -> void:
+	_play_denied_animation($OptionsButtonContainer/mainContainer/DisplayButton)
+
+func _on_audio_button_pressed() -> void:
+	_play_denied_animation($OptionsButtonContainer/mainContainer/AudioButton)
+
+func _on_subtitles_button_pressed() -> void:
+	_play_denied_animation($OptionsButtonContainer/accessibilityMenuContainer/mainContainer/SubtitlesButton)
+
+func _on_tutorial_button_pressed() -> void:
+	_play_denied_animation($mainButtonContainer/TutorialButton)
+
+func _on_restart_button_mouse_entered() -> void:
+	%holdIcon.show()
+
+func _on_restart_button_mouse_exited() -> void:
+	%holdIcon.hide()
+
 func _on_restart_button_hold_complete() -> void:
 	get_tree().paused = false
 	ui._on_replay_button_hold_complete()
 	hide()
+
+func _on_main_menu_button_mouse_entered() -> void:
+	%holdIcon.show()
+
+func _on_main_menu_button_mouse_exited() -> void:
+	%holdIcon.hide()
 
 func _on_main_menu_button_hold_complete() -> void:
 	get_tree().paused = false 
@@ -113,6 +137,8 @@ func connect_buttons(node: Node) -> void:
 	for child in node.get_children():
 		if child is Button:
 			child.mouse_entered.connect(_play_hover_sound)
+			child.focus_mode = Control.FOCUS_NONE
+			
 			if child.name == "NoButton":
 				child.pressed.connect(_play_back_sound)
 			else:
@@ -266,3 +292,13 @@ func _make_background_darker():
 	tween.tween_property($overlay, "modulate:a", 1.0, 0.2)
 	
 	await tween.finished
+
+func _play_denied_animation(currentButton: Button):
+	var originalPos = currentButton.position.x
+	var shake_offset = 5.0
+	var duration = 0.05
+	
+	var tween = create_tween()
+	tween.tween_property(currentButton, "position:x", originalPos + shake_offset, duration)
+	tween.tween_property(currentButton, "position:x", originalPos - shake_offset, duration)
+	tween.tween_property(currentButton, "position:x", originalPos, duration)

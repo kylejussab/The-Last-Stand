@@ -136,14 +136,16 @@ func _on_story_button_mouse_exited() -> void:
 	supplementText.text = ""
 
 func _on_story_button_pressed() -> void:
-	$pauseIcon.show()
-	currentNavigation = "Story"
+	_play_denied_animation($mainButtonContainer/StoryButton)
 	
-	mainButtonContainer.hide()
-	mainButtonContainer.process_mode = Node.PROCESS_MODE_DISABLED
-	
-	storyButtonContainer.show()
-	storyButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
+	#$pauseIcon.show()
+	#currentNavigation = "Story"
+	#
+	#mainButtonContainer.hide()
+	#mainButtonContainer.process_mode = Node.PROCESS_MODE_DISABLED
+	#
+	#storyButtonContainer.show()
+	#storyButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
 
 func _on_june_button_mouse_entered() -> void:
 	backgroundImage.texture = BACKGROUNDS["June"]
@@ -174,6 +176,12 @@ func _on_last_stand_button_pressed() -> void:
 	lastStandButtonContainer.show()
 	lastStandButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
 
+func _on_new_button_mouse_entered() -> void:
+	$holdIcon.show()
+
+func _on_new_button_mouse_exited() -> void:
+	$holdIcon.hide()
+
 func _on_new_button_hold_complete() -> void:
 	GameStats.gameMode = GameStats.Mode.LAST_STAND
 	GameStats.reset_all_data()
@@ -181,6 +189,15 @@ func _on_new_button_hold_complete() -> void:
 	GameStats.start_new_run_log()
 	
 	Curtain.change_scene("res://scenes/main.tscn")
+
+func _on_continue_button_pressed() -> void:
+	_play_denied_animation($lastStandButtonContainer/ContinueButton)
+
+func _on_achievements_button_pressed() -> void:
+	_play_denied_animation($lastStandButtonContainer/AchievementsButton)
+
+func _on_tutorial_button_pressed() -> void:
+	_play_denied_animation($mainButtonContainer/TutorialButton)
 
 func _on_options_button_pressed() -> void:
 	$pauseIcon.show()
@@ -193,6 +210,12 @@ func _on_options_button_pressed() -> void:
 	
 	optionsButtonContainer.show()
 	optionsButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
+
+func _on_display_button_pressed() -> void:
+	_play_denied_animation($optionsButtonContainer/DisplayButton)
+
+func _on_audio_button_pressed() -> void:
+	_play_denied_animation($optionsButtonContainer/AudioButton)
 
 func _on_accessibility_button_pressed() -> void:
 	currentNavigation = "Accessibility"
@@ -215,6 +238,9 @@ func _on_cards_button_pressed() -> void:
 	accessibilityCardsContainer.process_mode = Node.PROCESS_MODE_INHERIT
 	
 	update_preview_card()
+
+func _on_subtitles_button_pressed() -> void:
+	_play_denied_animation($accessibilityMenuContainer/mainContainer/SubtitlesButton)
 
 func _on_quit_button_pressed() -> void:
 	if OS.has_feature("web"):
@@ -309,3 +335,13 @@ func _play_click():
 
 func _play_back():
 	$ButtonBackSound.play()
+
+func _play_denied_animation(currentButton: Button):
+	var originalPos = currentButton.position.x
+	var shake_offset = 5.0
+	var duration = 0.05
+	
+	var tween = create_tween()
+	tween.tween_property(currentButton, "position:x", originalPos + shake_offset, duration)
+	tween.tween_property(currentButton, "position:x", originalPos - shake_offset, duration)
+	tween.tween_property(currentButton, "position:x", originalPos, duration)
