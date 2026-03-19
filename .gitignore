@@ -32,3 +32,6 @@ exports/
 
 # Ignore data logs
 game_balance_data.json
+
+# Ignore analysis graph exports
+analysis/finalGraphs/
