@@ -273,7 +273,7 @@ const MODIFIERS = {
 	Modifier.OVER_EXERTION: {
 		"id": Modifier.OVER_EXERTION,
 		"name": "Over-Exertion",
-		"description": "Deal +2 damage to the opponent if your final value is 10 or higher, but take +1 damage.",
+		"description": "Deal +2 damage if your final value is 10 or higher, but take +1 damage.",
 		"icon": "res://assets/modifiers/Over Exertion.png",
 		"tier": 2,
 		"multiplier": 2.0,

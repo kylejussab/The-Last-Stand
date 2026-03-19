@@ -325,7 +325,7 @@ offset_left = -700.0
 offset_top = -150.0
 offset_bottom = 150.0
 scale = Vector2(1e-05, 1e-05)
-pivot_offset = Vector2(650, 150)
+pivot_offset = Vector2(700, 150)
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_u888h")
 
