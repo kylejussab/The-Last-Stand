@@ -2,9 +2,9 @@ extends Node2D
 
 const CHARACTERS = { # Value, Type, Faction, Class, Card Name Text, Perk Text
 	# Seraphite
-	"Yara": [4, "Character", "Seraphite", "Stealthy", "YARA", "+2 to Lev (if in hand) on round win"],
-	"Lev": [3, "Character", "Seraphite", "Stealthy/Survivor", "LEV", "+5 if round ties"],
-	"TheProphet": [6, "Character", "Seraphite", "Defensive/Stealthy", "THE PROPHET", "+2 if opposing card is Aggressive or Stealthy"],
+	"Yara": [4, "Character", "Seraphite", "Stealthy", "YARA", "+3 if opposing card value is 8 or higher"],
+	"Lev": [3, "Character", "Seraphite", "Stealthy/Survivor", "LEV", "+5 if Yara or Abby in hand and +3 if no Seraphite in hand"],
+	"TheProphet": [6, "Character", "Seraphite", "Defensive/Stealthy", "THE PROPHET", "+2 if opposing card is Aggressive or Stealthy and +1 for each Stealthy in hand"],
 	"Emily": [4, "Character", "Seraphite", "Survivor", "EMILY", "+1 for each Seraphite in hand"],
 	"Ezra": [3, "Character", "Seraphite", "Crafty/Defensive", "EZRA"],
 	"Lyra": [2, "Character", "Seraphite", "Survivor", "LYRA"],
@@ -17,27 +17,27 @@ const CHARACTERS = { # Value, Type, Faction, Class, Card Name Text, Perk Text
 	"Li": [3, "Character", "WLF", "Survivor", "LI"],
 	"WLFSoldier": [3, "Character", "WLF", "Survivor", "WLF SOLDIER", "-3 to opponent, if opposing card is Survivor"],
 	"Isaac": [6, "Character", "WLF", "Aggressive/Defensive", "ISAAC", "+2 if opposing card is Seraphite"],
-	"Alice": [2, "Character", "WLF", "Stealthy/Survivor", "ALICE", "+2 if opposing card is Infected"],
+	"Alice": [2, "Character", "WLF", "Stealthy/Survivor", "ALICE", "+3 if opposing card is Infected and +1 for each WLF in hand"],
 	
 	# Firefly
 	"Marlene": [5, "Character", "Firefly", "Crafty", "MARLENE", "+1 if opposing card is Survivor or Stealthy"],
 	"FireflySoldier": [2, "Character", "Firefly", "Defensive", "FIREFLY SOLDIER", "+6 if Marlene in hand"],
 	"TommyFirefly": [4, "Character", "Firefly", "Survivor", "TOMMY", "+3 if no Firefly in hand"],
-	"Eugene": [3, "Character", "Firefly", "Crafty/Survivor", "EUGENE"],
-	"Riley": [3, "Character", "Firefly", "Stealthy", "RILEY", "+3 if Ellie in hand"],
+	"Eugene": [3, "Character", "Firefly", "Crafty/Survivor", "EUGENE", "On round end: +1 for each Crafty in hand and +3 if support card is Survivor"],
+	"Riley": [3, "Character", "Firefly", "Stealthy", "RILEY", "+3 if Ellie in hand and +2 if no Stealthy in hand"],
 	
 	# Infected
-	"Runner": [2, "Character", "Infected", "Aggressive", "RUNNER", "gain the value of all runners in hand, and discard them"],
+	"Runner": [2, "Character", "Infected", "Aggressive", "RUNNER", "Gain the value of all runners in hand, and discard them"],
 	"Stalker": [3, "Character", "Infected", "Stealthy", "STALKER", "+2 for each Infected in hand"],
-	"Clicker": [5, "Character", "Infected", "Aggressive", "CLICKER", "-2 to opponent health on round win"],
-	"Bloater": [4, "Character", "Infected", "Defensive", "BLOATER", "-4 to opponent health on round loss of 2 or more"],
-	"RatKing": [8, "Character", "Infected", "Aggressive", "RAT KING", "-4 to opponent health on round win"],
+	"Clicker": [5, "Character", "Infected", "Aggressive", "CLICKER", "On round win: -2 to opponent health"],
+	"Bloater": [4, "Character", "Infected", "Defensive", "BLOATER", "On round loss of 2+: -4 to opponent health"],
+	"RatKing": [8, "Character", "Infected", "Aggressive", "RAT KING", "On round win: -4 to opponent health"],
 	"Malik": [3, "Character", "Infected", "Survivor", "MALIK", "+1 for each Infected in hand and +2 if opposing card is Infected"],
 	
 	# Jackson
-	"Joel": [6, "Character", "Jackson", "Crafty/Defensive", "JOEL", "+4 if Ellie in hand"],
-	"Ellie": [5, "Character", "Jackson", "Crafty/Stealthy", "ELLIE", "-1 to opponent, if opposing card is Stealthy"],
-	"Dina": [3, "Character", "Jackson", "Stealthy", "DINA", "+2 if opposing card is Defensive"],
+	"Joel": [6, "Character", "Jackson", "Crafty/Defensive", "JOEL", "+4 if Ellie or Tommy in hand and +2 if opposing card is multi-type"],
+	"Ellie": [5, "Character", "Jackson", "Crafty/Stealthy", "ELLIE", "-2 if opposing card is Stealthy and +1 for each non-matching type in hand"],
+	"Dina": [3, "Character", "Jackson", "Stealthy", "DINA", "+4 if opposing card is Defensive and +2 if Jessie or Ellie in hand"],
 	"Tommy": [5, "Character", "Jackson", "Aggressive", "TOMMY"],
 	"Bill": [4, "Character", "Jackson", "Crafty", "BILL", "+4 if played support card is Trap Mine"],
 	"Jessie": [5, "Character", "Jackson", "Defensive", "JESSIE", "-1 to opponent, if opposing card is Aggressive"],
@@ -49,13 +49,13 @@ const CHARACTERS = { # Value, Type, Faction, Class, Card Name Text, Perk Text
 	"Tess": [5, "Character", "Smuggler", "Crafty/Survivor", "TESS", "+4 if Joel in hand, and Joel gains +2"],
 	"Hunter": [3, "Character", "Smuggler", "Aggressive/Survivor", "HUNTER", "+3 if no other Smuggler in hand"],
 	
-	"Owen": [4, "Character", "WLF", "Stealthy", "OWEN", "take 0 health damage on round loss"],
-	"Mel": [3, "Character", "WLF", "Survivor", "MEL", "+2 to random character card in hand on round win"],
+	"Owen": [4, "Character", "WLF", "Stealthy", "OWEN", "On round loss: Take 0 health damage"],
+	"Mel": [3, "Character", "WLF", "Survivor", "MEL", "On round win: +2 to random character card in hand"],
 	"Maria": [4, "Character", "Firefly", "Defensive", "MARIA"],
-	"Jerry": [2, "Character", "Firefly", "Defensive", "JERRY", "+2 to all Firefly in hand on round loss"],
+	"Jerry": [2, "Character", "Firefly", "Defensive", "JERRY", "On round loss: +2 to all Firefly in hand"],
 	"AbbyFirefly": [4, "Character", "Firefly", "Survivor", "ABBY"],
 	
-	"AliceHumanity": [2, "Character", "WLF", "Stealthy/Survivor", "ALICE", "+2 if opposing card is Stealthy"],
+	"AliceHumanity": [2, "Character", "WLF", "Stealthy/Survivor", "ALICE", "+3 if opposing card is Stealthy and +1 for each WLF in hand"],
 	"FireflySoldierHumanity": [2, "Character", "Firefly", "Defensive", "FIREFLY SOLDIER", "+3 if at least one Firefly in hand"],
 	"WLFSoldierHumanity": [3, "Character", "WLF", "Survivor", "WLF SOLDIER", "-2 to opponent, if opposing card is Firefly or Seraphite"],
 	"IsaacHumanity": [6, "Character", "WLF", "Aggressive/Defensive", "ISAAC", "+2 if opposing card is Firefly"],
@@ -109,6 +109,7 @@ const PERKS = {
 	"Alice": "res://scripts/perks/alicePerk.gd",
 	"SupplyCache": "res://scripts/perks/supplyCachePerk.gd",
 	"Riley": "res://scripts/perks/rileyPerk.gd",
+	"Eugene": "res://scripts/perks/eugenePerk.gd",
 	
 	"JoelSmuggler": "res://scripts/perks/joelSmugglerPerk.gd",
 	"BillSmuggler": "res://scripts/perks/billPerk.gd",
@@ -373,6 +374,7 @@ const MODIFIERS = {
 } 
 
 const standardCharacterDeck = [
+	"Joel", "Ellie", "Ellie", "Abby", "Abby",
 	"Runner", "Runner", "Runner", "Runner",
 	"Stalker", "Stalker", "Stalker",
 	"FireflySoldier", "FireflySoldier", "FireflySoldier",

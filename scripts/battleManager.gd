@@ -125,7 +125,7 @@ func initialize_game() -> void:
 		$"../characterDeck".deck = Database.standardCharacterDeck.duplicate()
 		$"../supportDeck".deck = Database.standardSupportDeck.duplicate()
 	
-	$"../characterDeck".deck.shuffle()
+	#$"../characterDeck".deck.shuffle()
 	$"../supportDeck".deck.shuffle()
 	
 	await _draw_cards_at_start(false)
@@ -720,7 +720,15 @@ func _apply_end_round_perks() -> void:
 		await playerSupportCard.perk.apply_end_perk(playerCharacterCard, playerSupportCard, opponentCharacterCard, opponentSupportCard, playerHand)
 	
 	if opponentSupportCard && opponentSupportCard.perk && opponentSupportCard.perk.timing == "endRound":
+		await get_tree().create_timer(PERK_CALCULATION_TIME).timeout
 		await opponentSupportCard.perk.apply_end_perk(opponentCharacterCard, opponentSupportCard, playerCharacterCard, playerSupportCard, opponentHand)
+	
+	if playerCharacterCard.perk && playerCharacterCard.perk.timing == "lateEndRound":
+		await get_tree().create_timer(PERK_CALCULATION_TIME).timeout
+		await playerCharacterCard.perk.apply_end_perk(playerCharacterCard, playerSupportCard, opponentCharacterCard, opponentSupportCard, playerHand)
+	
+	if opponentCharacterCard.perk && opponentCharacterCard.perk.timing == "lateEndRound":
+		await opponentCharacterCard.perk.apply_end_perk(opponentCharacterCard, opponentSupportCard, playerCharacterCard, playerSupportCard, opponentHand)
 	
 	await get_tree().create_timer(PERK_CALCULATION_TIME).timeout
 
@@ -749,8 +757,6 @@ func _calculate_damage() -> void:
 		await _handle_player_win(playerTotal, opponentTotal)
 	elif opponentTotal > playerTotal:
 		await _handle_opponent_win(playerTotal, opponentTotal)
-	elif opponentTotal == playerTotal:
-		await _handle_lev_perk()
 	
 	if slowBleedActive and GameStats.roundNumber % 2 == 0 and Database.MODIFIERS.has(Database.Modifier.SLOW_BLEED):
 		await _deal_damage(Actor.Type.PLAYER, Database.MODIFIERS.get(Database.Modifier.SLOW_BLEED)["amount"])
@@ -1032,13 +1038,6 @@ func _handle_bloater_perk(winner: Actor.Type) -> void:
 	elif winner == Actor.Type.OPPONENT:
 		if playerCharacterCard.cardKey == "Bloater" and playerCharacterCard.perkValueAtRoundEnd:
 			await _deal_damage(Actor.Type.OPPONENT, playerCharacterCard.perkValueAtRoundEnd)
-
-func _handle_lev_perk() -> void:
-	if playerCharacterCard.cardKey == "Lev" and playerCharacterCard.perkValueAtRoundEnd:
-		await _deal_damage(Actor.Type.OPPONENT, playerCharacterCard.perkValueAtRoundEnd)
-	
-	if opponentCharacterCard.cardKey == "Lev" and opponentCharacterCard.perkValueAtRoundEnd:
-		await _deal_damage(Actor.Type.PLAYER, opponentCharacterCard.perkValueAtRoundEnd)
 
 func _deal_damage(who: Actor.Type, amount: int, isDelay: bool = true) -> void:
 	if isDelay:

@@ -385,7 +385,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0, 0.15, 0.3),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(0, 4), Vector2(-40, -93), Vector2(-40, -93)]
+"values": [Vector2(0, -11), Vector2(-40, -93), Vector2(-40, -93)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -409,7 +409,7 @@ tracks/4/keys = {
 "times": PackedFloat32Array(0, 0.075, 0.3),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(-65, 30), Vector2(-65, -5), Vector2(-65, -5)]
+"values": [Vector2(-65, 15), Vector2(-65, -5), Vector2(-65, -5)]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
@@ -512,6 +512,33 @@ tracks/6/keys = {
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
 }
 
+[sub_resource type="Animation" id="Animation_xjciw"]
+resource_name = "modifierIndicator"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ModifierIndicator:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.35),
+"transitions": PackedFloat32Array(1, 0.2, 2),
+"update": 0,
+"values": [Vector2(0.07, 0.07), Vector2(0.2, 0.2), Vector2(0.1, 0.1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ModifierIndicator:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.6, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
 [sub_resource type="Animation" id="Animation_nvopj"]
 resource_name = "showDescription"
 length = 0.3
@@ -549,7 +576,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0, 0.15, 0.3),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(-40, -93), Vector2(-40, -93), Vector2(0, 4)]
+"values": [Vector2(-40, -93), Vector2(-40, -93), Vector2(0, -11)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -573,7 +600,7 @@ tracks/4/keys = {
 "times": PackedFloat32Array(0, 0.25, 0.3),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(-65, -5), Vector2(-65, -5), Vector2(-65, 30)]
+"values": [Vector2(-65, -5), Vector2(-65, -5), Vector2(-65, 15)]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
@@ -637,33 +664,6 @@ tracks/3/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_xjciw"]
-resource_name = "modifierIndicator"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("ModifierIndicator:scale")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.35),
-"transitions": PackedFloat32Array(1, 0.2, 2),
-"update": 0,
-"values": [Vector2(0.07, 0.07), Vector2(0.2, 0.2), Vector2(0.1, 0.1)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("ModifierIndicator:modulate")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.6, 1),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_6ligt"]
@@ -803,14 +803,14 @@ modulate = Color(1, 1, 1, 0)
 offset_left = -65.0
 offset_top = 25.0
 offset_right = 65.0
-offset_bottom = 76.999985
-pivot_offset = Vector2(75, 7.5)
+offset_bottom = 95.0
 mouse_filter = 2
 theme_override_fonts/normal_font = SubResource("FontVariation_4wvaf")
 theme_override_font_sizes/normal_font_size = 10
 bbcode_enabled = true
-text = "+1 for each [img width=10]res://assets/cardIcons/Infected.png[/img] in hand and +2 if opposing card is [img width=10]res://assets/cardIcons/Infected.png[/img]"
+text = "+1 for each [img width=12]res://assets/cardIcons/Infected.png[/img] in hand and +2 if opposing card is [img width=12]res://assets/cardIcons/Infected.png[/img]"
 horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="ColorRect" type="ColorRect" parent="supportingText"]
 anchors_preset = 8
@@ -821,7 +821,7 @@ anchor_bottom = 0.5
 offset_left = -40.0
 offset_top = -93.0
 offset_right = -39.0
-offset_bottom = -60.0
+offset_bottom = -59.999985
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1, 1e-05)

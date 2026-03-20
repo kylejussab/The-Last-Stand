@@ -3,13 +3,28 @@ extends PerkBase
 func _init() -> void:
 	timing = "midRound"
 
-func apply_mid_perk(thisCard, _thisHand, otherCard):
-	if otherCard.role.contains("Aggressive") or otherCard.role.contains("Stealthy"):
-		thisCard.modify_value(2)
+func apply_mid_perk(thisCard, thisHand, otherCard):
+	var perkAmount: int = 0
+	
+	if otherCard.type == "Character":
+		if otherCard.role.contains("Aggressive") or otherCard.role.contains("Stealthy"):
+			perkAmount += 2
+	
+	for ally in thisHand:
+		if ally.role.contains("Stealthy") and ally.type == "Character":
+			perkAmount += 1
+			
+	if perkAmount > 0:
+		thisCard.modify_value(perkAmount)
 
 # Function used for forsaken honor check
-func would_perk_trigger(_thisCard, _thisHand, otherCard) -> bool:
-	if otherCard.role.contains("Aggressive") or otherCard.role.contains("Stealthy"):
-		return true
-	else:
-		return false
+func would_perk_trigger(_thisCard, thisHand, otherCard) -> bool:
+	if otherCard.type == "Character":
+		if otherCard.role.contains("Aggressive") or otherCard.role.contains("Stealthy"):
+			return true
+	
+	for ally in thisHand:
+		if ally.role.contains("Stealthy") and ally.type == "Character":
+			return true
+			
+	return false

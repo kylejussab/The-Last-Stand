@@ -1,11 +1,11 @@
 extends PerkBase
 
 func _init() -> void:
-	timing = "calculationRound"
+	timing = "lateEndRound"
 
-func apply_after_calculation_perk(_thisCard, thisHand, thisTotal, otherTotal):
-	for lev in thisHand:
-		if thisTotal > otherTotal:
-			if lev.cardKey == "Lev":
-				lev.modify_value(2)
-				break
+func apply_end_perk(thisCharacterCard, _thisSupportCard, otherCharacterCard, _otherSupportCard, _thisHand):
+	if otherCharacterCard.value >= 8:
+		thisCharacterCard.modify_value(3)
+
+func would_perk_trigger(_thisCharacterCard, _thisSupportCard, otherCharacterCard, _otherSupportCard, _thisHand) -> bool:
+	return otherCharacterCard.value >= 8
