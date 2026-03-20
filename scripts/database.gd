@@ -30,7 +30,7 @@ const CHARACTERS = { # Value, Type, Faction, Class, Card Name Text, Perk Text
 	"Runner": [2, "Character", "Infected", "Aggressive", "RUNNER", "Gain the value of all runners in hand, and discard them"],
 	"Stalker": [3, "Character", "Infected", "Stealthy", "STALKER", "+2 for each Infected in hand"],
 	"Clicker": [5, "Character", "Infected", "Aggressive", "CLICKER", "On round win: -2 to opponent health"],
-	"Bloater": [4, "Character", "Infected", "Defensive", "BLOATER", "On round loss of 2+: -4 to opponent health"],
+	"Bloater": [4, "Character", "Infected", "Defensive", "BLOATER", "On round loss of 2 or more: -4 to opponent health"],
 	"RatKing": [8, "Character", "Infected", "Aggressive", "RAT KING", "On round win: -4 to opponent health"],
 	"Malik": [3, "Character", "Infected", "Survivor", "MALIK", "+1 for each Infected in hand and +2 if opposing card is Infected"],
 	
@@ -374,7 +374,6 @@ const MODIFIERS = {
 } 
 
 const standardCharacterDeck = [
-	"Joel", "Ellie", "Ellie", "Abby", "Abby",
 	"Runner", "Runner", "Runner", "Runner",
 	"Stalker", "Stalker", "Stalker",
 	"FireflySoldier", "FireflySoldier", "FireflySoldier",

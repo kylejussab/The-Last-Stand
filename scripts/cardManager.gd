@@ -154,7 +154,7 @@ func highlight_card(card, hovered: bool):
 			card.scale = Vector2(1.35, 1.35)
 		
 		if card.perk and !draggedCard:
-			card.get_node("AnimationPlayer").play("showDescription")
+			card.get_node("AnimationPlayer").play("showPerkDescription")
 			
 			if AccessibilityData.animationsDisabled:
 				var endTime = card.get_node("AnimationPlayer").current_animation_length
@@ -164,7 +164,7 @@ func highlight_card(card, hovered: bool):
 			card.scale = Vector2(1, 1)
 			
 		if card.perk:
-			card.get_node("AnimationPlayer").play("hideDescription")
+			card.get_node("AnimationPlayer").play_backwards("showPerkDescription")
 			
 			if AccessibilityData.animationsDisabled:
 				var endTime = card.get_node("AnimationPlayer").current_animation_length
@@ -223,7 +223,7 @@ func move_card_on_double_click(card, cardSlot):
 		
 		# Ensure its not highlighted
 		draggedCard.scale = Vector2(1, 1)
-		draggedCard.get_node("AnimationPlayer").play("hideDescription")
+		card.get_node("AnimationPlayer").play_backwards("showPerkDescription")
 		var endTime = draggedCard.get_node("AnimationPlayer").current_animation_length
 		draggedCard.get_node("AnimationPlayer").seek(endTime, true)
 		

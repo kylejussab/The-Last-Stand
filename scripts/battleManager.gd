@@ -125,7 +125,7 @@ func initialize_game() -> void:
 		$"../characterDeck".deck = Database.standardCharacterDeck.duplicate()
 		$"../supportDeck".deck = Database.standardSupportDeck.duplicate()
 	
-	#$"../characterDeck".deck.shuffle()
+	$"../characterDeck".deck.shuffle()
 	$"../supportDeck".deck.shuffle()
 	
 	await _draw_cards_at_start(false)

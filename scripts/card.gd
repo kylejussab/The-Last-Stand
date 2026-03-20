@@ -68,13 +68,13 @@ func update_visuals():
 	if has_node("perk"):
 		$perk.add_theme_font_size_override("normal_font_size", CARD_TEXT_SIZE)
 	
-	if has_node("supportingText/perkText"):
+	if has_node("hoverDescription/text"):
 		if perkDescription != "":
 			var formatted_text = _format_perk_text(perkDescription)
-			$supportingText/perkText.text = formatted_text
-			$supportingText/perkText.add_theme_font_size_override("normal_font_size", DESCRIPTION_TEXT_SIZE)
+			$hoverDescription/text.text = formatted_text
+			$hoverDescription/text.add_theme_font_size_override("normal_font_size", DESCRIPTION_TEXT_SIZE)
 		else:
-			$supportingText/perkText.text = ""
+			$hoverDescription/text.text = ""
 	
 	if has_node("icons"):
 		var perkOne = $icons.get_node("perk1")
