@@ -35,3 +35,6 @@ game_balance_data.json
 
 # Ignore analysis graph exports
 analysis/finalGraphs/
+__pycache__/
+*.py[cod]
+*$py.class

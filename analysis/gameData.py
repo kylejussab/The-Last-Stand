@@ -74,3 +74,46 @@ standardSupportDeck = [
     "TrainingManual", "Retreat", "Resilience", "ShotgunShells",
     "Molotov", "Rage", "TrapMine"
 ]
+
+CHARACTERSTWO = {
+    # Seraphite
+    "Yara": [4, "Seraphite", "Stealthy", [("vs_value_min", 8, 3, None)]],
+    "Lev": [3, "Seraphite", "Stealthy/Survivor", [("hand_bonus", "Yara", 5, None), ("hand_bonus", "Abby", 5, None), ("solo_bonus", "Seraphite", 3, None)]],
+    "TheProphet": [6, "Seraphite", "Defensive/Stealthy", [("vs_type", "Aggressive", 2, None), ("vs_type", "Stealthy", 2, None), ("scaling", "Stealthy", 1, "hand")]],
+    "Emily": [4, "Seraphite", "Survivor", [("scaling", "Seraphite", 1, "hand")]],
+    "Ezra": [3, "Seraphite", "Crafty/Defensive", [("no_type_in_hand", "Aggressive", 2, None)]],
+    "Lyra": [2, "Seraphite", "Survivor", [("no_enemy_support", None, 2, None)]],
+    "SeraphiteBrute": [5, "Seraphite", "Aggressive", [("vs_value_max", 3, 2, None)]],
+    
+    # WLF
+    "Abby": [6, "WLF", "Aggressive", [("vs_type", "Aggressive", 2, None), ("vs_faction", "Infected", 1, None)]],
+    "Manny": [4, "WLF", "Defensive", [("equalize", "Aggressive", 2, None), ("equalize", "Defensive", 2, None)]],
+    "Nora": [4, "WLF", "Stealthy", [("vs_type", "Crafty", 1, None)]],
+    "Li": [3, "WLF", "Survivor", [("on_loss_buff_hand", "random", 1, None)]],
+    "WLFSoldier": [3, "WLF", "Survivor", [("debuff_vs_type", "Survivor", -3, None)]],
+    "Isaac": [6, "WLF", "Aggressive/Defensive", [("vs_faction", "Seraphite", 2, None)]],
+    "Alice": [2, "WLF", "Stealthy/Survivor", [("vs_faction", "Infected", 3, None), ("scaling", "WLF", 1, "hand")]],
+    
+    # Firefly
+    "Marlene": [5, "Firefly", "Crafty", [("vs_type", "Survivor", 1, None), ("vs_type", "Stealthy", 1, None)]],
+    "FireflySoldier": [2, "Firefly", "Defensive", [("hand_bonus", "Marlene", 6, None)]],
+    "TommyFirefly": [4, "Firefly", "Survivor", [("solo_bonus", "Firefly", 3, None)]],
+    "Eugene": [3, "Firefly", "Crafty/Survivor", [("scaling", "Crafty", 1, "hand"), ("support_class_bonus", "Survivor", 3, None)]],
+    "Riley": [3, "Firefly", "Stealthy", [("hand_bonus", "Ellie", 3, None), ("solo_bonus", "Stealthy", 2, None)]],
+    
+    # Infected
+    "Runner": [2, "Infected", "Aggressive", [("scaling", "Runner", 2, "hand_name")]],
+    "Stalker": [3, "Infected", "Stealthy", [("scaling", "Infected", 2, "hand")]],
+    "Clicker": [5, "Infected", "Aggressive", [("on_win", None, 2, "health_dmg")]],
+    "Bloater": [4, "Infected", "Defensive", [("on_heavy_loss", None, 4, "health_dmg")]],
+    "RatKing": [8, "Infected", "Aggressive", [("on_win", None, 4, "health_dmg")]],
+    "Malik": [3, "Infected", "Survivor", [("scaling", "Infected", 1, "hand"), ("vs_faction", "Infected", 2, None)]],
+    
+    # Jackson
+    "Joel": [6, "Jackson", "Crafty/Defensive", [("hand_bonus", "Ellie", 4, None), ("hand_bonus", "Tommy", 4, None), ("vs_multi_type", None, 2, None)]],
+    "Ellie": [5, "Jackson", "Crafty/Stealthy", [("debuff_vs_type", "Stealthy", -2, None), ("scaling", "non_matching", 1, "hand")]],
+    "Dina": [3, "Jackson", "Stealthy", [("vs_type", "Defensive", 4, None), ("hand_bonus", "Jessie", 2, None), ("hand_bonus", "Ellie", 2, None)]],
+    "Tommy": [5, "Jackson", "Aggressive", [("scaling", "Jackson", 1, "hand")]],
+    "Bill": [4, "Jackson", "Crafty", [("support_bonus", "TrapMine", 4, None)]],
+    "Jessie": [5, "Jackson", "Defensive", [("debuff_vs_type", "Aggressive", -1, None)]]
+}
