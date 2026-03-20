@@ -201,7 +201,7 @@ func apply_card_accessibility_changes():
 			card.update_visuals()
 
 func _on_mouse_entered():
-	if !%battleManager.lockPlayerInput:
+	if !%battleManager.lockPlayerInput and !%viewDeckUI.isViewDeckActive:
 		_play_card_hover_sound()
 		isHovered = true
 		

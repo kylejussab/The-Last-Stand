@@ -724,11 +724,13 @@ offset_left = -65.0
 offset_top = -105.0
 offset_right = 65.0
 offset_bottom = 70.0
+mouse_filter = 2
 alignment = 2
 
 [node name="lineContainer" type="Control" parent="hoverDescription"]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
+mouse_filter = 2
 
 [node name="line" type="ColorRect" parent="hoverDescription/lineContainer"]
 layout_mode = 0

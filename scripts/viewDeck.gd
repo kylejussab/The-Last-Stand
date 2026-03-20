@@ -36,7 +36,10 @@ func _ready() -> void:
 	$viewPanel/background.scale.x = 0.0
 	
 	$viewPanel.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	contentContainer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
+	$viewPanel/background.mouse_filter = Control.MOUSE_FILTER_STOP
+	
+	contentContainer.mouse_filter = Control.MOUSE_FILTER_PASS
 
 func open_deck_view(deckCaller = null):
 	_play_draw_sound()
@@ -149,7 +152,7 @@ func _populate_support_deck(deckArray: Array):
 func _add_visual_card(key, grid, isCharacter):
 	var wrapper = Control.new()
 	wrapper.custom_minimum_size = CARD_GRID_SPACE
-	wrapper.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	wrapper.mouse_filter = Control.MOUSE_FILTER_PASS
 	
 	var card = load(CARD_SCENE_PATH).instantiate()
 	card.cardKey = key
@@ -189,14 +192,14 @@ func _create_new_grid() -> HFlowContainer:
 	flow.add_theme_constant_override("h_separation", 15)
 	flow.add_theme_constant_override("v_separation", 25)
 	flow.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	flow.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	flow.mouse_filter = Control.MOUSE_FILTER_PASS
 	
 	var marginWrapper = MarginContainer.new()
 	marginWrapper.add_theme_constant_override("margin_left", 20)
 	marginWrapper.add_theme_constant_override("margin_right", 20)
 	marginWrapper.add_theme_constant_override("margin_bottom", 20)
 	marginWrapper.add_theme_constant_override("margin_top", -10)
-	marginWrapper.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	marginWrapper.mouse_filter = Control.MOUSE_FILTER_PASS
 	
 	marginWrapper.add_child(flow)
 	contentContainer.add_child(marginWrapper)
