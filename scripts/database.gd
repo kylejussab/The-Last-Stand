@@ -6,15 +6,15 @@ const CHARACTERS = { # Value, Type, Faction, Class, Card Name Text, Perk Text
 	"Lev": [3, "Character", "Seraphite", "Stealthy/Survivor", "LEV", "+5 if Yara or Abby in hand and +3 if no Seraphite in hand"],
 	"TheProphet": [6, "Character", "Seraphite", "Defensive/Stealthy", "THE PROPHET", "+2 if opposing card is Aggressive or Stealthy and +1 for each Stealthy in hand"],
 	"Emily": [4, "Character", "Seraphite", "Survivor", "EMILY", "+1 for each Seraphite in hand"],
-	"Ezra": [3, "Character", "Seraphite", "Crafty/Defensive", "EZRA"],
-	"Lyra": [2, "Character", "Seraphite", "Survivor", "LYRA"],
-	"SeraphiteBrute": [5, "Character", "Seraphite", "Aggressive", "SERAPHITE BRUTE"],
+	"Ezra": [3, "Character", "Seraphite", "Crafty/Defensive", "EZRA", "+2 if your hand contains no Aggressive cards"],
+	"Lyra": [2, "Character", "Seraphite", "Survivor", "LYRA", "+2 if opponent plays no support card"],
+	"SeraphiteBrute": [5, "Character", "Seraphite", "Aggressive", "SERAPHITE BRUTE", "+2 if opposing card's value is 3 or less"],
 	
 	# WLF
 	"Abby": [6, "Character", "WLF", "Aggressive", "ABBY", "+2 if opposing card is Aggressive and +1 if opposing card is Infected"],
 	"Manny": [4, "Character", "WLF", "Defensive", "MANNY", "equal value and +2 if opposing card is Aggressive or Defensive"],
 	"Nora": [4, "Character", "WLF", "Stealthy", "NORA", "+1 if opposing card is Crafty"],
-	"Li": [3, "Character", "WLF", "Survivor", "LI"],
+	"Li": [3, "Character", "WLF", "Survivor", "LI", "On round loss: +1 to random character in hand"],
 	"WLFSoldier": [3, "Character", "WLF", "Survivor", "WLF SOLDIER", "-3 to opponent, if opposing card is Survivor"],
 	"Isaac": [6, "Character", "WLF", "Aggressive/Defensive", "ISAAC", "+2 if opposing card is Seraphite"],
 	"Alice": [2, "Character", "WLF", "Stealthy/Survivor", "ALICE", "+3 if opposing card is Infected and +1 for each WLF in hand"],
@@ -38,7 +38,7 @@ const CHARACTERS = { # Value, Type, Faction, Class, Card Name Text, Perk Text
 	"Joel": [6, "Character", "Jackson", "Crafty/Defensive", "JOEL", "+4 if Ellie or Tommy in hand and +2 if opposing card is multi-type"],
 	"Ellie": [5, "Character", "Jackson", "Crafty/Stealthy", "ELLIE", "-2 if opposing card is Stealthy and +1 for each non-matching type in hand"],
 	"Dina": [3, "Character", "Jackson", "Stealthy", "DINA", "+4 if opposing card is Defensive and +2 if Jessie or Ellie in hand"],
-	"Tommy": [5, "Character", "Jackson", "Aggressive", "TOMMY"],
+	"Tommy": [5, "Character", "Jackson", "Aggressive", "TOMMY", "+1 for each Jackson in hand"],
 	"Bill": [4, "Character", "Jackson", "Crafty", "BILL", "+4 if played support card is Trap Mine"],
 	"Jessie": [5, "Character", "Jackson", "Defensive", "JESSIE", "-1 to opponent, if opposing card is Aggressive"],
 	
@@ -51,15 +51,15 @@ const CHARACTERS = { # Value, Type, Faction, Class, Card Name Text, Perk Text
 	
 	"Owen": [4, "Character", "WLF", "Stealthy", "OWEN", "On round loss: Take 0 health damage"],
 	"Mel": [3, "Character", "WLF", "Survivor", "MEL", "On round win: +2 to random character card in hand"],
-	"Maria": [4, "Character", "Firefly", "Defensive", "MARIA"],
+	"Maria": [4, "Character", "Firefly", "Defensive", "MARIA", "+2 if Tommy in hand"],
 	"Jerry": [2, "Character", "Firefly", "Defensive", "JERRY", "On round loss: +2 to all Firefly in hand"],
-	"AbbyFirefly": [4, "Character", "Firefly", "Survivor", "ABBY"],
+	"AbbyFirefly": [4, "Character", "Firefly", "Survivor", "ABBY", "+1 if opposing card is exactly 4"],
 	
 	"AliceHumanity": [2, "Character", "WLF", "Stealthy/Survivor", "ALICE", "+3 if opposing card is Stealthy and +1 for each WLF in hand"],
 	"FireflySoldierHumanity": [2, "Character", "Firefly", "Defensive", "FIREFLY SOLDIER", "+3 if at least one Firefly in hand"],
 	"WLFSoldierHumanity": [3, "Character", "WLF", "Survivor", "WLF SOLDIER", "-2 to opponent, if opposing card is Firefly or Seraphite"],
 	"IsaacHumanity": [6, "Character", "WLF", "Aggressive/Defensive", "ISAAC", "+2 if opposing card is Firefly"],
-	"TommyFireflyHumanity": [4, "Character", "Firefly", "Survivor", "TOMMY"],
+	"TommyFireflyHumanity": [4, "Character", "Firefly", "Survivor", "TOMMY", "+1 for each Firefly in hand"],
 	"RileyHumanity": [3, "Character", "Firefly", "Stealthy", "RILEY", "+4 if played support card is Bottle or Brick"],
 }
 
@@ -110,12 +110,18 @@ const PERKS = {
 	"SupplyCache": "res://scripts/perks/supplyCachePerk.gd",
 	"Riley": "res://scripts/perks/rileyPerk.gd",
 	"Eugene": "res://scripts/perks/eugenePerk.gd",
+	"Tommy": "res://scripts/perks/tommyPerk.gd",
+	"Ezra": "res://scripts/perks/ezraPerk.gd",
+	"Lyra": "res://scripts/perks/lyraPerk.gd",
+	"Li": "res://scripts/perks/liPerk.gd",
+	"SeraphiteBrute": "res://scripts/perks/seraphiteBrutePerk.gd",
 	
 	"JoelSmuggler": "res://scripts/perks/joelSmugglerPerk.gd",
 	"BillSmuggler": "res://scripts/perks/billPerk.gd",
 	"Tess": "res://scripts/perks/tessPerk.gd",
 	"Hunter": "res://scripts/perks/hunterPerk.gd",
 	"Mel": "res://scripts/perks/melPerk.gd",
+	"Maria": "res://scripts/perks/mariaPerk.gd",
 	"LiSmuggler": "res://scripts/perks/liSmugglerPerk.gd",
 	"Jerry": "res://scripts/perks/jerryPerk.gd",
 	"AliceHumanity": "res://scripts/perks/aliceHumanityPerk.gd",
@@ -124,6 +130,8 @@ const PERKS = {
 	"IsaacHumanity": "res://scripts/perks/isaacHumanityPerk.gd",
 	"Owen": "res://scripts/perks/owenPerk.gd",
 	"RileyHumanity": "res://scripts/perks/rileyHumanityPerk.gd",
+	"TommyFireflyHumanity": "res://scripts/perks/tommyFireflyHumanityPerk.gd",
+	"AbbyFirefly": "res://scripts/perks/abbyFireflyPerk.gd",
 }
 
 var AVATARS = {
@@ -136,49 +144,49 @@ var AVATARS = {
 	Actor.Avatar.ETHAN: {
 		"name": "Ethan Hark",
 		"description": "Patrol Leader",
-		"health": "%02d" % 20,
+		"health": "%02d" % 2,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.RHEA: {
 		"name": "Rhea",
 		"description": "Matriarch",
-		"health": "%02d" % 20,
+		"health": "%02d" % 2,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.UCKMANN: {
 		"name": "Dr Uckmann",
 		"description": "Dog Director",
-		"health": "%02d" % 20,
+		"health": "%02d" % 2,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.ALLEY: {
 		"name": "Alley Ross",
 		"description": "Scriptweaver",
-		"health": "%02d" % 20,
+		"health": "%02d" % 2,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.SILAS: {
 		"name": "Silas Vane",
 		"description": "Scavenger King",
-		"health": "%02d" % 20,
+		"health": "%02d" % 2,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.MIRA: {
 		"name": "Mira Thorne",
 		"description": "Ex-Medic",
-		"health": "%02d" % 20, 
+		"health": "%02d" % 2, 
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.KAEL: {
 		"name": "Kaelen Voss",
 		"description": "Shield Brother",
-		"health": "%02d" % 20,
+		"health": "%02d" % 2,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	}

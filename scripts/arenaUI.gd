@@ -151,6 +151,26 @@ func _on_main_menu_button_hold_complete() -> void:
 	GameStats.gameMode = GameStats.Mode.MAIN_MENU
 	Curtain.change_scene("res://scenes/mainMenu.tscn")
 
+func _on_new_run_button_mouse_entered() -> void:
+	%holdIcon.get_node("image").position.x = 1800
+	%holdIcon.get_node("text").position.x = 1821
+	%holdIcon.show()
+
+func _on_new_run_button_mouse_exited() -> void:
+	%holdIcon.hide()
+	%holdIcon.get_node("image").position.x = 1675
+	%holdIcon.get_node("text").position.x = 1700
+
+func _on_main_menu_button_mouse_entered() -> void:
+	%holdIcon.get_node("image").position.x = 1800
+	%holdIcon.get_node("text").position.x = 1821
+	%holdIcon.show()
+
+func _on_main_menu_button_mouse_exited() -> void:
+	%holdIcon.hide()
+	%holdIcon.get_node("image").position.x = 1675
+	%holdIcon.get_node("text").position.x = 1700
+
 # Helpers
 func _fade_with_round_reset() -> void:
 	await Curtain.fade_in()
