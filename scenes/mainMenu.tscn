@@ -213,12 +213,12 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_ldpc3")
 text = "STORY"
 alignment = 0
 
-[node name="LastStandButton" type="Button" parent="mainButtonContainer"]
+[node name="HoldoutButton" type="Button" parent="mainButtonContainer"]
 z_index = 201
 layout_mode = 0
 offset_left = 120.0
 offset_top = 450.0
-offset_right = 267.0
+offset_right = 245.0
 offset_bottom = 505.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
@@ -230,15 +230,15 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_l7wge")
 theme_override_styles/hover = SubResource("StyleBoxFlat_7nrmo")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_clbkb")
 theme_override_styles/focus = SubResource("StyleBoxFlat_ldpc3")
-text = "LAST STAND"
+text = "HOLDOUT"
 alignment = 0
 
-[node name="TutorialButton" type="Button" parent="mainButtonContainer"]
+[node name="RemnantsButton" type="Button" parent="mainButtonContainer"]
 z_index = 201
 layout_mode = 0
 offset_left = 120.0
 offset_top = 500.0
-offset_right = 240.0
+offset_right = 263.0
 offset_bottom = 555.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
@@ -250,7 +250,7 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_l7wge")
 theme_override_styles/hover = SubResource("StyleBoxFlat_7nrmo")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_clbkb")
 theme_override_styles/focus = SubResource("StyleBoxFlat_ldpc3")
-text = "TUTORIAL"
+text = "REMNANTS"
 alignment = 0
 
 [node name="OptionsButton" type="Button" parent="mainButtonContainer"]
@@ -258,7 +258,7 @@ z_index = 201
 layout_mode = 0
 offset_left = 120.0
 offset_top = 550.0
-offset_right = 229.0
+offset_right = 235.0
 offset_bottom = 605.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
@@ -279,7 +279,7 @@ z_index = 201
 layout_mode = 0
 offset_left = 120.0
 offset_top = 600.0
-offset_right = 178.0
+offset_right = 182.0
 offset_bottom = 655.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
@@ -308,7 +308,7 @@ texture = ExtResource("9_jfr2g")
 
 [node name="Lock2" type="Sprite2D" parent="mainButtonContainer/Temporary Lock Icons"]
 modulate = Color(0.29803923, 0.29803923, 0.29803923, 1)
-position = Vector2(272, 525)
+position = Vector2(288, 525)
 scale = Vector2(0.06, 0.06)
 texture = ExtResource("9_jfr2g")
 
@@ -400,7 +400,7 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_ldpc3")
 text = "COMING SOON"
 alignment = 0
 
-[node name="lastStandButtonContainer" type="Control" parent="."]
+[node name="holdoutButtonContainer" type="Control" parent="."]
 process_mode = 4
 visible = false
 layout_mode = 3
@@ -408,7 +408,7 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="Heading" type="RichTextLabel" parent="lastStandButtonContainer"]
+[node name="Heading" type="RichTextLabel" parent="holdoutButtonContainer"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -425,10 +425,10 @@ pivot_offset = Vector2(150, 25)
 theme_override_colors/default_color = Color(1, 1, 1, 1)
 theme_override_fonts/normal_font = SubResource("FontVariation_5i7h7")
 theme_override_font_sizes/normal_font_size = 24
-text = "LAST STAND"
+text = "HOLDOUT"
 vertical_alignment = 1
 
-[node name="NewButton" type="Button" parent="lastStandButtonContainer"]
+[node name="NewButton" type="Button" parent="holdoutButtonContainer"]
 z_index = 201
 layout_mode = 0
 offset_left = 140.0
@@ -449,7 +449,7 @@ text = "NEW"
 alignment = 0
 script = ExtResource("9_25e00")
 
-[node name="HoldProgress" type="TextureProgressBar" parent="lastStandButtonContainer/NewButton"]
+[node name="HoldProgress" type="TextureProgressBar" parent="holdoutButtonContainer/NewButton"]
 visible = false
 layout_mode = 0
 offset_left = 88.0
@@ -463,7 +463,7 @@ step = 0.01
 fill_mode = 4
 texture_progress = ExtResource("10_jfr2g")
 
-[node name="ContinueButton" type="Button" parent="lastStandButtonContainer"]
+[node name="ContinueButton" type="Button" parent="holdoutButtonContainer"]
 z_index = 201
 layout_mode = 0
 offset_left = 140.0
@@ -483,7 +483,7 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_ldpc3")
 text = "CONTINUE"
 alignment = 0
 
-[node name="AchievementsButton" type="Button" parent="lastStandButtonContainer"]
+[node name="AchievementsButton" type="Button" parent="holdoutButtonContainer"]
 z_index = 201
 layout_mode = 0
 offset_left = 140.0
@@ -503,19 +503,19 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_ldpc3")
 text = "ACHIEVEMENTS"
 alignment = 0
 
-[node name="Temporary Lock Icons" type="Control" parent="lastStandButtonContainer"]
+[node name="Temporary Lock Icons" type="Control" parent="holdoutButtonContainer"]
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 mouse_filter = 2
 
-[node name="Lock1" type="Sprite2D" parent="lastStandButtonContainer/Temporary Lock Icons"]
+[node name="Lock1" type="Sprite2D" parent="holdoutButtonContainer/Temporary Lock Icons"]
 modulate = Color(0.29803923, 0.29803923, 0.29803923, 1)
 position = Vector2(308, 475)
 scale = Vector2(0.06, 0.06)
 texture = ExtResource("9_jfr2g")
 
-[node name="Lock2" type="Sprite2D" parent="lastStandButtonContainer/Temporary Lock Icons"]
+[node name="Lock2" type="Sprite2D" parent="holdoutButtonContainer/Temporary Lock Icons"]
 modulate = Color(0.29803923, 0.29803923, 0.29803923, 1)
 position = Vector2(367, 525)
 scale = Vector2(0.06, 0.06)
@@ -1027,20 +1027,22 @@ vertical_alignment = 1
 [connection signal="mouse_entered" from="mainButtonContainer/StoryButton" to="." method="_on_story_button_mouse_entered"]
 [connection signal="mouse_exited" from="mainButtonContainer/StoryButton" to="." method="_on_story_button_mouse_exited"]
 [connection signal="pressed" from="mainButtonContainer/StoryButton" to="." method="_on_story_button_pressed"]
-[connection signal="mouse_entered" from="mainButtonContainer/LastStandButton" to="." method="_on_last_stand_button_mouse_entered"]
-[connection signal="mouse_exited" from="mainButtonContainer/LastStandButton" to="." method="_on_last_stand_button_mouse_exited"]
-[connection signal="pressed" from="mainButtonContainer/LastStandButton" to="." method="_on_last_stand_button_pressed"]
-[connection signal="pressed" from="mainButtonContainer/TutorialButton" to="." method="_on_tutorial_button_pressed"]
+[connection signal="mouse_entered" from="mainButtonContainer/HoldoutButton" to="." method="_on_holdout_button_mouse_entered"]
+[connection signal="mouse_exited" from="mainButtonContainer/HoldoutButton" to="." method="_on_holdout_button_mouse_exited"]
+[connection signal="pressed" from="mainButtonContainer/HoldoutButton" to="." method="_on_holdout_button_pressed"]
+[connection signal="mouse_entered" from="mainButtonContainer/RemnantsButton" to="." method="_on_remnants_button_mouse_entered"]
+[connection signal="mouse_exited" from="mainButtonContainer/RemnantsButton" to="." method="_on_remnants_button_mouse_exited"]
+[connection signal="pressed" from="mainButtonContainer/RemnantsButton" to="." method="_on_remnants_button_pressed"]
 [connection signal="pressed" from="mainButtonContainer/OptionsButton" to="." method="_on_options_button_pressed"]
 [connection signal="pressed" from="mainButtonContainer/QuitButton" to="." method="_on_quit_button_pressed"]
 [connection signal="mouse_entered" from="storyButtonContainer/JuneButton" to="." method="_on_june_button_mouse_entered"]
 [connection signal="mouse_exited" from="storyButtonContainer/JuneButton" to="." method="_on_june_button_mouse_exited"]
 [connection signal="pressed" from="storyButtonContainer/JuneButton" to="." method="_on_june_button_pressed"]
-[connection signal="hold_complete" from="lastStandButtonContainer/NewButton" to="." method="_on_new_button_hold_complete"]
-[connection signal="mouse_entered" from="lastStandButtonContainer/NewButton" to="." method="_on_new_button_mouse_entered"]
-[connection signal="mouse_exited" from="lastStandButtonContainer/NewButton" to="." method="_on_new_button_mouse_exited"]
-[connection signal="pressed" from="lastStandButtonContainer/ContinueButton" to="." method="_on_continue_button_pressed"]
-[connection signal="pressed" from="lastStandButtonContainer/AchievementsButton" to="." method="_on_achievements_button_pressed"]
+[connection signal="hold_complete" from="holdoutButtonContainer/NewButton" to="." method="_on_new_button_hold_complete"]
+[connection signal="mouse_entered" from="holdoutButtonContainer/NewButton" to="." method="_on_new_button_mouse_entered"]
+[connection signal="mouse_exited" from="holdoutButtonContainer/NewButton" to="." method="_on_new_button_mouse_exited"]
+[connection signal="pressed" from="holdoutButtonContainer/ContinueButton" to="." method="_on_continue_button_pressed"]
+[connection signal="pressed" from="holdoutButtonContainer/AchievementsButton" to="." method="_on_achievements_button_pressed"]
 [connection signal="pressed" from="optionsButtonContainer/DisplayButton" to="." method="_on_display_button_pressed"]
 [connection signal="pressed" from="optionsButtonContainer/AudioButton" to="." method="_on_audio_button_pressed"]
 [connection signal="pressed" from="optionsButtonContainer/AccessibilityButton" to="." method="_on_accessibility_button_pressed"]

@@ -123,33 +123,31 @@ func _on_continue_button_pressed() -> void:
 	GameStats.replayedRound = false
 	GameStats.lastStandTotalScore += GameStats.lastStandCurrentRoundScore
 	
-	if GameStats.gameMode == GameStats.Mode.LAST_STAND_ROUND_COMPLETED:
+	if GameStats.gameMode == GameStats.Mode.HOLDOUT_ROUND_COMPLETED:
 		GameStats.playerHealthValue = int(playerHealthLabel.text)
-		GameStats.gameMode = GameStats.Mode.LAST_STAND
+		GameStats.gameMode = GameStats.Mode.HOLDOUT
 	
 	battleAnimator.handle_modifier_durations()
 	
 	_fade_with_round_reset()
 
+func _on_replay_button_mouse_entered() -> void:
+	%holdIcon.get_node("image").position.x = 1800
+	%holdIcon.get_node("text").position.x = 1821
+	%holdIcon.show()
+
+func _on_replay_button_mouse_exited() -> void:
+	%holdIcon.hide()
+	%holdIcon.get_node("image").position.x = 1675
+	%holdIcon.get_node("text").position.x = 1700
+
 func _on_replay_button_hold_complete() -> void:
 	GameStats.replayedRound = true
 	
-	if GameStats.gameMode == GameStats.Mode.LAST_STAND_ROUND_COMPLETED:
-		GameStats.gameMode = GameStats.Mode.LAST_STAND
+	if GameStats.gameMode == GameStats.Mode.HOLDOUT_ROUND_COMPLETED:
+		GameStats.gameMode = GameStats.Mode.HOLDOUT
 	
 	_fade_with_round_reset()
-
-func _on_new_run_button_hold_complete() -> void:
-	GameStats.gameMode = GameStats.Mode.LAST_STAND
-	GameStats.reset_all_data()
-	
-	GameStats.start_new_run_log()
-	
-	Curtain.change_scene("res://scenes/main.tscn")
-
-func _on_main_menu_button_hold_complete() -> void:
-	GameStats.gameMode = GameStats.Mode.MAIN_MENU
-	Curtain.change_scene("res://scenes/mainMenu.tscn")
 
 func _on_new_run_button_mouse_entered() -> void:
 	%holdIcon.get_node("image").position.x = 1800
@@ -160,6 +158,18 @@ func _on_new_run_button_mouse_exited() -> void:
 	%holdIcon.hide()
 	%holdIcon.get_node("image").position.x = 1675
 	%holdIcon.get_node("text").position.x = 1700
+
+func _on_new_run_button_hold_complete() -> void:
+	GameStats.gameMode = GameStats.Mode.HOLDOUT
+	GameStats.reset_all_data()
+	
+	GameStats.start_new_run_log()
+	
+	Curtain.change_scene("res://scenes/main.tscn")
+
+func _on_main_menu_button_hold_complete() -> void:
+	GameStats.gameMode = GameStats.Mode.MAIN_MENU
+	Curtain.change_scene("res://scenes/mainMenu.tscn")
 
 func _on_main_menu_button_mouse_entered() -> void:
 	%holdIcon.get_node("image").position.x = 1800

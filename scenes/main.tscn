@@ -3532,6 +3532,8 @@ text = "END TURN"
 [connection signal="mouse_exited" from="supportDeck/Area2D" to="supportDeck" method="_on_mouse_exited"]
 [connection signal="pressed" from="arena/gameOver/ContinueButton" to="arena" method="_on_continue_button_pressed"]
 [connection signal="hold_complete" from="arena/gameOver/ReplayButton" to="arena" method="_on_replay_button_hold_complete"]
+[connection signal="mouse_entered" from="arena/gameOver/ReplayButton" to="arena" method="_on_replay_button_mouse_entered"]
+[connection signal="mouse_exited" from="arena/gameOver/ReplayButton" to="arena" method="_on_replay_button_mouse_exited"]
 [connection signal="hold_complete" from="arena/gameOver/NewRunButton" to="arena" method="_on_new_run_button_hold_complete"]
 [connection signal="mouse_entered" from="arena/gameOver/NewRunButton" to="arena" method="_on_new_run_button_mouse_entered"]
 [connection signal="mouse_exited" from="arena/gameOver/NewRunButton" to="arena" method="_on_new_run_button_mouse_exited"]

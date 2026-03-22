@@ -3,7 +3,7 @@ extends Node2D
 @onready var backgroundImage = $image
 @onready var mainButtonContainer = $mainButtonContainer
 @onready var storyButtonContainer = $storyButtonContainer
-@onready var lastStandButtonContainer = $lastStandButtonContainer
+@onready var holdoutButtonContainer = $holdoutButtonContainer
 @onready var optionsButtonContainer = $optionsButtonContainer
 @onready var accessibilityMenuContainer = $accessibilityMenuContainer
 @onready var accessibilityMainContainer = $accessibilityMenuContainer/mainContainer
@@ -19,9 +19,10 @@ const BACKGROUNDS = {
 }
 
 const SUPPLEMENTTEXT = {
-	"Story": "Play through a choice of three different survivor stories.",
-	"Last Stand": "Survive as many waves as possible with boosted health and no healing.",
-	"June": "What is the cost of doing what you believe is right?"
+	"Story": "What is the cost of doing what you believe is right?",
+	"Holdout": "Survive as many waves as possible with boosted health and no healing.",
+	"June": "What is the cost of doing what you believe is right?",
+	"Remnants": "Scavenge what remains. Build your deck. Survive what comes."
 }
 
 # Card for Accessibility Card Graphics
@@ -30,7 +31,7 @@ var previewCard: Node2D = null
 func _ready() -> void:
 	setup_button_sounds(mainButtonContainer)
 	setup_button_sounds(storyButtonContainer)
-	setup_button_sounds(lastStandButtonContainer)
+	setup_button_sounds(holdoutButtonContainer)
 	setup_button_sounds(optionsButtonContainer)
 	setup_button_sounds(accessibilityMenuContainer.get_node("mainContainer"))
 	
@@ -82,11 +83,11 @@ func _input(event: InputEvent) -> void:
 			
 			mainButtonContainer.show()
 			mainButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
-		elif currentNavigation == "Last Stand":
+		elif currentNavigation == "Holdout":
 			$pauseIcon.hide()
 			currentNavigation = "Main"
-			lastStandButtonContainer.hide()
-			lastStandButtonContainer.process_mode = Node.PROCESS_MODE_DISABLED
+			holdoutButtonContainer.hide()
+			holdoutButtonContainer.process_mode = Node.PROCESS_MODE_DISABLED
 			
 			backgroundImage.texture = BACKGROUNDS["Main"]
 			
@@ -160,21 +161,21 @@ func _on_june_button_pressed() -> void:
 	#Curtain.change_scene("res://scenes/main.tscn")
 	pass
 
-func _on_last_stand_button_mouse_entered() -> void:
-	supplementText.text = SUPPLEMENTTEXT["Last Stand"]
+func _on_holdout_button_mouse_entered() -> void:
+	supplementText.text = SUPPLEMENTTEXT["Holdout"]
 
-func _on_last_stand_button_mouse_exited() -> void:
+func _on_holdout_button_mouse_exited() -> void:
 	supplementText.text = ""
 
-func _on_last_stand_button_pressed() -> void:
+func _on_holdout_button_pressed() -> void:
 	$pauseIcon.show()
-	currentNavigation = "Last Stand"
+	currentNavigation = "Holdout"
 	
 	mainButtonContainer.hide()
 	mainButtonContainer.process_mode = Node.PROCESS_MODE_DISABLED
 	
-	lastStandButtonContainer.show()
-	lastStandButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
+	holdoutButtonContainer.show()
+	holdoutButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
 
 func _on_new_button_mouse_entered() -> void:
 	$holdIcon.show()
@@ -183,7 +184,7 @@ func _on_new_button_mouse_exited() -> void:
 	$holdIcon.hide()
 
 func _on_new_button_hold_complete() -> void:
-	GameStats.gameMode = GameStats.Mode.LAST_STAND
+	GameStats.gameMode = GameStats.Mode.HOLDOUT
 	GameStats.reset_all_data()
 	
 	GameStats.start_new_run_log()
@@ -193,11 +194,17 @@ func _on_new_button_hold_complete() -> void:
 func _on_continue_button_pressed() -> void:
 	_play_denied_animation($lastStandButtonContainer/ContinueButton)
 
+func _on_remnants_button_mouse_entered() -> void:
+	supplementText.text = SUPPLEMENTTEXT["Remnants"]
+
+func _on_remnants_button_mouse_exited() -> void:
+	supplementText.text = ""
+
 func _on_achievements_button_pressed() -> void:
 	_play_denied_animation($lastStandButtonContainer/AchievementsButton)
 
-func _on_tutorial_button_pressed() -> void:
-	_play_denied_animation($mainButtonContainer/TutorialButton)
+func _on_remnants_button_pressed() -> void:
+	_play_denied_animation($mainButtonContainer/RemnantsButton)
 
 func _on_options_button_pressed() -> void:
 	$pauseIcon.show()

@@ -324,7 +324,7 @@ func _on_confirm_button_pressed() -> void:
 	tierTwoModifier = null
 	tierThreeModifier = null
 	
-	GameStats.gameMode = GameStats.Mode.LAST_STAND
+	GameStats.gameMode = GameStats.Mode.HOLDOUT
 	%battleManager.initialize_game()
 	
 	playingStartAnimation = false

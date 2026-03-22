@@ -192,9 +192,8 @@ func disable_interaction() -> void:
 	scale = Vector2(1, 1)
 	
 	if has_node("AnimationPlayer"):
-		$AnimationPlayer.play("hideDescription")
-		var end_time = $AnimationPlayer.current_animation_length
-		$AnimationPlayer.seek(end_time, true)
+		$AnimationPlayer.play_backwards("showPerkDescription")
+		$AnimationPlayer.seek(0, true)
 
 func modify_value(amount: int) -> void:
 	value += amount

@@ -89,14 +89,14 @@ func _ready() -> void:
 			GameStats.currentPlayer = Actor.Avatar.JUNE
 			GameStats.playerHealthValue = Database.AVATARS[Actor.Avatar.JUNE].health
 		
-		GameStats.Mode.LAST_STAND:
+		GameStats.Mode.HOLDOUT:
 			# Maybe there should be an avatar thats always used for Last Stand
 			GameStats.currentPlayer = Actor.Avatar.JUNE
 			GameStats.playerHealthValue = 99 
 	
 	ui.update_health(Actor.Type.PLAYER, GameStats.playerHealthValue, true)
 	
-	GameStats.gameMode = GameStats.Mode.LAST_STAND
+	GameStats.gameMode = GameStats.Mode.HOLDOUT
 	initialize_game()
 
 func prepare_opponent() -> void:
@@ -476,7 +476,7 @@ func _transition_to_resolution_phase() -> void:
 
 func _conclude_match() -> void:
 	GameStats.set_end_time()
-	GameStats.gameMode = GameStats.Mode.LAST_STAND_ROUND_COMPLETED
+	GameStats.gameMode = GameStats.Mode.HOLDOUT_ROUND_COMPLETED
 	GameStats.totalInGameTimePlayed += GameStats.currentRoundDuration
 	
 	%pauseIcon.hide()
@@ -589,7 +589,7 @@ func _draw_cards_at_start(firstStart: bool = true) -> void:
 			await get_tree().create_timer(CARD_MOVE_FAST_SPEED).timeout
 			$"../supportDeck".draw_opponent_card()
 	
-	GameStats.gameMode = GameStats.Mode.LAST_STAND
+	GameStats.gameMode = GameStats.Mode.HOLDOUT
 	
 	%pauseIcon.show()
 
@@ -598,7 +598,7 @@ func _pick_next_opponent() -> Actor.Avatar:
 		match GameStats.gameMode:
 			GameStats.Mode.JUNE_RAVEL:
 				GameStats.opponentList = Database.JUNE_OPPONENTS.duplicate()
-			GameStats.Mode.LAST_STAND:
+			GameStats.Mode.HOLDOUT:
 				var list = Database.AVATARS.keys()
 				
 				if GameStats.currentPlayer in list:
@@ -825,7 +825,7 @@ func _move_cards_to_discard(cards: Array) -> void:
 	$"../cardSlots/cardSlotSupport".occupied = false
 	$"../cardSlots/cardSlotCharacter".occupied = false
 	
-	if GameStats.roundNumber % 2 == 0 and volatileHandActive and GameStats.gameMode == GameStats.Mode.LAST_STAND:
+	if GameStats.roundNumber % 2 == 0 and volatileHandActive and GameStats.gameMode == GameStats.Mode.HOLDOUT:
 		for card in playerHand.duplicate():
 			await _place_card_in_discard(card, %playerHand)
 
