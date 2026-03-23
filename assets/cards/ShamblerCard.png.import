@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://0pgl1ixe5c83"
-path="res://.godot/imported/BloaterCard.png-94345bbe725395ee4bdf7a332daffd37.ctex"
+path="res://.godot/imported/ShamblerCard.png-4c1cea97a199f409b489c69251a241c3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/cards/BloaterCard.png"
-dest_files=["res://.godot/imported/BloaterCard.png-94345bbe725395ee4bdf7a332daffd37.ctex"]
+source_file="res://assets/cards/ShamblerCard.png"
+dest_files=["res://.godot/imported/ShamblerCard.png-4c1cea97a199f409b489c69251a241c3.ctex"]
 
 [params]
 

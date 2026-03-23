@@ -30,7 +30,7 @@ const CHARACTERS = { # Value, Type, Faction, Class, Card Name Text, Perk Text
 	"Runner": [2, "Character", "Infected", "Aggressive", "RUNNER", "Gain the value of all runners in hand, and discard them"],
 	"Stalker": [3, "Character", "Infected", "Stealthy", "STALKER", "+2 for each Infected in hand"],
 	"Clicker": [5, "Character", "Infected", "Aggressive", "CLICKER", "On round win: -2 to opponent health"],
-	"Bloater": [4, "Character", "Infected", "Defensive", "BLOATER", "On round loss of 2 or more: -4 to opponent health"],
+	"Shambler": [4, "Character", "Infected", "Defensive", "SHAMBLER", "On round loss of 2 or more: -4 to opponent health"],
 	"RatKing": [8, "Character", "Infected", "Aggressive", "RAT KING", "On round win: -4 to opponent health"],
 	"Malik": [3, "Character", "Infected", "Survivor", "MALIK", "+1 for each Infected in hand and +2 if opposing card is Infected"],
 	
@@ -101,7 +101,7 @@ const PERKS = {
 	"Yara": "res://scripts/perks/yaraPerk.gd",
 	"Clicker": "res://scripts/perks/clickerPerk.gd",
 	"Lev": "res://scripts/perks/levPerk.gd",
-	"Bloater": "res://scripts/perks/bloaterPerk.gd",
+	"Shambler": "res://scripts/perks/shamblerPerk.gd",
 	"RatKing": "res://scripts/perks/ratKingPerk.gd",
 	"TheProphet": "res://scripts/perks/theProphetPerk.gd",
 	"Emily": "res://scripts/perks/emilyPerk.gd",
@@ -389,7 +389,7 @@ const standardCharacterDeck = [
 	"SeraphiteBrute", "SeraphiteBrute",
 	
 	"Clicker", "Clicker",
-	"Bloater",
+	"Shambler",
 	"Emily", "Ezra", "Lev", "Yara",
 	"Nora", "Manny", "Alice", "Li",
 	"Bill", "Dina", "Jessie", "Tommy", "TommyFirefly",
@@ -429,7 +429,7 @@ const infectedHeavyCharacterDeck = [
 	"Runner", "Runner", "Runner", "Runner", "Runner", "Runner",
 	"Stalker", "Stalker", "Stalker", "Stalker", "Stalker",
 	"Clicker", "Clicker", "Clicker",
-	"Bloater", "Bloater",
+	"Shambler", "Shambler",
 	"Malik", "Malik",
 	
 	"Runner", "Runner", "Runner", "Runner",
@@ -493,3 +493,58 @@ const humanityRestoredCharacterDeck = [
 	"LiSmuggler", 
 	"Hunter", "Hunter"
 ]
+
+const REMNANT_CHARACTERS = {
+	#Jackson
+	"Joel": [6, "Character", "Jackson", "Aggressive/Survivor", "JOEL", "Duo: +4 if played with Ellie or Tommy and +2 if opposing card is multi-type"],
+	"Ellie": [5, "Character", "Jackson", "Stealthy", "ELLIE", "+2 if opposing card is Stealthy and +1 for each non-matching type in hand"],
+	"Jessie": [5, "Character", "Jackson", "Aggressive", "JESSIE", "+1 if opposing card is Aggressive"],
+	"Maria": [4, "Character", "Jackson", "Leader", "MARIA", "Duo: +2 if played with Tommy"],
+	"Dina": [3, "Character", "Jackson", "Survivor", "DINA", "Duo: +3 if played with Ellie or Jessie and +4 if opposing card is Defensive"],
+	"JacksonScout": [2, "Character", "Jackson", "Defensive", "SCOUT", "Duo: Can be used as replacement"],
+	"JacksonRecruit": [1, "Character", "Jackson", "Aggressive", "RECRUIT", "Duo: Can be used as replacement"],
+	"Tommy": [5, "Character", "Jackson", "Aggressive", "TOMMY", "+1 for each Scout or Recruit in hand"],
+
+	#WLF
+	"Isaac": [6, "Character", "WLF", "Aggressive/Defensive", "ISAAC", "+3 if opposing card is multi-type"],
+	"Abby": [6, "Character", "WLF", "Aggressive/Survivor", "ABBY", "Duo: +2 if played with WLF Scout or Recruit"],
+	"Nora": [4, "Character", "WLF", "Defensive/Stealthy", "NORA", "+2 if opposing card is Crafty or Survivor"],
+	"Manny": [4, "Character", "WLF", "Defensive", "MANNY", "+2 if played with a card of a different type"],
+	"Owen": [4, "Character", "WLF", "Stealthy", "OWEN", "Duo: +3 if played with Abby or Mel"],
+	"Mel": [3, "Character", "WLF", "Stealthy/Survivor", "MEL", "On round win: +2 to random card in hand"],
+	"WLFScout": [2, "Character", "WLF", "Defensive", "SCOUT", "No perk"],
+	"WLFRecruit": [1, "Character", "WLF", "Aggressive", "RECRUIT", "No perk"],
+	
+	#Seraphite
+	"TheProphet": [6, "Character", "Seraphite", "Defensive/Stealthy", "THE PROPHET", "+2 if opposing card is Aggressive or Stealthy and +1 for each Stealthy in hand"],
+	"Lev": [3, "Character", "Seraphite", "Stealthy/Survivor", "LEV", "Duo: +5 if played with Yara and +3 if opposing card base value is greater than Lev's"],
+	"SeraphiteBrute": [5, "Character", "Seraphite", "Aggressive", "SERAPHITE BRUTE", "+2 if opposing card value is 3 or less"],
+	"Yara": [4, "Character", "Seraphite", "Stealthy", "YARA", "+3 if opposing card value is 8 or higher"],
+	"Ezra": [3, "Character", "Seraphite", "Crafty/Defensive", "EZRA", "+2 if opposing card is Aggressive"],
+	"Emily": [4, "Character", "Seraphite", "Survivor", "EMILY", "+1 for each Stealthy or Survivor in hand"],
+	"Lyra": [2, "Character", "Seraphite", "Survivor", "LYRA", "+2 if opposing card is Crafty or Stealthy"],
+	"SeraphiteRecruit": [1, "Character", "Seraphite", "Aggressive", "RECRUIT", "No perk"],
+	
+	#Infected
+	"Bloater": [6, "Character", "Infected", "Aggressive/Defensive", "BLOATER", "On round win: Gain 1 additional territory"],
+	"Clicker": [5, "Character", "Infected", "Aggressive", "CLICKER", "+3 if opposing card is Stealthy"],
+	"Stalker": [3, "Character", "Infected", "Stealthy", "STALKER", "+4 if not paired with another Stalker"],
+	"Shambler": [4, "Character", "Infected", "Defensive", "SHAMBLER", "On round loss: Opponent gains 0 territories"],
+	"Malik": [3, "Character", "Infected", "Survivor", "MALIK", "+3 if opposing card has no perk"],
+	"Runner": [2, "Character", "Infected", "Aggressive", "RUNNER", "+1 if opposing card is Aggressive"],
+
+	#Firefly
+	"Marlene": [5, "Character", "Firefly", "Crafty", "MARLENE", "Duo: +6 if played with FF Soldier or Recruit"],
+	"TommyFirefly": [4, "Character", "Firefly", "Survivor", "TOMMY", "Duo: +2 if played with FF Soldier or Recruit"],
+	"Riley": [3, "Character", "Firefly", "Stealthy", "RILEY", "+3 if Marlene in hand"],
+	"Jerry": [2, "Character", "Firefly", "Defensive", "JERRY", "On round loss: +4 to random card in hand"],
+	"Eugene": [3, "Character", "Firefly", "Crafty/Survivor", "EUGENE", "+3 if opposing card is Survivor"],
+	"FireflySoldier": [2, "Character", "Firefly", "Defensive", "FIREFLY SOLDIER", "+2 if opposing card is Aggressive or Stealthy"],
+	"FireflyRecruit": [1, "Character", "Firefly", "Aggressive", "RECRUIT", "No perk"],
+
+	#Smuggler
+	"Tess": [5, "Character", "Smuggler", "Crafty/Survivor", "TESS", "+3 if opposing card has a perk"],
+	"Hunter": [3, "Character", "Smuggler", "Aggressive/Survivor", "HUNTER", "+4 if base value is higher than opposing card base value"],
+	"Bill": [4, "Character", "Smuggler", "Crafty", "BILL", "+4 if opposing card triggers a perk"],
+	"Li": [3, "Character", "Smuggler", "Survivor", "LI", "Duo: +3 if played with Scout or Recruit"]
+}

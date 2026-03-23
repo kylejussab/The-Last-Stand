@@ -996,7 +996,7 @@ func _handle_player_win(playerTotal: int, opponentTotal: int) -> void:
 	
 	await _deal_damage(Actor.Type.OPPONENT, damage, false)
 	
-	await _handle_bloater_perk(Actor.Type.PLAYER)
+	await _handle_shambler_perk(Actor.Type.PLAYER)
 	
 	if playerCharacterCard.perkValueAtRoundEnd: # Any non-special perks that need triggering on round end
 		await _deal_damage(Actor.Type.OPPONENT, playerCharacterCard.perkValueAtRoundEnd)
@@ -1021,7 +1021,7 @@ func _handle_opponent_win(playerTotal: int, opponentTotal: int) -> void:
 	
 	await _deal_damage(Actor.Type.PLAYER, damage, false)
 	
-	await _handle_bloater_perk(Actor.Type.OPPONENT)
+	await _handle_shambler_perk(Actor.Type.OPPONENT)
 	
 	if opponentCharacterCard.perkValueAtRoundEnd: # Any non-special perks that need triggering on round end
 		await _deal_damage(Actor.Type.PLAYER, opponentCharacterCard.perkValueAtRoundEnd)
@@ -1031,12 +1031,12 @@ func _handle_opponent_win(playerTotal: int, opponentTotal: int) -> void:
 		playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
 		await _deal_damage(Actor.Type.PLAYER, 2)
 
-func _handle_bloater_perk(winner: Actor.Type) -> void:
+func _handle_shambler_perk(winner: Actor.Type) -> void:
 	if winner == Actor.Type.PLAYER:
-		if opponentCharacterCard.cardKey == "Bloater" and opponentCharacterCard.perkValueAtRoundEnd:
+		if opponentCharacterCard.cardKey == "Shambler" and opponentCharacterCard.perkValueAtRoundEnd:
 			await _deal_damage(Actor.Type.PLAYER, opponentCharacterCard.perkValueAtRoundEnd)
 	elif winner == Actor.Type.OPPONENT:
-		if playerCharacterCard.cardKey == "Bloater" and playerCharacterCard.perkValueAtRoundEnd:
+		if playerCharacterCard.cardKey == "Shambler" and playerCharacterCard.perkValueAtRoundEnd:
 			await _deal_damage(Actor.Type.OPPONENT, playerCharacterCard.perkValueAtRoundEnd)
 
 func _deal_damage(who: Actor.Type, amount: int, isDelay: bool = true) -> void:
