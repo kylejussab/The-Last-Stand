@@ -192,7 +192,7 @@ func _on_new_button_hold_complete() -> void:
 	Curtain.change_scene("res://scenes/main.tscn")
 
 func _on_continue_button_pressed() -> void:
-	_play_denied_animation($lastStandButtonContainer/ContinueButton)
+	_play_denied_animation($holdoutButtonContainer/ContinueButton)
 
 func _on_remnants_button_mouse_entered() -> void:
 	supplementText.text = SUPPLEMENTTEXT["Remnants"]
@@ -201,7 +201,7 @@ func _on_remnants_button_mouse_exited() -> void:
 	supplementText.text = ""
 
 func _on_achievements_button_pressed() -> void:
-	_play_denied_animation($lastStandButtonContainer/AchievementsButton)
+	_play_denied_animation($holdoutButtonContainer/AchievementsButton)
 
 func _on_remnants_button_pressed() -> void:
 	_play_denied_animation($mainButtonContainer/RemnantsButton)
