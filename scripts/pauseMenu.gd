@@ -76,11 +76,13 @@ func toggle_pause():
 	
 	if pauseState:
 		AudioManager.play_button_click()
+		AudioManager.change_volume_layer1(-35, 1)
 		$"../../pauseIcon/text".text = "BACK"
 		show()
 		_make_background_lighter()
 	else:
 		AudioManager.play_button_back()
+		AudioManager.change_volume_layer1(-20, 1)
 		battleManager.lockPlayerInput = false
 		$"../../pauseIcon/text".text = "PAUSE"
 		await _make_background_invisible()

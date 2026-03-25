@@ -38,3 +38,7 @@ analysis/finalGraphs/
 __pycache__/
 *.py[cod]
 *$py.class
+
+# Ignore premium assets
+assets/sounds/music/The Perilous Path/
+assets/sounds/music/The Perilous Path/*.import

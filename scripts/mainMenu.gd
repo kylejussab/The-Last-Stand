@@ -56,6 +56,9 @@ func _input(event: InputEvent) -> void:
 		GameStats.invitationAccepted = true
 		AudioManager.play_button_click()
 		
+		AudioManager.change_volume_layer1(-20, 5.0)
+		AudioManager.change_volume_layer2(-80, 5.0)
+		
 		mainButtonContainer.modulate.a = 0.0
 		mainButtonContainer.show()
 		
@@ -190,6 +193,8 @@ func _on_new_button_hold_complete() -> void:
 	GameStats.start_new_run_log()
 	
 	Curtain.change_scene("res://scenes/main.tscn")
+	
+	AudioManager.play_quickening_stride(-20, -80, 1)
 
 func _on_continue_button_pressed() -> void:
 	_play_denied_animation($holdoutButtonContainer/ContinueButton)
