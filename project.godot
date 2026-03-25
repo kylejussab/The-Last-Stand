@@ -23,6 +23,7 @@ Curtain="*res://scenes/curtain.tscn"
 GameStats="*res://scripts/gameStats.gd"
 Database="*res://scripts/database.gd"
 AccessibilityData="*res://scripts/accessibilityData.gd"
+AudioManager="*res://scenes/audioManager.tscn"
 
 [display]
 

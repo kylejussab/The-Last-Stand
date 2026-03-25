@@ -38,18 +38,6 @@ var perkValueAtRoundEnd
 var canBePlayed: bool
 var perkDescription: String
 
-@onready var soundPlayer = $AudioStreamPlayer2D
-
-@export var drawSounds = [
-	preload("res://assets/sounds/cards/deal_1.wav"),
-	preload("res://assets/sounds/cards/deal_2.wav"),
-	preload("res://assets/sounds/cards/deal_3.wav"),
-	preload("res://assets/sounds/cards/deal_4.wav"),
-	preload("res://assets/sounds/cards/deal_5.wav"),
-	preload("res://assets/sounds/cards/deal_6.wav"),
-	preload("res://assets/sounds/cards/deal_7.wav")
-]
-
 func _ready() -> void:
 	if get_parent().has_method("connect_card_signals"):
 		get_parent().connect_card_signals(self)
@@ -168,11 +156,6 @@ func _format_perk_text(rawText: String) -> String:
 			var replacement = "[img height=%d]%s[/img]" % [DESCRIPTION_ICON_SIZE, iconPath]
 			richText = richText.replace(keyword, replacement)
 	return richText
-
-func play_draw_sound():
-	var randomSound = drawSounds.pick_random()
-	soundPlayer.stream = randomSound
-	soundPlayer.play()
 
 func _on_area_2d_mouse_entered() -> void:
 	emit_signal("hoverEntered", self)

@@ -31,7 +31,7 @@ func _ready():
 	mouse_exited.connect(_on_mouse_exited)
 
 func _on_toggled(buttonState: bool):
-	%ButtonClickSound.play()
+	AudioManager.play_button_click()
 	
 	AccessibilityData.animationsDisabled = not buttonState
 	
@@ -56,7 +56,7 @@ func _on_mouse_entered():
 	_set_element_color(knob, KNOB_COLOR_HOVER)
 	_set_element_color(track, TRACK_COLOR_HOVER)
 	
-	%ButtonHoverSound.play()
+	AudioManager.play_button_hover()
 
 func _on_mouse_exited():
 	_set_element_color(knob, KNOB_COLOR_DEFAULT)

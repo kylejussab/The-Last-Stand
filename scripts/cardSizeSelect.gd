@@ -36,7 +36,7 @@ func _change_setting(direction: int):
 	if target < 0 or target >= count:
 		return
 	
-	_play_click()
+	AudioManager.play_button_click()
 	
 	AccessibilityData.currentCardUISize = target as AccessibilityData.CardUISize
 
@@ -72,8 +72,5 @@ func _update_ui():
 func _play_hover(btn: TextureButton):
 	if btn.texture_normal == ARROW_EMPTY:
 		return
-		
-	%ButtonHoverSound.play()
-
-func _play_click():
-	%ButtonClickSound.play()
+	
+	AudioManager.play_button_hover()

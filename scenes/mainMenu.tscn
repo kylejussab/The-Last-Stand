@@ -1,13 +1,9 @@
-[gd_scene load_steps=47 format=3 uid="uid://btdd4ppvwtnvy"]
+[gd_scene load_steps=43 format=3 uid="uid://btdd4ppvwtnvy"]
 
 [ext_resource type="Script" uid="uid://bmorqef62jko2" path="res://scripts/mainMenu.gd" id="1_l7wge"]
 [ext_resource type="Texture2D" uid="uid://bmewebekh15ca" path="res://assets/mainMenu/main.png" id="1_qkhwq"]
 [ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://assets/fonts/SF-Pro-Display-Black.otf" id="2_3d1i7"]
-[ext_resource type="AudioStream" uid="uid://bams0u5k7sdgr" path="res://assets/sounds/ui/buttonClick.wav" id="2_clbkb"]
 [ext_resource type="FontFile" uid="uid://di1dchl37cfhu" path="res://assets/fonts/SF-Pro-Display-Semibold.otf" id="3_48ign"]
-[ext_resource type="AudioStream" uid="uid://cufo3kt8n8vs2" path="res://assets/sounds/ui/buttonHover.wav" id="3_ldpc3"]
-[ext_resource type="AudioStream" uid="uid://b3d3fqc8ee6t7" path="res://assets/sounds/ui/buttonBack.wav" id="4_y35fp"]
-[ext_resource type="AudioStream" uid="uid://b2sa8g17hxiwa" path="res://assets/sounds/cards/hover.wav" id="5_lam2r"]
 [ext_resource type="Texture2D" uid="uid://be0aihjd72rmo" path="res://assets/ui/RightClickIcon.png" id="7_ldpc3"]
 [ext_resource type="Script" uid="uid://yb10rqecj0pw" path="res://scripts/cardStyleSelect.gd" id="8_epn8x"]
 [ext_resource type="Texture2D" uid="uid://cf8imluhjhkne" path="res://assets/mainMenu/ArrowLeft.png" id="8_tov5d"]
@@ -135,29 +131,6 @@ spacing_glyph = 1
 
 [node name="MainMenu" type="Node2D"]
 script = ExtResource("1_l7wge")
-
-[node name="ButtonClickSound" type="AudioStreamPlayer2D" parent="."]
-unique_name_in_owner = true
-position = Vector2(770, 790)
-stream = ExtResource("2_clbkb")
-volume_db = 20.0
-
-[node name="ButtonHoverSound" type="AudioStreamPlayer2D" parent="."]
-unique_name_in_owner = true
-position = Vector2(770, 790)
-stream = ExtResource("3_ldpc3")
-volume_db = 20.0
-
-[node name="ButtonBackSound" type="AudioStreamPlayer2D" parent="."]
-position = Vector2(770, 790)
-stream = ExtResource("4_y35fp")
-volume_db = 20.0
-
-[node name="CardHoverSound" type="AudioStreamPlayer2D" parent="."]
-unique_name_in_owner = true
-process_mode = 3
-stream = ExtResource("5_lam2r")
-volume_db = -10.0
 
 [node name="backgroundRectangle" type="ColorRect" parent="."]
 offset_right = 1920.0

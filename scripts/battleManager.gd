@@ -617,13 +617,13 @@ func _pick_next_opponent() -> Actor.Avatar:
 	return GameStats.opponentList.pop_front()
 
 func _animate_opponent_playing_card(opponentCard: Node2D, opponentCardSlot: Node2D) -> void:
-	opponentCard.play_draw_sound()
+	AudioManager.play_random_card_draw()
 	opponentCard.get_node("Area2D/CollisionShape2D").disabled = false
 	
 	opponentCard.get_node("AnimationPlayer").play("cardFlip")
 	
 	var tween = get_tree().create_tween()
-	tween.finished.connect(func(): opponentCard.play_draw_sound())
+	tween.finished.connect(AudioManager.play_random_card_draw)
 	tween.tween_property(opponentCard, "position", opponentCardSlot.position, CARD_MOVE_SPEED)
 	
 	$"../opponentHand".remove_card_from_hand(opponentCard)
@@ -810,14 +810,14 @@ func _move_cards_to_discard(cards: Array) -> void:
 	
 	for card in cards:
 		discardedCards.append(card)
-		card.play_draw_sound()
+		AudioManager.play_random_card_draw()
 		card.scale = Vector2(1, 1)
 		card.get_node("Area2D/CollisionShape2D").disabled = true
 		
 		card.z_index = discardedCardZIndex
 		discardedCardZIndex += 1
 		var tween = get_tree().create_tween()
-		tween.finished.connect(func(): card.play_draw_sound())
+		tween.finished.connect(AudioManager.play_random_card_draw)
 		tween.tween_property(card, "position", DISCARD_PILE_POSITION, CARD_MOVE_FAST_SPEED)
 		
 		await tween.finished

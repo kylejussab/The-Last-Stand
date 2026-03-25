@@ -24,7 +24,7 @@ func _input(event):
 				currentNavigation = "Main"
 				battleManager.lockPlayerInput = false
 			elif currentNavigation == "Options":
-				_play_back_sound()
+				AudioManager.play_button_back()
 				$OptionsButtonContainer.hide()
 				$OptionsButtonContainer.process_mode = Node.PROCESS_MODE_DISABLED
 				
@@ -32,7 +32,7 @@ func _input(event):
 				$mainButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
 				currentNavigation = "Main"
 			elif currentNavigation == "Restart Confirmation":
-				_play_back_sound()
+				AudioManager.play_button_back()
 				$restartConfirmation.hide()
 				$restartConfirmation.process_mode = Node.PROCESS_MODE_DISABLED
 				
@@ -40,7 +40,7 @@ func _input(event):
 				$mainButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
 				currentNavigation = "Main"
 			elif currentNavigation == "Main Menu Confirmation":
-				_play_back_sound()
+				AudioManager.play_button_back()
 				$mainMenuConfirmation.hide()
 				$mainMenuConfirmation.process_mode = Node.PROCESS_MODE_DISABLED
 				
@@ -48,7 +48,7 @@ func _input(event):
 				$mainButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
 				currentNavigation = "Main"
 			elif currentNavigation == "Accessibility":
-				_play_back_sound()
+				AudioManager.play_button_back()
 				$OptionsButtonContainer/accessibilityMenuContainer.hide()
 				$OptionsButtonContainer/accessibilityMenuContainer.process_mode = Node.PROCESS_MODE_DISABLED
 				
@@ -57,7 +57,7 @@ func _input(event):
 				currentNavigation = "Options"
 				_make_background_lighter()
 			elif currentNavigation == "Accessibility/Cards":
-				_play_back_sound()
+				AudioManager.play_button_back()
 				$OptionsButtonContainer/accessibilityMenuContainer/Heading.text = "OPTIONS   >   ACCESSIBILITY"
 				
 				$OptionsButtonContainer/accessibilityMenuContainer/cardsContainer.hide()
@@ -75,12 +75,12 @@ func toggle_pause():
 	get_tree().paused = pauseState
 	
 	if pauseState:
-		_play_click_sound()
+		AudioManager.play_button_click()
 		$"../../pauseIcon/text".text = "BACK"
 		show()
 		_make_background_lighter()
 	else:
-		_play_back_sound()
+		AudioManager.play_button_back()
 		battleManager.lockPlayerInput = false
 		$"../../pauseIcon/text".text = "PAUSE"
 		await _make_background_invisible()
@@ -136,25 +136,16 @@ func _on_main_menu_button_hold_complete() -> void:
 func connect_buttons(node: Node) -> void:
 	for child in node.get_children():
 		if child is Button:
-			child.mouse_entered.connect(_play_hover_sound)
+			child.mouse_entered.connect(AudioManager.play_button_hover)
 			child.focus_mode = Control.FOCUS_NONE
 			
 			if child.name == "NoButton":
-				child.pressed.connect(_play_back_sound)
+				child.pressed.connect(AudioManager.play_button_back)
 			else:
-				child.pressed.connect(_play_click_sound)
+				child.pressed.connect(AudioManager.play_button_click)
 		
 		if child.get_child_count() > 0:
 			connect_buttons(child)
-
-func _play_hover_sound():
-	$"../ButtonHoverSound".play()
-
-func _play_click_sound():
-	$"../ButtonClickSound".play()
-
-func _play_back_sound():
-	$"../ButtonBackSound".play()
 
 func _on_accessibility_button_pressed() -> void:
 	currentNavigation = "Accessibility"
@@ -241,7 +232,7 @@ func _update_all_game_card_visuals():
 		%battleManager.opponentSupportCard.update_visuals()
 
 func _on_preview_hover_entered(card_node):
-	%CardHoverSound.play()
+	AudioManager.play_card_hover()
 	
 	if !AccessibilityData.animationsDisabled:
 		var tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
@@ -258,7 +249,7 @@ func _on_preview_hover_entered(card_node):
 	card_node.z_index = 10
 
 func _on_preview_hover_exited(card_node):
-	%CardHoverSound.play()
+	AudioManager.play_card_hover()
 	
 	if !AccessibilityData.animationsDisabled:
 		var tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)

@@ -13,7 +13,7 @@ var slotTwoActive: bool = false
 var slotThreeActive: bool = false
 
 var playingStartAnimation: bool = false
-var canPlayHoverSound: bool = true
+#var canPlayHoverSound: bool = true
 
 @onready var battleAnimator: Node = %battleAnimator
 
@@ -52,9 +52,7 @@ func show_modifier_menu() -> void:
 	growTween.tween_property($title, "modulate:a", 1.0, 0.5)
 	growTween.tween_property($title, "scale", Vector2(3.0, 3.0), 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	
-	var sound = %gameOver.get_node("effects")
-	sound.stream = battleAnimator.whooshSounds[0]
-	sound.play()
+	AudioManager.play_whoosh()
 	
 	var fadeTween = create_tween()
 	fadeTween.tween_property($title, "modulate:a", 1.0, 0.3)
@@ -69,8 +67,7 @@ func show_modifier_menu() -> void:
 	
 	var slideTween = create_tween().set_parallel(true)
 	
-	sound.stream = battleAnimator.whooshSounds[1]
-	sound.play()
+	AudioManager.play_whoosh(true)
 	
 	slideTween.tween_property($title, "position:y", -375.0, 0.5).as_relative().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
 	
@@ -98,22 +95,16 @@ func show_modifier_menu() -> void:
 	var audioTween = create_tween()
 	
 	audioTween.tween_interval(2.0)
-	audioTween.tween_callback(func(): get_node("SlotSpin").play())
+	audioTween.tween_callback(AudioManager.play_slot_spin)
 	
 	audioTween.tween_interval(1.8) 
-	audioTween.tween_callback(func(): 
-		get_node("SlotStop").play()
-	)
+	audioTween.tween_callback(AudioManager.play_slot_stop)
 	
 	audioTween.tween_interval(0.7)
-	audioTween.tween_callback(func(): 
-		get_node("SlotStop").play()
-	)
+	audioTween.tween_callback(AudioManager.play_slot_stop)
 	
 	audioTween.tween_interval(0.6)
-	audioTween.tween_callback(func(): 
-		get_node("SlotStop").play()
-	)
+	audioTween.tween_callback(AudioManager.play_slot_stop)
 
 # Privates
 func _select_modifiers() -> void:
@@ -160,17 +151,6 @@ func _update_slot_ui(modifier, slot) -> void:
 	slot.get_node("visuals/text/description").text = modifier.description
 	slot.get_node("visuals/text/multiplier").text = "+ " + str(modifier.multiplier) + "x"
 	slot.get_node("visuals/text/duration").text = str(modifier.duration) + " Game" + ("s" if modifier.duration > 1 else "")
-
-func _play_card_hover_sound() -> void:
-	if %CardHoverSound.playing:
-		return
-	
-	if canPlayHoverSound:
-		%CardHoverSound.play()
-		canPlayHoverSound = false
-		
-	await get_tree().create_timer(.1).timeout
-	canPlayHoverSound = true
 
 func _animate_single_slot(slot: Node2D, modifierData: Dictionary) -> void:
 	var tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
@@ -249,37 +229,37 @@ func _on_slot1_area_2d_mouse_entered() -> void:
 	if !playingStartAnimation:
 		var tween = create_tween()
 		tween.tween_property(slotOne.get_node("visuals"), "scale", Vector2(1.05, 1.05), 0.1)
-		_play_card_hover_sound()
+		AudioManager.play_card_hover()
 
 func _on_slot1_area_2d_mouse_exited() -> void:
 	if !playingStartAnimation:
 		var tween = create_tween()
 		tween.tween_property(slotOne.get_node("visuals"), "scale", Vector2(1, 1), 0.1)
-		_play_card_hover_sound()
+		AudioManager.play_card_hover()
 
 func _on_slot2_area_2d_mouse_entered() -> void:
 	if !playingStartAnimation:
 		var tween = create_tween()
 		tween.tween_property(slotTwo.get_node("visuals"), "scale", Vector2(1.05, 1.05), 0.1)
-		_play_card_hover_sound()
+		AudioManager.play_card_hover()
 
 func _on_slot2_area_2d_mouse_exited() -> void:
 	if !playingStartAnimation:
 		var tween = create_tween()
 		tween.tween_property(slotTwo.get_node("visuals"), "scale", Vector2(1, 1), 0.1)
-		_play_card_hover_sound()
+		AudioManager.play_card_hover()
 
 func _on_slot3_area_2d_mouse_entered() -> void:
 	if !playingStartAnimation:
 		var tween = create_tween()
 		tween.tween_property(slotThree.get_node("visuals"), "scale", Vector2(1.05, 1.05), 0.1)
-		_play_card_hover_sound()
+		AudioManager.play_card_hover()
 
 func _on_slot3_area_2d_mouse_exited() -> void:
 	if !playingStartAnimation:
 		var tween = create_tween()
 		tween.tween_property(slotThree.get_node("visuals"), "scale", Vector2(1, 1), 0.1)
-		_play_card_hover_sound()
+		AudioManager.play_card_hover()
 
 func _on_confirm_button_pressed() -> void:
 	if !slotOneActive and !slotTwoActive and !slotThreeActive:
@@ -296,7 +276,7 @@ func _on_confirm_button_pressed() -> void:
 	if slotThreeActive:
 		%battleManager.add_modifier(tierThreeModifier.id)
 	
-	%ButtonClickSound.play()
+	AudioManager.play_button_click()
 	
 	slotOneActive = false
 	slotTwoActive = false
@@ -309,9 +289,7 @@ func _on_confirm_button_pressed() -> void:
 	slotThree.get_node("visuals/background").texture = load("res://assets/modifiers/SlotInActive.png")
 	slotThree.get_node("visuals/text/selectedText").visible = false
 	
-	var sound = %gameOver.get_node("effects")
-	sound.stream = battleAnimator.whooshSounds[1]
-	sound.play()
+	AudioManager.play_whoosh(true)
 	
 	get_node("AnimationPlayer").play("hideUI")
 	await get_node("AnimationPlayer").animation_finished
@@ -330,4 +308,4 @@ func _on_confirm_button_pressed() -> void:
 	playingStartAnimation = false
 
 func _on_confirm_button_mouse_entered() -> void:
-	%ButtonHoverSound.play()
+	AudioManager.play_button_hover()

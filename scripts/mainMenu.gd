@@ -54,7 +54,7 @@ func pulse_text():
 func _input(event: InputEvent) -> void:
 	if !GameStats.invitationAccepted and (event is InputEventMouseButton and event.pressed):
 		GameStats.invitationAccepted = true
-		_play_click()
+		AudioManager.play_button_click()
 		
 		mainButtonContainer.modulate.a = 0.0
 		mainButtonContainer.show()
@@ -71,7 +71,7 @@ func _input(event: InputEvent) -> void:
 		mainButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
 	
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed and currentNavigation != "Main":
-		_play_back()
+		AudioManager.play_button_back()
 		
 		if currentNavigation == "Story":
 			$pauseIcon.hide()
@@ -125,8 +125,8 @@ func _input(event: InputEvent) -> void:
 func setup_button_sounds(container: Node):
 	for child in container.get_children():
 		if child is Button:
-			child.mouse_entered.connect(_play_hover)
-			child.pressed.connect(_play_click)
+			child.mouse_entered.connect(AudioManager.play_button_hover)
+			child.pressed.connect(AudioManager.play_button_click)
 			
 			child.focus_mode = Control.FOCUS_NONE
 
@@ -300,7 +300,7 @@ func _clear_preview_card():
 		previewCard = null
 
 func _on_preview_hover_entered(card_node):
-	%CardHoverSound.play()
+	AudioManager.play_card_hover()
 	
 	if !AccessibilityData.animationsDisabled:
 		var tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
@@ -317,7 +317,7 @@ func _on_preview_hover_entered(card_node):
 	card_node.z_index = 10
 
 func _on_preview_hover_exited(card_node):
-	%CardHoverSound.play()
+	AudioManager.play_card_hover()
 	
 	if !AccessibilityData.animationsDisabled:
 		var tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
@@ -331,16 +331,6 @@ func _on_preview_hover_exited(card_node):
 				card_node.get_node("AnimationPlayer").seek(0, true)
 			
 	card_node.z_index = 0
-
-# Helpers
-func _play_hover():
-	$ButtonHoverSound.play()
-
-func _play_click():
-	$ButtonClickSound.play()
-
-func _play_back():
-	$ButtonBackSound.play()
 
 func _play_denied_animation(currentButton: Button):
 	var originalPos = currentButton.position.x

@@ -2,11 +2,6 @@ extends Node
 
 @onready var gameOver = %gameOver
 
-@export var whooshSounds = [
-	preload("res://assets/sounds/ui/whoosh.wav"),
-	preload("res://assets/sounds/ui/whoosh2.wav")
-]
-
 func play_game_over_sequence(playerWon: bool):
 	await title_slam_and_slide(playerWon)
 	await get_tree().create_timer(0.3).timeout
@@ -34,9 +29,7 @@ func title_slam_and_slide(playerWon: bool):
 	growTween.tween_property(resultLabel, "modulate:a", 1.0, 0.5)
 	growTween.tween_property(resultLabel, "scale", Vector2(4.0, 4.0), 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	
-	var sound = gameOver.get_node("effects")
-	sound.stream = whooshSounds[0]
-	sound.play()
+	AudioManager.play_whoosh()
 	
 	var fadeTween = create_tween()
 	fadeTween.tween_property(resultLabel, "modulate:a", 1.0, 0.3)
@@ -52,8 +45,7 @@ func title_slam_and_slide(playerWon: bool):
 	var slideTween = create_tween().set_parallel(true)
 	var targetPosition = Vector2(150, 80)
 	
-	sound.stream = whooshSounds[1]
-	sound.play()
+	AudioManager.play_whoosh(true)
 	
 	slideTween.tween_property(resultLabel, "global_position", targetPosition, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
 	slideTween.tween_property(resultLabel, "scale", Vector2(1, 1), 0.5)
@@ -100,23 +92,21 @@ func show_stats(playerWon: bool):
 	
 	var uiTween = create_tween()
 	
-	var sound = gameOver.get_node("effects")
-	sound.stream = whooshSounds[1]
 	
-	uiTween.tween_callback(sound.play)
+	uiTween.tween_callback(func(): AudioManager.play_whoosh(true))
 	uiTween.tween_property(performance, "modulate:a", 1.0, 0.8).set_trans(Tween.TRANS_SINE)
 	uiTween.parallel().tween_property(performance, "position:y", performance.position.y - 20, 0.8).set_trans(Tween.TRANS_CUBIC)
 	uiTween.parallel().tween_property(line, "modulate:a", 1.0, 0.8).set_trans(Tween.TRANS_SINE)
 	
 	uiTween.tween_interval(0.3)
 	
-	uiTween.tween_callback(sound.play)
+	uiTween.tween_callback(func(): AudioManager.play_whoosh(true))
 	uiTween.tween_property(game, "modulate:a", 1.0, 0.8).set_trans(Tween.TRANS_SINE)
 	uiTween.parallel().tween_property(game, "position:y", game.position.y - 20, 0.8).set_trans(Tween.TRANS_CUBIC)
 	
 	uiTween.tween_interval(0.3)
 	
-	uiTween.tween_callback(sound.play)
+	uiTween.tween_callback(func(): AudioManager.play_whoosh(true))
 	uiTween.tween_property(score, "modulate:a", 1.0, 0.8).set_trans(Tween.TRANS_SINE)
 	uiTween.parallel().tween_property(score, "position:y", score.position.y - 20, 0.8).set_trans(Tween.TRANS_CUBIC)
 	

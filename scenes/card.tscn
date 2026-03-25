@@ -712,8 +712,6 @@ libraries = {
 &"": SubResource("AnimationLibrary_6ligt")
 }
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
-
 [node name="blackGradient" type="Sprite2D" parent="."]
 self_modulate = Color(1, 1, 1, 0)
 scale = Vector2(0.2, 0.2)

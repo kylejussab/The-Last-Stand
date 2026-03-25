@@ -12,8 +12,6 @@ var screenSize: Vector2
 var hoveredCard: Node2D = null
 var playerHandReference: Node
 
-var canPlayHoverSound: bool = true
-
 @onready var battleManager = %battleManager
 
 func _ready() -> void:
@@ -34,13 +32,13 @@ func start_drag(card):
 	
 	if !battleManager.lockPlayerInput and card.cardSlot == null:
 		draggedCard = card
-		draggedCard.play_draw_sound()
+		AudioManager.play_random_card_draw()
 		card.scale = Vector2(1, 1)
 		card.z_index += 50
 
 func finish_drag():
 	draggedCard.scale = Vector2(1.05, 1.05)
-	draggedCard.play_draw_sound()
+	AudioManager.play_random_card_draw()
 	
 	var cardSlot = get_card_slot()
 	
@@ -147,7 +145,7 @@ func highlight_card(card, hovered: bool):
 		if animationPlayer.current_animation == "showPerk" or animationPlayer.current_animation == "cardFlip":
 			return
 	
-	_play_card_hover_sound()
+	AudioManager.play_card_hover()
 	
 	if hovered:
 		if !AccessibilityData.animationsDisabled:
@@ -203,7 +201,7 @@ func move_card_on_double_click(card, cardSlot):
 	if !cardSlot.occupied:
 		var tween = get_tree().create_tween()
 		tween.tween_property(card, "position", cardSlot.position, 0.1)
-		tween.finished.connect(func(): card.play_draw_sound())
+		tween.finished.connect(AudioManager.play_random_card_draw)
 		
 		playerHandReference.remove_card_from_hand(card)
 		
@@ -228,17 +226,6 @@ func move_card_on_double_click(card, cardSlot):
 		anim.seek(0, true)
 		
 		draggedCard = null
-
-func _play_card_hover_sound() -> void:
-	if %CardHoverSound.playing:
-		return
-	
-	if canPlayHoverSound:
-		%CardHoverSound.play()
-		canPlayHoverSound = false
-		
-	await get_tree().create_timer(.1).timeout
-	canPlayHoverSound = true
 
 func play_top_character_from_deck() -> void:
 	var card = $"../characterDeck".spawn_top_card_node()

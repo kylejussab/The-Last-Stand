@@ -1,4 +1,4 @@
-[gd_scene load_steps=177 format=3 uid="uid://dgb52shq4jcyg"]
+[gd_scene load_steps=168 format=3 uid="uid://dgb52shq4jcyg"]
 
 [ext_resource type="Script" uid="uid://dgl6h7ryesfn8" path="res://scripts/cardManager.gd" id="1_0wfyh"]
 [ext_resource type="Script" uid="uid://c3p2rmoacsirj" path="res://scripts/inputManager.gd" id="1_o6xl0"]
@@ -16,7 +16,6 @@
 [ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://assets/fonts/SF-Pro-Display-Black.otf" id="13_a8y0u"]
 [ext_resource type="Texture2D" uid="uid://brrupu340jnfx" path="res://assets/cards/DeckBack.png" id="13_ty1g6"]
 [ext_resource type="Texture2D" uid="uid://codfjgt3u16vl" path="res://assets/cards/DeckCharacterText.png" id="14_j2jfr"]
-[ext_resource type="AudioStream" uid="uid://dy7mjokw0gggp" path="res://assets/sounds/ui/damage.wav" id="15_2wyq8"]
 [ext_resource type="Texture2D" uid="uid://daom81ntbh7ja" path="res://assets/cards/DeckViewText.png" id="15_bjg73"]
 [ext_resource type="Texture2D" uid="uid://xni81jo33g8f" path="res://assets/arenaHeads/JuneNeutral.png" id="15_gqmmt"]
 [ext_resource type="FontFile" uid="uid://di1dchl37cfhu" path="res://assets/fonts/SF-Pro-Display-Semibold.otf" id="15_jkv2x"]
@@ -28,13 +27,7 @@
 [ext_resource type="Texture2D" uid="uid://crwpvlesiqi0o" path="res://assets/arenaHeads/JuneThinking.png" id="17_jscy8"]
 [ext_resource type="Script" uid="uid://cwakiodvp7ji5" path="res://scripts/viewDeck.gd" id="18_j2jfr"]
 [ext_resource type="Texture2D" uid="uid://d2oxvh8kvsjse" path="res://assets/arenaHeads/JuneHappy.png" id="18_pm3ni"]
-[ext_resource type="AudioStream" uid="uid://b3d3fqc8ee6t7" path="res://assets/sounds/ui/buttonBack.wav" id="20_qkpxi"]
-[ext_resource type="AudioStream" uid="uid://b2sa8g17hxiwa" path="res://assets/sounds/cards/hover.wav" id="21_5q0nq"]
-[ext_resource type="AudioStream" uid="uid://cdqholmjoftew" path="res://assets/sounds/cards/lock.wav" id="22_5he1u"]
 [ext_resource type="Texture2D" uid="uid://dxbmvsoua68c4" path="res://assets/ui/GameOverOverlay.png" id="22_jscy8"]
-[ext_resource type="AudioStream" uid="uid://bams0u5k7sdgr" path="res://assets/sounds/ui/buttonClick.wav" id="23_y6deb"]
-[ext_resource type="AudioStream" uid="uid://cufo3kt8n8vs2" path="res://assets/sounds/ui/buttonHover.wav" id="24_og1vs"]
-[ext_resource type="AudioStream" uid="uid://bqgphoeowbviu" path="res://assets/sounds/ui/whoosh.wav" id="25_2wyq8"]
 [ext_resource type="Script" uid="uid://cut6aandi16ab" path="res://scripts/modifierBubbleManager.gd" id="30_5he1u"]
 [ext_resource type="Script" uid="uid://c50sxxmg3g1sv" path="res://scripts/pauseMenu.gd" id="30_fv21b"]
 [ext_resource type="Texture2D" uid="uid://be0aihjd72rmo" path="res://assets/ui/RightClickIcon.png" id="31_tel4y"]
@@ -44,9 +37,7 @@
 [ext_resource type="Script" uid="uid://cips7jy6yjg6s" path="res://scripts/slotReel.gd" id="35_fuf3a"]
 [ext_resource type="Texture2D" uid="uid://3bjo3ij5b8q8" path="res://assets/ui/HoldRing.png" id="35_nvyfr"]
 [ext_resource type="Script" uid="uid://yb10rqecj0pw" path="res://scripts/cardStyleSelect.gd" id="35_vchkt"]
-[ext_resource type="AudioStream" uid="uid://dyo8kjd5wkh67" path="res://assets/sounds/ui/slotSpin.wav" id="36_fuf3a"]
 [ext_resource type="Texture2D" uid="uid://cf8imluhjhkne" path="res://assets/mainMenu/ArrowLeft.png" id="36_txyw0"]
-[ext_resource type="AudioStream" uid="uid://b8o0s35fjpeg6" path="res://assets/sounds/ui/slotStop.wav" id="37_pibwh"]
 [ext_resource type="Texture2D" uid="uid://cxd55axo1w2rm" path="res://assets/mainMenu/ArrowLeftPressed.png" id="37_vc5cj"]
 [ext_resource type="Script" uid="uid://bhtjov1bciv1h" path="res://scripts/cardSizeSelect.gd" id="38_nvyfr"]
 [ext_resource type="Script" uid="uid://dppx6bu5jxwqw" path="res://scripts/UiToggle.gd" id="39_ty1g6"]
@@ -1179,8 +1170,6 @@ text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="characterDeck"]
-
 [node name="supportDeck" type="Node2D" parent="."]
 z_index = -2
 position = Vector2(135, 536)
@@ -1216,8 +1205,6 @@ offset_bottom = 126.0
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="supportDeck"]
 
 [node name="viewDeckUI" type="Control" parent="."]
 unique_name_in_owner = true
@@ -1272,41 +1259,6 @@ mouse_filter = 2
 unique_name_in_owner = true
 z_index = -99
 script = ExtResource("16_2f3dj")
-
-[node name="damageSound" type="AudioStreamPlayer2D" parent="arena"]
-unique_name_in_owner = true
-stream = ExtResource("15_2wyq8")
-volume_db = -15.0
-
-[node name="ButtonClickSound" type="AudioStreamPlayer2D" parent="arena"]
-unique_name_in_owner = true
-process_mode = 3
-position = Vector2(770, 790)
-stream = ExtResource("23_y6deb")
-volume_db = 20.0
-
-[node name="ButtonHoverSound" type="AudioStreamPlayer2D" parent="arena"]
-unique_name_in_owner = true
-process_mode = 3
-position = Vector2(770, 790)
-stream = ExtResource("24_og1vs")
-volume_db = 20.0
-
-[node name="ButtonBackSound" type="AudioStreamPlayer2D" parent="arena"]
-process_mode = 3
-position = Vector2(770, 790)
-stream = ExtResource("20_qkpxi")
-volume_db = 20.0
-
-[node name="CardHoverSound" type="AudioStreamPlayer2D" parent="arena"]
-unique_name_in_owner = true
-process_mode = 3
-stream = ExtResource("21_5q0nq")
-volume_db = -10.0
-
-[node name="CardLockSound" type="AudioStreamPlayer2D" parent="arena"]
-unique_name_in_owner = true
-stream = ExtResource("22_5he1u")
 
 [node name="image" type="Sprite2D" parent="arena"]
 position = Vector2(960, 540)
@@ -1485,10 +1437,6 @@ script = ExtResource("30_5he1u")
 [node name="gameOver" type="Node2D" parent="arena"]
 unique_name_in_owner = true
 z_index = 500
-
-[node name="effects" type="AudioStreamPlayer2D" parent="arena/gameOver"]
-stream = ExtResource("25_2wyq8")
-max_polyphony = 3
 
 [node name="overlay" type="Sprite2D" parent="arena/gameOver"]
 visible = false
@@ -2920,14 +2868,6 @@ visible = false
 z_index = 200
 script = ExtResource("33_j8jky")
 
-[node name="SlotSpin" type="AudioStreamPlayer2D" parent="arena/modifier"]
-stream = ExtResource("36_fuf3a")
-volume_db = -3.0
-
-[node name="SlotStop" type="AudioStreamPlayer2D" parent="arena/modifier"]
-stream = ExtResource("37_pibwh")
-max_polyphony = 3
-
 [node name="overlay" type="ColorRect" parent="arena/modifier"]
 offset_right = 1920.0
 offset_bottom = 1080.0
@@ -3115,10 +3055,6 @@ libraries = {
 &"": SubResource("AnimationLibrary_c6pm6")
 }
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="arena/modifier/Slot 1"]
-stream = ExtResource("37_pibwh")
-volume_db = -10.0
-
 [node name="Slot 2" type="Node2D" parent="arena/modifier"]
 z_index = 5
 position = Vector2(960, 540)
@@ -3266,9 +3202,6 @@ libraries = {
 &"": SubResource("AnimationLibrary_c6pm6")
 }
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="arena/modifier/Slot 2"]
-stream = ExtResource("37_pibwh")
-
 [node name="Slot 3" type="Node2D" parent="arena/modifier"]
 z_index = 1
 position = Vector2(1360, 540)
@@ -3415,10 +3348,6 @@ shape = SubResource("RectangleShape2D_j8jky")
 libraries = {
 &"": SubResource("AnimationLibrary_c6pm6")
 }
-
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="arena/modifier/Slot 3"]
-stream = ExtResource("37_pibwh")
-volume_db = -10.0
 
 [node name="ConfirmButton" type="Button" parent="arena/modifier"]
 z_index = 201

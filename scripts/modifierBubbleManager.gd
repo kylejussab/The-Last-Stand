@@ -4,8 +4,6 @@ const RIGHT_MARGIN = 263.0
 const SPACING = 90.0
 const BUBBLE_SCENE = preload("res://scenes/modifierBubble.tscn")
 
-var canPlayHoverSound: bool = true
-
 func render_active_modifiers() -> void:
 	var modifiers = GameStats.activeModifiers
 	
@@ -20,13 +18,13 @@ func render_active_modifiers() -> void:
 		
 		bubble.position = Vector2(get_viewport().get_visible_rect().size.x - RIGHT_MARGIN, 465)
 		
-		bubble.connect("hovered", _play_hover_sound)
+		bubble.connect("hovered", AudioManager.play_card_hover)
 		
 		add_child(bubble)
 		
 		_update_bubble_positions(0.4)
 		
-		%CardHoverSound.play()
+		AudioManager.play_card_hover()
 		
 		var pop_tween = create_tween().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 		pop_tween.tween_property(bubble, "scale", Vector2(0.24, 0.24), 0.4)
@@ -37,7 +35,7 @@ func clear_modifiers() -> void:
 	while get_child_count() > 0:
 		var target_bubble = get_child(0)
 		
-		%CardHoverSound.play()
+		AudioManager.play_card_hover()
 		
 		var tween = create_tween().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
 		tween.tween_property(target_bubble, "scale", Vector2.ZERO, 0.25)
@@ -72,14 +70,3 @@ func _update_bubble_positions(speed: float) -> void:
 		
 		var tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 		tween.tween_property(bubble, "position", new_pos, speed)
-
-func _play_hover_sound() -> void:
-	if %CardHoverSound.playing:
-		return
-	
-	if canPlayHoverSound:
-		%CardHoverSound.play()
-		canPlayHoverSound = false
-		
-	await get_tree().create_timer(.1).timeout
-	canPlayHoverSound = true

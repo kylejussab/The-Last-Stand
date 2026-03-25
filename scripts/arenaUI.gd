@@ -15,8 +15,8 @@ extends Node2D
 func _ready() -> void:
 	for button in %gameOver.get_children():
 		if button is Button:
-			button.mouse_entered.connect(func(): %ButtonHoverSound.play())
-			button.pressed.connect(func(): %ButtonClickSound.play())
+			button.mouse_entered.connect(AudioManager.play_button_hover)
+			button.pressed.connect(AudioManager.play_button_click)
 
 func update_health(who: Actor.Type, value: int, instant: bool = false) -> void:
 	if not is_node_ready():
@@ -107,7 +107,7 @@ func play_damage_effect(who: Actor.Type, value: int) -> Signal:
 			animationPlayer = $opponent/AnimationPlayer
 			damageLabel = $opponent/damage
 	
-	%damageSound.play()
+	AudioManager.play_take_damage()
 	
 	damageLabel.text = "-" + str(value)
 	animationPlayer.queue("showDamage")
