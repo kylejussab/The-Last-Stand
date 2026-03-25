@@ -283,8 +283,8 @@ func _reset_card_visuals(card: Node2D) -> void:
 		card.scale = Vector2(1, 1)
 	
 	if card.perk:
-		if card.get_node("AnimationPlayer").current_animation == "showDescription": 
-			card.get_node("AnimationPlayer").play("hideDescription")
+		if card.get_node("AnimationPlayer").current_animation == "showPerkDescription": 
+			card.get_node("AnimationPlayer").seek(0, true)
 			
 			if AccessibilityData.animationsDisabled:
 				var endTime = card.get_node("AnimationPlayer").current_animation_length

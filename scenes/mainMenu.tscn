@@ -155,6 +155,7 @@ volume_db = 20.0
 
 [node name="CardHoverSound" type="AudioStreamPlayer2D" parent="."]
 unique_name_in_owner = true
+process_mode = 3
 stream = ExtResource("5_lam2r")
 volume_db = -10.0
 

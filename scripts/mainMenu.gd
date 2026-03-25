@@ -307,8 +307,8 @@ func _on_preview_hover_entered(card_node):
 		tween.tween_property(card_node, "scale", Vector2(2.35, 2.35), 0.1)
 	
 	if card_node.has_node("AnimationPlayer"):
-		if card_node.get_node("AnimationPlayer").has_animation("showDescription"):
-			card_node.get_node("AnimationPlayer").play("showDescription")
+		if card_node.get_node("AnimationPlayer").has_animation("showPerkDescription"):
+			card_node.get_node("AnimationPlayer").play("showPerkDescription")
 			
 			if AccessibilityData.animationsDisabled:
 				var endTime = card_node.get_node("AnimationPlayer").current_animation_length
@@ -324,12 +324,11 @@ func _on_preview_hover_exited(card_node):
 		tween.tween_property(card_node, "scale", Vector2(2, 2), 0.1)
 	
 	if card_node.has_node("AnimationPlayer"):
-		if card_node.get_node("AnimationPlayer").has_animation("hideDescription"):
-			card_node.get_node("AnimationPlayer").play("hideDescription")
+		if card_node.get_node("AnimationPlayer").has_animation("showPerkDescription"):
+			card_node.get_node("AnimationPlayer").play_backwards("showPerkDescription")
 			
 			if AccessibilityData.animationsDisabled:
-				var endTime = card_node.get_node("AnimationPlayer").current_animation_length
-				card_node.get_node("AnimationPlayer").seek(endTime, true)
+				card_node.get_node("AnimationPlayer").seek(0, true)
 			
 	card_node.z_index = 0
 
