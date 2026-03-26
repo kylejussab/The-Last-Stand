@@ -949,7 +949,6 @@ func _repopulate_decks(endGame: bool = false) -> void:
 func _place_card_in_discard(card: Node2D, hand: Node2D) -> void:
 	discardedCards.append(card)
 	AudioManager.play_random_card_draw()
-	card.play_draw_sound()
 	card.scale = Vector2(1, 1)
 	card.get_node("Area2D/CollisionShape2D").disabled = true
 	

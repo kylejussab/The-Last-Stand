@@ -1,9 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://c5nsbseki1g1a"]
+[gd_scene load_steps=14 format=3 uid="uid://c5nsbseki1g1a"]
 
 [ext_resource type="AudioStream" uid="uid://dy7mjokw0gggp" path="res://assets/sounds/ui/damage.wav" id="1_tv3ta"]
 [ext_resource type="Script" uid="uid://chucmh2mqp136" path="res://scripts/audioManager.gd" id="1_twrc3"]
+[ext_resource type="AudioStream" uid="uid://bvjxiu5xtagi5" path="res://assets/sounds/music/RainyAmbience.ogg" id="2_mk1kq"]
 [ext_resource type="AudioStream" uid="uid://b2sa8g17hxiwa" path="res://assets/sounds/cards/hover.wav" id="2_twrc3"]
 [ext_resource type="AudioStream" uid="uid://cdqholmjoftew" path="res://assets/sounds/cards/lock.wav" id="3_6x1q5"]
+[ext_resource type="AudioStream" uid="uid://cmjb7hwwlccjo" path="res://assets/sounds/music/SunnyAmbience.ogg" id="3_hh26a"]
 [ext_resource type="AudioStream" uid="uid://bams0u5k7sdgr" path="res://assets/sounds/ui/buttonClick.wav" id="4_rmmm8"]
 [ext_resource type="AudioStream" uid="uid://cufo3kt8n8vs2" path="res://assets/sounds/ui/buttonHover.wav" id="5_mk1kq"]
 [ext_resource type="AudioStream" uid="uid://b3d3fqc8ee6t7" path="res://assets/sounds/ui/buttonBack.wav" id="6_hh26a"]
@@ -23,6 +25,13 @@ bus = &"Music"
 
 [node name="layer2" type="AudioStreamPlayer2D" parent="Music"]
 bus = &"Music"
+
+[node name="rainyAmbience" type="AudioStreamPlayer2D" parent="Music"]
+stream = ExtResource("2_mk1kq")
+bus = &"Music"
+
+[node name="sunnyAmbience" type="AudioStreamPlayer2D" parent="Music"]
+stream = ExtResource("3_hh26a")
 
 [node name="Effects" type="Node" parent="."]
 
