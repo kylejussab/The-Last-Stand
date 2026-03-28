@@ -955,7 +955,7 @@ func _place_card_in_discard(card: Node2D, hand: Node2D) -> void:
 	card.z_index = discardedCardZIndex
 	discardedCardZIndex += 1
 	var tween = get_tree().create_tween()
-	tween.finished.connect(func(): card.play_draw_sound())
+	tween.finished.connect(func(): AudioManager.play_random_card_draw())
 	tween.tween_property(card, "position", DISCARD_PILE_POSITION, CARD_MOVE_FAST_SPEED)
 	
 	await tween.finished

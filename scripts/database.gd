@@ -390,7 +390,7 @@ const standardCharacterDeck = [
 	
 	"Clicker", "Clicker",
 	"Shambler",
-	"Emily", "Ezra", "Lev", "Yara",
+	"Emily", "Ezra", "Lev", "Yara", "Lyra",
 	"Nora", "Manny", "Alice", "Li",
 	"Bill", "Dina", "Jessie", "Tommy", "TommyFirefly",
 	"Riley", "Eugene", "Malik",
@@ -440,7 +440,7 @@ const infectedHeavyCharacterDeck = [
 	
 	"Clicker", "Clicker",
 	"Bloater",
-	"Emily", "Ezra", "Lev", "Yara",
+	"Emily", "Ezra", "Lev", "Yara", "Lyra",
 	"Nora", "Manny", "Alice", "Li",
 	"Bill", "Dina", "Jessie", "Tommy", "TommyFirefly",
 	"Riley", "Eugene", "Malik",

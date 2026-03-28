@@ -197,9 +197,9 @@ func _on_new_button_hold_complete() -> void:
 	AudioManager.stop_music(2.5)
 	
 	# Randomly picks between sunny and rainy everytime
-	var ambienceFunctions = [AudioManager.play_sunny, AudioManager.play_rainy]
-	var randomAmbience = ambienceFunctions.pick_random()
-	randomAmbience.call(-10.0, 2.0)
+	#var ambienceFunctions = [AudioManager.play_sunny, AudioManager.play_rainy]
+	#var randomAmbience = ambienceFunctions.pick_random()
+	#randomAmbience.call(-10.0, 2.0)
 
 func _on_continue_button_pressed() -> void:
 	_play_denied_animation($holdoutButtonContainer/ContinueButton)

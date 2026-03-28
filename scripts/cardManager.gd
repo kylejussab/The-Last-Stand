@@ -263,16 +263,20 @@ func force_unhighlight_all_cards() -> void:
 
 # Reset without audio
 func _reset_card_visuals(card: Node2D) -> void:
-	if not "perk" in card: 
-		return
-		
 	if !AccessibilityData.animationsDisabled:
 		card.scale = Vector2(1, 1)
 	
-	if card.perk:
-		if card.get_node("AnimationPlayer").current_animation == "showPerkDescription": 
-			card.get_node("AnimationPlayer").seek(0, true)
-			
-			if AccessibilityData.animationsDisabled:
-				var endTime = card.get_node("AnimationPlayer").current_animation_length
-				card.get_node("AnimationPlayer").seek(endTime, true)
+	if not "perk" in card or card.perk == null: 
+		return
+		
+	var animationPlayer = card.get_node("AnimationPlayer")
+	
+	# Added: Check if the assigned animation is actually the perk description
+	if animationPlayer.assigned_animation == "showPerkDescription" and animationPlayer.current_animation_position > 0:
+		
+		if AccessibilityData.animationsDisabled:
+			animationPlayer.play("showPerkDescription")
+			animationPlayer.seek(0, true)
+			animationPlayer.stop()
+		else:
+			animationPlayer.play_backwards("showPerkDescription")
