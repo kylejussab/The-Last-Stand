@@ -8,20 +8,20 @@ const CHARACTERS = { # Value, Type, Faction, Class, Card Name Text, Perk Text
 	"Emily": [4, "Character", "Seraphite", "Survivor", "EMILY", "+1 for each Seraphite in hand"],
 	"Ezra": [3, "Character", "Seraphite", "Crafty/Defensive", "EZRA", "+2 if your hand contains no Aggressive cards"],
 	"Lyra": [2, "Character", "Seraphite", "Survivor", "LYRA", "+2 if opponent plays no support card"],
-	"SeraphiteBrute": [5, "Character", "Seraphite", "Aggressive", "SERAPHITE BRUTE", "+2 if opposing card's value is 3 or less"],
+	"SeraphiteBrute": [5, "Character", "Seraphite", "Aggressive", "BRUTE", "+2 if opposing card's value is 3 or less"],
 	
 	# WLF
 	"Abby": [6, "Character", "WLF", "Aggressive", "ABBY", "+2 if opposing card is Aggressive and +1 if opposing card is Infected"],
 	"Manny": [4, "Character", "WLF", "Defensive", "MANNY", "equal value and +2 if opposing card is Aggressive or Defensive"],
 	"Nora": [4, "Character", "WLF", "Stealthy", "NORA", "+1 if opposing card is Crafty"],
 	"Li": [3, "Character", "WLF", "Survivor", "LI", "On round loss: +1 to random character in hand"],
-	"WLFSoldier": [3, "Character", "WLF", "Survivor", "WLF SOLDIER", "-3 to opponent, if opposing card is Survivor"],
+	"WLFSoldier": [3, "Character", "WLF", "Survivor", "SOLDIER", "-3 to opponent, if opposing card is Survivor"],
 	"Isaac": [6, "Character", "WLF", "Aggressive/Defensive", "ISAAC", "+2 if opposing card is Seraphite"],
 	"Alice": [2, "Character", "WLF", "Stealthy/Survivor", "ALICE", "+3 if opposing card is Infected and +1 for each WLF in hand"],
 	
 	# Firefly
 	"Marlene": [5, "Character", "Firefly", "Crafty", "MARLENE", "+1 if opposing card is Survivor or Stealthy"],
-	"FireflySoldier": [2, "Character", "Firefly", "Defensive", "FIREFLY SOLDIER", "+6 if Marlene in hand"],
+	"FireflySoldier": [2, "Character", "Firefly", "Defensive", "SOLDIER", "+6 if Marlene in hand"],
 	"TommyFirefly": [4, "Character", "Firefly", "Survivor", "TOMMY", "+3 if no Firefly in hand"],
 	"Eugene": [3, "Character", "Firefly", "Crafty/Survivor", "EUGENE", "On round end: +1 for each Crafty in hand and +3 if support card is Survivor"],
 	"Riley": [3, "Character", "Firefly", "Stealthy", "RILEY", "+3 if Ellie in hand and +2 if no Stealthy in hand"],
@@ -56,8 +56,8 @@ const CHARACTERS = { # Value, Type, Faction, Class, Card Name Text, Perk Text
 	"AbbyFirefly": [4, "Character", "Firefly", "Survivor", "ABBY", "+1 if opposing card is exactly 4"],
 	
 	"AliceHumanity": [2, "Character", "WLF", "Stealthy/Survivor", "ALICE", "+3 if opposing card is Stealthy and +1 for each WLF in hand"],
-	"FireflySoldierHumanity": [2, "Character", "Firefly", "Defensive", "FIREFLY SOLDIER", "+3 if at least one Firefly in hand"],
-	"WLFSoldierHumanity": [3, "Character", "WLF", "Survivor", "WLF SOLDIER", "-2 to opponent, if opposing card is Firefly or Seraphite"],
+	"FireflySoldierHumanity": [2, "Character", "Firefly", "Defensive", "SOLDIER", "+3 if at least one Firefly in hand"],
+	"WLFSoldierHumanity": [3, "Character", "WLF", "Survivor", "SOLDIER", "-2 to opponent, if opposing card is Firefly or Seraphite"],
 	"IsaacHumanity": [6, "Character", "WLF", "Aggressive/Defensive", "ISAAC", "+2 if opposing card is Firefly"],
 	"TommyFireflyHumanity": [4, "Character", "Firefly", "Survivor", "TOMMY", "+1 for each Firefly in hand"],
 	"RileyHumanity": [3, "Character", "Firefly", "Stealthy", "RILEY", "+4 if played support card is Bottle or Brick"],

@@ -636,39 +636,20 @@ func _apply_mid_round_perks() -> void:
 		playerCharacterCard.modify_value(-int(ceil(playerCharacterCard.value / 2.0)))
 		await playerCharacterCard.get_node("AnimationPlayer").animation_finished
 	
-	if playerCharacterCard.perk && playerCharacterCard.perk.timing == "midRound":
-		await get_tree().create_timer(PERK_CALCULATION_TIME).timeout
-		await playerCharacterCard.perk.apply_mid_perk(playerCharacterCard, playerHand, opponentCharacterCard)
-	
-	if opponentCharacterCard.perk && opponentCharacterCard.perk.timing == "midRound":
-		# Temporary hiding for forsaken honor perk
-		var playerRealRole = playerCharacterCard.role
-		var playerRealFaction = playerCharacterCard.faction
-		
-		if forsakenHonorActive:
-			if opponentCharacterCard.perk.has_method("would_perk_trigger") and opponentCharacterCard.perk.would_perk_trigger(opponentCharacterCard, opponentHand, playerCharacterCard):
-				playerCharacterCard.get_node("ModifierIndicator").texture = load("res://assets/modifiers/Forsaken Honor.png")
-				playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
-				await playerCharacterCard.get_node("AnimationPlayer").animation_finished
-			
-			playerCharacterCard.role = "Unknown"
-			playerCharacterCard.faction = "Unknown"
-		
-		await get_tree().create_timer(PERK_CALCULATION_TIME).timeout
-		await opponentCharacterCard.perk.apply_mid_perk(opponentCharacterCard, opponentHand, playerCharacterCard)
-		
-		if forsakenHonorActive:
-			playerCharacterCard.role = playerRealRole
-			playerCharacterCard.faction = playerRealFaction
-			_update_playable_support_cards()
+	if whoStartedRound == Actor.Type.PLAYER:
+		await _execute_player_mid_perk()
+		await _execute_opponent_mid_perk()
+	else:
+		await _execute_opponent_mid_perk()
+		await _execute_player_mid_perk()
 	
 	if heavyHitterActive && playerCharacterCard.value >= 5:
 		playerCharacterCard.get_node("ModifierIndicator").texture = load("res://assets/modifiers/Heavy Hitter.png")
 		playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
 		await _deal_damage(Actor.Type.PLAYER, 1)
 	
-	# Handle the runner perk
 	_handle_runner_perk()
+
 
 func _update_playable_support_cards() -> void:
 	var playerCharacterCardRoles = playerCharacterCard.role.split("/")
@@ -691,45 +672,26 @@ func _update_playable_support_cards() -> void:
 					card.canBePlayed = true
 
 func _apply_end_round_perks() -> void:
-	if playerCharacterCard.perk && playerCharacterCard.perk.timing == "endRound":
-		await playerCharacterCard.perk.apply_end_perk(playerCharacterCard, playerSupportCard, opponentCharacterCard, opponentSupportCard, playerHand)
-	
-	if opponentCharacterCard.perk && opponentCharacterCard.perk.timing == "endRound":
-		# Temporary hiding for forsaken honor perk
-		var playerRealRole = playerCharacterCard.role
-		var playerRealFaction = playerCharacterCard.faction
+	if whoStartedRound == Actor.Type.PLAYER:
+		# Character Phase
+		await _execute_player_char_end_perk()
+		await _execute_opponent_char_end_perk()
+		# Support Phase
+		await _execute_player_supp_end_perk()
+		await _execute_opponent_supp_end_perk()
+		# Late Phase
+		await _execute_player_late_end_perk()
+		await _execute_opponent_late_end_perk()
+	else:
+		await _execute_opponent_char_end_perk()
+		await _execute_player_char_end_perk()
 		
-		if forsakenHonorActive:
-			if opponentCharacterCard.perk.has_method("would_perk_trigger") and opponentCharacterCard.perk.would_perk_trigger(opponentCharacterCard, opponentSupportCard, playerCharacterCard, playerSupportCard, opponentHand):
-				playerCharacterCard.get_node("ModifierIndicator").texture = load("res://assets/modifiers/Forsaken Honor.png")
-				playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
-				await playerCharacterCard.get_node("AnimationPlayer").animation_finished
-			
-			playerCharacterCard.role = "Unknown"
-			playerCharacterCard.faction = "Unknown"
-			
-		await opponentCharacterCard.perk.apply_end_perk(opponentCharacterCard, opponentSupportCard, playerCharacterCard, playerSupportCard, opponentHand)
+		await _execute_opponent_supp_end_perk()
+		await _execute_player_supp_end_perk()
 		
-		if forsakenHonorActive:
-			playerCharacterCard.role = playerRealRole
-			playerCharacterCard.faction = playerRealFaction
-			_update_playable_support_cards()
-	
-	# Check for the supply cache
-	if playerSupportCard && playerSupportCard.perk && playerSupportCard.perk.timing == "endRound":
-		await playerSupportCard.perk.apply_end_perk(playerCharacterCard, playerSupportCard, opponentCharacterCard, opponentSupportCard, playerHand)
-	
-	if opponentSupportCard && opponentSupportCard.perk && opponentSupportCard.perk.timing == "endRound":
-		await get_tree().create_timer(PERK_CALCULATION_TIME).timeout
-		await opponentSupportCard.perk.apply_end_perk(opponentCharacterCard, opponentSupportCard, playerCharacterCard, playerSupportCard, opponentHand)
-	
-	if playerCharacterCard.perk && playerCharacterCard.perk.timing == "lateEndRound":
-		await get_tree().create_timer(PERK_CALCULATION_TIME).timeout
-		await playerCharacterCard.perk.apply_end_perk(playerCharacterCard, playerSupportCard, opponentCharacterCard, opponentSupportCard, playerHand)
-	
-	if opponentCharacterCard.perk && opponentCharacterCard.perk.timing == "lateEndRound":
-		await opponentCharacterCard.perk.apply_end_perk(opponentCharacterCard, opponentSupportCard, playerCharacterCard, playerSupportCard, opponentHand)
-	
+		await _execute_opponent_late_end_perk()
+		await _execute_player_late_end_perk()
+
 	await get_tree().create_timer(PERK_CALCULATION_TIME).timeout
 
 func _calculate_damage() -> void:
@@ -798,20 +760,32 @@ func _apply_opponent_support(support: Node2D, playerCharacter: Node2D, opponentC
 		await opponentCharacter.modify_value(value)
 
 func _apply_calculation_round_perks(playerTotal: int, opponentTotal: int) -> void:
-	if playerCharacterCard.perk && playerCharacterCard.perk.timing == "calculationRound":
-		await playerCharacterCard.perk.apply_after_calculation_perk(playerCharacterCard, playerHand, playerTotal, opponentTotal)
-	
-	if opponentCharacterCard.perk && opponentCharacterCard.perk.timing == "calculationRound":
-		await opponentCharacterCard.perk.apply_after_calculation_perk(opponentCharacterCard, opponentHand, opponentTotal, playerTotal)
+	if whoStartedRound == Actor.Type.PLAYER:
+		await _execute_player_calc_perk(playerTotal, opponentTotal)
+		await _execute_opponent_calc_perk(playerTotal, opponentTotal)
+	else:
+		await _execute_opponent_calc_perk(playerTotal, opponentTotal)
+		await _execute_player_calc_perk(playerTotal, opponentTotal)
 
 func _move_cards_to_discard(cards: Array) -> void:
 	_reset_played_cards_perks()
 	_reset_allowed_support_cards()
 	
+	if is_instance_valid(%cardManager) and %cardManager.hoveredCard in cards:
+		%cardManager.hoveredCard = null
+	
 	for card in cards:
 		discardedCards.append(card)
 		AudioManager.play_random_card_draw()
 		card.scale = Vector2(1, 1)
+		
+		if "perk" in card and card.perk != null:
+			var anim = card.get_node("AnimationPlayer")
+			if anim.has_animation("showPerkDescription"):
+				anim.play("showPerkDescription")
+				anim.seek(0, true)
+				anim.stop()
+		
 		card.get_node("Area2D/CollisionShape2D").disabled = true
 		
 		card.z_index = discardedCardZIndex
@@ -1133,3 +1107,82 @@ func _is_player_support_matched() -> bool:
 			return true
 		
 	return false
+
+# Perk Helpers
+func _execute_player_mid_perk() -> void:
+	if playerCharacterCard.perk && playerCharacterCard.perk.timing == "midRound":
+		await get_tree().create_timer(PERK_CALCULATION_TIME).timeout
+		await playerCharacterCard.perk.apply_mid_perk(playerCharacterCard, playerHand, opponentCharacterCard)
+
+func _execute_opponent_mid_perk() -> void:
+	if opponentCharacterCard.perk && opponentCharacterCard.perk.timing == "midRound":
+		var playerRealRole = playerCharacterCard.role
+		var playerRealFaction = playerCharacterCard.faction
+		
+		if forsakenHonorActive:
+			if opponentCharacterCard.perk.has_method("would_perk_trigger") and opponentCharacterCard.perk.would_perk_trigger(opponentCharacterCard, opponentHand, playerCharacterCard):
+				playerCharacterCard.get_node("ModifierIndicator").texture = load("res://assets/modifiers/Forsaken Honor.png")
+				playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
+				await playerCharacterCard.get_node("AnimationPlayer").animation_finished
+			
+			playerCharacterCard.role = "Unknown"
+			playerCharacterCard.faction = "Unknown"
+		
+		await get_tree().create_timer(PERK_CALCULATION_TIME).timeout
+		await opponentCharacterCard.perk.apply_mid_perk(opponentCharacterCard, opponentHand, playerCharacterCard)
+		
+		if forsakenHonorActive:
+			playerCharacterCard.role = playerRealRole
+			playerCharacterCard.faction = playerRealFaction
+			_update_playable_support_cards()
+
+func _execute_player_char_end_perk() -> void:
+	if playerCharacterCard.perk && playerCharacterCard.perk.timing == "endRound":
+		await playerCharacterCard.perk.apply_end_perk(playerCharacterCard, playerSupportCard, opponentCharacterCard, opponentSupportCard, playerHand)
+
+func _execute_opponent_char_end_perk() -> void:
+	if opponentCharacterCard.perk && opponentCharacterCard.perk.timing == "endRound":
+		var playerRealRole = playerCharacterCard.role
+		var playerRealFaction = playerCharacterCard.faction
+		
+		if forsakenHonorActive:
+			if opponentCharacterCard.perk.has_method("would_perk_trigger") and opponentCharacterCard.perk.would_perk_trigger(opponentCharacterCard, opponentSupportCard, playerCharacterCard, playerSupportCard, opponentHand):
+				playerCharacterCard.get_node("ModifierIndicator").texture = load("res://assets/modifiers/Forsaken Honor.png")
+				playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
+				await playerCharacterCard.get_node("AnimationPlayer").animation_finished
+			
+			playerCharacterCard.role = "Unknown"
+			playerCharacterCard.faction = "Unknown"
+			
+		await opponentCharacterCard.perk.apply_end_perk(opponentCharacterCard, opponentSupportCard, playerCharacterCard, playerSupportCard, opponentHand)
+		
+		if forsakenHonorActive:
+			playerCharacterCard.role = playerRealRole
+			playerCharacterCard.faction = playerRealFaction
+			_update_playable_support_cards()
+
+func _execute_player_supp_end_perk() -> void:
+	if playerSupportCard && playerSupportCard.perk && playerSupportCard.perk.timing == "endRound":
+		await playerSupportCard.perk.apply_end_perk(playerCharacterCard, playerSupportCard, opponentCharacterCard, opponentSupportCard, playerHand)
+
+func _execute_opponent_supp_end_perk() -> void:
+	if opponentSupportCard && opponentSupportCard.perk && opponentSupportCard.perk.timing == "endRound":
+		await get_tree().create_timer(PERK_CALCULATION_TIME).timeout
+		await opponentSupportCard.perk.apply_end_perk(opponentCharacterCard, opponentSupportCard, playerCharacterCard, playerSupportCard, opponentHand)
+
+func _execute_player_late_end_perk() -> void:
+	if playerCharacterCard.perk && playerCharacterCard.perk.timing == "lateEndRound":
+		await get_tree().create_timer(PERK_CALCULATION_TIME).timeout
+		await playerCharacterCard.perk.apply_end_perk(playerCharacterCard, playerSupportCard, opponentCharacterCard, opponentSupportCard, playerHand)
+
+func _execute_opponent_late_end_perk() -> void:
+	if opponentCharacterCard.perk && opponentCharacterCard.perk.timing == "lateEndRound":
+		await opponentCharacterCard.perk.apply_end_perk(opponentCharacterCard, opponentSupportCard, playerCharacterCard, playerSupportCard, opponentHand)
+
+func _execute_player_calc_perk(playerTotal: int, opponentTotal: int) -> void:
+	if playerCharacterCard.perk && playerCharacterCard.perk.timing == "calculationRound":
+		await playerCharacterCard.perk.apply_after_calculation_perk(playerCharacterCard, playerHand, playerTotal, opponentTotal)
+
+func _execute_opponent_calc_perk(playerTotal: int, opponentTotal: int) -> void:
+	if opponentCharacterCard.perk && opponentCharacterCard.perk.timing == "calculationRound":
+		await opponentCharacterCard.perk.apply_after_calculation_perk(opponentCharacterCard, opponentHand, opponentTotal, playerTotal)

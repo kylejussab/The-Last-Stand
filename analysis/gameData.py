@@ -58,7 +58,7 @@ standardCharacterDeck = [
     "FireflySoldier", "FireflySoldier", "FireflySoldier",
     "WLFSoldier", "WLFSoldier",
     "SeraphiteBrute", "SeraphiteBrute",
-    "Clicker", "Clicker", "Bloater",
+    "Clicker", "Clicker", "Shambler",
     "Emily", "Ezra", "Lev", "Yara", "Lyra",
     "Nora", "Manny", "Alice", "Li",
     "Bill", "Dina", "Jessie", "Tommy", "TommyFirefly",

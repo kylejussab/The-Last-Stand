@@ -4741,32 +4741,7502 @@
 				{
 					"cardKey": "Silencer",
 					"faction": "Support",
-					"value": 4
+					"value": 4.0
 				},
 				{
 					"cardKey": "Yara",
 					"faction": "Seraphite",
-					"value": 8
+					"value": 8.0
 				},
 				{
 					"cardKey": "Brick",
 					"faction": "Support",
-					"value": 2
+					"value": 2.0
 				},
 				{
 					"cardKey": "Stalker",
 					"faction": "Infected",
-					"value": 1
+					"value": 1.0
 				},
 				{
 					"cardKey": "SmokeBomb",
 					"faction": "Support",
-					"value": 4
+					"value": 4.0
 				},
 				{
 					"cardKey": "Nora",
 					"faction": "WLF",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Bottle",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Alice",
+					"faction": "WLF",
+					"value": 3.0
+				},
+				{
+					"cardKey": "ShotgunShells",
+					"faction": "Support",
+					"value": 3.0
+				},
+				{
+					"cardKey": "Li",
+					"faction": "WLF",
+					"value": 3.0
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Ezra",
+					"faction": "Seraphite",
+					"value": 7.0
+				},
+				{
+					"cardKey": "Shambler",
+					"faction": "Infected",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Emily",
+					"faction": "Seraphite",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 2.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Lyra",
+					"faction": "Seraphite",
+					"value": 4.0
+				},
+				{
+					"cardKey": "MedKit",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Marlene",
+					"faction": "Firefly",
+					"value": 3.0
+				},
+				{
+					"cardKey": "Rage",
+					"faction": "Support",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Isaac",
+					"faction": "WLF",
+					"value": 12.0
+				}
+			],
+			"durationInSeconds": 1263.92347069785,
+			"highestDamageDealt": 12.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "Eugene",
+					"faction": "Firefly",
+					"value": 3.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Riley",
+					"faction": "Firefly",
+					"value": 1.0
+				},
+				{
+					"cardKey": "Bottle",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Lev",
+					"faction": "Seraphite",
+					"value": 2.0
+				},
+				{
+					"cardKey": "MedKit",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Manny",
+					"faction": "WLF",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "WLFSoldier",
+					"faction": "WLF",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Rage",
+					"faction": "Support",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 8.0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 2.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Dina",
+					"faction": "Jackson",
+					"value": 7.0
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "RatKing",
+					"faction": "Infected",
+					"value": 10.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "TheProphet",
+					"faction": "Seraphite",
+					"value": 10.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Abby",
+					"faction": "WLF",
+					"value": 10.0
+				},
+				{
+					"cardKey": "Molotov",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 9.0
+				},
+				{
+					"cardKey": "TrapMine",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Joel",
+					"faction": "Jackson",
+					"value": 10.0
+				},
+				{
+					"cardKey": "Malik",
+					"faction": "Infected",
+					"value": 3.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 15.0,
+			"roundScore": 25.0,
+			"totalForceOpponent": 89.0,
+			"totalForcePlayer": 68.0,
+			"totalScore": 25.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774654977.5987": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 7.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "TheProphet",
+					"faction": "Seraphite",
+					"value": 11.0
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Li",
+					"faction": "WLF",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Rage",
+					"faction": "Support",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 10.0
+				}
+			],
+			"durationInSeconds": 73.9997131818255,
+			"highestDamageDealt": 11.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 3.0
+				},
+				{
+					"cardKey": "Bill",
+					"faction": "Jackson",
+					"value": 4.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Malik",
+					"faction": "Infected",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 3.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 5.0,
+			"roundScore": 207.0,
+			"totalForceOpponent": 18.0,
+			"totalForcePlayer": 38.0,
+			"totalScore": 207.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774655069.09176": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "Bottle",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Alice",
+					"faction": "WLF",
+					"value": 7.0
+				},
+				{
+					"cardKey": "MedKit",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Jessie",
+					"faction": "Jackson",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Resilience",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Li",
+					"faction": "WLF",
+					"value": 3.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Manny",
+					"faction": "WLF",
+					"value": 7.0
+				},
+				{
+					"cardKey": "TrapMine",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Bill",
+					"faction": "Jackson",
+					"value": 8.0
+				}
+			],
+			"durationInSeconds": 76.6154030740802,
+			"highestDamageDealt": 8.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 1.0
+				},
+				{
+					"cardKey": "Brick",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 3.0
+				},
+				{
+					"cardKey": "Molotov",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Isaac",
+					"faction": "WLF",
+					"value": 6.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Eugene",
+					"faction": "Firefly",
+					"value": -2.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 5.0,
+			"roundScore": 176.0,
+			"totalForceOpponent": 13.0,
+			"totalForcePlayer": 30.0,
+			"totalScore": 176.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774655160.77146": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Tommy",
+					"faction": "Jackson",
+					"value": 7.0
+				},
+				{
+					"cardKey": "Bottle",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Alice",
+					"faction": "WLF",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Riley",
+					"faction": "Firefly",
+					"value": 4.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Retreat",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Brick",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Yara",
+					"faction": "Seraphite",
+					"value": 4.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "TommyFirefly",
+					"faction": "Firefly",
+					"value": 5.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "WLFSoldier",
+					"faction": "WLF",
+					"value": 5.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "MedKit",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 10.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "WLFSoldier",
+					"faction": "WLF",
+					"value": 1.0
+				},
+				{
+					"cardKey": "TrapMine",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Marlene",
+					"faction": "Firefly",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Manny",
+					"faction": "WLF",
+					"value": 7.0
+				}
+			],
+			"durationInSeconds": 263.570173242274,
+			"highestDamageDealt": 10.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "MedKit",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "TheProphet",
+					"faction": "Seraphite",
+					"value": 11.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Shambler",
+					"faction": "Infected",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Molotov",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 5.0
+				},
+				{
+					"cardKey": "ShotgunShells",
+					"faction": "Support",
+					"value": 3.0
+				},
+				{
+					"cardKey": "Li",
+					"faction": "WLF",
+					"value": 6.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "RatKing",
+					"faction": "Infected",
+					"value": 6.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Lev",
+					"faction": "Seraphite",
+					"value": 6.0
+				},
+				{
+					"cardKey": "MedKit",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Jessie",
+					"faction": "Jackson",
+					"value": 3.0
+				},
+				{
+					"cardKey": "TrainingManual",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Joel",
+					"faction": "Jackson",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Eugene",
+					"faction": "Firefly",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Dina",
+					"faction": "Jackson",
+					"value": -2.0
+				},
+				{
+					"cardKey": "Molotov",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Abby",
+					"faction": "WLF",
+					"value": 6.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 14.0,
+			"roundScore": 85.0,
+			"totalForceOpponent": 69.0,
+			"totalForcePlayer": 77.0,
+			"totalScore": 85.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774655695.00298": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "Resilience",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Lev",
+					"faction": "Seraphite",
+					"value": 13.0
+				},
+				{
+					"cardKey": "Abby",
+					"faction": "WLF",
+					"value": 9.0
+				},
+				{
+					"cardKey": "Bottle",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Ellie",
+					"faction": "Jackson",
+					"value": 8.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Malik",
+					"faction": "Infected",
+					"value": 6.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 7.0
+				}
+			],
+			"durationInSeconds": 89.9063441111086,
+			"highestDamageDealt": 13.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "Tommy",
+					"faction": "Jackson",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Eugene",
+					"faction": "Firefly",
+					"value": 1.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Bill",
+					"faction": "Jackson",
+					"value": 6.0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 2.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 5.0,
+			"roundScore": 234.0,
+			"totalForceOpponent": 19.0,
+			"totalForcePlayer": 43.0,
+			"totalScore": 234.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774655800.2643": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Manny",
+					"faction": "WLF",
+					"value": 7.0
+				},
+				{
+					"cardKey": "Resilience",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "WLFSoldier",
+					"faction": "WLF",
+					"value": 8.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Dina",
+					"faction": "Jackson",
+					"value": 3.0
+				},
+				{
+					"cardKey": "TrapMine",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Marlene",
+					"faction": "Firefly",
+					"value": 6.0
+				},
+				{
+					"cardKey": "TommyFirefly",
+					"faction": "Firefly",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Rage",
+					"faction": "Support",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 10.0
+				}
+			],
+			"durationInSeconds": 104.831035333326,
+			"highestDamageDealt": 10.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Isaac",
+					"faction": "WLF",
+					"value": 10.0
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Li",
+					"faction": "WLF",
+					"value": 0.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 1.0
+				},
+				{
+					"cardKey": "Ellie",
+					"faction": "Jackson",
+					"value": 1.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Alice",
+					"faction": "WLF",
+					"value": 6.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 7.0,
+			"roundScore": 151.0,
+			"totalForceOpponent": 28.0,
+			"totalForcePlayer": 43.0,
+			"totalScore": 151.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774655919.53754": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "Brick",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Yara",
+					"faction": "Seraphite",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Tommy",
+					"faction": "Jackson",
+					"value": 8.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "TommyFirefly",
+					"faction": "Firefly",
+					"value": 9.0
+				},
+				{
+					"cardKey": "Bottle",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Retreat",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Jessie",
+					"faction": "Jackson",
+					"value": 9.0
+				},
+				{
+					"cardKey": "MedKit",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Manny",
+					"faction": "WLF",
+					"value": 3.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "WLFSoldier",
+					"faction": "WLF",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Bottle",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 3.0
+				},
+				{
+					"cardKey": "Brick",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Dina",
+					"faction": "Jackson",
+					"value": 3.0
+				},
+				{
+					"cardKey": "TrapMine",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Bill",
+					"faction": "Jackson",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Resilience",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "WLFSoldier",
+					"faction": "WLF",
+					"value": 8.0
+				}
+			],
+			"durationInSeconds": 241.816811999889,
+			"highestDamageDealt": 9.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 3.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Isaac",
+					"faction": "WLF",
+					"value": 10.0
+				},
+				{
+					"cardKey": "Nora",
+					"faction": "WLF",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 0.0
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "RatKing",
+					"faction": "Infected",
+					"value": 9.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Ezra",
+					"faction": "Seraphite",
+					"value": 5.0
+				},
+				{
+					"cardKey": "MedKit",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "TheProphet",
+					"faction": "Seraphite",
+					"value": 10.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Ellie",
+					"faction": "Jackson",
+					"value": 4.0
+				},
+				{
+					"cardKey": "ShotgunShells",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Lyra",
+					"faction": "Seraphite",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Joel",
+					"faction": "Jackson",
+					"value": 1.0
+				},
+				{
+					"cardKey": "Marlene",
+					"faction": "Firefly",
+					"value": 5.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Emily",
+					"faction": "Seraphite",
+					"value": 7.0
+				},
+				{
+					"cardKey": "Lev",
+					"faction": "Seraphite",
+					"value": 3.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 13.0,
+			"roundScore": 93.0,
+			"totalForceOpponent": 66.0,
+			"totalForcePlayer": 74.0,
+			"totalScore": 93.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774656563.19471": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Joel",
+					"faction": "Jackson",
+					"value": 8.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Emily",
+					"faction": "Seraphite",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 7.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Lyra",
+					"faction": "Seraphite",
+					"value": 4.0
+				},
+				{
+					"cardKey": "MedKit",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Retreat",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 12.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Marlene",
+					"faction": "Firefly",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Molotov",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 4.0
+				},
+				{
+					"cardKey": "TrapMine",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Ezra",
+					"faction": "Seraphite",
+					"value": 3.0
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Eugene",
+					"faction": "Firefly",
+					"value": 8.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "TommyFirefly",
+					"faction": "Firefly",
+					"value": 9.0
+				},
+				{
+					"cardKey": "Shambler",
+					"faction": "Infected",
+					"value": 4.0
+				}
+			],
+			"durationInSeconds": 208.017497666585,
+			"highestDamageDealt": 12.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "TheProphet",
+					"faction": "Seraphite",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Brick",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Ellie",
+					"faction": "Jackson",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Bill",
+					"faction": "Jackson",
+					"value": 4.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Tommy",
+					"faction": "Jackson",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Brick",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Dina",
+					"faction": "Jackson",
+					"value": 7.0
+				},
+				{
+					"cardKey": "Riley",
+					"faction": "Firefly",
+					"value": 3.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 7.0
+				},
+				{
+					"cardKey": "Rage",
+					"faction": "Support",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Isaac",
+					"faction": "WLF",
+					"value": 7.0
+				},
+				{
+					"cardKey": "Resilience",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Li",
+					"faction": "WLF",
+					"value": 3.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Abby",
+					"faction": "WLF",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 4.0
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 7.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 12.0,
+			"roundScore": 110.0,
+			"totalForceOpponent": 67.0,
+			"totalForcePlayer": 76.0,
+			"totalScore": 110.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774656932.80591": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "ShotgunShells",
+					"faction": "Support",
+					"value": 3.0
+				},
+				{
+					"cardKey": "TommyFirefly",
+					"faction": "Firefly",
+					"value": 10.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 7.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Shambler",
+					"faction": "Infected",
+					"value": -1.0
+				},
+				{
+					"cardKey": "Resilience",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Lyra",
+					"faction": "Seraphite",
+					"value": 3.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Manny",
+					"faction": "WLF",
+					"value": 10.0
+				},
+				{
+					"cardKey": "TrapMine",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Bill",
+					"faction": "Jackson",
+					"value": 8.0
+				}
+			],
+			"durationInSeconds": 93.4254903333288,
+			"highestDamageDealt": 10.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "Abby",
+					"faction": "WLF",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Molotov",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 2.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Dina",
+					"faction": "Jackson",
+					"value": 3.0
+				},
+				{
+					"cardKey": "Marlene",
+					"faction": "Firefly",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": -2.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 6.0,
+			"roundScore": 160.0,
+			"totalForceOpponent": 22.0,
+			"totalForcePlayer": 37.0,
+			"totalScore": 160.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774657041.90865": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Emily",
+					"faction": "Seraphite",
+					"value": 7.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Ezra",
+					"faction": "Seraphite",
+					"value": 9.0
+				},
+				{
+					"cardKey": "Bottle",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Resilience",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "WLFSoldier",
+					"faction": "WLF",
+					"value": 8.0
+				},
+				{
+					"cardKey": "ShotgunShells",
+					"faction": "Support",
+					"value": 3.0
+				},
+				{
+					"cardKey": "Malik",
+					"faction": "Infected",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Brick",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Lev",
+					"faction": "Seraphite",
+					"value": 2.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Yara",
+					"faction": "Seraphite",
+					"value": 4.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Abby",
+					"faction": "WLF",
+					"value": 9.0
+				},
+				{
+					"cardKey": "Brick",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Lyra",
+					"faction": "Seraphite",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 12.0
+				},
+				{
+					"cardKey": "TrapMine",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Joel",
+					"faction": "Jackson",
+					"value": 8.0
+				}
+			],
+			"durationInSeconds": 204.199068212028,
+			"highestDamageDealt": 12.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Isaac",
+					"faction": "WLF",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Rage",
+					"faction": "Support",
+					"value": 6.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 13.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 3.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "TommyFirefly",
+					"faction": "Firefly",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Jessie",
+					"faction": "Jackson",
+					"value": 5.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Nora",
+					"faction": "WLF",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Tommy",
+					"faction": "Jackson",
+					"value": 1.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Alice",
+					"faction": "WLF",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Retreat",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Manny",
+					"faction": "WLF",
+					"value": 14.0
+				},
+				{
+					"cardKey": "MedKit",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Ellie",
+					"faction": "Jackson",
+					"value": 4.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 12.0,
+			"roundScore": 126.0,
+			"totalForceOpponent": 66.0,
+			"totalForcePlayer": 81.0,
+			"totalScore": 126.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774657426.17031": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "Molotov",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 4.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Lyra",
+					"faction": "Seraphite",
+					"value": 4.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Isaac",
+					"faction": "WLF",
+					"value": 6.0
+				},
+				{
+					"cardKey": "MedKit",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Ezra",
+					"faction": "Seraphite",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Resilience",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "WLFSoldier",
+					"faction": "WLF",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Malik",
+					"faction": "Infected",
+					"value": 6.0
+				},
+				{
+					"cardKey": "MedKit",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Shambler",
+					"faction": "Infected",
+					"value": 6.0
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "RatKing",
+					"faction": "Infected",
+					"value": 10.0
+				}
+			],
+			"durationInSeconds": 169.350906757554,
+			"highestDamageDealt": 10.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Ellie",
+					"faction": "Jackson",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Jessie",
+					"faction": "Jackson",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Li",
+					"faction": "WLF",
+					"value": 3.0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Joel",
+					"faction": "Jackson",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 3.0
+				},
+				{
+					"cardKey": "Rage",
+					"faction": "Support",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Tommy",
+					"faction": "Jackson",
+					"value": 11.0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 2.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 8.0,
+			"roundScore": 136.0,
+			"totalForceOpponent": 37.0,
+			"totalForcePlayer": 49.0,
+			"totalScore": 136.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774657610.68939": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "Bottle",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Retreat",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Manny",
+					"faction": "WLF",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Emily",
+					"faction": "Seraphite",
+					"value": 7.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "TommyFirefly",
+					"faction": "Firefly",
+					"value": 7.0
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 7.0
+				},
+				{
+					"cardKey": "Molotov",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Tommy",
+					"faction": "Jackson",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Brick",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Lev",
+					"faction": "Seraphite",
+					"value": 8.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Alice",
+					"faction": "WLF",
+					"value": 4.0
+				},
+				{
+					"cardKey": "TrapMine",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Bill",
+					"faction": "Jackson",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Brick",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Yara",
+					"faction": "Seraphite",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Retreat",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Jessie",
+					"faction": "Jackson",
+					"value": 9.0
+				}
+			],
+			"durationInSeconds": 219.254882579031,
+			"highestDamageDealt": 9.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "Joel",
+					"faction": "Jackson",
+					"value": 4.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Marlene",
+					"faction": "Firefly",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Resilience",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Eugene",
+					"faction": "Firefly",
+					"value": 11.0
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 7.0
+				},
+				{
+					"cardKey": "Dina",
+					"faction": "Jackson",
+					"value": 3.0
+				},
+				{
+					"cardKey": "Rage",
+					"faction": "Support",
+					"value": 6.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 11.0
+				},
+				{
+					"cardKey": "MedKit",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "TheProphet",
+					"faction": "Seraphite",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Riley",
+					"faction": "Firefly",
+					"value": 7.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 7.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "WLFSoldier",
+					"faction": "WLF",
+					"value": 2.0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Abby",
+					"faction": "WLF",
+					"value": 7.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 12.0,
+			"roundScore": 110.0,
+			"totalForceOpponent": 70.0,
+			"totalForcePlayer": 78.0,
+			"totalScore": 110.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774657864.79084": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "WLFSoldier",
+					"faction": "WLF",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Molotov",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Tommy",
+					"faction": "Jackson",
+					"value": 5.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 5.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Malik",
+					"faction": "Infected",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 7.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Joel",
+					"faction": "Jackson",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Bottle",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Riley",
+					"faction": "Firefly",
+					"value": 5.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Dina",
+					"faction": "Jackson",
+					"value": 7.0
+				},
+				{
+					"cardKey": "Resilience",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Li",
+					"faction": "WLF",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Rage",
+					"faction": "Support",
+					"value": 6.0
+				},
+				{
+					"cardKey": "RatKing",
+					"faction": "Infected",
+					"value": 9.0
+				}
+			],
+			"durationInSeconds": 283.618444333198,
+			"highestDamageDealt": 9.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Marlene",
+					"faction": "Firefly",
+					"value": 8.0
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Isaac",
+					"faction": "WLF",
+					"value": 12.0
+				},
+				{
+					"cardKey": "Brick",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 7.0
+				},
+				{
+					"cardKey": "MedKit",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "TheProphet",
+					"faction": "Seraphite",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Manny",
+					"faction": "WLF",
+					"value": 2.0
+				},
+				{
+					"cardKey": "ShotgunShells",
+					"faction": "Support",
+					"value": 3.0
+				},
+				{
+					"cardKey": "Lyra",
+					"faction": "Seraphite",
+					"value": 5.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "WLFSoldier",
+					"faction": "WLF",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Jessie",
+					"faction": "Jackson",
+					"value": 3.0
+				},
+				{
+					"cardKey": "TommyFirefly",
+					"faction": "Firefly",
+					"value": 7.0
+				},
+				{
+					"cardKey": "TrapMine",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Ezra",
+					"faction": "Seraphite",
+					"value": 3.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 12.0,
+			"roundScore": 105.0,
+			"totalForceOpponent": 63.0,
+			"totalForcePlayer": 72.0,
+			"totalScore": 105.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774658187.36968": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 9.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 1.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 2.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Malik",
+					"faction": "Infected",
+					"value": 7.0
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "RatKing",
+					"faction": "Infected",
+					"value": 10.0
+				},
+				{
+					"cardKey": "Resilience",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Lyra",
+					"faction": "Seraphite",
+					"value": 7.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Emily",
+					"faction": "Seraphite",
+					"value": 7.0
+				},
+				{
+					"cardKey": "Bottle",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Alice",
+					"faction": "WLF",
+					"value": 5.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 3.0
+				},
+				{
+					"cardKey": "MedKit",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Manny",
+					"faction": "WLF",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Brick",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 3.0
+				},
+				{
+					"cardKey": "Molotov",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Tommy",
+					"faction": "Jackson",
+					"value": 8.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Lev",
+					"faction": "Seraphite",
+					"value": 11.0
+				}
+			],
+			"durationInSeconds": 272.926357666562,
+			"highestDamageDealt": 11.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Jessie",
+					"faction": "Jackson",
+					"value": 9.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Yara",
+					"faction": "Seraphite",
+					"value": 4.0
+				},
+				{
+					"cardKey": "ShotgunShells",
+					"faction": "Support",
+					"value": 3.0
+				},
+				{
+					"cardKey": "WLFSoldier",
+					"faction": "WLF",
+					"value": 6.0
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Eugene",
+					"faction": "Firefly",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Rage",
+					"faction": "Support",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Isaac",
+					"faction": "WLF",
+					"value": 12.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Li",
+					"faction": "WLF",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Riley",
+					"faction": "Firefly",
+					"value": 9.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Brick",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Nora",
+					"faction": "WLF",
+					"value": 4.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Ellie",
+					"faction": "Jackson",
+					"value": 7.0
+				},
+				{
+					"cardKey": "ShotgunShells",
+					"faction": "Support",
+					"value": 3.0
+				},
+				{
+					"cardKey": "TommyFirefly",
+					"faction": "Firefly",
+					"value": 10.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Ezra",
+					"faction": "Seraphite",
+					"value": -2.0
+				},
+				{
+					"cardKey": "Marlene",
+					"faction": "Firefly",
+					"value": 2.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 14.0,
+			"roundScore": 72.0,
+			"totalForceOpponent": 81.0,
+			"totalForcePlayer": 79.0,
+			"totalScore": 72.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774659021.66852": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Li",
+					"faction": "WLF",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Brick",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "TheProphet",
+					"faction": "Seraphite",
+					"value": 4.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Malik",
+					"faction": "Infected",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Rage",
+					"faction": "Support",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Isaac",
+					"faction": "WLF",
+					"value": 7.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 7.0
+				},
+				{
+					"cardKey": "MedKit",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Jessie",
+					"faction": "Jackson",
+					"value": 2.0
+				},
+				{
+					"cardKey": "MedKit",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Ezra",
+					"faction": "Seraphite",
+					"value": 5.0
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Lev",
+					"faction": "Seraphite",
+					"value": 13.0
+				},
+				{
+					"cardKey": "Resilience",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "WLFSoldier",
+					"faction": "WLF",
+					"value": 8.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Abby",
+					"faction": "WLF",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Brick",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "WLFSoldier",
+					"faction": "WLF",
+					"value": 5.0
+				}
+			],
+			"durationInSeconds": 228.709060636264,
+			"highestDamageDealt": 13.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "Tommy",
+					"faction": "Jackson",
+					"value": 5.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Nora",
+					"faction": "WLF",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 4.0
+				},
+				{
+					"cardKey": "TrapMine",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Ellie",
+					"faction": "Jackson",
+					"value": 7.0
+				},
+				{
+					"cardKey": "Joel",
+					"faction": "Jackson",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Molotov",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 4.0
+				},
+				{
+					"cardKey": "ShotgunShells",
+					"faction": "Support",
+					"value": 3.0
+				},
+				{
+					"cardKey": "Emily",
+					"faction": "Seraphite",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Retreat",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 12.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Marlene",
+					"faction": "Firefly",
+					"value": 8.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 5.0
+				},
+				{
+					"cardKey": "TommyFirefly",
+					"faction": "Firefly",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Lyra",
+					"faction": "Seraphite",
+					"value": -1.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 12.0,
+			"roundScore": 128.0,
+			"totalForceOpponent": 58.0,
+			"totalForcePlayer": 77.0,
+			"totalScore": 128.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774659282.23331": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Isaac",
+					"faction": "WLF",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Yara",
+					"faction": "Seraphite",
+					"value": 9.0
+				},
+				{
+					"cardKey": "Rage",
+					"faction": "Support",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 8.0
+				},
+				{
+					"cardKey": "TrainingManual",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Ezra",
+					"faction": "Seraphite",
+					"value": 7.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Alice",
+					"faction": "WLF",
+					"value": -2.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Manny",
+					"faction": "WLF",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Ellie",
+					"faction": "Jackson",
+					"value": 12.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": -3.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "WLFSoldier",
+					"faction": "WLF",
+					"value": 7.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Bottle",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Nora",
+					"faction": "WLF",
+					"value": 4.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Bill",
+					"faction": "Jackson",
+					"value": 6.0
+				}
+			],
+			"durationInSeconds": 313.612993908933,
+			"highestDamageDealt": 12.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "TommyFirefly",
+					"faction": "Firefly",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Brick",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 3.0
+				},
+				{
+					"cardKey": "Bottle",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "TheProphet",
+					"faction": "Seraphite",
+					"value": 9.0
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "WLFSoldier",
+					"faction": "WLF",
+					"value": 5.0
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Abby",
+					"faction": "WLF",
+					"value": 8.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Lev",
+					"faction": "Seraphite",
+					"value": 3.0
+				},
+				{
+					"cardKey": "Emily",
+					"faction": "Seraphite",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Malik",
+					"faction": "Infected",
+					"value": 4.0
+				},
+				{
+					"cardKey": "TrapMine",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Marlene",
+					"faction": "Firefly",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Molotov",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "RatKing",
+					"faction": "Infected",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Retreat",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Jessie",
+					"faction": "Jackson",
+					"value": 9.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Riley",
+					"faction": "Firefly",
+					"value": 7.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 1.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 15.0,
+			"roundScore": 52.0,
+			"totalForceOpponent": 76.0,
+			"totalForcePlayer": 72.0,
+			"totalScore": 52.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774659618.1787": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Shambler",
+					"faction": "Infected",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Molotov",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Tommy",
+					"faction": "Jackson",
+					"value": 2.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 7.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Eugene",
+					"faction": "Firefly",
+					"value": 9.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Bill",
+					"faction": "Jackson",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Abby",
+					"faction": "WLF",
+					"value": 11.0
+				}
+			],
+			"durationInSeconds": 120.53801503029,
+			"highestDamageDealt": 11.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Isaac",
+					"faction": "WLF",
+					"value": 8.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Dina",
+					"faction": "Jackson",
+					"value": -2.0
+				},
+				{
+					"cardKey": "WLFSoldier",
+					"faction": "WLF",
+					"value": 3.0
+				},
+				{
+					"cardKey": "ShotgunShells",
+					"faction": "Support",
+					"value": 3.0
+				},
+				{
+					"cardKey": "Malik",
+					"faction": "Infected",
+					"value": 7.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 1.0
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 5.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 6.0,
+			"roundScore": 170.0,
+			"totalForceOpponent": 22.0,
+			"totalForcePlayer": 39.0,
+			"totalScore": 170.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774659754.36768": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "Molotov",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 4.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Ezra",
+					"faction": "Seraphite",
+					"value": 5.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Lyra",
+					"faction": "Seraphite",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Brick",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Nora",
+					"faction": "WLF",
+					"value": 4.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Manny",
+					"faction": "WLF",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Brick",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "TheProphet",
+					"faction": "Seraphite",
+					"value": 10.0
+				},
+				{
+					"cardKey": "Resilience",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Li",
+					"faction": "WLF",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Riley",
+					"faction": "Firefly",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Bottle",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Dina",
+					"faction": "Jackson",
+					"value": 9.0
+				}
+			],
+			"durationInSeconds": 139.359454171685,
+			"highestDamageDealt": 10.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "Tommy",
+					"faction": "Jackson",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Yara",
+					"faction": "Seraphite",
+					"value": 2.0
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Alice",
+					"faction": "WLF",
+					"value": 4.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 3.0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Rage",
+					"faction": "Support",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 9.0
+				},
+				{
+					"cardKey": "TrainingManual",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Marlene",
+					"faction": "Firefly",
+					"value": 10.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Bill",
+					"faction": "Jackson",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Isaac",
+					"faction": "WLF",
+					"value": 4.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 9.0,
+			"roundScore": 143.0,
+			"totalForceOpponent": 38.0,
+			"totalForcePlayer": 56.0,
+			"totalScore": 143.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774664305.78964": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Nora",
+					"faction": "WLF",
+					"value": 0.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Abby",
+					"faction": "WLF",
+					"value": 11.0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 8.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Marlene",
+					"faction": "Firefly",
+					"value": 0.0
+				},
+				{
+					"cardKey": "ShotgunShells",
+					"faction": "Support",
+					"value": 3.0
+				},
+				{
+					"cardKey": "TommyFirefly",
+					"faction": "Firefly",
+					"value": 10.0
+				},
+				{
+					"cardKey": "TrapMine",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Bill",
+					"faction": "Jackson",
+					"value": 8.0
+				}
+			],
+			"durationInSeconds": 102.684396666656,
+			"highestDamageDealt": 11.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Ellie",
+					"faction": "Jackson",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Emily",
+					"faction": "Seraphite",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Molotov",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "RatKing",
+					"faction": "Infected",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 2.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 6.0,
+			"roundScore": 141.0,
+			"totalForceOpponent": 29.0,
+			"totalForcePlayer": 37.0,
+			"totalScore": 141.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774664423.82702": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Lyra",
+					"faction": "Seraphite",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Malik",
+					"faction": "Infected",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Retreat",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Manny",
+					"faction": "WLF",
+					"value": 12.0
+				},
+				{
+					"cardKey": "Molotov",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 2.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 7.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Ezra",
+					"faction": "Seraphite",
+					"value": 1.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Alice",
+					"faction": "WLF",
+					"value": 4.0
+				},
+				{
+					"cardKey": "ShotgunShells",
+					"faction": "Support",
+					"value": 3.0
+				},
+				{
+					"cardKey": "Li",
+					"faction": "WLF",
+					"value": 6.0
+				},
+				{
+					"cardKey": "TrainingManual",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Joel",
+					"faction": "Jackson",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Brick",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "WLFSoldier",
+					"faction": "WLF",
+					"value": 6.0
+				}
+			],
+			"durationInSeconds": 171.230087481423,
+			"highestDamageDealt": 12.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Abby",
+					"faction": "WLF",
+					"value": 6.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Nora",
+					"faction": "WLF",
+					"value": -1.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Lev",
+					"faction": "Seraphite",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Bottle",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "TheProphet",
+					"faction": "Seraphite",
+					"value": 2.0
+				},
+				{
+					"cardKey": "MedKit",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Isaac",
+					"faction": "WLF",
+					"value": 4.0
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 7.0
+				},
+				{
+					"cardKey": "TrapMine",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Ellie",
+					"faction": "Jackson",
+					"value": 7.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 3.0
+				},
+				{
+					"cardKey": "Eugene",
+					"faction": "Firefly",
+					"value": 0.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 11.0,
+			"roundScore": 119.0,
+			"totalForceOpponent": 42.0,
+			"totalForcePlayer": 60.0,
+			"totalScore": 119.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774664610.68797": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 7.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Resilience",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Malik",
+					"faction": "Infected",
+					"value": 9.0
+				},
+				{
+					"cardKey": "Li",
+					"faction": "WLF",
+					"value": 3.0
+				},
+				{
+					"cardKey": "TrainingManual",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Marlene",
+					"faction": "Firefly",
+					"value": 8.0
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "RatKing",
+					"faction": "Infected",
+					"value": 11.0
+				}
+			],
+			"durationInSeconds": 105.198658090917,
+			"highestDamageDealt": 11.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "Abby",
+					"faction": "WLF",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Jessie",
+					"faction": "Jackson",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Dina",
+					"faction": "Jackson",
+					"value": 3.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Tommy",
+					"faction": "Jackson",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 2.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 6.0,
+			"roundScore": 174.0,
+			"totalForceOpponent": 28.0,
+			"totalForcePlayer": 43.0,
+			"totalScore": 174.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774664730.21361": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "ShotgunShells",
+					"faction": "Support",
+					"value": 3.0
+				},
+				{
+					"cardKey": "WLFSoldier",
+					"faction": "WLF",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Molotov",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Manny",
+					"faction": "WLF",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Shambler",
+					"faction": "Infected",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 4.0
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "TommyFirefly",
+					"faction": "Firefly",
+					"value": 9.0
+				},
+				{
+					"cardKey": "Brick",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Eugene",
+					"faction": "Firefly",
+					"value": 8.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Lev",
+					"faction": "Seraphite",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Yara",
+					"faction": "Seraphite",
+					"value": 8.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Dina",
+					"faction": "Jackson",
+					"value": 5.0
+				}
+			],
+			"durationInSeconds": 171.461124740683,
+			"highestDamageDealt": 9.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Tommy",
+					"faction": "Jackson",
+					"value": 7.0
+				},
+				{
+					"cardKey": "TrainingManual",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Joel",
+					"faction": "Jackson",
+					"value": 3.0
+				},
+				{
+					"cardKey": "Resilience",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Alice",
+					"faction": "WLF",
+					"value": 8.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Nora",
+					"faction": "WLF",
+					"value": 4.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Bill",
+					"faction": "Jackson",
+					"value": 4.0
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 9.0
+				},
+				{
+					"cardKey": "Emily",
+					"faction": "Seraphite",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Rage",
+					"faction": "Support",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 12.0
+				},
+				{
+					"cardKey": "Isaac",
+					"faction": "WLF",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "WLFSoldier",
+					"faction": "WLF",
+					"value": -1.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 11.0,
+			"roundScore": 135.0,
+			"totalForceOpponent": 57.0,
+			"totalForcePlayer": 74.0,
+			"totalScore": 135.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774664916.23585": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Lyra",
+					"faction": "Seraphite",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Bottle",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "TheProphet",
+					"faction": "Seraphite",
+					"value": 7.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Manny",
+					"faction": "WLF",
+					"value": 7.0
+				},
+				{
+					"cardKey": "MedKit",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 7.0
+				},
+				{
+					"cardKey": "Bottle",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Riley",
+					"faction": "Firefly",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Isaac",
+					"faction": "WLF",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Ellie",
+					"faction": "Jackson",
+					"value": 13.0
+				},
+				{
+					"cardKey": "ShotgunShells",
+					"faction": "Support",
+					"value": 3.0
+				},
+				{
+					"cardKey": "Alice",
+					"faction": "WLF",
+					"value": 1.0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 2.0
+				},
+				{
+					"cardKey": "TrapMine",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Eugene",
+					"faction": "Firefly",
+					"value": 3.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "TommyFirefly",
+					"faction": "Firefly",
+					"value": 9.0
+				}
+			],
+			"durationInSeconds": 195.996207515061,
+			"highestDamageDealt": 13.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Jessie",
+					"faction": "Jackson",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Resilience",
+					"faction": "Support",
+					"value": 7.0
+				},
+				{
+					"cardKey": "Li",
+					"faction": "WLF",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Rage",
+					"faction": "Support",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Tommy",
+					"faction": "Jackson",
+					"value": 11.0
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Malik",
+					"faction": "Infected",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Retreat",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Shambler",
+					"faction": "Infected",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Lev",
+					"faction": "Seraphite",
+					"value": 1.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Nora",
+					"faction": "WLF",
+					"value": 4.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 7.0
+				},
+				{
+					"cardKey": "Abby",
+					"faction": "WLF",
+					"value": 1.0
+				},
+				{
+					"cardKey": "Bill",
+					"faction": "Jackson",
+					"value": 4.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 12.0,
+			"roundScore": 97.0,
+			"totalForceOpponent": 66.0,
+			"totalForcePlayer": 71.0,
+			"totalScore": 97.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774665129.19606": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Ezra",
+					"faction": "Seraphite",
+					"value": 3.0
+				},
+				{
+					"cardKey": "Retreat",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "TheProphet",
+					"faction": "Seraphite",
+					"value": 11.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "WLFSoldier",
+					"faction": "WLF",
+					"value": 7.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 2.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Li",
+					"faction": "WLF",
+					"value": 5.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Lev",
+					"faction": "Seraphite",
+					"value": 6.0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Resilience",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "TommyFirefly",
+					"faction": "Firefly",
+					"value": 14.0
+				}
+			],
+			"durationInSeconds": 125.283718393921,
+			"highestDamageDealt": 14.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "Bottle",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Yara",
+					"faction": "Seraphite",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Marlene",
+					"faction": "Firefly",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Isaac",
+					"faction": "WLF",
+					"value": 10.0
+				},
+				{
+					"cardKey": "Shambler",
+					"faction": "Infected",
+					"value": 4.0
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 9.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 1.0
+				},
+				{
+					"cardKey": "WLFSoldier",
+					"faction": "WLF",
+					"value": 3.0
+				},
+				{
+					"cardKey": "Eugene",
+					"faction": "Firefly",
+					"value": 3.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 8.0,
+			"roundScore": 134.0,
+			"totalForceOpponent": 40.0,
+			"totalForcePlayer": 50.0,
+			"totalScore": 134.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774665271.2243": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "TheProphet",
+					"faction": "Seraphite",
+					"value": 5.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Lyra",
+					"faction": "Seraphite",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Alice",
+					"faction": "WLF",
+					"value": 10.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Joel",
+					"faction": "Jackson",
+					"value": 12.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Li",
+					"faction": "WLF",
+					"value": 1.0
+				},
+				{
+					"cardKey": "Brick",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Nora",
+					"faction": "WLF",
+					"value": 5.0
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 7.0
+				},
+				{
+					"cardKey": "Brick",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Yara",
+					"faction": "Seraphite",
+					"value": 7.0
+				},
+				{
+					"cardKey": "Bottle",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Riley",
+					"faction": "Firefly",
+					"value": 5.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Eugene",
+					"faction": "Firefly",
+					"value": 8.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Abby",
+					"faction": "WLF",
+					"value": 7.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "RatKing",
+					"faction": "Infected",
+					"value": 8.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "WLFSoldier",
+					"faction": "WLF",
+					"value": 5.0
+				},
+				{
+					"cardKey": "WLFSoldier",
+					"faction": "WLF",
+					"value": 3.0
+				},
+				{
+					"cardKey": "Retreat",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 6.0
+				}
+			],
+			"durationInSeconds": 263.345216999888,
+			"highestDamageDealt": 12.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "Bottle",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Ellie",
+					"faction": "Jackson",
+					"value": 6.0
+				},
+				{
+					"cardKey": "ShotgunShells",
+					"faction": "Support",
+					"value": 3.0
+				},
+				{
+					"cardKey": "TommyFirefly",
+					"faction": "Firefly",
+					"value": 10.0
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Retreat",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Isaac",
+					"faction": "WLF",
+					"value": 10.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "TrainingManual",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Ezra",
+					"faction": "Seraphite",
+					"value": 5.0
+				},
+				{
+					"cardKey": "MedKit",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Marlene",
+					"faction": "Firefly",
+					"value": 7.0
+				},
+				{
+					"cardKey": "Rage",
+					"faction": "Support",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Tommy",
+					"faction": "Jackson",
+					"value": 9.0
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Manny",
+					"faction": "WLF",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 9.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Bill",
+					"faction": "Jackson",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Resilience",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Lev",
+					"faction": "Seraphite",
+					"value": 8.0
+				},
+				{
+					"cardKey": "ShotgunShells",
+					"faction": "Support",
+					"value": 3.0
+				},
+				{
+					"cardKey": "Emily",
+					"faction": "Seraphite",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Shambler",
+					"faction": "Infected",
+					"value": 4.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 15.0,
+			"roundScore": 75.0,
+			"totalForceOpponent": 95.0,
+			"totalForcePlayer": 93.0,
+			"totalScore": 75.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774668973.98395": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "ShotgunShells",
+					"faction": "Support",
+					"value": 3.0
+				},
+				{
+					"cardKey": "Eugene",
+					"faction": "Firefly",
+					"value": 10.0
+				},
+				{
+					"cardKey": "Rage",
+					"faction": "Support",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 11.0
+				},
+				{
+					"cardKey": "Bottle",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Riley",
+					"faction": "Firefly",
+					"value": 3.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Emily",
+					"faction": "Seraphite",
+					"value": 4.0
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Brick",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Nora",
+					"faction": "WLF",
+					"value": 4.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 2.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "TommyFirefly",
+					"faction": "Firefly",
+					"value": 9.0
+				},
+				{
+					"cardKey": "MedKit",
+					"faction": "Support",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Bill",
+					"faction": "Jackson",
+					"value": 10.0
+				}
+			],
+			"durationInSeconds": 174.173344484808,
+			"highestDamageDealt": 11.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 2.0
+				},
+				{
+					"cardKey": "MedKit",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Joel",
+					"faction": "Jackson",
+					"value": 8.0
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "RatKing",
+					"faction": "Infected",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Abby",
+					"faction": "WLF",
+					"value": 6.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Isaac",
+					"faction": "WLF",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Manny",
+					"faction": "WLF",
+					"value": 4.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Shambler",
+					"faction": "Infected",
+					"value": 4.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 9.0,
+			"roundScore": 134.0,
+			"totalForceOpponent": 46.0,
+			"totalForcePlayer": 58.0,
+			"totalScore": 134.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774669163.77801": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "WLFSoldier",
+					"faction": "WLF",
+					"value": 5.0
+				},
+				{
+					"cardKey": "TrapMine",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Marlene",
+					"faction": "Firefly",
+					"value": 5.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Jessie",
+					"faction": "Jackson",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Bottle",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Nora",
+					"faction": "WLF",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Molotov",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Joel",
+					"faction": "Jackson",
+					"value": 8.0
+				}
+			],
+			"durationInSeconds": 132.397479181804,
+			"highestDamageDealt": 8.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "MedKit",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Ellie",
+					"faction": "Jackson",
+					"value": 9.0
+				},
+				{
+					"cardKey": "Rage",
+					"faction": "Support",
+					"value": 6.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Emily",
+					"faction": "Seraphite",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 1.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 5.0
+				},
+				{
+					"cardKey": "TrainingManual",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Bill",
+					"faction": "Jackson",
+					"value": 1.0
+				},
+				{
+					"cardKey": "Eugene",
+					"faction": "Firefly",
+					"value": -1.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 7.0,
+			"roundScore": 142.0,
+			"totalForceOpponent": 21.0,
+			"totalForcePlayer": 37.0,
+			"totalScore": 142.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774669311.90524": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "Bottle",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Rage",
+					"faction": "Support",
+					"value": 6.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 11.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Riley",
+					"faction": "Firefly",
+					"value": 5.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Shambler",
+					"faction": "Infected",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Li",
+					"faction": "WLF",
+					"value": 7.0
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Malik",
+					"faction": "Infected",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Retreat",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Joel",
+					"faction": "Jackson",
+					"value": 12.0
+				}
+			],
+			"durationInSeconds": 120.457996454526,
+			"highestDamageDealt": 12.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 3.0
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Emily",
+					"faction": "Seraphite",
+					"value": 0.0
+				},
+				{
+					"cardKey": "ShotgunShells",
+					"faction": "Support",
+					"value": 3.0
+				},
+				{
+					"cardKey": "TommyFirefly",
+					"faction": "Firefly",
+					"value": 7.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Manny",
+					"faction": "WLF",
+					"value": 8.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "WLFSoldier",
+					"faction": "WLF",
+					"value": 5.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Ellie",
+					"faction": "Jackson",
+					"value": 7.0
+				},
+				{
+					"cardKey": "Lev",
+					"faction": "Seraphite",
+					"value": 3.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 8.0,
+			"roundScore": 134.0,
+			"totalForceOpponent": 38.0,
+			"totalForcePlayer": 49.0,
+			"totalScore": 134.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774669447.02172": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "ShotgunShells",
+					"faction": "Support",
+					"value": 3.0
+				},
+				{
+					"cardKey": "Li",
+					"faction": "WLF",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Molotov",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 8.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Ezra",
+					"faction": "Seraphite",
+					"value": 1.0
+				},
+				{
+					"cardKey": "Bottle",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Jessie",
+					"faction": "Jackson",
+					"value": 9.0
+				},
+				{
+					"cardKey": "TrainingManual",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Joel",
+					"faction": "Jackson",
+					"value": 12.0
+				}
+			],
+			"durationInSeconds": 103.506181424235,
+			"highestDamageDealt": 12.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Isaac",
+					"faction": "WLF",
+					"value": 10.0
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Lev",
+					"faction": "Seraphite",
+					"value": 3.0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 2.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 1.0
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Retreat",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Abby",
+					"faction": "WLF",
+					"value": 6.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 7.0,
+			"roundScore": 164.0,
+			"totalForceOpponent": 28.0,
+			"totalForcePlayer": 46.0,
+			"totalScore": 164.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774669565.05255": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 7.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 3.0
+				},
+				{
+					"cardKey": "Retreat",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Joel",
+					"faction": "Jackson",
+					"value": 10.0
+				},
+				{
+					"cardKey": "Dina",
+					"faction": "Jackson",
+					"value": 9.0
+				},
+				{
+					"cardKey": "Shambler",
+					"faction": "Infected",
+					"value": 4.0
+				},
+				{
+					"cardKey": "MedKit",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Jessie",
+					"faction": "Jackson",
+					"value": 7.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 9.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Alice",
+					"faction": "WLF",
+					"value": 7.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "TheProphet",
+					"faction": "Seraphite",
+					"value": 8.0
+				}
+			],
+			"durationInSeconds": 159.105698666633,
+			"highestDamageDealt": 10.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "MedKit",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Isaac",
+					"faction": "WLF",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Bottle",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Ellie",
+					"faction": "Jackson",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Abby",
+					"faction": "WLF",
+					"value": 6.0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 2.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 5.0
+				},
+				{
+					"cardKey": "ShotgunShells",
+					"faction": "Support",
+					"value": 3.0
+				},
+				{
+					"cardKey": "TommyFirefly",
+					"faction": "Firefly",
+					"value": 10.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Ezra",
+					"faction": "Seraphite",
+					"value": 9.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Malik",
+					"faction": "Infected",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Nora",
+					"faction": "WLF",
+					"value": 0.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 9.0,
+			"roundScore": 140.0,
+			"totalForceOpponent": 54.0,
+			"totalForcePlayer": 64.0,
+			"totalScore": 140.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774669738.85103": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "Molotov",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Tommy",
+					"faction": "Jackson",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Ezra",
+					"faction": "Seraphite",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Rage",
+					"faction": "Support",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 11.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Lyra",
+					"faction": "Seraphite",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Brick",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Lev",
+					"faction": "Seraphite",
+					"value": 5.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Yara",
+					"faction": "Seraphite",
+					"value": 4.0
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "RatKing",
+					"faction": "Infected",
+					"value": 10.0
+				}
+			],
+			"durationInSeconds": 136.538544151493,
+			"highestDamageDealt": 11.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "Shambler",
+					"faction": "Infected",
+					"value": -1.0
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 9.0
+				},
+				{
+					"cardKey": "Abby",
+					"faction": "WLF",
+					"value": 9.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Nora",
+					"faction": "WLF",
+					"value": 8.0
+				},
+				{
+					"cardKey": "WLFSoldier",
+					"faction": "WLF",
+					"value": 1.0
+				},
+				{
+					"cardKey": "MedKit",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Manny",
+					"faction": "WLF",
+					"value": 6.0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Dina",
+					"faction": "Jackson",
+					"value": 3.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 8.0,
+			"roundScore": 125.0,
+			"totalForceOpponent": 37.0,
+			"totalForcePlayer": 46.0,
+			"totalScore": 125.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774669891.88298": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "Rage",
+					"faction": "Support",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 11.0
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 7.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Ellie",
+					"faction": "Jackson",
+					"value": 11.0
+				},
+				{
+					"cardKey": "Nora",
+					"faction": "WLF",
+					"value": 5.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Lev",
+					"faction": "Seraphite",
+					"value": 10.0
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Abby",
+					"faction": "WLF",
+					"value": 11.0
+				}
+			],
+			"durationInSeconds": 101.320858090913,
+			"highestDamageDealt": 11.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "Marlene",
+					"faction": "Firefly",
+					"value": 5.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Tommy",
+					"faction": "Jackson",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Bill",
+					"faction": "Jackson",
+					"value": 4.0
+				},
+				{
+					"cardKey": "RatKing",
+					"faction": "Infected",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 2.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 6.0,
+			"roundScore": 232.0,
+			"totalForceOpponent": 29.0,
+			"totalForcePlayer": 55.0,
+			"totalScore": 232.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774670007.45895": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Lyra",
+					"faction": "Seraphite",
+					"value": 1.0
+				},
+				{
+					"cardKey": "Brick",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Lev",
+					"faction": "Seraphite",
+					"value": 6.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Malik",
+					"faction": "Infected",
+					"value": 8.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Shambler",
+					"faction": "Infected",
+					"value": 4.0
+				},
+				{
+					"cardKey": "MedKit",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Brick",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "TheProphet",
+					"faction": "Seraphite",
+					"value": 8.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "TommyFirefly",
+					"faction": "Firefly",
+					"value": 9.0
+				},
+				{
+					"cardKey": "Rage",
+					"faction": "Support",
+					"value": 6.0
+				},
+				{
+					"cardKey": "RatKing",
+					"faction": "Infected",
+					"value": 14.0
+				}
+			],
+			"durationInSeconds": 137.745035818158,
+			"highestDamageDealt": 14.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "WLFSoldier",
+					"faction": "WLF",
+					"value": 5.0
+				},
+				{
+					"cardKey": "MedKit",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Marlene",
+					"faction": "Firefly",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Ellie",
+					"faction": "Jackson",
+					"value": 10.0
+				},
+				{
+					"cardKey": "ShotgunShells",
+					"faction": "Support",
+					"value": 3.0
+				},
+				{
+					"cardKey": "Li",
+					"faction": "WLF",
+					"value": 6.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Emily",
+					"faction": "Seraphite",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Nora",
+					"faction": "WLF",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Bill",
+					"faction": "Jackson",
+					"value": 4.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 8.0,
+			"roundScore": 143.0,
+			"totalForceOpponent": 43.0,
+			"totalForcePlayer": 54.0,
+			"totalScore": 143.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774670159.70465": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Manny",
+					"faction": "WLF",
+					"value": 10.0
+				},
+				{
+					"cardKey": "Bottle",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "TheProphet",
+					"faction": "Seraphite",
+					"value": 10.0
+				},
+				{
+					"cardKey": "Bottle",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "TrainingManual",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Bill",
+					"faction": "Jackson",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Brick",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Yara",
+					"faction": "Seraphite",
+					"value": 4.0
+				}
+			],
+			"durationInSeconds": 84.5821906969811,
+			"highestDamageDealt": 10.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "Shambler",
+					"faction": "Infected",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Alice",
+					"faction": "WLF",
+					"value": 1.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "WLFSoldier",
+					"faction": "WLF",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 0.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 5.0,
+			"roundScore": 200.0,
+			"totalForceOpponent": 15.0,
+			"totalForcePlayer": 35.0,
+			"totalScore": 200.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774670259.4447": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Li",
+					"faction": "WLF",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 12.0
+				},
+				{
+					"cardKey": "Resilience",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "TommyFirefly",
+					"faction": "Firefly",
+					"value": 9.0
+				},
+				{
+					"cardKey": "Joel",
+					"faction": "Jackson",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Brick",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Nora",
+					"faction": "WLF",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Bottle",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Riley",
+					"faction": "Firefly",
+					"value": 5.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "RatKing",
+					"faction": "Infected",
+					"value": 8.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Eugene",
+					"faction": "Firefly",
+					"value": 9.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Marlene",
+					"faction": "Firefly",
+					"value": 2.0
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Abby",
+					"faction": "WLF",
+					"value": 10.0
+				}
+			],
+			"durationInSeconds": 155.981443831115,
+			"highestDamageDealt": 12.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Manny",
+					"faction": "WLF",
+					"value": 4.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Lev",
+					"faction": "Seraphite",
+					"value": 6.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 3.0
+				},
+				{
+					"cardKey": "Bill",
+					"faction": "Jackson",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Rage",
+					"faction": "Support",
+					"value": 6.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 11.0
+				},
+				{
+					"cardKey": "Retreat",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Molotov",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Tommy",
+					"faction": "Jackson",
+					"value": 5.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 10.0,
+			"roundScore": 133.0,
+			"totalForceOpponent": 49.0,
+			"totalForcePlayer": 64.0,
+			"totalScore": 133.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774670434.40264": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "Bottle",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 7.0
+				},
+				{
+					"cardKey": "Retreat",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Jessie",
+					"faction": "Jackson",
+					"value": 9.0
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Resilience",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Alice",
+					"faction": "WLF",
+					"value": 10.0
+				},
+				{
+					"cardKey": "Molotov",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Isaac",
+					"faction": "WLF",
+					"value": 4.0
+				},
+				{
+					"cardKey": "TrapMine",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Ellie",
+					"faction": "Jackson",
+					"value": 4.0
+				}
+			],
+			"durationInSeconds": 113.526459484836,
+			"highestDamageDealt": 10.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Emily",
+					"faction": "Seraphite",
+					"value": 6.0
+				},
+				{
+					"cardKey": "RatKing",
+					"faction": "Infected",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 9.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Malik",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "TheProphet",
+					"faction": "Seraphite",
+					"value": 4.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Bill",
+					"faction": "Jackson",
+					"value": -1.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 8.0,
+			"roundScore": 123.0,
+			"totalForceOpponent": 36.0,
+			"totalForcePlayer": 45.0,
+			"totalScore": 123.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774670714.87208": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Lyra",
+					"faction": "Seraphite",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Ellie",
+					"faction": "Jackson",
+					"value": 11.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 7.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Abby",
+					"faction": "WLF",
+					"value": 10.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Joel",
+					"faction": "Jackson",
+					"value": 6.0
+				},
+				{
+					"cardKey": "MedKit",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Bill",
+					"faction": "Jackson",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Resilience",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "TommyFirefly",
+					"faction": "Firefly",
+					"value": 9.0
+				}
+			],
+			"durationInSeconds": 105.810782969685,
+			"highestDamageDealt": 11.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "Brick",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Shambler",
+					"faction": "Infected",
+					"value": 4.0
+				},
+				{
+					"cardKey": "MedKit",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Isaac",
+					"faction": "WLF",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Riley",
+					"faction": "Firefly",
+					"value": -1.0
+				},
+				{
+					"cardKey": "Brick",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Dina",
+					"faction": "Jackson",
+					"value": 3.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 7.0,
+			"roundScore": 175.0,
+			"totalForceOpponent": 29.0,
+			"totalForcePlayer": 49.0,
+			"totalScore": 175.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774670842.74016": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "Shambler",
+					"faction": "Infected",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Rage",
+					"faction": "Support",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Isaac",
+					"faction": "WLF",
+					"value": 14.0
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 7.0
+				},
+				{
+					"cardKey": "MedKit",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Ezra",
+					"faction": "Seraphite",
+					"value": 7.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Joel",
+					"faction": "Jackson",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Brick",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Riley",
+					"faction": "Firefly",
+					"value": 3.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 4.0
+				},
+				{
+					"cardKey": "MedKit",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Ellie",
+					"faction": "Jackson",
+					"value": 9.0
+				}
+			],
+			"durationInSeconds": 131.460566878767,
+			"highestDamageDealt": 14.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "RatKing",
+					"faction": "Infected",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Resilience",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Emily",
+					"faction": "Seraphite",
+					"value": 10.0
+				},
+				{
+					"cardKey": "ShotgunShells",
+					"faction": "Support",
+					"value": 3.0
+				},
+				{
+					"cardKey": "TommyFirefly",
+					"faction": "Firefly",
+					"value": 10.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Yara",
+					"faction": "Seraphite",
+					"value": 0.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Malik",
+					"faction": "Infected",
+					"value": 1.0
+				},
+				{
+					"cardKey": "Abby",
+					"faction": "WLF",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Alice",
+					"faction": "WLF",
+					"value": 0.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 8.0,
+			"roundScore": 147.0,
+			"totalForceOpponent": 41.0,
+			"totalForcePlayer": 54.0,
+			"totalScore": 147.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774670989.57051": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Emily",
+					"faction": "Seraphite",
+					"value": 3.0
+				},
+				{
+					"cardKey": "TommyFirefly",
+					"faction": "Firefly",
+					"value": 7.0
+				},
+				{
+					"cardKey": "Retreat",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Isaac",
+					"faction": "WLF",
+					"value": 10.0
+				},
+				{
+					"cardKey": "Bottle",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Ellie",
+					"faction": "Jackson",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Shambler",
+					"faction": "Infected",
+					"value": 6.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Brick",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Lev",
+					"faction": "Seraphite",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Bottle",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Yara",
+					"faction": "Seraphite",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Brick",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "TheProphet",
+					"faction": "Seraphite",
+					"value": 8.0
+				}
+			],
+			"durationInSeconds": 146.526509571397,
+			"highestDamageDealt": 10.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "TrapMine",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Marlene",
+					"faction": "Firefly",
+					"value": 6.0
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Abby",
+					"faction": "WLF",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Bill",
+					"faction": "Jackson",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Manny",
+					"faction": "WLF",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Ezra",
+					"faction": "Seraphite",
+					"value": 3.0
+				},
+				{
+					"cardKey": "TrainingManual",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Joel",
+					"faction": "Jackson",
+					"value": 6.0
+				},
+				{
+					"cardKey": "WLFSoldier",
+					"faction": "WLF",
+					"value": 1.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 9.0,
+			"roundScore": 141.0,
+			"totalForceOpponent": 39.0,
+			"totalForcePlayer": 56.0,
+			"totalScore": 141.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774671159.00085": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "Brick",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Yara",
+					"faction": "Seraphite",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Resilience",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "TommyFirefly",
+					"faction": "Firefly",
+					"value": 9.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 6.0
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 7.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Malik",
+					"faction": "Infected",
+					"value": 7.0
+				},
+				{
+					"cardKey": "Shambler",
+					"faction": "Infected",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Retreat",
+					"faction": "Support",
+					"value": 6.0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 14.0
+				}
+			],
+			"durationInSeconds": 116.374458242412,
+			"highestDamageDealt": 14.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Joel",
+					"faction": "Jackson",
+					"value": 4.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 7.0
+				},
+				{
+					"cardKey": "MedKit",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Nora",
+					"faction": "WLF",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Riley",
+					"faction": "Firefly",
+					"value": 5.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 7.0,
+			"roundScore": 147.0,
+			"totalForceOpponent": 37.0,
+			"totalForcePlayer": 47.0,
+			"totalScore": 147.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774671290.22993": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "Bottle",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Riley",
+					"faction": "Firefly",
+					"value": 1.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Manny",
+					"faction": "WLF",
+					"value": 12.0
+				},
+				{
+					"cardKey": "Brick",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Lev",
+					"faction": "Seraphite",
+					"value": 11.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 7.0
+				},
+				{
+					"cardKey": "Rage",
+					"faction": "Support",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Abby",
+					"faction": "WLF",
+					"value": 13.0
+				}
+			],
+			"durationInSeconds": 91.3023080000124,
+			"highestDamageDealt": 13.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 1.0
+				},
+				{
+					"cardKey": "TrainingManual",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Joel",
+					"faction": "Jackson",
+					"value": 8.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 3.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Jessie",
+					"faction": "Jackson",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Malik",
+					"faction": "Infected",
+					"value": 4.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 5.0,
+			"roundScore": 233.0,
+			"totalForceOpponent": 21.0,
+			"totalForcePlayer": 44.0,
+			"totalScore": 233.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774671395.96996": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "Rage",
+					"faction": "Support",
+					"value": 6.0
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Li",
+					"faction": "WLF",
+					"value": 5.0
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Retreat",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Isaac",
+					"faction": "WLF",
+					"value": 12.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 3.0
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0.0
+				},
+				{
+					"cardKey": "Dina",
+					"faction": "Jackson",
+					"value": -1.0
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Lyra",
+					"faction": "Seraphite",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Manny",
+					"faction": "WLF",
+					"value": 11.0
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Yara",
+					"faction": "Seraphite",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Brick",
+					"faction": "Support",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Nora",
+					"faction": "WLF",
+					"value": 5.0
+				},
+				{
+					"cardKey": "ShotgunShells",
+					"faction": "Support",
+					"value": 3.0
+				},
+				{
+					"cardKey": "WLFSoldier",
+					"faction": "WLF",
+					"value": 6.0
+				}
+			],
+			"durationInSeconds": 203.728224666596,
+			"highestDamageDealt": 12.0,
+			"multiplier": 1.0,
+			"opponentCards": [
+				{
+					"cardKey": "Molotov",
+					"faction": "Support",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 5.0
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "RatKing",
+					"faction": "Infected",
+					"value": 10.0
+				},
+				{
+					"cardKey": "Abby",
+					"faction": "WLF",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Emily",
+					"faction": "Seraphite",
+					"value": 4.0
+				},
+				{
+					"cardKey": "MedKit",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Marlene",
+					"faction": "Firefly",
+					"value": 4.0
+				},
+				{
+					"cardKey": "Bottle",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Ellie",
+					"faction": "Jackson",
+					"value": 6.0
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Lev",
+					"faction": "Seraphite",
+					"value": 8.0
+				},
+				{
+					"cardKey": "Jessie",
+					"faction": "Jackson",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Joel",
+					"faction": "Jackson",
+					"value": 2.0
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 2.0
+				},
+				{
+					"cardKey": "Eugene",
+					"faction": "Firefly",
+					"value": 5.0
+				},
+				{
+					"cardKey": "Alice",
+					"faction": "WLF",
+					"value": -1.0
+				}
+			],
+			"outcome": "WIN",
+			"playerHealthRemaining": 99.0,
+			"roundCount": 11.0,
+			"roundScore": 94.0,
+			"totalForceOpponent": 56.0,
+			"totalForcePlayer": 60.0,
+			"totalScore": 94.0,
+			"underdogRounds": 0.0
+		}
+	],
+	"1774671620.4754": [
+		{
+			"activeModifiers": [],
+			"cardsPlayed": [
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
 					"value": 2
+				},
+				{
+					"cardKey": "WLFSoldier",
+					"faction": "WLF",
+					"value": 5
 				},
 				{
 					"cardKey": "Bottle",
@@ -4774,29 +12244,94 @@
 					"value": 2
 				},
 				{
-					"cardKey": "Alice",
-					"faction": "WLF",
-					"value": 3
+					"cardKey": "Dina",
+					"faction": "Jackson",
+					"value": 7
 				},
 				{
-					"cardKey": "ShotgunShells",
+					"cardKey": "Molotov",
 					"faction": "Support",
-					"value": 3
-				},
-				{
-					"cardKey": "Li",
-					"faction": "WLF",
-					"value": 3
-				},
-				{
-					"cardKey": "ReinforcedMelee",
-					"faction": "Support",
-					"value": 2
+					"value": 5
 				},
 				{
 					"cardKey": "Runner",
 					"faction": "Infected",
+					"value": 2
+				},
+				{
+					"cardKey": "Resilience",
+					"faction": "Support",
+					"value": 5
+				},
+				{
+					"cardKey": "Alice",
+					"faction": "WLF",
+					"value": 7
+				},
+				{
+					"cardKey": "Silencer",
+					"faction": "Support",
 					"value": 4
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 6
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2
+				},
+				{
+					"cardKey": "TommyFirefly",
+					"faction": "Firefly",
+					"value": 6
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 8
+				},
+				{
+					"cardKey": "FireflySoldier",
+					"faction": "Firefly",
+					"value": 10
+				},
+				{
+					"cardKey": "SmokeBomb",
+					"faction": "Support",
+					"value": 4
+				},
+				{
+					"cardKey": "Stalker",
+					"faction": "Infected",
+					"value": 7
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 5
+				},
+				{
+					"cardKey": "TrainingManual",
+					"faction": "Support",
+					"value": 2
+				},
+				{
+					"cardKey": "Eugene",
+					"faction": "Firefly",
+					"value": 6
+				},
+				{
+					"cardKey": "Clicker",
+					"faction": "Infected",
+					"value": 5
 				},
 				{
 					"cardKey": "Silencer",
@@ -4809,39 +12344,19 @@
 					"value": 7
 				},
 				{
-					"cardKey": "Shambler",
-					"faction": "Infected",
-					"value": 4
-				},
-				{
-					"cardKey": "Runner",
-					"faction": "Infected",
-					"value": 4
-				},
-				{
-					"cardKey": "Clicker",
-					"faction": "Infected",
+					"cardKey": "Marlene",
+					"faction": "Firefly",
 					"value": 5
 				},
 				{
-					"cardKey": "ScavengedParts",
+					"cardKey": "Brick",
 					"faction": "Support",
 					"value": 2
-				},
-				{
-					"cardKey": "Emily",
-					"faction": "Seraphite",
-					"value": 6
-				},
-				{
-					"cardKey": "Silencer",
-					"faction": "Support",
-					"value": 4
 				},
 				{
 					"cardKey": "Stalker",
 					"faction": "Infected",
-					"value": 2
+					"value": 5
 				},
 				{
 					"cardKey": "ScavengedParts",
@@ -4854,34 +12369,14 @@
 					"value": 4
 				},
 				{
-					"cardKey": "MedKit",
+					"cardKey": "Molotov",
 					"faction": "Support",
-					"value": 2
+					"value": 5
 				},
 				{
-					"cardKey": "Marlene",
-					"faction": "Firefly",
-					"value": 3
-				},
-				{
-					"cardKey": "Rage",
-					"faction": "Support",
-					"value": 6
-				},
-				{
-					"cardKey": "Isaac",
-					"faction": "WLF",
-					"value": 12
-				}
-			],
-			"durationInSeconds": 1263.92347069785,
-			"highestDamageDealt": 12,
-			"multiplier": 1.0,
-			"opponentCards": [
-				{
-					"cardKey": "Eugene",
-					"faction": "Firefly",
-					"value": 3
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 4
 				},
 				{
 					"cardKey": "SmokeBomb",
@@ -4889,85 +12384,25 @@
 					"value": 4
 				},
 				{
-					"cardKey": "Riley",
-					"faction": "Firefly",
-					"value": 1
-				},
-				{
-					"cardKey": "Bottle",
-					"faction": "Support",
-					"value": 2
-				},
-				{
-					"cardKey": "Lev",
+					"cardKey": "Yara",
 					"faction": "Seraphite",
-					"value": 2
-				},
-				{
-					"cardKey": "MedKit",
-					"faction": "Support",
-					"value": 2
-				},
-				{
-					"cardKey": "Manny",
-					"faction": "WLF",
 					"value": 4
 				},
 				{
-					"cardKey": "Supplements",
+					"cardKey": "Retreat",
 					"faction": "Support",
-					"value": 2
+					"value": 4
 				},
 				{
-					"cardKey": "WLFSoldier",
-					"faction": "WLF",
-					"value": 5
-				},
-				{
-					"cardKey": "Rage",
-					"faction": "Support",
-					"value": 6
-				},
-				{
-					"cardKey": "Runner",
+					"cardKey": "Shambler",
 					"faction": "Infected",
 					"value": 8
-				},
-				{
-					"cardKey": "FireflySoldier",
-					"faction": "Firefly",
-					"value": 2
-				},
-				{
-					"cardKey": "SupplyCache",
-					"faction": "Support",
-					"value": 0
-				},
-				{
-					"cardKey": "Dina",
-					"faction": "Jackson",
-					"value": 7
-				},
-				{
-					"cardKey": "ReinforcedMelee",
-					"faction": "Support",
-					"value": 2
-				},
-				{
-					"cardKey": "RatKing",
-					"faction": "Infected",
-					"value": 10
-				},
-				{
-					"cardKey": "SupplyCache",
-					"faction": "Support",
-					"value": 0
-				},
-				{
-					"cardKey": "TheProphet",
-					"faction": "Seraphite",
-					"value": 10
-				},
+				}
+			],
+			"durationInSeconds": 299.02653569683,
+			"highestDamageDealt": 10,
+			"multiplier": 1.0,
+			"opponentCards": [
 				{
 					"cardKey": "Supplements",
 					"faction": "Support",
@@ -4976,17 +12411,27 @@
 				{
 					"cardKey": "Abby",
 					"faction": "WLF",
-					"value": 10
+					"value": 8
 				},
 				{
-					"cardKey": "Molotov",
+					"cardKey": "Retreat",
 					"faction": "Support",
-					"value": 5
+					"value": 4
 				},
 				{
-					"cardKey": "Clicker",
-					"faction": "Infected",
-					"value": 5
+					"cardKey": "Jessie",
+					"faction": "Jackson",
+					"value": 7
+				},
+				{
+					"cardKey": "Rage",
+					"faction": "Support",
+					"value": 6
+				},
+				{
+					"cardKey": "Tommy",
+					"faction": "Jackson",
+					"value": 6
 				},
 				{
 					"cardKey": "Supplements",
@@ -4994,33 +12439,138 @@
 					"value": 2
 				},
 				{
-					"cardKey": "SeraphiteBrute",
-					"faction": "Seraphite",
-					"value": 9
+					"cardKey": "Manny",
+					"faction": "WLF",
+					"value": 6
 				},
 				{
-					"cardKey": "TrapMine",
+					"cardKey": "Silencer",
 					"faction": "Support",
+					"value": 4
+				},
+				{
+					"cardKey": "Isaac",
+					"faction": "WLF",
+					"value": 10
+				},
+				{
+					"cardKey": "ScavengedParts",
+					"faction": "Support",
+					"value": 2
+				},
+				{
+					"cardKey": "Li",
+					"faction": "WLF",
 					"value": 5
+				},
+				{
+					"cardKey": "Yara",
+					"faction": "Seraphite",
+					"value": 8
+				},
+				{
+					"cardKey": "Ellie",
+					"faction": "Jackson",
+					"value": 7
+				},
+				{
+					"cardKey": "Emily",
+					"faction": "Seraphite",
+					"value": 1
+				},
+				{
+					"cardKey": "MedKit",
+					"faction": "Support",
+					"value": 2
+				},
+				{
+					"cardKey": "Shambler",
+					"faction": "Infected",
+					"value": 6
+				},
+				{
+					"cardKey": "Runner",
+					"faction": "Infected",
+					"value": 2
+				},
+				{
+					"cardKey": "MedKit",
+					"faction": "Support",
+					"value": 2
+				},
+				{
+					"cardKey": "Bill",
+					"faction": "Jackson",
+					"value": 6
+				},
+				{
+					"cardKey": "Riley",
+					"faction": "Firefly",
+					"value": 3
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0
+				},
+				{
+					"cardKey": "RatKing",
+					"faction": "Infected",
+					"value": 8
+				},
+				{
+					"cardKey": "ReinforcedMelee",
+					"faction": "Support",
+					"value": 4
+				},
+				{
+					"cardKey": "Lev",
+					"faction": "Seraphite",
+					"value": 5
+				},
+				{
+					"cardKey": "SupplyCache",
+					"faction": "Support",
+					"value": 0
 				},
 				{
 					"cardKey": "Joel",
 					"faction": "Jackson",
-					"value": 10
+					"value": 6
 				},
 				{
-					"cardKey": "Malik",
+					"cardKey": "Rage",
+					"faction": "Support",
+					"value": 8
+				},
+				{
+					"cardKey": "Isaac",
+					"faction": "WLF",
+					"value": 9
+				},
+				{
+					"cardKey": "Supplements",
+					"faction": "Support",
+					"value": 2
+				},
+				{
+					"cardKey": "RatKing",
 					"faction": "Infected",
-					"value": 3
+					"value": 6
+				},
+				{
+					"cardKey": "SeraphiteBrute",
+					"faction": "Seraphite",
+					"value": 5
 				}
 			],
 			"outcome": "WIN",
 			"playerHealthRemaining": 99,
-			"roundCount": 15,
-			"roundScore": 25,
-			"totalForceOpponent": 89,
-			"totalForcePlayer": 68,
-			"totalScore": 25,
+			"roundCount": 19,
+			"roundScore": 49,
+			"totalForceOpponent": 114,
+			"totalForcePlayer": 111,
+			"totalScore": 49,
 			"underdogRounds": 0
 		}
 	]

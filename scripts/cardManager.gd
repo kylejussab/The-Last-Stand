@@ -269,14 +269,17 @@ func _reset_card_visuals(card: Node2D) -> void:
 	if not "perk" in card or card.perk == null: 
 		return
 		
-	var animationPlayer = card.get_node("AnimationPlayer")
+	var anim = card.get_node("AnimationPlayer")
 	
-	# Added: Check if the assigned animation is actually the perk description
-	if animationPlayer.assigned_animation == "showPerkDescription" and animationPlayer.current_animation_position > 0:
-		
+	if anim.current_animation == "showPerkDescription":
 		if AccessibilityData.animationsDisabled:
-			animationPlayer.play("showPerkDescription")
-			animationPlayer.seek(0, true)
-			animationPlayer.stop()
+			anim.play("showPerkDescription")
+			anim.seek(0, true)
+			anim.stop()
 		else:
-			animationPlayer.play_backwards("showPerkDescription")
+			anim.play_backwards("showPerkDescription")
+			
+	elif anim.assigned_animation == "showPerkDescription" and not anim.is_playing():
+		anim.play("showPerkDescription")
+		anim.seek(0, true)
+		anim.stop()

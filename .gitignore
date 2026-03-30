@@ -30,6 +30,9 @@ Icon?
 build/
 exports/
 
+# Ignore full card assets
+assets/cards/premium/
+
 # Ignore data logs
 game_balance_data.json
 

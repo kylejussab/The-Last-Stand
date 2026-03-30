@@ -144,15 +144,22 @@ func _update_art_style():
 	if not has_node("image"): return
 	
 	match AccessibilityData.currentCardStyle:
-		AccessibilityData.CardStyle.MINIMAL:
-			$image.texture = load("res://assets/cards/" + cardKey + "Card.png")
 		AccessibilityData.CardStyle.NO_ARTWORK:
 			if faction != "":
 				$image.texture = load("res://assets/cards/" + faction + ".png")
 			else:
 				$image.texture = load("res://assets/cards/Support.png")
-		_:
-			$image.texture = load("res://assets/cards/" + cardKey + "Card.png")
+				
+		AccessibilityData.CardStyle.MINIMAL, _: 
+			var cardArtPath = "res://assets/cards/premium/" + cardKey + "Card.png"
+			
+			if ResourceLoader.exists(cardArtPath):
+				$image.texture = load(cardArtPath)
+			else:
+				if faction != "":
+					$image.texture = load("res://assets/cards/" + faction + ".png")
+				else:
+					$image.texture = load("res://assets/cards/Support.png")
 
 func _format_perk_text(rawText: String) -> String:
 	var richText = rawText

@@ -324,6 +324,9 @@ func _customLoopAmbience(player: AudioStreamPlayer2D, type: String) -> void:
 	ambienceTween.tween_property(player, "volume_db", 0.0, customLoopFadeTime)
 
 func change_ambience_volume(targetVolume: float, fadeTime: float = 0.5) -> void:
+	if activeAmbience == "none":
+		return
+		
 	if ambienceVolumeTween and ambienceVolumeTween.is_valid():
 		ambienceVolumeTween.kill()
 		
