@@ -6,9 +6,8 @@ const CHARACTERS = { # Value, Type, Faction, Class, Card Name Text, Perk Text
 	"Lev": [3, "Character", "Seraphite", "Stealthy/Survivor", "LEV", "+5 if Yara or Abby in hand and +3 if no Seraphite in hand"],
 	"TheProphet": [6, "Character", "Seraphite", "Defensive/Stealthy", "THE PROPHET", "+2 if opposing card is Aggressive or Stealthy and +1 for each Stealthy in hand"],
 	"Emily": [4, "Character", "Seraphite", "Survivor", "EMILY", "+1 for each Seraphite in hand"],
-	"Ezra": [3, "Character", "Seraphite", "Crafty/Defensive", "EZRA", "+2 if your hand contains no Aggressive cards"],
-	"Lyra": [2, "Character", "Seraphite", "Survivor", "LYRA", "+2 if opponent plays no support card"],
 	"SeraphiteBrute": [5, "Character", "Seraphite", "Aggressive", "BRUTE", "+2 if opposing card's value is 3 or less"],
+	"SeraphiteInitiate": [3, "Character", "Seraphite", "Survivor", "INITIATE", "+3 if your hand contains no Aggressive cards"],
 	
 	# WLF
 	"Abby": [6, "Character", "WLF", "Aggressive", "ABBY", "+2 if opposing card is Aggressive and +1 if opposing card is Infected"],
@@ -111,8 +110,7 @@ const PERKS = {
 	"Riley": "res://scripts/perks/rileyPerk.gd",
 	"Eugene": "res://scripts/perks/eugenePerk.gd",
 	"Tommy": "res://scripts/perks/tommyPerk.gd",
-	"Ezra": "res://scripts/perks/ezraPerk.gd",
-	"Lyra": "res://scripts/perks/lyraPerk.gd",
+	"SeraphiteInitiate": "res://scripts/perks/seraphiteInitiatePerk.gd",
 	"Li": "res://scripts/perks/liPerk.gd",
 	"SeraphiteBrute": "res://scripts/perks/seraphiteBrutePerk.gd",
 	
@@ -387,10 +385,11 @@ const standardCharacterDeck = [
 	"FireflySoldier", "FireflySoldier", "FireflySoldier",
 	"WLFSoldier", "WLFSoldier",
 	"SeraphiteBrute", "SeraphiteBrute",
+	"SeraphiteInitiate", "SeraphiteInitiate",
 	
 	"Clicker", "Clicker",
 	"Shambler",
-	"Emily", "Ezra", "Lev", "Yara", "Lyra",
+	"Emily", "Lev", "Yara",
 	"Nora", "Manny", "Alice", "Li",
 	"Bill", "Dina", "Jessie", "Tommy", "TommyFirefly",
 	"Riley", "Eugene", "Malik",
@@ -437,10 +436,11 @@ const infectedHeavyCharacterDeck = [
 	"FireflySoldier",
 	"WLFSoldier",
 	"SeraphiteBrute",
+	"SeraphiteInitiate", "SeraphiteInitiate",
 	
 	"Clicker", "Clicker",
 	"Bloater",
-	"Emily", "Ezra", "Lev", "Yara", "Lyra",
+	"Emily", "Lev", "Yara",
 	"Nora", "Manny", "Alice", "Li",
 	"Bill", "Dina", "Jessie", "Tommy", "TommyFirefly",
 	"Riley", "Eugene", "Malik",
@@ -486,7 +486,8 @@ const humanityRestoredCharacterDeck = [
 	"Manny", "Nora", "AliceHumanity",
 	
 	"SeraphiteBrute", "SeraphiteBrute", "SeraphiteBrute",
-	"TheProphet", "Emily", "Ezra", "Lev", "Yara", "Lyra",
+	"SeraphiteInitiate", "SeraphiteInitiate",
+	"TheProphet", "Emily", "Lev", "Yara",
 	
 	"JoelSmuggler", "Tess", 
 	"BillSmuggler", 
@@ -520,9 +521,8 @@ const REMNANT_CHARACTERS = {
 	"Lev": [3, "Character", "Seraphite", "Stealthy/Survivor", "LEV", "Duo: +5 if played with Yara and +3 if opposing card base value is greater than Lev's"],
 	"SeraphiteBrute": [5, "Character", "Seraphite", "Aggressive", "SERAPHITE BRUTE", "+2 if opposing card value is 3 or less"],
 	"Yara": [4, "Character", "Seraphite", "Stealthy", "YARA", "+3 if opposing card value is 8 or higher"],
-	"Ezra": [3, "Character", "Seraphite", "Crafty/Defensive", "EZRA", "+2 if opposing card is Aggressive"],
+	"SeraphiteInitiate": [2, "Character", "Seraphite", "Survivor", "INITIATE", "+2 if opposing card is Aggressive"],
 	"Emily": [4, "Character", "Seraphite", "Survivor", "EMILY", "+1 for each Stealthy or Survivor in hand"],
-	"Lyra": [2, "Character", "Seraphite", "Survivor", "LYRA", "+2 if opposing card is Crafty or Stealthy"],
 	"SeraphiteRecruit": [1, "Character", "Seraphite", "Aggressive", "RECRUIT", "No perk"],
 	
 	#Infected

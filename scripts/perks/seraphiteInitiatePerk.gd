@@ -13,7 +13,7 @@ func apply_mid_perk(thisCard, thisHand, _otherCard) -> void:
 				break
 			
 	if not foundAggressiveCharacter:
-		thisCard.modify_value(2)
+		thisCard.modify_value(3)
 
 func would_perk_trigger(_thisCard, thisHand, _otherCard) -> bool:
 	for ally in thisHand:
