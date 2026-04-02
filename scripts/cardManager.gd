@@ -207,7 +207,6 @@ func move_card_on_double_click(card, cardSlot):
 		
 		card.z_index = -1
 		card.position = cardSlot.position
-		#card.get_node("Area2D/CollisionShape2D").disabled = true
 		cardSlot.occupied = true
 		card.cardSlot = cardSlot
 		
@@ -241,7 +240,7 @@ func play_top_character_from_deck() -> void:
 	tween.tween_property(card, "position", characterSlot.position, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	
 	tween.finished.connect(func(): 
-		card.play_draw_sound()
+		AudioManager.play_random_card_draw()
 		card.z_index = 0
 	)
 

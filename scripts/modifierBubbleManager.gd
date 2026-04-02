@@ -5,7 +5,7 @@ const SPACING = 90.0
 const BUBBLE_SCENE = preload("res://scenes/modifierBubble.tscn")
 
 func render_active_modifiers() -> void:
-	var modifiers = GameStats.activeModifiers
+	var modifiers = HoldoutStats.activeModifiers
 	
 	while get_child_count() < modifiers.size():
 		var index_to_add = get_child_count()

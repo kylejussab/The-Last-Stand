@@ -33,6 +33,9 @@ exports/
 # Ignore full card assets
 assets/cards/premium/
 
+# Ignore holdout MVPs
+assets/holdout/mvp/
+
 # Ignore data logs
 game_balance_data.json
 

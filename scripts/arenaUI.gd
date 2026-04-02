@@ -9,11 +9,11 @@ extends Node2D
 @onready var opponentHead: Node2D = $opponent/head
 
 @onready var battleManager: Node = %battleManager
-@onready var battleAnimator: Node = %battleAnimator
+@onready var holdoutEndScreenAnimator: Node = %holdoutEndScreenAnimator
 @onready var modifierUI: Node2D = %modifier
 
 func _ready() -> void:
-	for button in %gameOver.get_children():
+	for button in %holdoutEndStats.get_children():
 		if button is Button:
 			button.mouse_entered.connect(AudioManager.play_button_hover)
 			button.pressed.connect(AudioManager.play_button_click)
@@ -26,7 +26,7 @@ func update_health(who: Actor.Type, value: int, instant: bool = false) -> void:
 	var startValue: int = int(label.text)
 	
 	if who == Actor.Type.PLAYER:
-		Database.AVATARS[GameStats.currentPlayer].health = value
+		Database.AVATARS[HoldoutStats.currentPlayer].health = value
 	
 	if AccessibilityData.animationsDisabled or instant:
 		label.text = "%02d" % value
@@ -120,14 +120,14 @@ func show_end_turn_button(visibility: bool = true) -> void:
 
 # Privates
 func _on_continue_button_pressed() -> void:
-	GameStats.replayedRound = false
-	GameStats.lastStandTotalScore += GameStats.lastStandCurrentRoundScore
+	HoldoutStats.replayedRound = false
+	HoldoutStats.totalRunRations = HoldoutStats.currentRunRations
 	
 	if GameStats.gameMode == GameStats.Mode.HOLDOUT_ROUND_COMPLETED:
-		GameStats.playerHealthValue = int(playerHealthLabel.text)
+		HoldoutStats.playerHealthValue = int(playerHealthLabel.text)
 		GameStats.gameMode = GameStats.Mode.HOLDOUT
 	
-	battleAnimator.handle_modifier_durations()
+	holdoutEndScreenAnimator.handle_modifier_durations()
 	
 	_fade_with_round_reset()
 
@@ -142,7 +142,7 @@ func _on_replay_button_mouse_exited() -> void:
 	%holdIcon.get_node("text").position.x = 1700
 
 func _on_replay_button_hold_complete() -> void:
-	GameStats.replayedRound = true
+	HoldoutStats.replayedRound = true
 	
 	if GameStats.gameMode == GameStats.Mode.HOLDOUT_ROUND_COMPLETED:
 		GameStats.gameMode = GameStats.Mode.HOLDOUT
@@ -161,9 +161,7 @@ func _on_new_run_button_mouse_exited() -> void:
 
 func _on_new_run_button_hold_complete() -> void:
 	GameStats.gameMode = GameStats.Mode.HOLDOUT
-	GameStats.reset_all_data()
-	
-	GameStats.start_new_run_log()
+	HoldoutStats.reset_for_new_run()
 	
 	Curtain.change_scene("res://scenes/main.tscn")
 
@@ -193,34 +191,35 @@ func _fade_with_round_reset() -> void:
 	change_mood(Actor.Type.PLAYER, Actor.Mood.NEUTRAL)
 	change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
 	set_indicator(Actor.Type.NONE)
-	_reset_game_over_ui()
+	_reset_holdout_stats_ui()
 	_reset_board_state()
 	
-	update_health(Actor.Type.PLAYER, GameStats.playerHealthValue, true)
+	update_health(Actor.Type.PLAYER, HoldoutStats.playerHealthValue, true)
 	
 	await get_tree().create_timer(1).timeout
 	Curtain.fade_out()
 	
 	battleManager.prepare_opponent()
 	
-	if GameStats.numberOfWins % 2 == 1 and not GameStats.replayedRound:
+	if HoldoutStats.numberOfWins % 2 == 1 and not HoldoutStats.replayedRound:
 		GameStats.gameMode = GameStats.Mode.MODIFIER_SELECTION
 		modifierUI.show_modifier_menu()
 	else:
 		battleManager.initialize_game()
 
-func _reset_game_over_ui() -> void:
-	%gameOver.visible = false
+func _reset_holdout_stats_ui() -> void:
+	%holdoutEndStats.visible = false
 	
-	for child in %gameOver.get_children():
-		child.visible = false
+	%holdoutEndStats.get_node("AnimationPlayer").play("RESET")
+	
+	for child in %holdoutEndStats.get_children():
 		if child is Button:
 			child.disabled = true
 
 func _reset_board_state() -> void:
 	battleManager.lockPlayerInput = true
 	show_end_turn_button(false)
-	GameStats.reset_round_stats()
+	HoldoutStats.reset_for_new_battle()
 	%playerHand.playerHand.clear()
 	%opponentHand.opponentHand.clear()
 	

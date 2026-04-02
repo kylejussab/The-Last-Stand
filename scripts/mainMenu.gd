@@ -188,9 +188,7 @@ func _on_new_button_mouse_exited() -> void:
 
 func _on_new_button_hold_complete() -> void:
 	GameStats.gameMode = GameStats.Mode.HOLDOUT
-	GameStats.reset_all_data()
-	
-	GameStats.start_new_run_log()
+	HoldoutStats.reset_for_new_run()
 	
 	Curtain.change_scene("res://scenes/main.tscn")
 	

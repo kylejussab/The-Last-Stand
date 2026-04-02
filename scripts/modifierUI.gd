@@ -13,9 +13,6 @@ var slotTwoActive: bool = false
 var slotThreeActive: bool = false
 
 var playingStartAnimation: bool = false
-#var canPlayHoverSound: bool = true
-
-@onready var battleAnimator: Node = %battleAnimator
 
 func _ready() -> void:
 	%pauseIcon.hide()
@@ -113,14 +110,14 @@ func _select_modifiers() -> void:
 	
 	var availableByTier = { 1: [], 2: [], 3: [] }
 	var activeIdModifiers = []
-	for active in GameStats.activeModifiers:
+	for active in HoldoutStats.activeModifiers:
 		activeIdModifiers.append(active["id"])
 	
 	for modifier in Database.MODIFIERS.values():
 		if not modifier["id"] in activeIdModifiers:
 			var tier = modifier["tier"]
 			
-			if modifier.has("healthCost") and GameStats.playerHealthValue <= modifier["healthCost"]:
+			if modifier.has("healthCost") and HoldoutStats.playerHealthValue <= modifier["healthCost"]:
 				continue
 			
 			if availableByTier.has(tier):
@@ -132,11 +129,11 @@ func _select_modifiers() -> void:
 	
 	var currentPicks = [tierOneModifier.id, tierTwoModifier.id, tierThreeModifier.id]
 	
-	GameStats.lastOfferedModifierIds.append_array(currentPicks)
+	HoldoutStats.lastOfferedModifierIds.append_array(currentPicks)
 	
-	if GameStats.lastOfferedModifierIds.size() >= 12: # currently 60% of the entire list (20 mods)
-		GameStats.lastOfferedModifierIds.clear()
-		GameStats.lastOfferedModifierIds.append_array(currentPicks)
+	if HoldoutStats.lastOfferedModifierIds.size() >= 12: # currently 60% of the entire list (20 mods)
+		HoldoutStats.lastOfferedModifierIds.clear()
+		HoldoutStats.lastOfferedModifierIds.append_array(currentPicks)
 	
 	_update_slot_ui(tierOneModifier, slotOne)
 	_update_slot_ui(tierTwoModifier, slotTwo)
@@ -178,7 +175,7 @@ func _pick_weighted_modifier(tierPool: Array) -> Dictionary:
 	if randf() < 0.8:
 		var freshPool = []
 		for modifier in tierPool:
-			if not modifier.id in GameStats.lastOfferedModifierIds:
+			if not modifier.id in HoldoutStats.lastOfferedModifierIds:
 				freshPool.append(modifier)
 		
 		# Fallback if too many "fresh" picks were chosen

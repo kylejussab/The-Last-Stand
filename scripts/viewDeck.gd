@@ -174,6 +174,7 @@ func _add_visual_card(key, grid, isCharacter):
 		card.nameText = data[4]
 		if data.size() > 5: card.perkDescription = data[5]
 		card.faction = "Support" 
+		card.get_node("icons/faction").hide()
 	
 	card.process_mode = Node.PROCESS_MODE_DISABLED
 	card.scale = CARD_SCALE

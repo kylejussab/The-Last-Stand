@@ -7,6 +7,8 @@ extends Node
 @onready var slotSpin = $UI/SlotSpin
 @onready var slotStop = $UI/SlotStop
 @onready var clickerCry = $UI/ClickerCry
+@onready var rationsCollected = $UI/RationsCollected
+@onready var badgeThud = $UI/BadgeThud
 
 @onready var takeDamage = $Effects/TakeDamage
 @onready var cardHover = $Effects/CardHover
@@ -40,6 +42,13 @@ var shuffleSounds = [
 	preload("res://assets/sounds/cards/shuffle_2.wav"),
 	preload("res://assets/sounds/cards/shuffle_3.wav"),
 	preload("res://assets/sounds/cards/shuffle_4.wav")
+]
+
+var rationCollectionSounds = [
+	preload("res://assets/sounds/ui/rationsCollected.wav"),
+	preload("res://assets/sounds/ui/rationsCollected2.wav"),
+	preload("res://assets/sounds/ui/rationsCollected3.wav"),
+	preload("res://assets/sounds/ui/rationsCollected4.wav")
 ]
 
 var beyondTheThreshold = [
@@ -84,6 +93,14 @@ func play_slot_stop() -> void:
 
 func play_clicker_cry() -> void:
 	clickerCry.play()
+
+func play_random_rations_collected() -> void:
+	rationsCollected.stream = rationCollectionSounds.pick_random()
+	rationsCollected.play()
+
+func play_badge_thud() -> void:
+	badgeThud.pitch_scale = randf_range(0.9, 1.1)
+	badgeThud.play()
 
 func play_take_damage() -> void:
 	takeDamage.play()

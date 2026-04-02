@@ -142,49 +142,49 @@ var AVATARS = {
 	Actor.Avatar.ETHAN: {
 		"name": "Ethan Hark",
 		"description": "Patrol Leader",
-		"health": "%02d" % 20,
+		"health": "%02d" % 2,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.RHEA: {
 		"name": "Rhea",
 		"description": "Matriarch",
-		"health": "%02d" % 20,
+		"health": "%02d" % 2,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.UCKMANN: {
 		"name": "Dr Uckmann",
 		"description": "Dog Director",
-		"health": "%02d" % 20,
+		"health": "%02d" % 2,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.ALLEY: {
 		"name": "Alley Ross",
 		"description": "Scriptweaver",
-		"health": "%02d" % 20,
+		"health": "%02d" % 2,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.SILAS: {
 		"name": "Silas Vane",
 		"description": "Scavenger King",
-		"health": "%02d" % 20,
+		"health": "%02d" % 2,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.MIRA: {
 		"name": "Mira Thorne",
 		"description": "Ex-Medic",
-		"health": "%02d" % 20, 
+		"health": "%02d" % 2, 
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.KAEL: {
 		"name": "Kaelen Voss",
 		"description": "Shield Brother",
-		"health": "%02d" % 20,
+		"health": "%02d" % 2,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	}
@@ -201,7 +201,7 @@ const MODIFIERS = {
 		"description": "Your maximum hand size is reduced to 6.",
 		"icon": "res://assets/modifiers/Reduced Hand.png",
 		"tier": 1,
-		"multiplier": 0.5,
+		"multiplier": 0.05, # Previously 0.5
 		"duration": 3,
 	},
 	Modifier.VOLATILE_HAND: {
@@ -210,7 +210,7 @@ const MODIFIERS = {
 		"description": "Every 2 rounds, your entire hand is discarded and redrawn.",
 		"icon": "res://assets/modifiers/Volatile Hand.png",
 		"tier": 1,
-		"multiplier": 0.75,
+		"multiplier": 0.08, # Previously 0.75
 		"duration": 3,
 	},
 	Modifier.CALCULATED_RISK: {
@@ -219,7 +219,7 @@ const MODIFIERS = {
 		"description": "Winning a round by a margin of exactly 1 deals +3 damage to the opponent's health.",
 		"icon": "res://assets/modifiers/Calculated Risk.png",
 		"tier": 1,
-		"multiplier": 0.75,
+		"multiplier": 0.08, # Previously 0.75
 		"duration": 4,
 	},
 	Modifier.DEEP_WOUNDS: {
@@ -228,7 +228,7 @@ const MODIFIERS = {
 		"description": "Take +2 damage if you lose a round by 5 or more.",
 		"icon": "res://assets/modifiers/Deep Wounds.png",
 		"tier": 1,
-		"multiplier": 1.0,
+		"multiplier": 0.10, # Previously 1.0
 		"duration": 3,
 	},
 	Modifier.HEAVY_HITTER: {
@@ -237,7 +237,7 @@ const MODIFIERS = {
 		"description": "Take +1 damage if you play a character with a base value of 5 or more.",
 		"icon": "res://assets/modifiers/Heavy Hitter.png",
 		"tier": 1,
-		"multiplier": 1.0,
+		"multiplier": 0.10, # Previously 1.0
 		"duration": 3,
 	},
 	Modifier.GUERRILLA_TACTICS: {
@@ -246,7 +246,7 @@ const MODIFIERS = {
 		"description": "Consecutive character cards cannot be the same faction or type.",
 		"icon": "res://assets/modifiers/Guerrilla Tactics.png",
 		"tier": 1,
-		"multiplier": 1.0,
+		"multiplier": 0.10, # Previously 1.0
 		"duration": 3,
 	},
 	Modifier.SLOW_BLEED: {
@@ -255,7 +255,7 @@ const MODIFIERS = {
 		"description": "Take 1 damage at the end of every other round.",
 		"icon": "res://assets/modifiers/Slow Bleed.png",
 		"tier": 1,
-		"multiplier": 1.25,
+		"multiplier": 0.15, # Previously 1.25
 		"duration": 4,
 		"amount": 1,
 	},
@@ -265,7 +265,7 @@ const MODIFIERS = {
 		"description": "Your defensive character cards have 0 value. Their perks still activate.",
 		"icon": "res://assets/modifiers/No Defense.png",
 		"tier": 2,
-		"multiplier": 1.5,
+		"multiplier": 0.20, # Previously 1.5
 		"duration": 2,
 	},
 	Modifier.LOUD_NOISE: {
@@ -274,7 +274,7 @@ const MODIFIERS = {
 		"description": "All your stealth cards become aggressive. All your aggressive cards lose -1 value.",
 		"icon": "res://assets/modifiers/Loud Noise.png",
 		"tier": 2,
-		"multiplier": 1.75,
+		"multiplier": 0.22, # Previously 1.75
 		"duration": 2,
 	},
 	Modifier.OVER_EXERTION: {
@@ -283,7 +283,7 @@ const MODIFIERS = {
 		"description": "Deal +2 damage if your final value is 10 or higher, but take +1 damage.",
 		"icon": "res://assets/modifiers/Over Exertion.png",
 		"tier": 2,
-		"multiplier": 2.0,
+		"multiplier": 0.25, # Previously 2.0
 		"duration": 3,
 	},
 	Modifier.INFECTED_DECK: {
@@ -292,7 +292,7 @@ const MODIFIERS = {
 		"description": "Your deck contains significantly more infected cards.",
 		"icon": "res://assets/modifiers/Infected Deck.png",
 		"tier": 2,
-		"multiplier": 2.0,
+		"multiplier": 0.25, # Previously 2.0
 		"duration": 2,
 	},
 	Modifier.HUMANITY_RESTORED: {
@@ -301,7 +301,7 @@ const MODIFIERS = {
 		"description": "Your deck reflects an alternate world where the cure was found.",
 		"icon": "res://assets/modifiers/Humanity Restored.png",
 		"tier": 2,
-		"multiplier": 2.0,
+		"multiplier": 0.25, # Previously 2.0
 		"duration": 2,
 	},
 	Modifier.ALWAYS_FIRST: {
@@ -310,7 +310,7 @@ const MODIFIERS = {
 		"description": "You must play first every round.",
 		"icon": "res://assets/modifiers/Always First.png",
 		"tier": 2,
-		"multiplier": 2.25,
+		"multiplier": 0.30, # Previously 2.25
 		"duration": 2,
 	},
 	Modifier.FORSAKEN_HONOR: {
@@ -319,7 +319,7 @@ const MODIFIERS = {
 		"description": "Lose 20 health. Your card’s faction and type are hidden from the opponent.",
 		"icon": "res://assets/modifiers/Forsaken Honor.png",
 		"tier": 3,
-		"multiplier": 1.5,
+		"multiplier": 0.35, # Previously 1.5 (Kept lower due to raw health cost vs gameplay challenge)
 		"duration": 2,
 		"healthCost": 20,
 	},
@@ -329,7 +329,7 @@ const MODIFIERS = {
 		"description": "The opponent gains +1 to their card value at the end of every round.",
 		"icon": "res://assets/modifiers/Stacked Odds.png",
 		"tier": 3,
-		"multiplier": 2.0,
+		"multiplier": 0.35, # Previously 2.0
 		"duration": 2,
 	},
 	Modifier.LONE_WOLF: {
@@ -338,7 +338,7 @@ const MODIFIERS = {
 		"description": "Your support cards are disabled. Character values increased by +50%",
 		"icon": "res://assets/modifiers/Lone Wolf.png",
 		"tier": 3,
-		"multiplier": 2.75,
+		"multiplier": 0.40, # Previously 2.75
 		"duration": 1,
 	},
 	Modifier.SUPPLY_LINE: {
@@ -347,7 +347,7 @@ const MODIFIERS = {
 		"description": "Your hand contains only support cards. Your character is auto played from the deck.",
 		"icon": "res://assets/modifiers/Supply Line.png",
 		"tier": 3,
-		"multiplier": 3.0,
+		"multiplier": 0.45, # Previously 3.0
 		"duration": 1,
 	},
 	Modifier.DESPERATE_MEASURES: {
@@ -356,7 +356,7 @@ const MODIFIERS = {
 		"description": "Support cards ignore type requirements, but take +3 damage if it’s a mismatch.",
 		"icon": "res://assets/modifiers/Desperate Measures.png",
 		"tier": 3,
-		"multiplier": 3.0,
+		"multiplier": 0.45, # Previously 3.0
 		"duration": 1,
 	},
 	Modifier.CARD_ROT: {
@@ -365,7 +365,7 @@ const MODIFIERS = {
 		"description": "Every 3 rounds, all cards in your hand lose -1 value.",
 		"icon": "res://assets/modifiers/Card Rot.png",
 		"tier": 3,
-		"multiplier": 3.5,
+		"multiplier": 0.50, # Previously 3.5
 		"duration": 1,
 	},
 	Modifier.FRIENDLY_FIRE: {
@@ -374,10 +374,10 @@ const MODIFIERS = {
 		"description": "Your card's value is halved if your faction matches the opponent’s.",
 		"icon": "res://assets/modifiers/Friendly Fire.png",
 		"tier": 3,
-		"multiplier": 3.5,
+		"multiplier": 0.50, # Previously 3.5
 		"duration": 1,
 	},
-} 
+}
 
 const standardCharacterDeck = [
 	"Runner", "Runner", "Runner", "Runner",
@@ -439,7 +439,7 @@ const infectedHeavyCharacterDeck = [
 	"SeraphiteInitiate", "SeraphiteInitiate",
 	
 	"Clicker", "Clicker",
-	"Bloater",
+	"Shambler",
 	"Emily", "Lev", "Yara",
 	"Nora", "Manny", "Alice", "Li",
 	"Bill", "Dina", "Jessie", "Tommy", "TommyFirefly",

@@ -173,7 +173,7 @@ func spawn_top_card_node() -> Node2D:
 	var newCard = _create_card_instance(cardDrawn, PLAYER_CARD_SCENE_PATH, true)
 	
 	newCard.get_node("AnimationPlayer").play("cardFlip")
-	newCard.play_draw_sound()
+	AudioManager.play_random_card_draw()
 	
 	return newCard
 
