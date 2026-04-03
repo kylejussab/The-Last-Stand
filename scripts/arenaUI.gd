@@ -27,6 +27,7 @@ func update_health(who: Actor.Type, value: int, instant: bool = false) -> void:
 	
 	if who == Actor.Type.PLAYER:
 		Database.AVATARS[HoldoutStats.currentPlayer].health = value
+		HoldoutStats.playerHealthValue = value
 	
 	if AccessibilityData.animationsDisabled or instant:
 		label.text = "%02d" % value

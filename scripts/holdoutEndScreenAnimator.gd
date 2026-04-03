@@ -7,17 +7,7 @@ var baseRoundWinValue: int = 4
 var winStreaks: int = 0
 var efficiency: int = 0
 var distanceToNewRank: int = 0
-
-const FACTION_COLORS = {"Jackson": Color("7b9e49"), "WLF": Color("80aedd"), "Seraphite": Color("a188bf"), "Firefly": Color("e6c54f"), "Infected": Color("f6d978"), "Smuggler": Color("ffffff")}
-
-const RANK_COLORS = {
-	HoldoutStats.Rank.S: Color("fbbf24"),
-	HoldoutStats.Rank.A: Color("6ee7b7"),
-	HoldoutStats.Rank.B: Color("93c5fd"),
-	HoldoutStats.Rank.C: Color("c4b5fd"),
-	HoldoutStats.Rank.D: Color("f9a8d4"),
-	HoldoutStats.Rank.F: Color("fdba74")
-}
+var accolade: Dictionary
 
 func play_holdout_end_sequence(playerWon: bool):
 	_calculate_holdout_stats(playerWon)
@@ -47,12 +37,16 @@ func play_holdout_end_sequence(playerWon: bool):
 	
 	animationPlayer.play("showBadges", -1.0, 0.75)
 	
-	animationPlayer.queue("showButtons")
-	await animationPlayer.animation_finished
-	
 	for child in %holdoutEndStats.get_children():
 		if child is Button:
 			child.disabled = false
+	
+	if !playerWon:
+		%ContinueButton.visible = false
+		%ContinueButton.disabled = true
+	
+	animationPlayer.queue("showButtons")
+	await animationPlayer.animation_finished
 
 # Helpers
 func _title_slam_and_slide(playerWon: bool):
@@ -190,7 +184,13 @@ func _calculate_holdout_stats(playerWon: bool) -> void:
 		HoldoutStats.numberOfWins += 1
 	
 	winStreaks = HoldoutStats.longestStreak * 2
-	efficiency = int(40.0 / float(HoldoutStats.roundsPlayed))
+	
+	if playerWon:
+		baseRoundWinValue = 4
+		efficiency = int(40.0 / float(HoldoutStats.roundsPlayed))
+	else:
+		baseRoundWinValue = 0
+		efficiency = 0
 	
 	totalRationsToAdd = int((baseRoundWinValue + HoldoutStats.highestDominance + winStreaks + efficiency + HoldoutStats.underdogWins) * HoldoutStats.multiplierTotal)
 	
@@ -200,9 +200,11 @@ func _calculate_holdout_stats(playerWon: bool) -> void:
 	
 	distanceToNewRank = HoldoutStats.get_distance_to_next(HoldoutStats.totalRunRations + totalRationsToAdd)
 	
+	accolade = get_final_accolade()
+	GameStats.accoladeCounts[accolade.id] += 1
+	
 	if !playerWon:
 		GameStats.rations += HoldoutStats.totalRunRations + totalRationsToAdd
-		print("Our total rations are: " + str(GameStats.rations))
 
 func _assign_values_to_labels() -> void:
 	screen.get_node("wins").text = "%02d" % HoldoutStats.numberOfWins
@@ -230,15 +232,19 @@ func _assign_values_to_labels() -> void:
 	else:
 		screen.get_node("total/mvpIcon").texture = load("res://assets/holdout/" + get_card_stats(HoldoutStats.allPlayedCards)["faction"] + ".png")
 	
-	screen.get_node("total/badgeOutlineMvp").modulate = FACTION_COLORS[get_card_stats(HoldoutStats.allPlayedCards)["faction"]]
+	screen.get_node("total/badgeOutlineMvp").modulate = HoldoutStats.FACTION_COLORS[get_card_stats(HoldoutStats.allPlayedCards)["faction"]]
 	
 	if HoldoutStats.get_next_rank_string() == "":
 		screen.get_node("total/badgeTextContainer/rankText").text = "Max Rank"
 	else:
 		screen.get_node("total/badgeTextContainer/rankText").text = str(distanceToNewRank) + " [img width=10]res://assets/ui/RationsIconSlim.png[/img] to Rank " + HoldoutStats.get_next_rank_string()
 	
-	screen.get_node("total/rankIcon").modulate = RANK_COLORS[HoldoutStats.currentRank]
-	screen.get_node("total/badgeOutlineRank").modulate = RANK_COLORS[HoldoutStats.currentRank]
+	screen.get_node("total/rankIcon").modulate = HoldoutStats.RANK_COLORS[HoldoutStats.currentRank]
+	screen.get_node("total/badgeOutlineRank").modulate = HoldoutStats.RANK_COLORS[HoldoutStats.currentRank]
+	
+	screen.get_node("total/badgeTextContainer/accoladeText").text = accolade.title
+	
+	screen.get_node("total/accoladeIcon").texture = load("res://assets/holdout/accolade/" + accolade.title + ".png")
 
 func format_time(time: float) -> String:
 	var minutes = int(time / 60)
@@ -324,6 +330,53 @@ func handle_modifier_durations() -> void:
 		
 		if modifier["currentDuration"] >= modifier["duration"]:
 			%battleManager.remove_modifier(modifier["id"])
+
+static func get_final_accolade() -> Dictionary:
+	if HoldoutStats.playerHealthValue == HoldoutStats.playerHealthAtRoundStart: 
+		return HoldoutStats.ACCOLADES["Untouchable"]
+	
+	if HoldoutStats.achievedOldWounds:
+		return HoldoutStats.ACCOLADES["OldWounds"]
+	
+	if HoldoutStats.multiplierTotal >= 1.8:
+		return HoldoutStats.ACCOLADES["ThrillSeeker"]
+	
+	var earned: Array = []
+	
+	if HoldoutStats.highestDominance >= 10:
+		earned.append(HoldoutStats.ACCOLADES["Executioner"])
+		
+	if HoldoutStats.underdogWins >= 3:
+		earned.append(HoldoutStats.ACCOLADES["GiantSlayer"])
+		
+	if HoldoutStats.longestStreak >= 4:
+		earned.append(HoldoutStats.ACCOLADES["Relentless"])
+		
+	if HoldoutStats.roundsPlayed <= 3 and HoldoutStats.numberOfWins > 0:
+		earned.append(HoldoutStats.ACCOLADES["QuickDraw"])
+		
+	if HoldoutStats.multiplierTotal == 1.0:
+		earned.append(HoldoutStats.ACCOLADES["Purist"])
+	
+	if HoldoutStats.currentRoundDuration < 60.0 and HoldoutStats.numberOfWins > 0:
+		earned.append(HoldoutStats.ACCOLADES["SpeedDemon"])
+	
+	if HoldoutStats.longestThinkTime >= 30.0 and HoldoutStats.numberOfWins > 0:
+		earned.append(HoldoutStats.ACCOLADES["AnalysisParalysis"])
+		
+	var playedSupport: bool = false
+	for card in HoldoutStats.allPlayedCards:
+		if card.get("faction", "") == "Support":
+			playedSupport = true
+			break
+			
+	if not playedSupport and HoldoutStats.numberOfWins > 0:
+		earned.append(HoldoutStats.ACCOLADES["Brawler"])
+	
+	if not earned.is_empty():
+		return earned.pick_random()
+		
+	return HoldoutStats.ACCOLADES["RubberDuck"]
 
 func trigger_badge_thud() -> void:
 	AudioManager.play_badge_thud()

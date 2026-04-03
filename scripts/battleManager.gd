@@ -56,6 +56,8 @@ var lockPlayerInput: bool = true:
 	set(value):
 		lockPlayerInput = value
 		if value == true:
+			currentThinkTime = 0.0
+			
 			if is_instance_valid(%cardManager):
 				%cardManager.force_unhighlight_all_cards()
 
@@ -64,6 +66,7 @@ enum RoundStage { PLAYER_CHARACTER, OPPONENT_CHARACTER, PLAYER_SUPPORT, OPPONENT
 var whoStartedRound: Actor.Type = Actor.Type.PLAYER
 var roundStage: RoundStage
 var isRoundActive: bool = false
+var currentThinkTime: float = 0.0
 
 var opponentAI: OpponentAI
 
@@ -74,11 +77,18 @@ var discardedCardZIndex: int = 1
 @onready var endScreenAnimator: Node = %holdoutEndScreenAnimator
 
 #Debug variable [also delete the check in opponentHand.gd when done]
-var showOpponentsCards: bool = false
+var showOpponentsCards: bool = true
 
 func _process(delta):
 	if isRoundActive:
 		HoldoutStats.count_time_played(delta)
+		
+		# Analysis Paralysis Accolade tracker
+		if not lockPlayerInput:
+			currentThinkTime += delta
+			
+			if currentThinkTime > HoldoutStats.longestThinkTime:
+				HoldoutStats.longestThinkTime = currentThinkTime
 
 func _ready() -> void:
 	HoldoutStats.replayedRound = false
@@ -97,7 +107,8 @@ func _ready() -> void:
 		GameStats.Mode.HOLDOUT:
 			# Maybe there should be an avatar thats always used for Last Stand
 			HoldoutStats.currentPlayer = Actor.Avatar.JUNE
-			HoldoutStats.playerHealthValue = 99 
+			HoldoutStats.playerHealthValue = 99
+			HoldoutStats.playerHealthAtRoundStart = 99
 	
 	ui.update_health(Actor.Type.PLAYER, HoldoutStats.playerHealthValue, true)
 	
@@ -720,6 +731,8 @@ func _calculate_damage() -> void:
 		await _handle_player_win(playerTotal, opponentTotal)
 	elif opponentTotal > playerTotal:
 		await _handle_opponent_win(playerTotal, opponentTotal)
+	else:
+		HoldoutStats.currentStreak = 0
 	
 	if slowBleedActive and HoldoutStats.roundsPlayed % 2 == 0 and Database.MODIFIERS.has(Database.Modifier.SLOW_BLEED):
 		await _deal_damage(Actor.Type.PLAYER, Database.MODIFIERS.get(Database.Modifier.SLOW_BLEED)["amount"])
@@ -960,7 +973,13 @@ func _handle_runner_perk() -> void:
 				await _place_card_in_discard(card, %opponentHand)
 
 func _handle_player_win(playerTotal: int, opponentTotal: int) -> void:
+	HoldoutStats.currentStreak += 1
+	if HoldoutStats.longestStreak < HoldoutStats.currentStreak:
+		HoldoutStats.longestStreak = HoldoutStats.currentStreak
+		
 	var damage = playerTotal - opponentTotal
+	
+	_check_old_wounds_accolade(damage)
 	
 	ui.change_mood(Actor.Type.PLAYER, Actor.Mood.HAPPY)
 	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.HURT)
@@ -981,15 +1000,12 @@ func _handle_player_win(playerTotal: int, opponentTotal: int) -> void:
 		playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
 		await _deal_damage(Actor.Type.OPPONENT, 3)
 	
-	HoldoutStats.currentStreak += 1
-	
-	if HoldoutStats.longestStreak < HoldoutStats.currentStreak:
-		HoldoutStats.longestStreak = HoldoutStats.currentStreak
-	
 	if Database.CHARACTERS[playerCharacterCard.cardKey][0] <= 3 or Database.CHARACTERS[playerCharacterCard.cardKey][0] < Database.CHARACTERS[opponentCharacterCard.cardKey][0]:
 		HoldoutStats.underdogWins += 1
 
 func _handle_opponent_win(playerTotal: int, opponentTotal: int) -> void:
+	HoldoutStats.currentStreak = 0
+	
 	var damage = opponentTotal - playerTotal
 	
 	ui.change_mood(Actor.Type.PLAYER, Actor.Mood.HURT)
@@ -1005,8 +1021,6 @@ func _handle_opponent_win(playerTotal: int, opponentTotal: int) -> void:
 	
 	if opponentCharacterCard.perkValueAtRoundEnd: # Any non-special perks that need triggering on round end
 		await _deal_damage(Actor.Type.PLAYER, opponentCharacterCard.perkValueAtRoundEnd)
-	
-	HoldoutStats.currentStreak = 0
 	
 	if deepWoundsActive and damage >= 5:
 		playerCharacterCard.get_node("ModifierIndicator").texture = load("res://assets/modifiers/Deep Wounds.png")
@@ -1115,6 +1129,15 @@ func _is_player_support_matched() -> bool:
 			return true
 		
 	return false
+
+func _check_old_wounds_accolade(damage: int) -> void:
+	var currentOpponentHealth = ui.get_health(Actor.Type.OPPONENT)
+	
+	if currentOpponentHealth - damage <= 0:
+		if HoldoutStats.RIVALRIES.has(playerCharacterCard.cardKey):
+			var rivals = HoldoutStats.RIVALRIES[playerCharacterCard.cardKey]
+			if opponentCharacterCard.cardKey in rivals:
+				HoldoutStats.achievedOldWounds = true
 
 # Perk Helpers
 func _execute_player_mid_perk() -> void:

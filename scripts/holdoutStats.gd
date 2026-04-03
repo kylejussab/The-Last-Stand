@@ -14,6 +14,97 @@ enum Rank { S, A, B, C, D, F }
 const RankRequirements = {Rank.S: 440, Rank.A: 300, Rank.B: 220, Rank.C: 160, Rank.D: 80, Rank.F: 0}
 static var currentRank: Rank = Rank.F
 
+const ACCOLADES = {
+	"Untouchable": {
+		"id": "Untouchable",
+		"title": "Untouchable", 
+		"description": "Win a battle without taking any damage."
+	},
+	"OldWounds": {
+		"id": "OldWounds",
+		"title": "Old Wounds", 
+		"description": "Win an encounter against a rival character."
+	},
+	"Executioner": {
+		"id": "Executioner",
+		"title": "Executioner", 
+		"description": "Achieve a Dominance of 10 or higher in a single round."
+	},
+	"GiantSlayer": {
+		"id": "GiantSlayer",
+		"title": "Giant Slayer", 
+		"description": "Win a battle with 3 or more Underdog round victories."
+	},
+	"Relentless": {
+		"id": "Relentless",
+		"title": "Relentless", 
+		"description": "Maintain a win streak of 4 or more rounds."
+	},
+	"QuickDraw": {
+		"id": "QuickDraw",
+		"title": "Quick Draw", 
+		"description": "Win a battle in 3 rounds or fewer."
+	},
+	"ThrillSeeker": {
+		"id": "ThrillSeeker",
+		"title": "Thrill Seeker", 
+		"description": "Win a battle with a modifier multiplier of 2.0 or higher."
+	},
+	"Purist": {
+		"id": "Purist",
+		"title": "Purist", 
+		"description": "Win a battle with no modifiers active."
+	},
+	"SpeedDemon": {
+		"id": "SpeedDemon",
+		"title": "Speed Demon", 
+		"description": "Win a battle in under 60 seconds."
+	},
+	"Brawler": {
+		"id": "Brawler",
+		"title": "Brawler", 
+		"description": "Win a battle without playing a Support card."
+	},
+	"AnalysisParalysis": {
+		"id": "AnalysisParalysis",
+		"title": "Analysis Paralysis", 
+		"description": "Spend over 30 seconds on a single turn without playing a card."
+	},
+	"RubberDuck": {
+		"id": "RubberDuck",
+		"title": "Rubber Duck", 
+		"description": "Complete a battle without meeting the requirements for any other accolade."
+	}
+}
+
+const RIVALRIES = {
+	"AbbyFirefly": ["JoelSmuggler", "Ellie", "Joel", "RatKing", "Emily"],
+	"Abby": ["JoelSmuggler", "Ellie", "Joel", "RatKing", "Emily"],
+	"JoelSmuggler": ["AbbyFirefly", "Abby", "Marlene"],
+	"Joel": ["AbbyFirefly", "Abby", "Marlene"],
+	"Marlene": ["Joel", "JoelSmuggler"],
+	"TommyFirefly": ["AbbyFirefly", "Abby"],
+	"Tommy": ["AbbyFirefly", "Abby"],
+	"Ellie": ["AbbyFirefly", "Abby", "Nora"],
+	"Nora": ["Ellie"],
+	"Isaac": ["Yara", "Lev", "TheProphet"],
+	"IsaacHumanity": ["Yara", "Lev", "TheProphet"],
+	"Yara": ["Isaac", "IsaacHumanity"],
+	"Lev": ["Isaac", "IsaacHumanity"],
+	# Add the jackson horse with WLF soldier
+}
+
+const FACTION_COLORS = {"Jackson": Color("7b9e49"), "WLF": Color("80aedd"), "Seraphite": Color("a188bf"), "Firefly": Color("e6c54f"), "Infected": Color("f6d978"), "Smuggler": Color("ffffff")}
+
+const RANK_COLORS = {
+	HoldoutStats.Rank.S: Color("fbbf24"),
+	HoldoutStats.Rank.A: Color("6ee7b7"),
+	HoldoutStats.Rank.B: Color("93c5fd"),
+	HoldoutStats.Rank.C: Color("c4b5fd"),
+	HoldoutStats.Rank.D: Color("f9a8d4"),
+	HoldoutStats.Rank.F: Color("fdba74")
+}
+
 static var numberOfWins: int = 0
 static var roundsPlayed: int = 1
 static var longestStreak: int = 0
@@ -24,12 +115,15 @@ static var multiplierTotal: float = 1.0
 static var totalRunRations: int = 0
 static var currentRunRations: int = 0
 
+static var playerHealthAtRoundStart: int
+static var achievedOldWounds: bool = false
+static var longestThinkTime: float = 0.0
+
 static func count_time_played(delta: float):
 	currentRoundDuration += delta
 
 static func reset_for_new_run():
 	numberOfWins = 0
-	longestStreak = 0
 	totalRunRations = 0
 	
 	multiplierTotal = 1.0
@@ -44,15 +138,20 @@ static func reset_for_new_run():
 	reset_for_new_battle()
 
 static func reset_for_new_battle():
+	playerHealthAtRoundStart = playerHealthValue
 	currentRoundDuration = 0.0
 	currentRunRations = 0
 	underdogWins = 0
 	roundsPlayed = 1
+	longestStreak = 0
 	currentStreak = 0
 	highestDominance = 0
 	
 	allPlayedCards.clear()
 	allOpponentCards.clear()
+	
+	achievedOldWounds = false
+	longestThinkTime = 0.0
 
 # Used for data collection
 static var allPlayedCards: Array = []

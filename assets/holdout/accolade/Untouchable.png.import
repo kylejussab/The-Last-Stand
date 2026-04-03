@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b362hfu00bs1i"
-path="res://.godot/imported/S.png-873527a9ff37ee79283e3b6cff55a9e2.ctex"
+uid="uid://ddjvqf3vkig70"
+path="res://.godot/imported/Untouchable.png-ed9c77795e87f25124e65294f23c261a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/holdout/accolade/S.png"
-dest_files=["res://.godot/imported/S.png-873527a9ff37ee79283e3b6cff55a9e2.ctex"]
+source_file="res://assets/holdout/accolade/Untouchable.png"
+dest_files=["res://.godot/imported/Untouchable.png-ed9c77795e87f25124e65294f23c261a.ctex"]
 
 [params]
 
