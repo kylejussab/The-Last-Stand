@@ -1257,7 +1257,9 @@ func _load_game_from_snapshot() -> void:
 	var save_data = SaveManager.load_holdout_state()
 	
 	if save_data.is_empty():
-		printerr("Save data corrupted. Starting fresh Holdout run.")
+		printerr("Save data corrupted.")
+		
+		%saveFileCorrupt.modulate.a = 1.0
 		
 		HoldoutStats.currentPlayer = Actor.Avatar.JUNE
 		HoldoutStats.playerHealthValue = 99
@@ -1265,7 +1267,17 @@ func _load_game_from_snapshot() -> void:
 		
 		ui.update_health(Actor.Type.PLAYER, HoldoutStats.playerHealthValue, true)
 		prepare_opponent()
-		initialize_game()
+		
+		$"../arena/saveFileCorrupt/CorruptStartNewRunButton".mouse_entered.connect(AudioManager.play_button_hover)
+		$"../arena/saveFileCorrupt/CorruptStartNewRunButton".focus_mode = Control.FOCUS_NONE
+		$"../arena/saveFileCorrupt/CorruptStartNewRunButton".pressed.connect(AudioManager.play_button_click)
+		
+		$"../arena/saveFileCorrupt/CorruptMainMenuButton".mouse_entered.connect(AudioManager.play_button_hover)
+		$"../arena/saveFileCorrupt/CorruptMainMenuButton".focus_mode = Control.FOCUS_NONE
+		$"../arena/saveFileCorrupt/CorruptMainMenuButton".pressed.connect(AudioManager.play_button_click)
+		
+		%saveFileCorrupt.visible = true
+		%pauseIcon.visible = false
 		return
 
 	var stats = save_data["stats"]
@@ -1442,3 +1454,12 @@ func _restore_modifier_flags() -> void:
 				if reducedHandActive: maximumSupportCardsInHand = 6
 				else: maximumSupportCardsInHand = 8
 				maximumCharacterCardsInHand = 0
+
+func _on_corrupt_start_new_run_button_pressed() -> void:
+	var tween = create_tween()
+	tween.tween_property(%saveFileCorrupt, "modulate:a", 0.0, 0.2)
+	await tween.finished
+	
+	%saveFileCorrupt.visible = false
+	
+	initialize_game()

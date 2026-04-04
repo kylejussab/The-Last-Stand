@@ -20,9 +20,9 @@ const BACKGROUNDS = {
 
 const SUPPLEMENTTEXT = {
 	"Story": "What is the cost of doing what you believe is right?",
-	"Holdout": "Survive as many waves as possible with boosted health and no healing.",
+	"Holdout": "A roguelite gauntlet where you overcome escalating enemies and unpredictable modifiers.\n\nYeilds: [img width=14 color=#4c4c4c]res://assets/ui/RationsIconSlim.png[/img]",
 	"June": "What is the cost of doing what you believe is right?",
-	"Remnants": "Scavenge what remains. Build your deck. Survive what comes."
+	"Remnants": "A tactical deck-building campaign where you lead a Faction, master card synergies, and secure territory.\n\nYeilds: [img width=14 color=#4c4c4c]res://assets/ui/RationsIconSlim.png[/img]"
 }
 
 # Card for Accessibility Card Graphics
@@ -44,6 +44,16 @@ func _ready() -> void:
 		mainButtonContainer.hide()
 		mainButtonContainer.process_mode = Node.PROCESS_MODE_DISABLED
 		pulse_text()
+	
+	if SaveManager.has_holdout_save():
+		%AchievementsButton.position.y = 500
+		$"holdoutButtonContainer/Temporary Lock Icons/Lock2".position.y = 525
+	else:
+		%ContinueButton.visible = false
+		%ContinueButton.disabled = true
+		
+		%AchievementsButton.position.y = 450
+		$"holdoutButtonContainer/Temporary Lock Icons/Lock2".position.y = 475
 
 func pulse_text():
 	var pulse = create_tween().set_loops()
@@ -207,6 +217,7 @@ func _on_continue_button_pressed() -> void:
 		GameStats.gameMode = GameStats.Mode.HOLDOUT
 		
 		Curtain.change_scene("res://scenes/main.tscn")
+		AudioManager.stop_music(2.5)
 	else:
 		_play_denied_animation($holdoutButtonContainer/ContinueButton)
 

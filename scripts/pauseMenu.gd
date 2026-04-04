@@ -134,6 +134,10 @@ func _on_main_menu_button_hold_complete() -> void:
 	ui._on_main_menu_button_hold_complete()
 	hide()
 
+func _on_corrupt_main_menu_button_pressed() -> void:
+	ui._on_main_menu_button_hold_complete()
+	%saveFileCorrupt.visible = false
+
 # Helpers
 func connect_buttons(node: Node) -> void:
 	for child in node.get_children():

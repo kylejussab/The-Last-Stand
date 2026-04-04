@@ -438,6 +438,7 @@ fill_mode = 4
 texture_progress = ExtResource("10_jfr2g")
 
 [node name="ContinueButton" type="Button" parent="holdoutButtonContainer"]
+unique_name_in_owner = true
 z_index = 201
 layout_mode = 0
 offset_left = 140.0
@@ -458,6 +459,7 @@ text = "CONTINUE"
 alignment = 0
 
 [node name="AchievementsButton" type="Button" parent="holdoutButtonContainer"]
+unique_name_in_owner = true
 z_index = 201
 layout_mode = 0
 offset_left = 140.0
@@ -482,12 +484,6 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 mouse_filter = 2
-
-[node name="Lock1" type="Sprite2D" parent="holdoutButtonContainer/Temporary Lock Icons"]
-modulate = Color(0.29803923, 0.29803923, 0.29803923, 1)
-position = Vector2(308, 475)
-scale = Vector2(0.06, 0.06)
-texture = ExtResource("9_jfr2g")
 
 [node name="Lock2" type="Sprite2D" parent="holdoutButtonContainer/Temporary Lock Icons"]
 modulate = Color(0.29803923, 0.29803923, 0.29803923, 1)
@@ -930,13 +926,13 @@ anchor_bottom = 0.5
 offset_left = 120.0
 offset_top = 800.0
 offset_right = 570.0
-offset_bottom = 890.0
+offset_bottom = 950.0
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset = Vector2(150, 25)
 theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_fonts/normal_font = SubResource("FontVariation_uwljm")
 theme_override_font_sizes/normal_font_size = 24
+bbcode_enabled = true
 
 [node name="pauseIcon" type="Node2D" parent="."]
 visible = false
