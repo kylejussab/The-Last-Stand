@@ -76,7 +76,7 @@ func toggle_pause():
 	
 	if pauseState:
 		AudioManager.play_button_click()
-		AudioManager.change_volume_background(-25)
+		AudioManager.change_volume_background(-30)
 		$"../../pauseIcon/text".text = "BACK"
 		show()
 		_make_background_lighter()

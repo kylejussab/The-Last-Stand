@@ -50,15 +50,13 @@ var rationCollectionSounds = [
 	preload("res://assets/sounds/ui/rationsCollected4.wav")
 ]
 
-var oakStudios = [
-	"res://assets/sounds/music/Oak Studios/Azure.mp3",
-	"res://assets/sounds/music/Oak Studios/Pulse.mp3",
-	"res://assets/sounds/music/Oak Studios/Grey.mp3",
-	"res://assets/sounds/music/Oak Studios/Shiver.mp3",
-	"res://assets/sounds/music/Oak Studios/Live #2.mp3",
-	"res://assets/sounds/music/Oak Studios/Spacecraft.mp3",
-	"res://assets/sounds/music/Oak Studios/Truth Is.mp3",
-	"res://assets/sounds/music/Oak Studios/West Lake.mp3"
+var suspenseBackground = [
+	"res://assets/sounds/music/Suspense/Suspense #2.mp3",
+	"res://assets/sounds/music/Suspense/Shiver.mp3",
+	"res://assets/sounds/music/Suspense/Poluted Horizons.mp3",
+	"res://assets/sounds/music/Suspense/Undercurrent.mp3",
+	"res://assets/sounds/music/Suspense/Suspense #1.mp3",
+	"res://assets/sounds/music/Suspense/Undertone.mp3",
 ]
 
 var beyondTheThreshold = [
@@ -140,13 +138,13 @@ func play_random_card_shuffle() -> void:
 	cardShuffle.stream = shuffleSounds.pick_random()
 	cardShuffle.play()
 
-func play_beyondTheThreshold(maxVolume1: float = 0.0, maxVolume2: float = 0.0, duration: float = 5.0) -> void:
+func play_beyondTheThreshold(maxVolume1: float = -10.0, maxVolume2: float = -10.0, duration: float = 5.0) -> void:
 	_transition_to_track(beyondTheThreshold[0], beyondTheThreshold[1], maxVolume1, maxVolume2, duration)
 
-func play_carving_the_path(maxVolume1: float = 0.0, maxVolume2: float = 0.0, duration: float = 5.0) -> void:
+func play_carving_the_path(maxVolume1: float = -10.0, maxVolume2: float = -10.0, duration: float = 5.0) -> void:
 	_transition_to_track(carvingThePath[0], carvingThePath[1], maxVolume1, maxVolume2, duration)
 
-func play_quickening_stride(maxVolume1: float = 0.0, maxVolume2: float = 0.0, duration: float = 5.0) -> void:
+func play_quickening_stride(maxVolume1: float = -10.0, maxVolume2: float = -10.0, duration: float = 5.0) -> void:
 	_transition_to_track(quickeningStride[0], quickeningStride[1], maxVolume1, maxVolume2, duration)
 
 # Music helpers
@@ -231,10 +229,10 @@ func change_volume_layer2(targetVolume: float, duration: float = 1.5) -> void:
 var current_playlist: Array = []
 var current_playlist_index: int = 0
 var background_target_volume: float = -35.0
-var background_fade_time: float = 14.0
+var background_fade_time: float = 10.0
 var backgroundFadeTween: Tween
 
-func start_background_playlist(playlist: Array = oakStudios, targetVolume: float = -35.0, fadeTime: float = 14.0) -> void:
+func start_background_playlist(playlist: Array = suspenseBackground, targetVolume: float = -35.0, fadeTime: float = 10.0) -> void:
 	if playlist.is_empty():
 		return
 	

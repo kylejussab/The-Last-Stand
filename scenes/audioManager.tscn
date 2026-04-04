@@ -21,12 +21,15 @@ script = ExtResource("1_twrc3")
 [node name="Music" type="Node" parent="."]
 
 [node name="layer1" type="AudioStreamPlayer2D" parent="Music"]
+volume_db = -10.0
 bus = &"Music"
 
 [node name="layer2" type="AudioStreamPlayer2D" parent="Music"]
+volume_db = -10.0
 bus = &"Music"
 
 [node name="background" type="AudioStreamPlayer2D" parent="Music"]
+volume_db = -10.0
 bus = &"Music"
 
 [node name="Effects" type="Node" parent="."]
@@ -39,17 +42,20 @@ bus = &"Effects"
 [node name="CardHover" type="AudioStreamPlayer2D" parent="Effects"]
 process_mode = 3
 stream = ExtResource("2_twrc3")
-volume_db = -10.0
+volume_db = -15.0
 bus = &"Effects"
 
 [node name="CardLock" type="AudioStreamPlayer2D" parent="Effects"]
 stream = ExtResource("3_6x1q5")
+volume_db = -10.0
 bus = &"Effects"
 
 [node name="CardDraw" type="AudioStreamPlayer2D" parent="Effects"]
+volume_db = -10.0
 bus = &"Effects"
 
 [node name="CardShuffle" type="AudioStreamPlayer2D" parent="Effects"]
+volume_db = -10.0
 bus = &"Effects"
 
 [node name="UI" type="Node" parent="."]
@@ -58,7 +64,6 @@ bus = &"Effects"
 process_mode = 3
 position = Vector2(770, 790)
 stream = ExtResource("4_rmmm8")
-volume_db = 5.0
 max_polyphony = 4
 bus = &"UI"
 
@@ -66,14 +71,12 @@ bus = &"UI"
 process_mode = 3
 position = Vector2(770, 790)
 stream = ExtResource("5_mk1kq")
-volume_db = 5.0
 bus = &"UI"
 
 [node name="ButtonBack" type="AudioStreamPlayer2D" parent="UI"]
 process_mode = 3
 position = Vector2(770, 790)
 stream = ExtResource("6_hh26a")
-volume_db = 5.0
 max_polyphony = 4
 bus = &"UI"
 
@@ -85,17 +88,18 @@ bus = &"UI"
 
 [node name="SlotSpin" type="AudioStreamPlayer2D" parent="UI"]
 stream = ExtResource("8_63sg2")
-volume_db = -3.0
+volume_db = -10.0
 bus = &"UI"
 
 [node name="SlotStop" type="AudioStreamPlayer2D" parent="UI"]
 stream = ExtResource("9_pvqy7")
+volume_db = -10.0
 max_polyphony = 3
 bus = &"UI"
 
 [node name="ClickerCry" type="AudioStreamPlayer2D" parent="UI"]
 stream = ExtResource("11_6x1q5")
-volume_db = -15.0
+volume_db = -20.0
 bus = &"UI"
 
 [node name="RationsCollected" type="AudioStreamPlayer2D" parent="UI"]

@@ -51,7 +51,7 @@ func show_modifier_menu() -> void:
 	
 	AudioManager.play_whoosh()
 	
-	AudioManager.change_volume_background(-80, 3.0)
+	AudioManager.change_volume_background(-50, 6.0)
 	
 	var fadeTween = create_tween()
 	fadeTween.tween_property($title, "modulate:a", 1.0, 0.3)
@@ -105,8 +105,8 @@ func show_modifier_menu() -> void:
 	audioTween.tween_interval(0.6)
 	audioTween.tween_callback(AudioManager.play_slot_stop)
 	
-	audioTween.tween_interval(0.3)
-	audioTween.tween_callback(AudioManager.change_volume_background)
+	await audioTween.finished
+	AudioManager.change_volume_background(-35.0, 6.0)
 
 # Privates
 func _select_modifiers() -> void:

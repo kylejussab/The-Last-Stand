@@ -12,7 +12,7 @@ func _ready() -> void:
 	fade_in()
 	
 	await get_tree().create_timer(.5).timeout
-	AudioManager.play_beyondTheThreshold()
+	AudioManager.play_beyondTheThreshold(-20, -20)
 	await get_tree().create_timer(.5).timeout
 	
 	$Disclaimer.hide()
@@ -38,6 +38,9 @@ func _ready() -> void:
 	await get_tree().create_timer(2).timeout
 	
 	$MadeWith/AnimationPlayer.play("flickerOut")
+	
+	AudioManager.change_volume_layer1(-10, 9)
+	AudioManager.change_volume_layer2(-10, 9)
 	
 	# Potential animation in here
 	await get_tree().create_timer(6.5).timeout
