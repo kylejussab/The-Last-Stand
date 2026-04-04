@@ -130,6 +130,8 @@ func show_end_turn_button(visibility: bool = true) -> void:
 
 # Privates
 func _on_continue_button_pressed() -> void:
+	AudioManager.change_volume_background() # Audio back to default always
+	
 	HoldoutStats.replayedRound = false
 	HoldoutStats.totalRunRations = HoldoutStats.currentRunRations
 	
@@ -152,6 +154,8 @@ func _on_replay_button_mouse_exited() -> void:
 	%holdIcon.get_node("text").position.x = 1700
 
 func _on_replay_button_hold_complete() -> void:
+	AudioManager.change_volume_background() # Audio back to default always
+	
 	HoldoutStats.replayedRound = true
 	
 	if GameStats.gameMode == GameStats.Mode.HOLDOUT_ROUND_COMPLETED:
@@ -170,6 +174,8 @@ func _on_new_run_button_mouse_exited() -> void:
 	%holdIcon.get_node("text").position.x = 1700
 
 func _on_new_run_button_hold_complete() -> void:
+	AudioManager.change_volume_background() # Audio back to default always
+	
 	GameStats.gameMode = GameStats.Mode.HOLDOUT
 	HoldoutStats.reset_for_new_run()
 	

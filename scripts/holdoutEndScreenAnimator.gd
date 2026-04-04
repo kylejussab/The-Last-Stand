@@ -47,6 +47,8 @@ func play_holdout_end_sequence(playerWon: bool):
 	
 	animationPlayer.queue("showButtons")
 	await animationPlayer.animation_finished
+	
+	AudioManager.change_volume_background() # Back to default
 
 # Helpers
 func _title_slam_and_slide(playerWon: bool):
@@ -57,6 +59,8 @@ func _title_slam_and_slide(playerWon: bool):
 	var resultLabel = screen.get_node("title")
 	resultLabel.text = "SURVIVED" if playerWon else "DEFEATED"
 	resultLabel.pivot_offset = resultLabel.size / 2
+	
+	AudioManager.change_volume_background(-40)
 	
 	var screenSize = get_viewport().get_visible_rect().size
 	resultLabel.global_position = screenSize / 2 - resultLabel.size / 2

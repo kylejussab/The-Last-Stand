@@ -230,11 +230,11 @@ func change_volume_layer2(targetVolume: float, duration: float = 1.5) -> void:
 # Playlist state variables
 var current_playlist: Array = []
 var current_playlist_index: int = 0
-var background_target_volume: float = -30.0
-var background_fade_time: float = 3.5
+var background_target_volume: float = -35.0
+var background_fade_time: float = 14.0
 var backgroundFadeTween: Tween
 
-func start_background_playlist(playlist: Array = oakStudios, targetVolume: float = -30.0, fadeTime: float = 3.5) -> void:
+func start_background_playlist(playlist: Array = oakStudios, targetVolume: float = -35.0, fadeTime: float = 14.0) -> void:
 	if playlist.is_empty():
 		return
 	
@@ -271,7 +271,7 @@ func _on_background_finished() -> void:
 	
 	_play_current_background_track(background_fade_time)
 
-func change_volume_background(targetVolume: float, duration: float = 1.0) -> void:
+func change_volume_background(targetVolume: float = -35.0, duration: float = 1.0) -> void:
 	background_target_volume = targetVolume
 	
 	if backgroundFadeTween and backgroundFadeTween.is_valid():
