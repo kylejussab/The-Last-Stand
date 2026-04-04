@@ -179,7 +179,7 @@ func _on_main_menu_button_hold_complete() -> void:
 	GameStats.gameMode = GameStats.Mode.MAIN_MENU
 	Curtain.change_scene("res://scenes/mainMenu.tscn")
 	
-	AudioManager.stop_ambience(3)
+	AudioManager.stop_background()
 	AudioManager.play_beyondTheThreshold(-20, -80, 4)
 
 func _on_main_menu_button_mouse_entered() -> void:

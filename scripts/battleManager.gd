@@ -521,7 +521,10 @@ func _conclude_match() -> void:
 	
 	discardedCardZIndex = 1
 	
-	SaveManager.clear_holdout_save()
+	if ui.get_health(Actor.Type.PLAYER) <= 0:
+		SaveManager.clear_holdout_save()
+	else:
+		_save_round_checkpoint()
 
 func _start_new_round() -> void:
 	previousRoundFaction = playerCharacterCard.faction
@@ -1279,18 +1282,63 @@ func _load_game_from_snapshot() -> void:
 		%saveFileCorrupt.visible = true
 		%pauseIcon.visible = false
 		return
-
+		
 	var stats = save_data["stats"]
 	var arena = save_data["arena"]
 
 	HoldoutStats.load_save_dict(stats)
 	_restore_modifier_flags()
 	
+	# If coming from the main menu on a round win
+	if arena.has("opponentHealth") and int(arena["opponentHealth"]) <= 0:
+		# Wait exactly one frame to guarantee all UI @onready nodes are fully loaded.
+		# This completely solves the 'Nil' errors without call_deferred!
+		await get_tree().process_frame 
+		
+		ui.update_health(Actor.Type.PLAYER, HoldoutStats.playerHealthValue, true)
+		
+		# Replicate the Continue logic, but STRIP OUT the 1-second fade timer
+		HoldoutStats.replayedRound = false
+		HoldoutStats.totalRunRations = HoldoutStats.currentRunRations
+		GameStats.gameMode = GameStats.Mode.HOLDOUT
+		
+		ui.holdoutEndScreenAnimator.handle_modifier_durations()
+		ui._reset_board_state()
+		
+		# Instantly prep the next round
+		prepare_opponent()
+		
+		if HoldoutStats.numberOfWins % 2 == 1 and not HoldoutStats.replayedRound:
+			GameStats.gameMode = GameStats.Mode.MODIFIER_SELECTION
+			ui.modifierUI.show_modifier_menu()
+		else:
+			initialize_game()
+			
+		return # Stop loading the dead arena entirely!
+	
+	# --- IF NOT DEAD, LOAD NORMALLY ---
 	_initialize_opponent(HoldoutStats.currentPlayer, HoldoutStats.currentOpponent)
 	
 	ui.update_health(Actor.Type.PLAYER, HoldoutStats.playerHealthValue, true)
 	if arena.has("opponentHealth"): 
 		ui.update_health(Actor.Type.OPPONENT, arena["opponentHealth"], true)
+
+
+	#var stats = save_data["stats"]
+	#var arena = save_data["arena"]
+#
+	#HoldoutStats.load_save_dict(stats)
+	#_restore_modifier_flags()
+	#
+	#_initialize_opponent(HoldoutStats.currentPlayer, HoldoutStats.currentOpponent)
+	#
+	#ui.update_health(Actor.Type.PLAYER, HoldoutStats.playerHealthValue, true)
+	#if arena.has("opponentHealth"): 
+		#ui.update_health(Actor.Type.OPPONENT, arena["opponentHealth"], true)
+		#
+		#if int(arena["opponentHealth"]) <= 0:
+			#ui.call_deferred("_on_continue_button_pressed")
+			#return
 	
 	seed(HoldoutStats.currentBattleSeed) 
 	

@@ -48,3 +48,5 @@ __pycache__/
 # Ignore premium assets
 assets/sounds/music/The Perilous Path/
 assets/sounds/music/The Perilous Path/*.import
+assets/sounds/music/Oak Studios/
+assets/sounds/music/Oak Studios/*.import

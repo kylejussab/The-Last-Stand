@@ -2089,7 +2089,7 @@ anchor_bottom = 0.5
 offset_left = 212.0
 offset_top = 204.0
 offset_right = 662.0
-offset_bottom = 231.9999
+offset_bottom = 231.99988
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
@@ -2194,7 +2194,7 @@ anchor_bottom = 0.5
 offset_left = 212.0
 offset_top = 378.0
 offset_right = 662.0
-offset_bottom = 405.99988
+offset_bottom = 405.9999
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
@@ -2221,11 +2221,10 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = 212.0
 offset_top = 430.0
-offset_right = 462.0
+offset_right = 317.0
 offset_bottom = 470.0
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset = Vector2(150, 25)
 theme_override_fonts/normal_font = SubResource("FontVariation_j2jfr")
 theme_override_font_sizes/normal_font_size = 20
 text = "Round Win"
@@ -2258,11 +2257,10 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = 212.0
 offset_top = 470.0
-offset_right = 462.0
+offset_right = 347.0
 offset_bottom = 510.0
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset = Vector2(150, 25)
 theme_override_fonts/normal_font = SubResource("FontVariation_j2jfr")
 theme_override_font_sizes/normal_font_size = 20
 text = "Dominance ⓘ"
@@ -2295,11 +2293,10 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = 212.0
 offset_top = 510.0
-offset_right = 462.0
+offset_right = 302.0
 offset_bottom = 550.0
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset = Vector2(150, 25)
 theme_override_fonts/normal_font = SubResource("FontVariation_j2jfr")
 theme_override_font_sizes/normal_font_size = 20
 text = "Streak ⓘ"
@@ -2332,11 +2329,10 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = 212.0
 offset_top = 550.0
-offset_right = 462.0
+offset_right = 339.0
 offset_bottom = 590.0
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset = Vector2(150, 25)
 theme_override_fonts/normal_font = SubResource("FontVariation_j2jfr")
 theme_override_font_sizes/normal_font_size = 20
 text = "Efficiency ⓘ"
@@ -2369,11 +2365,10 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = 212.0
 offset_top = 590.0
-offset_right = 462.0
+offset_right = 424.0
 offset_bottom = 630.0
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset = Vector2(150, 25)
 theme_override_fonts/normal_font = SubResource("FontVariation_j2jfr")
 theme_override_font_sizes/normal_font_size = 20
 text = "Underdog Mastery ⓘ"
@@ -2459,6 +2454,50 @@ texture = ExtResource("30_chjal")
 position = Vector2(656, 609)
 scale = Vector2(0.072, 0.072)
 texture = ExtResource("30_chjal")
+
+[node name="tooltip" type="Node2D" parent="arena/holdoutEndStats/performance"]
+unique_name_in_owner = true
+visible = false
+
+[node name="background" type="ColorRect" parent="arena/holdoutEndStats/performance/tooltip"]
+offset_left = 450.0
+offset_top = 425.0
+offset_right = 690.0
+offset_bottom = 675.0
+color = Color(0, 0, 0, 0.9607843)
+
+[node name="divider" type="ColorRect" parent="arena/holdoutEndStats/performance/tooltip"]
+offset_left = 450.0
+offset_top = 430.0
+offset_right = 451.0
+offset_bottom = 670.0
+color = Color(1, 1, 1, 0.35686275)
+
+[node name="tooltipText" type="RichTextLabel" parent="arena/holdoutEndStats/performance/tooltip"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 485.0
+offset_top = 435.0
+offset_right = 660.0
+offset_bottom = 665.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_j2jfr")
+theme_override_font_sizes/normal_font_size = 18
+bbcode_enabled = true
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="indicator" type="ColorRect" parent="arena/holdoutEndStats/performance/tooltip"]
+offset_left = 435.0
+offset_top = 489.5
+offset_right = 450.0
+offset_bottom = 490.5
+color = Color(1, 1, 1, 0.35686275)
 
 [node name="total" type="Node2D" parent="arena/holdoutEndStats"]
 
@@ -4005,6 +4044,14 @@ text = "END TURN"
 [connection signal="input_event" from="supportDeck/Area2D" to="supportDeck" method="_on_mouse_pressed"]
 [connection signal="mouse_entered" from="supportDeck/Area2D" to="supportDeck" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="supportDeck/Area2D" to="supportDeck" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="arena/holdoutEndStats/performance/performanceStatContainer/dominanceText" to="arena/holdoutEndStats" method="_on_dominance_text_mouse_entered"]
+[connection signal="mouse_exited" from="arena/holdoutEndStats/performance/performanceStatContainer/dominanceText" to="arena/holdoutEndStats" method="_on_dominance_text_mouse_exited"]
+[connection signal="mouse_entered" from="arena/holdoutEndStats/performance/performanceStatContainer/streakText" to="arena/holdoutEndStats" method="_on_streak_text_mouse_entered"]
+[connection signal="mouse_exited" from="arena/holdoutEndStats/performance/performanceStatContainer/streakText" to="arena/holdoutEndStats" method="_on_streak_text_mouse_exited"]
+[connection signal="mouse_entered" from="arena/holdoutEndStats/performance/performanceStatContainer/efficiencyText" to="arena/holdoutEndStats" method="_on_efficiency_text_mouse_entered"]
+[connection signal="mouse_exited" from="arena/holdoutEndStats/performance/performanceStatContainer/efficiencyText" to="arena/holdoutEndStats" method="_on_efficiency_text_mouse_exited"]
+[connection signal="mouse_entered" from="arena/holdoutEndStats/performance/performanceStatContainer/underdogMasteryText" to="arena/holdoutEndStats" method="_on_underdog_mastery_text_mouse_entered"]
+[connection signal="mouse_exited" from="arena/holdoutEndStats/performance/performanceStatContainer/underdogMasteryText" to="arena/holdoutEndStats" method="_on_underdog_mastery_text_mouse_exited"]
 [connection signal="pressed" from="arena/holdoutEndStats/ContinueButton" to="arena" method="_on_continue_button_pressed"]
 [connection signal="hold_complete" from="arena/holdoutEndStats/ReplayButton" to="arena" method="_on_replay_button_hold_complete"]
 [connection signal="mouse_entered" from="arena/holdoutEndStats/ReplayButton" to="arena" method="_on_replay_button_mouse_entered"]

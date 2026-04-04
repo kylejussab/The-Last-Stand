@@ -14,7 +14,6 @@ func save_holdout_state(data: Dictionary) -> void:
 		var jsonString = JSON.stringify(data)
 		file.store_string(jsonString)
 		file.close()
-		print("Holdout state saved and encrypted successfully.")
 	else:
 		printerr("Failed to open save file for encrypted writing.")
 
@@ -44,4 +43,3 @@ func load_holdout_state() -> Dictionary:
 func clear_holdout_save() -> void:
 	if has_holdout_save():
 		DirAccess.remove_absolute(HOLDOUT_SAVE_PATH)
-		print("Holdout save cleared.")

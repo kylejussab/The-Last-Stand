@@ -297,3 +297,35 @@ static func get_final_accolade() -> Dictionary:
 
 func trigger_badge_thud() -> void:
 	AudioManager.play_badge_thud()
+
+func _on_dominance_text_mouse_entered() -> void:
+	%tooltip.get_node("tooltipText").text = "The highest value difference you've had over your opponent in a single round.\n\nEach point of Dominance adds a flat bonus to your total rations."
+	%tooltip.get_node("indicator").position.y = 489.5
+	%tooltip.visible = true
+
+func _on_dominance_text_mouse_exited() -> void:
+	%tooltip.visible = false
+
+func _on_streak_text_mouse_entered() -> void:
+	%tooltip.get_node("tooltipText").text = "The number of consecutive rounds won without a loss.\n\nYour Streak is multiplied by 2 and added as a bonus to your total rations."
+	%tooltip.get_node("indicator").position.y = 529.5
+	%tooltip.visible = true
+
+func _on_streak_text_mouse_exited() -> void:
+	%tooltip.visible = false
+
+func _on_efficiency_text_mouse_entered() -> void:
+	%tooltip.get_node("tooltipText").text = "A decaying reward based on the number of rounds played.\n\nWinning the battle in fewer rounds keeps this bonus high."
+	%tooltip.get_node("indicator").position.y = 569.5
+	%tooltip.visible = true
+
+func _on_efficiency_text_mouse_exited() -> void:
+	%tooltip.visible = false
+
+func _on_underdog_mastery_text_mouse_entered() -> void:
+	%tooltip.get_node("tooltipText").text = "The number of wins where you played a weaker character than your opponent.\n\nEach win adds a flat bonus to your total rations."
+	%tooltip.get_node("indicator").position.y = 609.5
+	%tooltip.visible = true
+
+func _on_underdog_mastery_text_mouse_exited() -> void:
+	%tooltip.visible = false
