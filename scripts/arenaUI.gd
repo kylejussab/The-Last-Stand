@@ -50,6 +50,9 @@ func get_health(who: Actor.Type) -> int:
 			return 0
 
 func setup_avatar(avatar: Actor.Avatar, type: Actor.Type) -> void:
+	if not is_node_ready():
+		await ready
+		
 	var data = Database.AVATARS[avatar]
 	
 	var isPlayer: bool = true if type == Actor.Type.PLAYER else false
@@ -71,6 +74,9 @@ func setup_avatar(avatar: Actor.Avatar, type: Actor.Type) -> void:
 		$image.texture = load("%s%sArena.png" % [data.arenaPath, data.name.get_slice(" ", 0)])
 
 func change_mood(who: Actor.Type, mood: Actor.Mood) -> void:
+	if not is_node_ready():
+		await ready
+		
 	var headNode: Node2D = playerHead if who == Actor.Type.PLAYER else opponentHead
 	var expressionNodeName: String = ""
 	
@@ -85,6 +91,9 @@ func change_mood(who: Actor.Type, mood: Actor.Mood) -> void:
 			child.visible = (child.name == expressionNodeName)
 
 func set_indicator(who: Actor.Type) -> void:
+	if not is_node_ready():
+		await ready
+		
 	$player/indicator.visible = false
 	$opponent/indicator.visible = false
 	

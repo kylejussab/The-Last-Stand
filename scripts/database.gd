@@ -40,6 +40,7 @@ const CHARACTERS = { # Value, Type, Faction, Class, Card Name Text, Perk Text
 	"Tommy": [5, "Character", "Jackson", "Aggressive", "TOMMY", "+1 for each Jackson in hand"],
 	"Bill": [4, "Character", "Jackson", "Crafty", "BILL", "+4 if played support card is Trap Mine"],
 	"Jessie": [5, "Character", "Jackson", "Defensive", "JESSIE", "-1 to opponent, if opposing card is Aggressive"],
+	"Shimmer": [2, "Character", "Jackson", "Defensive", "SHIMMER", "+3 if Ellie or Dina in hand"],
 	
 	# New / altered cards based on humanity restored modifier
 	"JoelSmuggler": [6, "Character", "Smuggler", "Aggressive", "JOEL", "+2 if opposing card is Aggressive or Defensive or Survivor"],
@@ -113,6 +114,7 @@ const PERKS = {
 	"SeraphiteInitiate": "res://scripts/perks/seraphiteInitiatePerk.gd",
 	"Li": "res://scripts/perks/liPerk.gd",
 	"SeraphiteBrute": "res://scripts/perks/seraphiteBrutePerk.gd",
+	"Shimmer": "res://scripts/perks/shimmerPerk.gd",
 	
 	"JoelSmuggler": "res://scripts/perks/joelSmugglerPerk.gd",
 	"BillSmuggler": "res://scripts/perks/billPerk.gd",
@@ -142,49 +144,49 @@ var AVATARS = {
 	Actor.Avatar.ETHAN: {
 		"name": "Ethan Hark",
 		"description": "Patrol Leader",
-		"health": "%02d" % 20,
+		"health": "%02d" % 2,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.RHEA: {
 		"name": "Rhea",
 		"description": "Matriarch",
-		"health": "%02d" % 20,
+		"health": "%02d" % 2,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.UCKMANN: {
 		"name": "Dr Uckmann",
 		"description": "Dog Director",
-		"health": "%02d" % 20,
+		"health": "%02d" % 2,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.ALLEY: {
 		"name": "Alley Ross",
 		"description": "Scriptweaver",
-		"health": "%02d" % 20,
+		"health": "%02d" % 2,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.SILAS: {
 		"name": "Silas Vane",
 		"description": "Scavenger King",
-		"health": "%02d" % 20,
+		"health": "%02d" % 2,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.MIRA: {
 		"name": "Mira Thorne",
 		"description": "Ex-Medic",
-		"health": "%02d" % 20, 
+		"health": "%02d" % 2, 
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	},
 	Actor.Avatar.KAEL: {
 		"name": "Kaelen Voss",
 		"description": "Shield Brother",
-		"health": "%02d" % 20,
+		"health": "%02d" % 2,
 		"headPath": "res://assets/arenaHeads/",
 		"arenaPath": "res://assets/arenas/"
 	}
@@ -391,7 +393,7 @@ const standardCharacterDeck = [
 	"Shambler",
 	"Emily", "Lev", "Yara",
 	"Nora", "Manny", "Alice", "Li",
-	"Bill", "Dina", "Jessie", "Tommy", "TommyFirefly",
+	"Bill", "Dina", "Jessie", "Tommy", "TommyFirefly", "Shimmer",
 	"Riley", "Eugene", "Malik",
 	
 	"Joel",
@@ -442,7 +444,7 @@ const infectedHeavyCharacterDeck = [
 	"Shambler",
 	"Emily", "Lev", "Yara",
 	"Nora", "Manny", "Alice", "Li",
-	"Bill", "Dina", "Jessie", "Tommy", "TommyFirefly",
+	"Bill", "Dina", "Jessie", "Tommy", "TommyFirefly", "Shimmer",
 	"Riley", "Eugene", "Malik",
 	
 	"Joel",

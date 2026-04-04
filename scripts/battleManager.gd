@@ -75,9 +75,11 @@ var discardedCardZIndex: int = 1
 
 @onready var ui: Node2D = %arena
 @onready var endScreenAnimator: Node = %holdoutEndScreenAnimator
+var playerCardScene = preload("res://scenes/card.tscn")
+var opponentCardScene = preload("res://scenes/opponentCard.tscn")
 
 #Debug variable [also delete the check in opponentHand.gd when done]
-var showOpponentsCards: bool = true
+var showOpponentsCards: bool = false
 
 func _process(delta):
 	if isRoundActive:
@@ -97,23 +99,19 @@ func _ready() -> void:
 	$"../cardManager".connect("characterPlayed", Callable(self, "_on_player_character_played"))
 	$"../cardManager".connect("supportPlayed", Callable(self, "_on_player_support_played"))
 	
-	prepare_opponent()
-	
-	match GameStats.gameMode:
-		GameStats.Mode.JUNE_RAVEL:
-			GameStats.currentPlayer = Actor.Avatar.JUNE
-			GameStats.playerHealthValue = Database.AVATARS[Actor.Avatar.JUNE].health
+	if SaveManager.isLoadingSave:
+		_load_game_from_snapshot()
+		SaveManager.isLoadingSave = false
+	else:
+		prepare_opponent()
 		
-		GameStats.Mode.HOLDOUT:
-			# Maybe there should be an avatar thats always used for Last Stand
-			HoldoutStats.currentPlayer = Actor.Avatar.JUNE
-			HoldoutStats.playerHealthValue = 99
-			HoldoutStats.playerHealthAtRoundStart = 99
-	
-	ui.update_health(Actor.Type.PLAYER, HoldoutStats.playerHealthValue, true)
-	
-	GameStats.gameMode = GameStats.Mode.HOLDOUT
-	initialize_game()
+		HoldoutStats.currentPlayer = Actor.Avatar.JUNE
+		HoldoutStats.playerHealthValue = 99
+		HoldoutStats.playerHealthAtRoundStart = 99
+		
+		ui.update_health(Actor.Type.PLAYER, HoldoutStats.playerHealthValue, true)
+		GameStats.gameMode = GameStats.Mode.HOLDOUT
+		initialize_game()
 
 func prepare_opponent() -> void:
 	if not HoldoutStats.replayedRound:
@@ -161,6 +159,8 @@ func initialize_game() -> void:
 	isRoundActive = true
 	
 	%bubbleContainer.render_active_modifiers()
+	
+	_save_round_checkpoint()
 
 func add_modifier(modifier: Database.Modifier) -> void:
 	var instance = Database.MODIFIERS[modifier].duplicate(true)
@@ -520,6 +520,8 @@ func _conclude_match() -> void:
 	await _repopulate_decks(true)
 	
 	discardedCardZIndex = 1
+	
+	SaveManager.clear_holdout_save()
 
 func _start_new_round() -> void:
 	previousRoundFaction = playerCharacterCard.faction
@@ -557,6 +559,8 @@ func _start_new_round() -> void:
 			%cardManager.play_top_character_from_deck()
 		
 		lockPlayerInput = false
+	
+	_save_round_checkpoint()
 
 func _on_end_turn_button_pressed() -> void:
 	ui.show_end_turn_button(false)
@@ -979,7 +983,7 @@ func _handle_player_win(playerTotal: int, opponentTotal: int) -> void:
 		
 	var damage = playerTotal - opponentTotal
 	
-	_check_old_wounds_accolade(damage)
+	_check_old_wounds_accolade()
 	
 	ui.change_mood(Actor.Type.PLAYER, Actor.Mood.HAPPY)
 	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.HURT)
@@ -1130,14 +1134,11 @@ func _is_player_support_matched() -> bool:
 		
 	return false
 
-func _check_old_wounds_accolade(damage: int) -> void:
-	var currentOpponentHealth = ui.get_health(Actor.Type.OPPONENT)
-	
-	if currentOpponentHealth - damage <= 0:
-		if HoldoutStats.RIVALRIES.has(playerCharacterCard.cardKey):
-			var rivals = HoldoutStats.RIVALRIES[playerCharacterCard.cardKey]
-			if opponentCharacterCard.cardKey in rivals:
-				HoldoutStats.achievedOldWounds = true
+func _check_old_wounds_accolade() -> void:
+	if HoldoutStats.RIVALRIES.has(playerCharacterCard.cardKey):
+		var rivals = HoldoutStats.RIVALRIES[playerCharacterCard.cardKey]
+		if opponentCharacterCard.cardKey in rivals:
+			HoldoutStats.achievedOldWounds = true
 
 # Perk Helpers
 func _execute_player_mid_perk() -> void:
@@ -1217,3 +1218,227 @@ func _execute_player_calc_perk(playerTotal: int, opponentTotal: int) -> void:
 func _execute_opponent_calc_perk(playerTotal: int, opponentTotal: int) -> void:
 	if opponentCharacterCard.perk && opponentCharacterCard.perk.timing == "calculationRound":
 		await opponentCharacterCard.perk.apply_after_calculation_perk(opponentCharacterCard, opponentHand, opponentTotal, playerTotal)
+
+# Saving and loading extractors
+func _get_card_array_save_data(cardArray: Array) -> Array:
+	var parsedData = []
+	for card in cardArray:
+		if is_instance_valid(card):
+			parsedData.append({
+				"cardKey": card.cardKey, 
+				"value": card.value,
+				"role": card.role
+			})
+	return parsedData
+
+func get_arena_save_dict() -> Dictionary:
+	return {
+		"whoStartedRound": whoStartedRound,
+		"opponentHealth": ui.get_health(Actor.Type.OPPONENT),
+		"characterDeck": $"../characterDeck".deck,
+		"supportDeck": $"../supportDeck".deck,
+		"playerHand": _get_card_array_save_data(playerHand),
+		"opponentHand": _get_card_array_save_data(opponentHand),
+		"discardedCards": _get_card_array_save_data(discardedCards)
+	}
+
+func _save_round_checkpoint() -> void:
+	if SaveManager.isLoadingSave:
+		return 
+
+	var fullSaveData = {
+		"stats": HoldoutStats.get_save_dict(),
+		"arena": get_arena_save_dict()
+	}
+	
+	SaveManager.save_holdout_state(fullSaveData)
+
+func _load_game_from_snapshot() -> void:
+	var save_data = SaveManager.load_holdout_state()
+	
+	if save_data.is_empty():
+		printerr("Save data corrupted. Starting fresh Holdout run.")
+		
+		HoldoutStats.currentPlayer = Actor.Avatar.JUNE
+		HoldoutStats.playerHealthValue = 99
+		HoldoutStats.playerHealthAtRoundStart = 99
+		
+		ui.update_health(Actor.Type.PLAYER, HoldoutStats.playerHealthValue, true)
+		prepare_opponent()
+		initialize_game()
+		return
+
+	var stats = save_data["stats"]
+	var arena = save_data["arena"]
+
+	HoldoutStats.load_save_dict(stats)
+	_restore_modifier_flags()
+	
+	_initialize_opponent(HoldoutStats.currentPlayer, HoldoutStats.currentOpponent)
+	
+	ui.update_health(Actor.Type.PLAYER, HoldoutStats.playerHealthValue, true)
+	if arena.has("opponentHealth"): 
+		ui.update_health(Actor.Type.OPPONENT, arena["opponentHealth"], true)
+	
+	seed(HoldoutStats.currentBattleSeed) 
+	
+	whoStartedRound = int(arena["whoStartedRound"]) as Actor.Type
+	$"../characterDeck".deck = arena["characterDeck"]
+	$"../supportDeck".deck = arena["supportDeck"]
+	
+	await get_tree().process_frame
+	
+	%playerHand.centerScreenX = get_viewport().get_visible_rect().size.x / 2.0
+	%opponentHand.centerScreenX = get_viewport().get_visible_rect().size.x / 2.0
+	
+	_rebuild_cards_from_save(arena["playerHand"], %playerHand)
+	_rebuild_cards_from_save(arena["opponentHand"], %opponentHand)
+	
+	for saved_card in arena["discardedCards"]:
+		var new_card = _spawn_single_card(saved_card)
+		new_card.position = DISCARD_PILE_POSITION
+		new_card.scale = Vector2(1, 1)
+		new_card.z_index = discardedCardZIndex
+		discardedCardZIndex += 1
+		new_card.get_node("Area2D/CollisionShape2D").disabled = true
+		discardedCards.append(new_card)
+		$"../cardManager".add_child(new_card) 
+
+	isRoundActive = true
+	%pauseIcon.show()
+	%bubbleContainer.render_active_modifiers()
+	
+	_apply_guerrilla_tactics_restrictions()
+	
+	if whoStartedRound == Actor.Type.PLAYER:
+		roundStage = RoundStage.PLAYER_CHARACTER
+		ui.set_indicator(Actor.Type.PLAYER)
+		ui.change_mood(Actor.Type.PLAYER, Actor.Mood.THINKING)
+		ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
+		lockPlayerInput = false
+		
+		if supplyLineActive:
+			await get_tree().create_timer(OPPONENT_THINKING_TIME).timeout
+			%cardManager.play_top_character_from_deck()
+	else:
+		roundStage = RoundStage.OPPONENT_CHARACTER
+		ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.THINKING)
+		ui.change_mood(Actor.Type.PLAYER, Actor.Mood.NEUTRAL)
+		_execute_opponent_character_play()
+
+func _rebuild_cards_from_save(saved_card_array: Array, hand_node: Node) -> void:
+	var is_opponent = (hand_node == %opponentHand)
+	
+	for saved_card in saved_card_array:
+		var new_card = _spawn_single_card(saved_card, is_opponent)
+		
+		new_card.position = Vector2(hand_node.centerScreenX, hand_node.HAND_Y_POSITION)
+		
+		$"../cardManager".add_child(new_card)
+		
+		hand_node.add_card_to_hand(new_card, 0.0)
+
+func _spawn_single_card(card_data: Dictionary, is_opponent: bool = false) -> Node2D:
+	var new_card
+	if is_opponent:
+		new_card = opponentCardScene.instantiate()
+	else:
+		new_card = playerCardScene.instantiate()
+	
+	var key = card_data["cardKey"]
+	new_card.cardKey = key
+	
+	if Database.CHARACTERS.has(key):
+		var char_data = Database.CHARACTERS[key]
+		new_card.type = char_data[1]
+		new_card.faction = char_data[2]
+		new_card.role = char_data[3]
+		new_card.nameText = char_data[4]
+		if char_data.size() > 5:
+			new_card.perkDescription = char_data[5]
+		
+		new_card.canBePlayed = true
+		
+	elif Database.SUPPORTS.has(key):
+		var supp_data = Database.SUPPORTS[key]
+		new_card.type = supp_data[1]
+		new_card.faction = "Support" 
+		new_card.role = supp_data[2]
+		new_card.nameText = supp_data[4]
+		if supp_data.size() > 5:
+			new_card.perkDescription = supp_data[5]
+		
+		new_card.canBePlayed = false
+		
+	if Database.PERKS.has(key):
+		var perk_script = load(Database.PERKS[key])
+		if perk_script:
+			new_card.perk = perk_script.new()
+
+	new_card.value = card_data["value"]
+	
+	if card_data.has("role"):
+		new_card.role = card_data["role"]
+	
+	new_card.update_visuals()
+	
+	if is_opponent and not showOpponentsCards:
+		if new_card.has_node("image"): 
+			new_card.get_node("image").visible = false
+		if new_card.has_node("imageBack"): 
+			new_card.get_node("imageBack").visible = true
+	
+	return new_card
+
+func _restore_modifier_flags() -> void:
+	maximumCharacterCardsInHand = 4
+	maximumSupportCardsInHand = 4
+	minimumCardsForReshuffle = 5
+	
+	for mod in HoldoutStats.activeModifiers:
+		var modifier_id = int(mod["id"])
+		
+		match modifier_id:
+			Database.Modifier.CARD_ROT: cardRotActive = true
+			Database.Modifier.NO_DEFENSE: noDefenseActive = true
+			Database.Modifier.LOUD_NOISE: loudNoiseActive = true
+			Database.Modifier.CALCULATED_RISK: calculatedRiskActive = true
+			Database.Modifier.DEEP_WOUNDS: deepWoundsActive = true
+			Database.Modifier.HEAVY_HITTER: heavyHitterActive = true
+			Database.Modifier.OVER_EXERTION: overExertionActive = true
+			Database.Modifier.STACKED_ODDS: stackedOddsActive = true
+			Database.Modifier.FRIENDLY_FIRE: friendlyFireActive = true
+			Database.Modifier.DESPERATE_MEASURES: desperateMeasuresActive = true
+			Database.Modifier.GUERRILLA_TACTICS: guerrillaTacticsActive = true
+			Database.Modifier.INFECTED_DECK: infectedDeckActive = true
+			Database.Modifier.HUMANITY_RESTORED: humanityRestoredActive = true
+			Database.Modifier.FORSAKEN_HONOR: forsakenHonorActive = true
+			Database.Modifier.SLOW_BLEED: slowBleedActive = true
+			Database.Modifier.ALWAYS_FIRST: alwaysFirstActive = true
+			
+			Database.Modifier.REDUCED_HAND:
+				reducedHandActive = true
+				if loneWolfActive:
+					maximumCharacterCardsInHand = 6
+					maximumSupportCardsInHand = 0
+				else:
+					maximumCharacterCardsInHand = 3
+					maximumSupportCardsInHand = 3
+					
+			Database.Modifier.VOLATILE_HAND:
+				volatileHandActive = true
+				minimumCardsForReshuffle = 6
+				
+			Database.Modifier.LONE_WOLF:
+				loneWolfActive = true
+				if volatileHandActive: minimumCardsForReshuffle = 10
+				if reducedHandActive: maximumCharacterCardsInHand = 6
+				else: maximumCharacterCardsInHand = 8
+				maximumSupportCardsInHand = 0
+				
+			Database.Modifier.SUPPLY_LINE:
+				supplyLineActive = true
+				if volatileHandActive: minimumCardsForReshuffle = 10
+				if reducedHandActive: maximumSupportCardsInHand = 6
+				else: maximumSupportCardsInHand = 8
+				maximumCharacterCardsInHand = 0

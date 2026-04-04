@@ -200,7 +200,15 @@ func _on_new_button_hold_complete() -> void:
 	#randomAmbience.call(-10.0, 2.0)
 
 func _on_continue_button_pressed() -> void:
-	_play_denied_animation($holdoutButtonContainer/ContinueButton)
+	if SaveManager.has_holdout_save():
+		AudioManager.play_button_click()
+		
+		SaveManager.isLoadingSave = true 
+		GameStats.gameMode = GameStats.Mode.HOLDOUT
+		
+		Curtain.change_scene("res://scenes/main.tscn")
+	else:
+		_play_denied_animation($holdoutButtonContainer/ContinueButton)
 
 func _on_remnants_button_mouse_entered() -> void:
 	supplementText.text = SUPPLEMENTTEXT["Remnants"]

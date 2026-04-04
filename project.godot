@@ -24,6 +24,7 @@ GameStats="*res://scripts/gameStats.gd"
 Database="*res://scripts/database.gd"
 AccessibilityData="*res://scripts/accessibilityData.gd"
 AudioManager="*res://scenes/audioManager.tscn"
+SaveManager="*res://scripts/saveManager.gd"
 
 [display]
 

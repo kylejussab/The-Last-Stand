@@ -91,7 +91,7 @@ const RIVALRIES = {
 	"IsaacHumanity": ["Yara", "Lev", "TheProphet"],
 	"Yara": ["Isaac", "IsaacHumanity"],
 	"Lev": ["Isaac", "IsaacHumanity"],
-	# Add the jackson horse with WLF soldier
+	"Shimmer": ["WLFSoldier", "WLFSoldierHumanity"]
 }
 
 const FACTION_COLORS = {"Jackson": Color("7b9e49"), "WLF": Color("80aedd"), "Seraphite": Color("a188bf"), "Firefly": Color("e6c54f"), "Infected": Color("f6d978"), "Smuggler": Color("ffffff")}
@@ -243,3 +243,68 @@ static func _append_to_log_file(new_battle_data: Dictionary):
 	var save_file = FileAccess.open(LOG_FILE_PATH, FileAccess.WRITE)
 	save_file.store_string(JSON.stringify(all_data, "\t"))
 	save_file.close()
+
+# Saving and loading
+static func get_save_dict() -> Dictionary:
+	return {
+		"currentPlayer": currentPlayer,
+		"currentOpponent": currentOpponent,
+		"currentBattleSeed": currentBattleSeed,
+		"currentRoundDuration": currentRoundDuration,
+		"opponentList": opponentList,
+		"playerHealthValue": playerHealthValue,
+		"playerHealthAtRoundStart": playerHealthAtRoundStart,
+		"activeModifiers": activeModifiers,
+		"currentRank": currentRank,
+		"numberOfWins": numberOfWins,
+		"roundsPlayed": roundsPlayed,
+		"longestStreak": longestStreak,
+		"currentStreak": currentStreak,
+		"highestDominance": highestDominance,
+		"underdogWins": underdogWins,
+		"multiplierTotal": multiplierTotal,
+		"totalRunRations": totalRunRations,
+		"currentRunRations": currentRunRations,
+		"achievedOldWounds": achievedOldWounds,
+		"longestThinkTime": longestThinkTime,
+		"allPlayedCards": allPlayedCards,
+		"allOpponentCards": allOpponentCards
+	}
+
+static func load_save_dict(data: Dictionary) -> void:
+	currentPlayer = int(data["currentPlayer"]) as Actor.Avatar
+	currentOpponent = int(data["currentOpponent"]) as Actor.Avatar
+	currentRank = int(data["currentRank"]) as Rank
+	
+	currentBattleSeed = data["currentBattleSeed"]
+	currentRoundDuration = data["currentRoundDuration"]
+	opponentList = data["opponentList"]
+	playerHealthValue = int(data["playerHealthValue"])
+	playerHealthAtRoundStart = int(data["playerHealthAtRoundStart"])
+	
+	activeModifiers.clear()
+	for mod in data["activeModifiers"]:
+		mod["id"] = int(mod["id"])
+		mod["duration"] = int(mod["duration"])
+		
+		if mod.has("currentDuration"):
+			mod["currentDuration"] = int(mod["currentDuration"])
+			
+		if mod.has("amount"):
+			mod["amount"] = int(mod["amount"])
+			
+		activeModifiers.append(mod)
+	
+	numberOfWins = int(data["numberOfWins"])
+	roundsPlayed = int(data["roundsPlayed"])
+	longestStreak = int(data["longestStreak"])
+	currentStreak = int(data["currentStreak"])
+	highestDominance = int(data["highestDominance"])
+	underdogWins = int(data["underdogWins"])
+	multiplierTotal = data["multiplierTotal"]
+	totalRunRations = int(data["totalRunRations"])
+	currentRunRations = int(data["currentRunRations"])
+	achievedOldWounds = data["achievedOldWounds"]
+	longestThinkTime = data["longestThinkTime"]
+	allPlayedCards = data["allPlayedCards"]
+	allOpponentCards = data["allOpponentCards"]
