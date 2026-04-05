@@ -42,12 +42,9 @@ func _change_setting(direction: int):
 
 	_update_ui()
 	
-	if owner.has_method("update_preview_card"):
-		owner.update_preview_card()
-	else:
-		var pauseMenu = find_parent("pause") 
-		if pauseMenu and pauseMenu.has_method("update_preview_card"):
-			pauseMenu.update_preview_card()
+	var optionsMenu = find_parent("OptionsMenu")
+	if optionsMenu and optionsMenu.has_method("update_preview_card"):
+		optionsMenu.update_preview_card()
 
 func _update_ui():
 	var count = AccessibilityData.CardUISize.size()

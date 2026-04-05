@@ -122,7 +122,7 @@ func _calculate_holdout_stats(playerWon: bool) -> void:
 	distanceToNewRank = HoldoutStats.get_distance_to_next(HoldoutStats.totalRunRations + totalRationsToAdd)
 	
 	accolade = get_final_accolade()
-	GameStats.accoladeCounts[accolade.id] += 1
+	GameStats.holdoutAccoladeCounts[accolade.id] += 1
 	
 	if !playerWon:
 		GameStats.rations += HoldoutStats.totalRunRations + totalRationsToAdd

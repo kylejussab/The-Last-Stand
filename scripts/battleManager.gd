@@ -525,6 +525,8 @@ func _conclude_match() -> void:
 		SaveManager.clear_holdout_save()
 	else:
 		_save_round_checkpoint()
+	
+	GameStats.push_holdout_battle_stats(ui.get_health(Actor.Type.PLAYER) > 0)
 
 func _start_new_round() -> void:
 	previousRoundFaction = playerCharacterCard.faction

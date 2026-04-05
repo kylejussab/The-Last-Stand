@@ -126,6 +126,8 @@ static func reset_for_new_run():
 	numberOfWins = 0
 	totalRunRations = 0
 	
+	GameStats.holdoutRunsAttempted += 1
+	
 	multiplierTotal = 1.0
 	activeModifiers.clear()
 	opponentList.clear()
@@ -197,7 +199,7 @@ static func get_next_rank_string() -> String:
 static func start_new_run_log():
 	currentGameSession = str(Time.get_unix_time_from_system())
 
-static func log_battle_results(outcome: String):
+static func log_battle_results(outcome: String):	
 	if not OS.is_debug_build():
 		return
 	
