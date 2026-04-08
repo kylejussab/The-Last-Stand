@@ -75,6 +75,8 @@ func open_deck_view(deckCaller = null):
 			
 			if %battleManager.infectedDeckActive:
 				deckData = cardDatabase.infectedHeavySupportDeck.duplicate()
+			elif %battleManager.humanityRestoredActive:
+				deckData = cardDatabase.humanityRestoredSupportDeck.duplicate()
 			else:
 				deckData = cardDatabase.standardSupportDeck.duplicate()
 			_populate_support_deck(deckData)

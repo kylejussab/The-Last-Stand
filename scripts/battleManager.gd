@@ -100,7 +100,7 @@ func _ready() -> void:
 	$"../cardManager".connect("supportPlayed", Callable(self, "_on_player_support_played"))
 	
 	if SaveManager.isLoadingSave:
-		_load_game_from_snapshot()
+		await _load_game_from_snapshot()
 		SaveManager.isLoadingSave = false
 	else:
 		prepare_opponent()
@@ -111,7 +111,6 @@ func _ready() -> void:
 		
 		ui.update_health(Actor.Type.PLAYER, HoldoutStats.playerHealthValue, true)
 		GameStats.gameMode = GameStats.Mode.HOLDOUT
-		initialize_game()
 
 func prepare_opponent() -> void:
 	if not HoldoutStats.replayedRound:
@@ -134,7 +133,7 @@ func initialize_game() -> void:
 		$"../supportDeck".deck = Database.infectedHeavySupportDeck.duplicate()
 	elif humanityRestoredActive: 
 		$"../characterDeck".deck = Database.humanityRestoredCharacterDeck.duplicate()
-		$"../supportDeck".deck = Database.standardSupportDeck.duplicate()
+		$"../supportDeck".deck = Database.humanityRestoredSupportDeck.duplicate()
 	else:
 		$"../characterDeck".deck = Database.standardCharacterDeck.duplicate()
 		$"../supportDeck".deck = Database.standardSupportDeck.duplicate()

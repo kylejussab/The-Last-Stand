@@ -8,6 +8,7 @@ var winStreaks: int = 0
 var efficiency: int = 0
 var distanceToNewRank: int = 0
 var accolade: Dictionary
+var currentMvpData: Dictionary
 
 func play_holdout_end_sequence(playerWon: bool):
 	_calculate_holdout_stats(playerWon)
@@ -121,6 +122,12 @@ func _calculate_holdout_stats(playerWon: bool) -> void:
 	
 	distanceToNewRank = HoldoutStats.get_distance_to_next(HoldoutStats.totalRunRations + totalRationsToAdd)
 	
+	currentMvpData = get_card_stats(HoldoutStats.allPlayedCards)
+	var mvpKey = currentMvpData["cardKey"]
+	
+	if mvpKey != "None":
+		GameStats.holdoutMvpCounts[mvpKey] = GameStats.holdoutMvpCounts.get(mvpKey, 0) + 1
+	
 	accolade = get_final_accolade()
 	GameStats.holdoutAccoladeCounts[accolade.id] += 1
 	
@@ -146,14 +153,14 @@ func _assign_values_to_labels() -> void:
 	
 	screen.get_node("total/rankIcon").texture = load("res://assets/holdout/rank/" + HoldoutStats.get_current_rank_string() + ".png")
 	
-	var premiumAssetPath = "res://assets/holdout/mvp/" + get_card_stats(HoldoutStats.allPlayedCards)["cardKey"] + ".png"
+	var premiumAssetPath = "res://assets/holdout/mvp/" + currentMvpData["cardKey"] + ".png"
 	
 	if ResourceLoader.exists(premiumAssetPath):
 		screen.get_node("total/mvpIcon").texture = load(premiumAssetPath)
 	else:
-		screen.get_node("total/mvpIcon").texture = load("res://assets/holdout/" + get_card_stats(HoldoutStats.allPlayedCards)["faction"] + ".png")
+		screen.get_node("total/mvpIcon").texture = load("res://assets/holdout/" + currentMvpData["faction"] + ".png")
 	
-	screen.get_node("total/badgeOutlineMvp").modulate = HoldoutStats.FACTION_COLORS[get_card_stats(HoldoutStats.allPlayedCards)["faction"]]
+	screen.get_node("total/badgeOutlineMvp").modulate = HoldoutStats.FACTION_COLORS[currentMvpData["faction"]]
 	
 	if HoldoutStats.get_next_rank_string() == "":
 		screen.get_node("total/badgeTextContainer/rankText").text = "Max Rank"
@@ -253,9 +260,6 @@ func handle_modifier_durations() -> void:
 			%battleManager.remove_modifier(modifier["id"])
 
 static func get_final_accolade() -> Dictionary:
-	if HoldoutStats.playerHealthValue == HoldoutStats.playerHealthAtRoundStart: 
-		return HoldoutStats.ACCOLADES["Untouchable"]
-	
 	if HoldoutStats.achievedOldWounds:
 		return HoldoutStats.ACCOLADES["OldWounds"]
 	
@@ -263,6 +267,9 @@ static func get_final_accolade() -> Dictionary:
 		return HoldoutStats.ACCOLADES["ThrillSeeker"]
 	
 	var earned: Array = []
+	
+	if HoldoutStats.playerHealthValue == HoldoutStats.playerHealthAtRoundStart: 
+		earned.append(HoldoutStats.ACCOLADES["Untouchable"])
 	
 	if HoldoutStats.highestDominance >= 10:
 		earned.append(HoldoutStats.ACCOLADES["Executioner"])

@@ -1,0 +1,292 @@
+[gd_scene load_steps=15 format=3 uid="uid://chb4j7220yip1"]
+
+[ext_resource type="Script" uid="uid://71sqnaai55pn" path="res://scripts/holdoutOpeningAnimation.gd" id="1_j41m5"]
+[ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://assets/fonts/SF-Pro-Display-Black.otf" id="2_ph2vm"]
+[ext_resource type="Script" uid="uid://6kltjsmd4ojl" path="res://scripts/holdoutInfinityAnimation.gd" id="3_y12vd"]
+
+[sub_resource type="FontVariation" id="FontVariation_r1y6c"]
+base_font = ExtResource("2_ph2vm")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_ikdhw"]
+base_font = ExtResource("2_ph2vm")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_4cuub"]
+base_font = ExtResource("2_ph2vm")
+spacing_glyph = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qifec"]
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y6bwc"]
+bg_color = Color(0, 0, 0, 0)
+border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kbas4"]
+bg_color = Color(0.08627451, 0.08627451, 0.08627451, 0)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4qpg7"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p37yg"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="Animation" id="Animation_2ij7o"]
+resource_name = "show_tutorial"
+length = 1.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Heading:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [Vector2(810, 535), Vector2(810, 490)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Container/TutorialText:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.55, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Container/PlayHoldoutButton:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1, 1.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(932.5, 635), Vector2(932.5, 635), Vector2(932.5, 655)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Container/PlayHoldoutButton:self_modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1, 1.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Container/SkipHoldoutTutorialButton:self_modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 1.4, 1.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Container/SkipHoldoutTutorialButton:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 1.4, 1.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(935, 685), Vector2(935, 685), Vector2(935, 705)]
+}
+
+[sub_resource type="Animation" id="Animation_megcv"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Heading:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(810, 535)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Container/TutorialText:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Container/PlayHoldoutButton:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(932.5, 635)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Container/PlayHoldoutButton:self_modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Container/SkipHoldoutTutorialButton:self_modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Container/SkipHoldoutTutorialButton:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(935, 685)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_can2p"]
+_data = {
+&"RESET": SubResource("Animation_megcv"),
+&"show_tutorial": SubResource("Animation_2ij7o")
+}
+
+[node name="HoldoutIntro" type="Node2D"]
+z_index = 900
+script = ExtResource("1_j41m5")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Heading" type="RichTextLabel" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 810.0
+offset_top = 535.0
+offset_right = 1110.0
+offset_bottom = 584.9984
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = SubResource("FontVariation_r1y6c")
+theme_override_font_sizes/normal_font_size = 32
+text = "HOLDOUT"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Container" type="Node2D" parent="."]
+
+[node name="OrbitContainer" type="Node2D" parent="Container"]
+position = Vector2(960, 540)
+script = ExtResource("3_y12vd")
+
+[node name="TutorialText" type="RichTextLabel" parent="Container"]
+self_modulate = Color(1, 1, 1, 0)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 810.0
+offset_top = 540.0
+offset_right = 1110.0
+offset_bottom = 580.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 20)
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_ikdhw")
+theme_override_font_sizes/normal_font_size = 20
+text = "Play the tutorial?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayHoldoutButton" type="Button" parent="Container"]
+self_modulate = Color(1, 1, 1, 0)
+z_index = 201
+offset_left = 932.5
+offset_top = 635.0
+offset_right = 987.5
+offset_bottom = 665.0
+theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = SubResource("FontVariation_4cuub")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_qifec")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_y6bwc")
+theme_override_styles/hover = SubResource("StyleBoxFlat_kbas4")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_4qpg7")
+theme_override_styles/focus = SubResource("StyleBoxFlat_p37yg")
+text = "PLAY"
+alignment = 0
+
+[node name="SkipHoldoutTutorialButton" type="Button" parent="Container"]
+self_modulate = Color(1, 1, 1, 0)
+z_index = 201
+offset_left = 935.0
+offset_top = 685.0
+offset_right = 985.0
+offset_bottom = 715.0
+theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = SubResource("FontVariation_4cuub")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_qifec")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_y6bwc")
+theme_override_styles/hover = SubResource("StyleBoxFlat_kbas4")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_4qpg7")
+theme_override_styles/focus = SubResource("StyleBoxFlat_p37yg")
+text = "SKIP"
+alignment = 0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_can2p")
+}
+
+[connection signal="pressed" from="Container/SkipHoldoutTutorialButton" to="." method="_on_skip_holdout_tutorial_button_pressed"]

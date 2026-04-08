@@ -48,7 +48,7 @@ const ACCOLADES = {
 	"ThrillSeeker": {
 		"id": "ThrillSeeker",
 		"title": "Thrill Seeker", 
-		"description": "Win a battle with a modifier multiplier of 2.0 or higher."
+		"description": "Win a battle with a modifier multiplier of 1.8 or higher."
 	},
 	"Purist": {
 		"id": "Purist",

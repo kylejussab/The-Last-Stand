@@ -64,7 +64,7 @@ func finish_drag():
 				
 				# Ensure its not highlighted
 				draggedCard.scale = Vector2(1, 1)
-				draggedCard.get_node("AnimationPlayer").play("hideDescription")
+				draggedCard.get_node("AnimationPlayer").play_backwards("showPerkDescription")
 				var endTime = draggedCard.get_node("AnimationPlayer").current_animation_length
 				draggedCard.get_node("AnimationPlayer").seek(endTime, true)
 				

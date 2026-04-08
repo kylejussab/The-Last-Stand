@@ -7,12 +7,12 @@ const CHARACTERS = { # Value, Type, Faction, Class, Card Name Text, Perk Text
 	"TheProphet": [6, "Character", "Seraphite", "Defensive/Stealthy", "THE PROPHET", "+2 if opposing card is Aggressive or Stealthy and +1 for each Stealthy in hand"],
 	"Emily": [4, "Character", "Seraphite", "Survivor", "EMILY", "+1 for each Seraphite in hand"],
 	"SeraphiteBrute": [5, "Character", "Seraphite", "Aggressive", "BRUTE", "+2 if opposing card's value is 3 or less"],
-	"SeraphiteInitiate": [3, "Character", "Seraphite", "Survivor", "INITIATE", "+3 if your hand contains no Aggressive cards"],
+	"SeraphiteInitiate": [3, "Character", "Seraphite", "Crafty/Survivor", "INITIATE", "+3 if your hand contains no Aggressive cards"],
 	
 	# WLF
 	"Abby": [6, "Character", "WLF", "Aggressive", "ABBY", "+2 if opposing card is Aggressive and +1 if opposing card is Infected"],
 	"Manny": [4, "Character", "WLF", "Defensive", "MANNY", "equal value and +2 if opposing card is Aggressive or Defensive"],
-	"Nora": [4, "Character", "WLF", "Stealthy", "NORA", "+1 if opposing card is Crafty"],
+	"Nora": [4, "Character", "WLF", "Crafty/Stealthy", "NORA", "+1 if opposing card is Crafty"],
 	"Li": [3, "Character", "WLF", "Survivor", "LI", "On round loss: +1 to random character in hand"],
 	"WLFSoldier": [3, "Character", "WLF", "Survivor", "SOLDIER", "-3 to opponent, if opposing card is Survivor"],
 	"Isaac": [6, "Character", "WLF", "Aggressive/Defensive", "ISAAC", "+2 if opposing card is Seraphite"],
@@ -53,7 +53,7 @@ const CHARACTERS = { # Value, Type, Faction, Class, Card Name Text, Perk Text
 	"Mel": [3, "Character", "WLF", "Survivor", "MEL", "On round win: +2 to random character card in hand"],
 	"Maria": [4, "Character", "Firefly", "Defensive", "MARIA", "+2 if Tommy in hand"],
 	"Jerry": [2, "Character", "Firefly", "Defensive", "JERRY", "On round loss: +2 to all Firefly in hand"],
-	"AbbyFirefly": [4, "Character", "Firefly", "Survivor", "ABBY", "+1 if opposing card is exactly 4"],
+	"AbbyFirefly": [4, "Character", "Firefly", "Crafty/Survivor", "ABBY", "+1 if opposing card is exactly 4"],
 	
 	"AliceHumanity": [2, "Character", "WLF", "Stealthy/Survivor", "ALICE", "+3 if opposing card is Stealthy and +1 for each WLF in hand"],
 	"FireflySoldierHumanity": [2, "Character", "Firefly", "Defensive", "SOLDIER", "+3 if at least one Firefly in hand"],
@@ -197,22 +197,13 @@ const JUNE_OPPONENTS = [Actor.Avatar.ETHAN, Actor.Avatar.UCKMANN, Actor.Avatar.A
 enum Modifier { REDUCED_HAND, VOLATILE_HAND, CALCULATED_RISK, DEEP_WOUNDS, HEAVY_HITTER, GUERRILLA_TACTICS, SLOW_BLEED, NO_DEFENSE, LOUD_NOISE, OVER_EXERTION, INFECTED_DECK, HUMANITY_RESTORED, ALWAYS_FIRST, FORSAKEN_HONOR, STACKED_ODDS, LONE_WOLF, SUPPLY_LINE, DESPERATE_MEASURES, CARD_ROT, FRIENDLY_FIRE }
 
 const MODIFIERS = {
-	Modifier.REDUCED_HAND: {
-		"id": Modifier.REDUCED_HAND,
-		"name": "Reduced Hand",
-		"description": "Your maximum hand size is reduced to 6.",
-		"icon": "res://assets/modifiers/Reduced Hand.png",
-		"tier": 1,
-		"multiplier": 0.05, # Previously 0.5
-		"duration": 3,
-	},
 	Modifier.VOLATILE_HAND: {
 		"id": Modifier.VOLATILE_HAND,
 		"name": "Volatile Hand",
 		"description": "Every 2 rounds, your entire hand is discarded and redrawn.",
 		"icon": "res://assets/modifiers/Volatile Hand.png",
 		"tier": 1,
-		"multiplier": 0.08, # Previously 0.75
+		"multiplier": 0.05,
 		"duration": 3,
 	},
 	Modifier.CALCULATED_RISK: {
@@ -221,8 +212,17 @@ const MODIFIERS = {
 		"description": "Winning a round by a margin of exactly 1 deals +3 damage to the opponent's health.",
 		"icon": "res://assets/modifiers/Calculated Risk.png",
 		"tier": 1,
-		"multiplier": 0.08, # Previously 0.75
+		"multiplier": 0.05,
 		"duration": 4,
+	},
+	Modifier.DESPERATE_MEASURES: {
+		"id": Modifier.DESPERATE_MEASURES,
+		"name": "Desperate Measures",
+		"description": "Support cards ignore type requirements, but take +3 damage if it’s a mismatch.",
+		"icon": "res://assets/modifiers/Desperate Measures.png",
+		"tier": 1,
+		"multiplier": 0.1,
+		"duration": 2,
 	},
 	Modifier.DEEP_WOUNDS: {
 		"id": Modifier.DEEP_WOUNDS,
@@ -230,7 +230,7 @@ const MODIFIERS = {
 		"description": "Take +2 damage if you lose a round by 5 or more.",
 		"icon": "res://assets/modifiers/Deep Wounds.png",
 		"tier": 1,
-		"multiplier": 0.10, # Previously 1.0
+		"multiplier": 0.10,
 		"duration": 3,
 	},
 	Modifier.HEAVY_HITTER: {
@@ -239,7 +239,7 @@ const MODIFIERS = {
 		"description": "Take +1 damage if you play a character with a base value of 5 or more.",
 		"icon": "res://assets/modifiers/Heavy Hitter.png",
 		"tier": 1,
-		"multiplier": 0.10, # Previously 1.0
+		"multiplier": 0.10, 
 		"duration": 3,
 	},
 	Modifier.GUERRILLA_TACTICS: {
@@ -248,7 +248,7 @@ const MODIFIERS = {
 		"description": "Consecutive character cards cannot be the same faction or type.",
 		"icon": "res://assets/modifiers/Guerrilla Tactics.png",
 		"tier": 1,
-		"multiplier": 0.10, # Previously 1.0
+		"multiplier": 0.10,
 		"duration": 3,
 	},
 	Modifier.SLOW_BLEED: {
@@ -257,7 +257,7 @@ const MODIFIERS = {
 		"description": "Take 1 damage at the end of every other round.",
 		"icon": "res://assets/modifiers/Slow Bleed.png",
 		"tier": 1,
-		"multiplier": 0.15, # Previously 1.25
+		"multiplier": 0.15,
 		"duration": 4,
 		"amount": 1,
 	},
@@ -267,7 +267,7 @@ const MODIFIERS = {
 		"description": "Your defensive character cards have 0 value. Their perks still activate.",
 		"icon": "res://assets/modifiers/No Defense.png",
 		"tier": 2,
-		"multiplier": 0.20, # Previously 1.5
+		"multiplier": 0.20,
 		"duration": 2,
 	},
 	Modifier.LOUD_NOISE: {
@@ -276,7 +276,7 @@ const MODIFIERS = {
 		"description": "All your stealth cards become aggressive. All your aggressive cards lose -1 value.",
 		"icon": "res://assets/modifiers/Loud Noise.png",
 		"tier": 2,
-		"multiplier": 0.22, # Previously 1.75
+		"multiplier": 0.20,
 		"duration": 2,
 	},
 	Modifier.OVER_EXERTION: {
@@ -285,7 +285,7 @@ const MODIFIERS = {
 		"description": "Deal +2 damage if your final value is 10 or higher, but take +1 damage.",
 		"icon": "res://assets/modifiers/Over Exertion.png",
 		"tier": 2,
-		"multiplier": 0.25, # Previously 2.0
+		"multiplier": 0.25,
 		"duration": 3,
 	},
 	Modifier.INFECTED_DECK: {
@@ -294,7 +294,7 @@ const MODIFIERS = {
 		"description": "Your deck contains significantly more infected cards.",
 		"icon": "res://assets/modifiers/Infected Deck.png",
 		"tier": 2,
-		"multiplier": 0.25, # Previously 2.0
+		"multiplier": 0.25,
 		"duration": 2,
 	},
 	Modifier.HUMANITY_RESTORED: {
@@ -303,7 +303,7 @@ const MODIFIERS = {
 		"description": "Your deck reflects an alternate world where the cure was found.",
 		"icon": "res://assets/modifiers/Humanity Restored.png",
 		"tier": 2,
-		"multiplier": 0.25, # Previously 2.0
+		"multiplier": 0.25,
 		"duration": 2,
 	},
 	Modifier.ALWAYS_FIRST: {
@@ -312,7 +312,7 @@ const MODIFIERS = {
 		"description": "You must play first every round.",
 		"icon": "res://assets/modifiers/Always First.png",
 		"tier": 2,
-		"multiplier": 0.30, # Previously 2.25
+		"multiplier": 0.30,
 		"duration": 2,
 	},
 	Modifier.FORSAKEN_HONOR: {
@@ -321,7 +321,7 @@ const MODIFIERS = {
 		"description": "Lose 20 health. Your card’s faction and type are hidden from the opponent.",
 		"icon": "res://assets/modifiers/Forsaken Honor.png",
 		"tier": 3,
-		"multiplier": 0.35, # Previously 1.5 (Kept lower due to raw health cost vs gameplay challenge)
+		"multiplier": 0.35,
 		"duration": 2,
 		"healthCost": 20,
 	},
@@ -331,7 +331,7 @@ const MODIFIERS = {
 		"description": "The opponent gains +1 to their card value at the end of every round.",
 		"icon": "res://assets/modifiers/Stacked Odds.png",
 		"tier": 3,
-		"multiplier": 0.35, # Previously 2.0
+		"multiplier": 0.35,
 		"duration": 2,
 	},
 	Modifier.LONE_WOLF: {
@@ -340,7 +340,7 @@ const MODIFIERS = {
 		"description": "Your support cards are disabled. Character values increased by +50%",
 		"icon": "res://assets/modifiers/Lone Wolf.png",
 		"tier": 3,
-		"multiplier": 0.40, # Previously 2.75
+		"multiplier": 0.40,
 		"duration": 1,
 	},
 	Modifier.SUPPLY_LINE: {
@@ -349,16 +349,7 @@ const MODIFIERS = {
 		"description": "Your hand contains only support cards. Your character is auto played from the deck.",
 		"icon": "res://assets/modifiers/Supply Line.png",
 		"tier": 3,
-		"multiplier": 0.45, # Previously 3.0
-		"duration": 1,
-	},
-	Modifier.DESPERATE_MEASURES: {
-		"id": Modifier.DESPERATE_MEASURES,
-		"name": "Desperate Measures",
-		"description": "Support cards ignore type requirements, but take +3 damage if it’s a mismatch.",
-		"icon": "res://assets/modifiers/Desperate Measures.png",
-		"tier": 3,
-		"multiplier": 0.45, # Previously 3.0
+		"multiplier": 0.45,
 		"duration": 1,
 	},
 	Modifier.CARD_ROT: {
@@ -367,7 +358,7 @@ const MODIFIERS = {
 		"description": "Every 3 rounds, all cards in your hand lose -1 value.",
 		"icon": "res://assets/modifiers/Card Rot.png",
 		"tier": 3,
-		"multiplier": 0.50, # Previously 3.5
+		"multiplier": 0.50,
 		"duration": 1,
 	},
 	Modifier.FRIENDLY_FIRE: {
@@ -376,8 +367,17 @@ const MODIFIERS = {
 		"description": "Your card's value is halved if your faction matches the opponent’s.",
 		"icon": "res://assets/modifiers/Friendly Fire.png",
 		"tier": 3,
-		"multiplier": 0.50, # Previously 3.5
+		"multiplier": 0.50,
 		"duration": 1,
+	},
+	Modifier.REDUCED_HAND: {
+		"id": Modifier.REDUCED_HAND,
+		"name": "Reduced Hand",
+		"description": "Your maximum hand size is reduced to 6.",
+		"icon": "res://assets/modifiers/Reduced Hand.png",
+		"tier": 3,
+		"multiplier": 0.55,
+		"duration": 2,
 	},
 }
 
@@ -423,7 +423,7 @@ const standardSupportDeck = [
 	
 	"Molotov",
 	"Rage",
-	"TrapMine",
+	"TrapMine", "TrapMine",
 ]
 
 const infectedHeavyCharacterDeck = [
@@ -495,6 +495,26 @@ const humanityRestoredCharacterDeck = [
 	"BillSmuggler", 
 	"LiSmuggler", 
 	"Hunter", "Hunter"
+]
+
+const humanityRestoredSupportDeck = [
+	"ScavengedParts", "ScavengedParts", 
+	"Resilience", "Resilience", 
+	"ShotgunShells", "ShotgunShells",
+	
+	"Bottle", "Bottle", 
+	"Brick", "Brick", 
+	"SmokeBomb", "Silencer",
+	
+	"TrapMine", "TrapMine", 
+	"MedKit", "MedKit", 
+	"TrainingManual", "Retreat",
+	
+	"ReinforcedMelee", "ReinforcedMelee", 
+	"Molotov", "Rage",
+	
+	"Supplements", "Supplements", 
+	"SupplyCache", "SupplyCache"
 ]
 
 const REMNANT_CHARACTERS = {

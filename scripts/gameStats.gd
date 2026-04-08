@@ -6,9 +6,38 @@ var invitationAccepted: bool = false
 var gameMode: Mode = Mode.MAIN_MENU
 
 var totalInGameTimePlayed: float = 0.0
-
+var showHoldoutTutorial: bool = true
 var rations: int = 0
 
+func _ready() -> void:
+	var saveData = SaveManager.load_main_state()
+	
+	if not saveData.is_empty():
+		totalInGameTimePlayed = saveData.get("totalInGameTimePlayed", 0.0)
+		rations = saveData.get("rations", 0)
+		showHoldoutTutorial = saveData.get("showHoldoutTutorial", true)
+		
+		holdoutRunsAttempted = saveData.get("holdoutRunsAttempted", 0)
+		holdoutBattlesWon = saveData.get("holdoutBattlesWon", 0)
+		holdoutTimePlayed = saveData.get("holdoutTimePlayed", 0.0)
+		holdoutUnderdogWins = saveData.get("holdoutUnderdogWins", 0)
+		holdoutCardsPlayed = saveData.get("holdoutCardsPlayed", 0)
+		
+		holdoutHighestDominance = saveData.get("holdoutHighestDominance", 0)
+		holdoutLongestStreak = saveData.get("holdoutLongestStreak", 0)
+		holdoutHighestMultiplier = saveData.get("holdoutHighestMultiplier", 1.0)
+		holdoutFastestWin = saveData.get("holdoutFastestWin", 99999.0)
+		holdoutBestRank = saveData.get("holdoutBestRank", HoldoutStats.Rank.F)
+		
+		holdoutMvpCounts = saveData.get("holdoutMvpCounts", {})
+		holdoutFactionUses = saveData.get("holdoutFactionUses", {})
+		holdoutCardUses = saveData.get("holdoutCardUses", {})
+		holdoutNemesisKills = saveData.get("holdoutNemesisKills", {})
+		holdoutModifierUses = saveData.get("holdoutModifierUses", {})
+		
+		var savedAccolades = saveData.get("holdoutAccoladeCounts", {})
+		for key in savedAccolades:
+			holdoutAccoladeCounts[key] = savedAccolades[key]
 
 # Holdout stats
 var holdoutRunsAttempted: int = 0
@@ -23,6 +52,7 @@ var holdoutHighestMultiplier: float = 1.0
 var holdoutFastestWin: float = 99999.0
 var holdoutBestRank: HoldoutStats.Rank = HoldoutStats.Rank.F
 
+var holdoutMvpCounts: Dictionary = {}
 var holdoutFactionUses: Dictionary = {}
 var holdoutCardUses: Dictionary = {}
 var holdoutNemesisKills: Dictionary = {}
@@ -77,16 +107,6 @@ func push_holdout_battle_stats(isVictory: bool):
 			
 		holdoutCardUses[key] = holdoutCardUses.get(key, 0) + 1
 	
-	for mod in HoldoutStats.activeModifiers:
-		var modName = "Unknown Modifier"
-		
-		if typeof(mod) == TYPE_DICTIONARY and mod.has("name"):
-			modName = mod["name"]
-		else:
-			modName = str(mod) 
-			
-		holdoutModifierUses[modName] = holdoutModifierUses.get(modName, 0) + 1
-	
 	save_game()
 
 # --- SAVING & LOADING ---
@@ -94,7 +114,7 @@ func get_save_dict() -> Dictionary:
 	return {
 		"totalInGameTimePlayed": totalInGameTimePlayed,
 		"rations": rations,
-		
+		"showHoldoutTutorial": showHoldoutTutorial,
 		
 		"holdoutRunsAttempted": holdoutRunsAttempted,
 		"holdoutBattlesWon": holdoutBattlesWon,
@@ -108,6 +128,7 @@ func get_save_dict() -> Dictionary:
 		"holdoutFastestWin": holdoutFastestWin,
 		"holdoutBestRank": holdoutBestRank,
 		
+		"holdoutMvpCounts": holdoutMvpCounts,
 		"holdoutFactionUses": holdoutFactionUses,
 		"holdoutCardUses": holdoutCardUses,
 		"holdoutNemesisKills": holdoutNemesisKills,
@@ -117,3 +138,7 @@ func get_save_dict() -> Dictionary:
 
 func save_game():
 	SaveManager.save_main_state(get_save_dict())
+
+func record_modifier_selection(modName: String) -> void:
+	holdoutModifierUses[modName] = holdoutModifierUses.get(modName, 0) + 1
+	save_game()

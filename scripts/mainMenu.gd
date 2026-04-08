@@ -6,6 +6,7 @@ extends Node2D
 @onready var mainButtonContainer = $mainButtonContainer
 @onready var storyButtonContainer = $storyButtonContainer
 @onready var holdoutButtonContainer = $holdoutButtonContainer
+@onready var holdoutStatsContainer = $StatisticsMenu
 
 @onready var supplementText = $supplementText
 
@@ -44,6 +45,7 @@ func _ready() -> void:
 		pulse_text()
 	
 	_show_continue_button()
+	_show_statistics_button()
 
 func pulse_text():
 	var pulse = create_tween().set_loops()
@@ -96,6 +98,15 @@ func _input(event: InputEvent) -> void:
 			
 			mainButtonContainer.show()
 			mainButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
+		elif currentNavigation == "HoldoutStatistics":
+			currentNavigation = "Holdout"
+			await Curtain.fade_in(0.25)
+			
+			holdoutStatsContainer.hide()
+			
+			holdoutButtonContainer.show()
+			holdoutButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
+			Curtain.fade_out(0.25)
 
 func setup_button_sounds(container: Node):
 	for child in container.get_children():
@@ -188,8 +199,17 @@ func _on_remnants_button_mouse_entered() -> void:
 func _on_remnants_button_mouse_exited() -> void:
 	supplementText.text = ""
 
-func _on_achievements_button_pressed() -> void:
-	_play_denied_animation($holdoutButtonContainer/AchievementsButton)
+func _on_statistics_button_pressed() -> void:
+	holdoutButtonContainer.process_mode = Node.PROCESS_MODE_DISABLED
+	currentNavigation = "HoldoutStatistics"
+	
+	await Curtain.fade_in(0.25)
+	_update_stats_screen()
+	
+	holdoutButtonContainer.hide()
+	holdoutStatsContainer.show()
+	
+	Curtain.fade_out(0.25)
 
 func _on_remnants_button_pressed() -> void:
 	_play_denied_animation($mainButtonContainer/RemnantsButton)
@@ -210,6 +230,7 @@ func _on_options_menu_exited() -> void:
 	backgroundImage.texture = BACKGROUNDS["Main"]
 	
 	_show_continue_button()
+	_show_statistics_button()
 	
 	mainButtonContainer.show()
 	mainButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
@@ -236,11 +257,196 @@ func _show_continue_button() -> void:
 		%ContinueButton.visible = true
 		%ContinueButton.disabled = false
 		
-		%AchievementsButton.position.y = 500
-		$"holdoutButtonContainer/Temporary Lock Icons/Lock2".position.y = 525
+		%StatisticsButton.position.y = 500
 	else:
 		%ContinueButton.visible = false
 		%ContinueButton.disabled = true
 		
-		%AchievementsButton.position.y = 450
-		$"holdoutButtonContainer/Temporary Lock Icons/Lock2".position.y = 475
+		%StatisticsButton.position.y = 450
+
+func _show_statistics_button() -> void:
+	%StatisticsButton.visible = false
+	%StatisticsButton.disabled = true
+	
+	if SaveManager.has_main_save():
+		var saveData = SaveManager.load_main_state()
+		var modifierCounts = saveData.get("holdoutModifierUses", {})
+		
+		if modifierCounts.size() >= 3:
+			%StatisticsButton.visible = true
+			%StatisticsButton.disabled = false
+
+func _update_stats_screen() -> void:
+	var saveData = SaveManager.load_main_state()
+	
+	$StatisticsMenu/mainStats/RunsAttemptedValue.text = str(int(saveData.get("holdoutRunsAttempted", 0)))
+	$StatisticsMenu/mainStats/OpponentsDefeatedValue.text = str(int(saveData.get("holdoutBattlesWon", 0)))
+	$StatisticsMenu/mainStats/CardsPlayedValue.text = str(int(saveData.get("holdoutCardsPlayed", 0)))
+	$StatisticsMenu/mainStats/TimePlayedValue.text = _format_time(saveData.get("holdoutTimePlayed", 0))
+	
+	$StatisticsMenu/mainStats/FastestWinValue.text = _format_time(saveData.get("holdoutFastestWin", 0))
+	$StatisticsMenu/mainStats/HighestDominanceValue.text = str(int(saveData.get("holdoutHighestDominance", 0)))
+	$StatisticsMenu/mainStats/WinStreakValue.text = str(int(saveData.get("holdoutLongestStreak", 0)))
+	$StatisticsMenu/mainStats/UnderdogWinsValue.text = str(int(saveData.get("holdoutUnderdogWins", 0)))
+	
+	var accoladeCounts = saveData.get("holdoutAccoladeCounts", {})
+	var accoladesContainer = $StatisticsMenu/accolades
+	
+	for accoladeKey in HoldoutStats.ACCOLADES.keys():
+		
+		var count = int(accoladeCounts.get(accoladeKey, 0))
+		
+		if accoladesContainer.has_node(accoladeKey):
+			var uiNode = accoladesContainer.get_node(accoladeKey)
+			var icon = uiNode.get_node("Icon")
+			var label = uiNode.get_node("Label")
+			
+			if count > 0:
+				icon.modulate = Color("6c6c6c")
+				label.text = "Earned: " + str(count)
+			else:
+				icon.modulate = Color("2c2c2c") 
+				label.text = "Not Earned"
+	
+	# MVPs
+	var mvpCounts = saveData.get("holdoutMvpCounts", {})
+	
+	var sortedKeys = mvpCounts.keys()
+	
+	sortedKeys.sort_custom(func(a, b): return mvpCounts[a] > mvpCounts[b])
+	
+	for i in range(1, 4):
+		var mvpNode = get_node("StatisticsMenu/mvps/" + str(i))
+		
+		if i <= sortedKeys.size():
+			var cardKey = sortedKeys[i-1]
+			var texturePath = "res://assets/holdout/mvp/" + cardKey + ".png"
+			
+			if ResourceLoader.exists(texturePath):
+				mvpNode.texture = load(texturePath)
+	
+	var modifierCounts = saveData.get("holdoutModifierUses", {})
+	
+	var sortedModKeys = modifierCounts.keys()
+	
+	sortedModKeys.sort_custom(func(a, b): return modifierCounts[a] > modifierCounts[b])
+	
+	for i in range(1, 4):
+		var modNode = get_node("StatisticsMenu/modifiers/" + str(i))
+		var modKey = sortedModKeys[i-1]
+		var texturePath = "res://assets/holdout/mods/" + modKey + ".png"
+		
+		if ResourceLoader.exists(texturePath):
+			modNode.texture = load(texturePath)
+			modNode.modulate = Color("8c8c8c")
+
+func _format_time(time: float) -> String:
+	var minutes = int(time / 60)
+	var seconds = int(time) % 60
+	return "%02d:%02d" % [minutes, seconds]
+
+# Accolade hover functionality
+func _place_and_populate_tooltip(parent: Control, xOffset: float = -45.0, yOffset: float = -108.0) -> void:
+	$StatisticsMenu/Tooltip.global_position = Vector2(parent.global_position.x + xOffset, parent.global_position.y + yOffset)
+	$StatisticsMenu/Tooltip.get_node("Name").text = HoldoutStats.ACCOLADES[parent.name].title.to_upper()
+	$StatisticsMenu/Tooltip.get_node("Description").text = HoldoutStats.ACCOLADES[parent.name].description
+
+var tooltipTween: Tween
+var currentHoveredAccolade: Control = null
+
+func _show_accolade_tooltip(accolade: Control) -> void:
+	currentHoveredAccolade = accolade
+	AudioManager.play_card_hover()
+	
+	await get_tree().create_timer(0.15).timeout
+	
+	if currentHoveredAccolade == accolade:
+		_place_and_populate_tooltip(accolade)
+		
+		if tooltipTween and tooltipTween.is_valid():
+			tooltipTween.kill()
+		
+		
+		tooltipTween = create_tween()
+		tooltipTween.tween_property($StatisticsMenu/Tooltip, "modulate:a", 1.0, 0.15)
+
+func _hide_accolade_tooltip() -> void:
+	currentHoveredAccolade = null 
+	
+	if tooltipTween and tooltipTween.is_valid():
+		tooltipTween.kill()
+		
+	tooltipTween = create_tween()
+	tooltipTween.tween_property($StatisticsMenu/Tooltip, "modulate:a", 0.0, 0.1)
+
+func _on_analysis_paralysis_mouse_entered() -> void:
+	_show_accolade_tooltip($StatisticsMenu/accolades/AnalysisParalysis)
+
+func _on_analysis_paralysis_mouse_exited() -> void:
+	_hide_accolade_tooltip()
+
+func _on_brawler_mouse_entered() -> void:
+	_show_accolade_tooltip($StatisticsMenu/accolades/Brawler)
+
+func _on_brawler_mouse_exited() -> void:
+	_hide_accolade_tooltip()
+
+func _on_executioner_mouse_entered() -> void:
+	_show_accolade_tooltip($StatisticsMenu/accolades/Executioner)
+
+func _on_executioner_mouse_exited() -> void:
+	_hide_accolade_tooltip()
+
+func _on_giant_slayer_mouse_entered() -> void:
+	_show_accolade_tooltip($StatisticsMenu/accolades/GiantSlayer)
+
+func _on_giant_slayer_mouse_exited() -> void:
+	_hide_accolade_tooltip()
+
+func _on_old_wounds_mouse_entered() -> void:
+	_show_accolade_tooltip($StatisticsMenu/accolades/OldWounds)
+
+func _on_old_wounds_mouse_exited() -> void:
+	_hide_accolade_tooltip()
+
+func _on_purist_mouse_entered() -> void:
+	_show_accolade_tooltip($StatisticsMenu/accolades/Purist)
+
+func _on_purist_mouse_exited() -> void:
+	_hide_accolade_tooltip()
+
+func _on_quick_draw_mouse_entered() -> void:
+	_show_accolade_tooltip($StatisticsMenu/accolades/QuickDraw)
+
+func _on_quick_draw_mouse_exited() -> void:
+	_hide_accolade_tooltip()
+
+func _on_relentless_mouse_entered() -> void:
+	_show_accolade_tooltip($StatisticsMenu/accolades/Relentless)
+
+func _on_relentless_mouse_exited() -> void:
+	_hide_accolade_tooltip()
+
+func _on_rubber_duck_mouse_entered() -> void:
+	_show_accolade_tooltip($StatisticsMenu/accolades/RubberDuck)
+
+func _on_rubber_duck_mouse_exited() -> void:
+	_hide_accolade_tooltip()
+
+func _on_speed_demon_mouse_entered() -> void:
+	_show_accolade_tooltip($StatisticsMenu/accolades/SpeedDemon)
+
+func _on_speed_demon_mouse_exited() -> void:
+	_hide_accolade_tooltip()
+
+func _on_thrill_seeker_mouse_entered() -> void:
+	_show_accolade_tooltip($StatisticsMenu/accolades/ThrillSeeker)
+
+func _on_thrill_seeker_mouse_exited() -> void:
+	_hide_accolade_tooltip()
+
+func _on_untouchable_mouse_entered() -> void:
+	_show_accolade_tooltip($StatisticsMenu/accolades/Untouchable)
+
+func _on_untouchable_mouse_exited() -> void:
+	_hide_accolade_tooltip()

@@ -273,10 +273,13 @@ func _on_confirm_button_pressed() -> void:
 	
 	if slotOneActive:
 		%battleManager.add_modifier(tierOneModifier.id)
+		GameStats.record_modifier_selection(tierOneModifier.name)
 	if slotTwoActive:
 		%battleManager.add_modifier(tierTwoModifier.id)
+		GameStats.record_modifier_selection(tierTwoModifier.name)
 	if slotThreeActive:
 		%battleManager.add_modifier(tierThreeModifier.id)
+		GameStats.record_modifier_selection(tierThreeModifier.name)
 	
 	AudioManager.play_button_click()
 	

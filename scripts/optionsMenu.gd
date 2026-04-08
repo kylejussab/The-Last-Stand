@@ -50,6 +50,7 @@ func _input(event: InputEvent) -> void:
 		if currentNavigation == "Options":
 			AudioManager.play_button_back()
 			hide_all()
+			AccessibilityData.save_to_file()
 			options_exited.emit()
 			
 		elif currentNavigation == "Accessibility":

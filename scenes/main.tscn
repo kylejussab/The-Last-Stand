@@ -1,4 +1,4 @@
-[gd_scene load_steps=120 format=3 uid="uid://dgb52shq4jcyg"]
+[gd_scene load_steps=121 format=3 uid="uid://dgb52shq4jcyg"]
 
 [ext_resource type="Script" uid="uid://dgl6h7ryesfn8" path="res://scripts/cardManager.gd" id="1_0wfyh"]
 [ext_resource type="Script" uid="uid://c3p2rmoacsirj" path="res://scripts/inputManager.gd" id="1_o6xl0"]
@@ -28,6 +28,7 @@
 [ext_resource type="Script" uid="uid://cwakiodvp7ji5" path="res://scripts/viewDeck.gd" id="18_j2jfr"]
 [ext_resource type="Texture2D" uid="uid://d2oxvh8kvsjse" path="res://assets/arenaHeads/JuneHappy.png" id="18_pm3ni"]
 [ext_resource type="Texture2D" uid="uid://dxbmvsoua68c4" path="res://assets/ui/GameOverOverlay.png" id="22_jscy8"]
+[ext_resource type="PackedScene" uid="uid://chb4j7220yip1" path="res://scenes/holdoutIntro.tscn" id="29_chjal"]
 [ext_resource type="Script" uid="uid://cut6aandi16ab" path="res://scripts/modifierBubbleManager.gd" id="30_5he1u"]
 [ext_resource type="Texture2D" uid="uid://d1kqrakc80shv" path="res://assets/ui/RationsIcon.png" id="30_chjal"]
 [ext_resource type="Script" uid="uid://c50sxxmg3g1sv" path="res://scripts/pauseMenu.gd" id="30_fv21b"]
@@ -1944,6 +1945,8 @@ libraries = {
 unique_name_in_owner = true
 z_index = 10
 script = ExtResource("30_5he1u")
+
+[node name="HoldoutIntro" parent="arena" instance=ExtResource("29_chjal")]
 
 [node name="holdoutEndStats" type="Node2D" parent="arena"]
 unique_name_in_owner = true
