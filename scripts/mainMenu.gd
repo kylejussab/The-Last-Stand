@@ -44,7 +44,7 @@ func _ready() -> void:
 		mainButtonContainer.process_mode = Node.PROCESS_MODE_DISABLED
 		pulse_text()
 	
-	_show_continue_button()
+	_show_continue_and_tutorial_button()
 	_show_statistics_button()
 
 func pulse_text():
@@ -229,7 +229,7 @@ func _on_options_menu_exited() -> void:
 	currentNavigation = "Main"
 	backgroundImage.texture = BACKGROUNDS["Main"]
 	
-	_show_continue_button()
+	_show_continue_and_tutorial_button()
 	_show_statistics_button()
 	
 	mainButtonContainer.show()
@@ -252,17 +252,25 @@ func _play_denied_animation(currentButton: Button):
 	tween.tween_property(currentButton, "position:x", originalPos - shake_offset, duration)
 	tween.tween_property(currentButton, "position:x", originalPos, duration)
 
-func _show_continue_button() -> void:
+func _show_continue_and_tutorial_button() -> void:
 	if SaveManager.has_holdout_save():
 		%ContinueButton.visible = true
 		%ContinueButton.disabled = false
 		
-		%StatisticsButton.position.y = 500
+		%TutorialButton.visible = true
+		%TutorialButton.disabled = false
+		
+		%TutorialButton.position.y = 500
+		%StatisticsButton.position.y = 550
 	else:
 		%ContinueButton.visible = false
 		%ContinueButton.disabled = true
 		
-		%StatisticsButton.position.y = 450
+		%TutorialButton.visible = false
+		%TutorialButton.disabled = true
+		
+		%TutorialButton.position.y = 450
+		%StatisticsButton.position.y = 500
 
 func _show_statistics_button() -> void:
 	%StatisticsButton.visible = false
@@ -275,6 +283,7 @@ func _show_statistics_button() -> void:
 		if modifierCounts.size() >= 3:
 			%StatisticsButton.visible = true
 			%StatisticsButton.disabled = false
+
 
 func _update_stats_screen() -> void:
 	var saveData = SaveManager.load_main_state()

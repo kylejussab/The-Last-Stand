@@ -29,6 +29,9 @@ func _process(_delta: float) -> void:
 func start_drag(card):
 	if not "cardSlot" in card:
 		return
+		
+	if battleManager.get("isTutorialActive") == true and "canBePlayed" in card and not card.canBePlayed:
+		return
 	
 	if !battleManager.lockPlayerInput and card.cardSlot == null:
 		draggedCard = card
@@ -108,8 +111,15 @@ func on_card_hover_enter(card):
 	
 	var isCardDisabled: bool = false
 	
-	if "type" in card and card.type == "Character" and card.canBePlayed == false:
-		isCardDisabled = true
+	#if "type" in card and card.type == "Character" and card.canBePlayed == false:
+		#isCardDisabled = true
+		
+	if battleManager.get("isTutorialActive") == true:
+		if "canBePlayed" in card and card.canBePlayed == false:
+			isCardDisabled = true
+	else:
+		if "type" in card and card.type == "Character" and card.canBePlayed == false:
+			isCardDisabled = true
 
 	if isCardDisabled:
 		if hoveredCard:
@@ -147,11 +157,18 @@ func highlight_card(card, hovered: bool):
 	
 	AudioManager.play_card_hover()
 	
+	var canShowPerk: bool = false
+	if card.perk != null:
+		canShowPerk = true
+		
+		if battleManager.get("isTutorialActive") == true and battleManager.get("arePerksActiveInTutorial") == false:
+			canShowPerk = false
+	
 	if hovered:
 		if !AccessibilityData.animationsDisabled:
 			card.scale = Vector2(1.35, 1.35)
 		
-		if card.perk and !draggedCard:
+		if canShowPerk and !draggedCard:
 			card.get_node("AnimationPlayer").play("showPerkDescription")
 			
 			if AccessibilityData.animationsDisabled:
@@ -160,8 +177,8 @@ func highlight_card(card, hovered: bool):
 	else:
 		if !AccessibilityData.animationsDisabled:
 			card.scale = Vector2(1, 1)
-			
-		if card.perk:
+		
+		if canShowPerk:
 			card.get_node("AnimationPlayer").play_backwards("showPerkDescription")
 			
 			if AccessibilityData.animationsDisabled:
@@ -188,6 +205,9 @@ func on_left_click_released():
 
 # Double Click functionality
 func auto_play_card(card):
+	if not "type" in card:
+		return
+	
 	if !$"../battleManager".lockPlayerInput:
 		var characterSlot = $"../cardSlots/cardSlotCharacter"
 		var supportSlot = $"../cardSlots/cardSlotSupport"

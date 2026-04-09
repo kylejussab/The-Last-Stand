@@ -24,12 +24,13 @@ func _ready() -> void:
 	
 	await _trigger_transition()
 	
-	await _show_tutorial_menu(GameStats.showHoldoutTutorial)
+	await _show_tutorial_menu(true) #GameStats.showHoldoutTutorial
 	
-	if !GameStats.showHoldoutTutorial:
-		_on_skip_holdout_tutorial_button_pressed()
+	#if !GameStats.showHoldoutTutorial:
+		#_on_skip_holdout_tutorial_button_pressed()
 
 func fade_out_screen(showTutorial: bool, duration: float = 1.0) -> void:
+	$Container.process_mode = Node.PROCESS_MODE_DISABLED
 	var tween = create_tween().set_parallel(true)
 	
 	tween.tween_property($ColorRect, "modulate:a", 0.0, duration)
@@ -38,6 +39,9 @@ func fade_out_screen(showTutorial: bool, duration: float = 1.0) -> void:
 		tween.tween_property($Container, "modulate:a", 0.0, duration / 4)
 	
 	tween.tween_property(heading, "modulate:a", 0.0, duration).set_delay(duration / 3)
+	
+	$Container/PlayHoldoutButton.disabled = true
+	$Container/SkipHoldoutTutorialButton.disabled = true
 
 func _trigger_transition() -> void:
 	await get_tree().create_timer(delay_before_transition).timeout
@@ -61,6 +65,13 @@ func _show_tutorial_menu(showTutorial: bool) -> void:
 	if showTutorial:
 		animationPlayer.play("show_tutorial")
 		await animationPlayer.animation_finished
+		$Container/PlayHoldoutButton.disabled = false
+		$Container/SkipHoldoutTutorialButton.disabled = false
+
+func _on_play_holdout_button_pressed() -> void:
+	fade_out_screen(true, 1.0)
+	%battleManager.start_tutorial()
+
 
 func _on_skip_holdout_tutorial_button_pressed() -> void:
 	fade_out_screen(true, 2.0)

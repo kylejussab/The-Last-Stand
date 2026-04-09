@@ -441,14 +441,35 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_ldpc3")
 text = "CONTINUE"
 alignment = 0
 
-[node name="StatisticsButton" type="Button" parent="holdoutButtonContainer"]
+[node name="TutorialButton" type="Button" parent="holdoutButtonContainer"]
 unique_name_in_owner = true
 z_index = 201
 layout_mode = 0
 offset_left = 140.0
 offset_top = 500.0
-offset_right = 278.0
+offset_right = 267.0
 offset_bottom = 555.0
+theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = SubResource("FontVariation_ewahu")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_48ign")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_l7wge")
+theme_override_styles/hover = SubResource("StyleBoxFlat_7nrmo")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_clbkb")
+theme_override_styles/focus = SubResource("StyleBoxFlat_ldpc3")
+text = "TUTORIAL"
+alignment = 0
+
+[node name="StatisticsButton" type="Button" parent="holdoutButtonContainer"]
+unique_name_in_owner = true
+z_index = 201
+layout_mode = 0
+offset_left = 140.0
+offset_top = 550.0
+offset_right = 287.0
+offset_bottom = 605.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)

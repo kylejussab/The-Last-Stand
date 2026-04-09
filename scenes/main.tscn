@@ -1,4 +1,4 @@
-[gd_scene load_steps=121 format=3 uid="uid://dgb52shq4jcyg"]
+[gd_scene load_steps=125 format=3 uid="uid://dgb52shq4jcyg"]
 
 [ext_resource type="Script" uid="uid://dgl6h7ryesfn8" path="res://scripts/cardManager.gd" id="1_0wfyh"]
 [ext_resource type="Script" uid="uid://c3p2rmoacsirj" path="res://scripts/inputManager.gd" id="1_o6xl0"]
@@ -1156,6 +1156,50 @@ _data = {
 &"showWins": SubResource("Animation_ty1g6")
 }
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_chjal"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="Animation" id="Animation_chjal"]
+resource_name = "show_tutorial_box"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.225, 0.3),
+"transitions": PackedFloat32Array(0.5, 2.25, 1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05), Vector2(1.05, 1.05), Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_cjqg0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_vchkt"]
+_data = {
+&"RESET": SubResource("Animation_cjqg0"),
+&"show_tutorial_box": SubResource("Animation_chjal")
+}
+
 [sub_resource type="FontVariation" id="FontVariation_bfu41"]
 base_font = ExtResource("13_a8y0u")
 spacing_glyph = 1
@@ -1947,6 +1991,7 @@ z_index = 10
 script = ExtResource("30_5he1u")
 
 [node name="HoldoutIntro" parent="arena" instance=ExtResource("29_chjal")]
+visible = false
 
 [node name="holdoutEndStats" type="Node2D" parent="arena"]
 unique_name_in_owner = true
@@ -2704,6 +2749,101 @@ texture_progress = ExtResource("35_nvyfr")
 unique_name_in_owner = true
 libraries = {
 &"": SubResource("AnimationLibrary_vc5cj")
+}
+
+[node name="tutorialBox" type="Control" parent="arena"]
+z_index = 399
+layout_mode = 3
+anchors_preset = 0
+offset_left = 225.0
+offset_top = 250.0
+offset_right = 525.0
+offset_bottom = 750.0
+scale = Vector2(1e-05, 1e-05)
+pivot_offset = Vector2(150, 0)
+mouse_filter = 2
+
+[node name="Box" type="Panel" parent="arena/tutorialBox"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 300.0
+offset_bottom = 500.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_chjal")
+
+[node name="number" type="RichTextLabel" parent="arena/tutorialBox"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -130.0
+offset_top = -225.0
+offset_right = -70.0
+offset_bottom = -175.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/normal_font = SubResource("FontVariation_ty1g6")
+theme_override_font_sizes/normal_font_size = 24
+text = "6/6"
+vertical_alignment = 1
+
+[node name="heading" type="RichTextLabel" parent="arena/tutorialBox"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -70.0
+offset_top = -225.0
+offset_right = 120.0
+offset_bottom = -175.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/normal_font = SubResource("FontVariation_ty1g6")
+theme_override_font_sizes/normal_font_size = 20
+text = "CHARACTER CARDS"
+vertical_alignment = 1
+
+[node name="line" type="ColorRect" parent="arena/tutorialBox"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 90.0
+offset_right = 280.0
+offset_bottom = 91.0
+mouse_filter = 2
+color = Color(1, 1, 1, 0.35686275)
+
+[node name="instruction" type="RichTextLabel" parent="arena/tutorialBox"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -130.0
+offset_top = -135.0
+offset_right = 130.0
+offset_bottom = 230.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_j2jfr")
+theme_override_font_sizes/normal_font_size = 20
+text = "The combination of both supports and perks can swing a losing battle into a winning one.
+
+Use both wisely to deal more, or take less damage.
+
+Play a matching support to deal additional damage."
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="arena/tutorialBox"]
+libraries = {
+&"": SubResource("AnimationLibrary_vchkt")
 }
 
 [node name="pause" type="Node2D" parent="arena"]

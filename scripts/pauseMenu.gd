@@ -90,6 +90,10 @@ func _on_restart_button_mouse_exited() -> void:
 	%holdIcon.hide()
 
 func _on_restart_button_hold_complete() -> void:
+	if battleManager.isTutorialRun:
+		_play_denied_animation($mainButtonContainer/RestartButton)
+		return
+		
 	get_tree().paused = false
 	ui._on_replay_button_hold_complete()
 	hide()

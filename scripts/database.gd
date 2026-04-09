@@ -141,6 +141,13 @@ var AVATARS = {
 		"health": "%02d" % 35,
 		"headPath": "res://assets/arenaHeads/"
 	},
+	Actor.Avatar.DUMMY: {
+		"name": "Training Dummy",
+		"description": "A Fun Guy",
+		"health": "%02d" % 9,
+		"headPath": "res://assets/arenaHeads/",
+		"arenaPath": "res://assets/arenas/"
+	},
 	Actor.Avatar.ETHAN: {
 		"name": "Ethan Hark",
 		"description": "Patrol Leader",
@@ -515,6 +522,55 @@ const humanityRestoredSupportDeck = [
 	
 	"Supplements", "Supplements", 
 	"SupplyCache", "SupplyCache"
+]
+
+const tutorialCharacterDeck = [
+	"Dina", "Tommy", "Marlene", "Runner", "Li", "FireflySoldier", "Clicker",
+	
+	
+	"SeraphiteInitiate", "TheProphet", "Runner", "Ellie", "Shimmer",
+	"Isaac", "WLFSoldier", "Stalker",
+	"FireflySoldier",
+	"WLFSoldier", "Stalker",
+	"SeraphiteBrute", "SeraphiteBrute",
+	"SeraphiteInitiate",
+	"Runner",
+	
+	"Clicker", "FireflySoldier",
+	"Shambler",
+	"Emily", "Lev", "Yara",
+	"Nora", "Manny", "Alice",
+	"Bill", "Jessie", "TommyFirefly", 
+	"Riley", "Eugene", "Malik",
+	
+	"Joel",
+	
+	"Abby",
+	"Stalker",
+	"Runner",
+	"RatKing",
+]
+
+const tutorialSupportDeck = [
+	"Brick", "ScavengedParts", "Resilience", "Bottle", "TrainingManual", "SmokeBomb", "Retreat", "Bottle",
+	
+	"Rage",
+	"Brick", "Bottle", "ScavengedParts",
+	"Supplements", "Supplements",
+	"SupplyCache", "SupplyCache",
+	
+	"MedKit", "MedKit",
+	"SmokeBomb", "SmokeBomb",
+	"ScavengedParts", "Silencer",
+	"ReinforcedMelee", "ReinforcedMelee",
+	"TrainingManual",
+	"Retreat",
+	"Resilience",
+	"ShotgunShells",
+	
+	"Molotov",
+	"Rage",
+	"TrapMine", "TrapMine",
 ]
 
 const REMNANT_CHARACTERS = {
