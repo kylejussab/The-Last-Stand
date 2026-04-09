@@ -1,4 +1,4 @@
-[gd_scene load_steps=125 format=3 uid="uid://dgb52shq4jcyg"]
+[gd_scene load_steps=127 format=3 uid="uid://dgb52shq4jcyg"]
 
 [ext_resource type="Script" uid="uid://dgl6h7ryesfn8" path="res://scripts/cardManager.gd" id="1_0wfyh"]
 [ext_resource type="Script" uid="uid://c3p2rmoacsirj" path="res://scripts/inputManager.gd" id="1_o6xl0"]
@@ -1145,11 +1145,81 @@ tracks/1/keys = {
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
 }
 
+[sub_resource type="Animation" id="Animation_bu4jf"]
+resource_name = "showButtonsTutorial"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("NewRunButton:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MainMenuButton:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("NewRunButton:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(235, 400), Vector2(235, 420)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("MainMenuButton:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(235, 470), Vector2(235, 470), Vector2(235, 470)]
+}
+
+[sub_resource type="Animation" id="Animation_o7ddy"]
+resource_name = "showLineTutorial"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("line:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1.5, 1),
+"update": 0,
+"values": [Vector2(1e-05, 1), Vector2(1, 1)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_vc5cj"]
 _data = {
 &"RESET": SubResource("Animation_txyw0"),
 &"showBadges": SubResource("Animation_bjg73"),
 &"showButtons": SubResource("Animation_j2jfr"),
+&"showButtonsTutorial": SubResource("Animation_bu4jf"),
+&"showLineTutorial": SubResource("Animation_o7ddy"),
 &"showOverview": SubResource("Animation_vchkt"),
 &"showPerformance": SubResource("Animation_vc5cj"),
 &"showTotal": SubResource("Animation_nvyfr"),
@@ -1162,6 +1232,21 @@ corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
+
+[sub_resource type="Animation" id="Animation_cjqg0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05)]
+}
 
 [sub_resource type="Animation" id="Animation_chjal"]
 resource_name = "show_tutorial_box"
@@ -1177,21 +1262,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(0.5, 2.25, 1),
 "update": 0,
 "values": [Vector2(1e-05, 1e-05), Vector2(1.05, 1.05), Vector2(1, 1)]
-}
-
-[sub_resource type="Animation" id="Animation_cjqg0"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:scale")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(1e-05, 1e-05)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_vchkt"]
@@ -2164,7 +2234,7 @@ anchor_bottom = 0.5
 offset_left = 212.0
 offset_top = 378.0
 offset_right = 662.0
-offset_bottom = 405.9999
+offset_bottom = 405.99988
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
@@ -2767,7 +2837,7 @@ mouse_filter = 2
 unique_name_in_owner = true
 layout_mode = 0
 offset_right = 300.0
-offset_bottom = 500.0
+offset_bottom = 470.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_chjal")
 
@@ -2779,9 +2849,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -130.0
+offset_left = -110.0
 offset_top = -225.0
-offset_right = -70.0
+offset_right = -50.0
 offset_bottom = -175.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -2798,9 +2868,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -70.0
+offset_left = -50.0
 offset_top = -225.0
-offset_right = 120.0
+offset_right = 110.0
 offset_bottom = -175.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -2811,9 +2881,9 @@ vertical_alignment = 1
 
 [node name="line" type="ColorRect" parent="arena/tutorialBox"]
 layout_mode = 0
-offset_left = 20.0
+offset_left = 40.0
 offset_top = 90.0
-offset_right = 280.0
+offset_right = 260.0
 offset_bottom = 91.0
 mouse_filter = 2
 color = Color(1, 1, 1, 0.35686275)
@@ -2826,9 +2896,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -130.0
+offset_left = -110.0
 offset_top = -135.0
-offset_right = 130.0
+offset_right = 110.0
 offset_bottom = 230.0
 grow_horizontal = 2
 grow_vertical = 2

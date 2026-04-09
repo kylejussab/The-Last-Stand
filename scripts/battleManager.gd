@@ -100,6 +100,18 @@ func _ready() -> void:
 	$"../cardManager".connect("characterPlayed", Callable(self, "_on_player_character_played"))
 	$"../cardManager".connect("supportPlayed", Callable(self, "_on_player_support_played"))
 	
+	# Tutorial from main menu intercept
+	if GameStats.gameMode == GameStats.Mode.HOLDOUT_TUTORIAL:
+		$"../arena/HoldoutIntro".hide()
+		
+		HoldoutStats.currentPlayer = Actor.Avatar.JUNE
+		HoldoutStats.playerHealthValue = 99
+		HoldoutStats.playerHealthAtRoundStart = 99
+		ui.update_health(Actor.Type.PLAYER, HoldoutStats.playerHealthValue, true)
+		
+		call_deferred("start_tutorial")
+		return
+	
 	if SaveManager.isLoadingSave:
 		await _load_game_from_snapshot()
 		SaveManager.isLoadingSave = false
@@ -586,7 +598,7 @@ func _start_new_round() -> void:
 	_save_round_checkpoint()
 
 func _on_end_turn_button_pressed() -> void:
-	if isTutorialActive and (tutorialStep == 4 or tutorialStep == 6):
+	if isTutorialActive and (tutorialStep == 4 or tutorialStep == 5 or tutorialStep == 6):
 		return
 	
 	ui.show_end_turn_button(false)
@@ -1283,8 +1295,8 @@ func get_arena_save_dict() -> Dictionary:
 	}
 
 func _save_round_checkpoint() -> void:
-	if SaveManager.isLoadingSave:
-		return 
+	if SaveManager.isLoadingSave or isTutorialRun:
+		return
 
 	var fullSaveData = {
 		"stats": HoldoutStats.get_save_dict(),
@@ -1563,7 +1575,7 @@ func start_tutorial() -> void:
 	%number.text = "1/6"
 	%heading.text = "Character Cards"
 	%instruction.text = "A character's value is located in the top-left corner of the card.\n\nClick and drag Marlene to the Character Slot to play her.\n\nAlternatively you can double click to instantly play it."
-	%Box.size.y = 420
+	%Box.size.y = 450
 	
 	_update_tutorial_card_locks(tutorialStep)
 	
@@ -1625,7 +1637,7 @@ func advance_tutorial(trigger: String, card: Node2D = null) -> void:
 				%number.text = "2/6"
 				%heading.text = "Dealing Damage"
 				%instruction.text = "The damage dealt is the difference between your value and your opponent’s.\n\nClick End Turn to resolve combat."
-				%Box.size.y = 320
+				%Box.size.y = 330
 				
 				await get_tree().create_timer(0.75).timeout
 				
@@ -1645,7 +1657,7 @@ func advance_tutorial(trigger: String, card: Node2D = null) -> void:
 				%number.text = "3/6"
 				%heading.text = "Character Cards"
 				%instruction.text = "Play Li."
-				%Box.size.y = 170
+				%Box.size.y = 180
 				
 				tutorialAnimationPlayer.play("show_tutorial_box")
 				await tutorialAnimationPlayer.animation_finished
@@ -1666,7 +1678,7 @@ func advance_tutorial(trigger: String, card: Node2D = null) -> void:
 				%number.text = "4/6"
 				%heading.text = "Support Cards"
 				%instruction.text = "Support cards are optional. They can be played after your character to tactically boost your value in battle.\n\nYour opponent chose not to play a support.\n\nPlay a support card that matches Li's card type."
-				%Box.size.y = 420
+				%Box.size.y = 480
 				
 				tutorialAnimationPlayer.play("show_tutorial_box")
 				await tutorialAnimationPlayer.animation_finished
@@ -1688,7 +1700,7 @@ func advance_tutorial(trigger: String, card: Node2D = null) -> void:
 				%number.text = "5/6"
 				%heading.text = "Card Perks"
 				%instruction.text = "All Characters have perks.\n\nPerks offer additional boosts if the requirements are met.\n\nHover over Dina to view her perk, then play her."
-				%Box.size.y = 350
+				%Box.size.y = 400
 				
 				tutorialAnimationPlayer.play("show_tutorial_box")
 				await tutorialAnimationPlayer.animation_finished
@@ -1704,7 +1716,7 @@ func advance_tutorial(trigger: String, card: Node2D = null) -> void:
 				%number.text = "6/6"
 				%heading.text = "Conclusion"
 				%instruction.text = "The combination of both supports and perks can swing a losing battle into a winning one.\n\nUse both wisely to deal more, or take less damage.\n\nPlay a matching support to deal additional damage."
-				%Box.size.y = 400
+				%Box.size.y = 470
 				
 				tutorialAnimationPlayer.play("show_tutorial_box")
 				await tutorialAnimationPlayer.animation_finished
@@ -1734,14 +1746,10 @@ func _conclude_tutorial_match() -> void:
 	
 	await _move_cards_to_discard(cardsToDiscard)
 	
+	endScreenAnimator.play_holdout_tutorial_end_sequence()
+	
 	await _repopulate_decks(true)
 	discardedCardZIndex = 1
 	
-	
-	# TODO: SHOW TEXT BOX "You defeated the training dummy! Tutorial complete."
 	GameStats.showHoldoutTutorial = false
 	GameStats.save_game()
-	
-	# TODO: Transition the player out of the arena. 
-	# For example, sending them back to the main menu or starting a real run:
-	# Curtain.change_scene("res://scenes/main.tscn")

@@ -1515,6 +1515,7 @@ vertical_alignment = 1
 [connection signal="mouse_entered" from="holdoutButtonContainer/NewButton" to="." method="_on_new_button_mouse_entered"]
 [connection signal="mouse_exited" from="holdoutButtonContainer/NewButton" to="." method="_on_new_button_mouse_exited"]
 [connection signal="pressed" from="holdoutButtonContainer/ContinueButton" to="." method="_on_continue_button_pressed"]
+[connection signal="pressed" from="holdoutButtonContainer/TutorialButton" to="." method="_on_tutorial_button_pressed"]
 [connection signal="pressed" from="holdoutButtonContainer/StatisticsButton" to="." method="_on_statistics_button_pressed"]
 [connection signal="mouse_entered" from="StatisticsMenu/accolades/AnalysisParalysis" to="." method="_on_analysis_paralysis_mouse_entered"]
 [connection signal="mouse_exited" from="StatisticsMenu/accolades/AnalysisParalysis" to="." method="_on_analysis_paralysis_mouse_exited"]

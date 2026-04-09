@@ -51,14 +51,41 @@ func play_holdout_end_sequence(playerWon: bool):
 	
 	AudioManager.change_volume_background() # Back to default
 
+func play_holdout_tutorial_end_sequence():
+	await _title_slam_and_slide(true, true)
+	
+	$"../../arena/holdoutEndStats/performance".hide()
+	$"../../arena/holdoutEndStats/total".hide()
+	%ContinueButton.hide()
+	$"../../arena/holdoutEndStats/ReplayButton".hide()
+	
+	screen.get_node("overview/overviewStatContainer/roundsPlayedValue").text = str(HoldoutStats.roundsPlayed)
+	screen.get_node("overview/overviewStatContainer/timeElapsedValue").text = format_time(HoldoutStats.currentRoundDuration)
+	
+	await get_tree().create_timer(0.3).timeout
+	
+	animationPlayer.play("showOverview", -1.0, 0.75)
+	AudioManager.play_whoosh(true)
+	await animationPlayer.animation_finished
+	await get_tree().create_timer(0.3).timeout
+	
+	animationPlayer.play("showButtonsTutorial")
+	await animationPlayer.animation_finished
+	
+	AudioManager.change_volume_background() # Back to default
+
 # Helpers
-func _title_slam_and_slide(playerWon: bool):
+func _title_slam_and_slide(playerWon: bool, fromTutorial: bool = false):
 	screen.visible = true
 	screen.get_node("overlay").visible = true
 	screen.get_node("title").visible = true
 	
 	var resultLabel = screen.get_node("title")
-	resultLabel.text = "SURVIVED" if playerWon else "DEFEATED"
+	if !fromTutorial:
+		resultLabel.text = "SURVIVED" if playerWon else "DEFEATED"
+	else:
+		resultLabel.text = "COMPLETED"
+	
 	resultLabel.pivot_offset = resultLabel.size / 2
 	
 	AudioManager.change_volume_background(-40)
@@ -87,12 +114,16 @@ func _title_slam_and_slide(playerWon: bool):
 	await get_tree().create_timer(1).timeout
 	
 	var slideTween = create_tween().set_parallel(true)
-	var targetPosition = Vector2(145, 121)
+	var targetPosition
 	
 	AudioManager.play_whoosh(true)
 	
-	animationPlayer.play("showWins", -1.0, 0.5)
-
+	if !fromTutorial:
+		targetPosition = Vector2(145, 121)
+		animationPlayer.play("showWins", -1.0, 0.5)
+	else:
+		targetPosition = Vector2(160, 121)
+		animationPlayer.play("showLineTutorial", -1.0, 0.5)
 	
 	slideTween.tween_property(resultLabel, "global_position", targetPosition, 0.5).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
 	slideTween.tween_property(resultLabel, "scale", Vector2(1, 1), 0.5)

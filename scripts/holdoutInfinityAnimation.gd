@@ -20,6 +20,11 @@ func _ready() -> void:
 		hide()
 		set_process(false)
 		return
+	
+	if GameStats.gameMode == GameStats.Mode.HOLDOUT_TUTORIAL:
+		hide()
+		set_process(false)
+		return
 		
 	await get_tree().create_timer(0.5).timeout
 	
