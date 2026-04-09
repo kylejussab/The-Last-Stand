@@ -1,4 +1,4 @@
-**Current Version:** `v0.3.1` (Last Stand Mode)
+**Current Version:** `v0.4.0` (Core Systems Integration)
 
 <img width="5335" height="1780" alt="Last Stand Banner" src="https://github.com/user-attachments/assets/07732bec-68d5-4e32-acb5-a529d0c1e090" />
 
@@ -12,9 +12,11 @@ This game is a **fan work** based on 'The Last of Us', a property of **Naughty D
 I do **not claim ownership** of any characters, names, or concepts associated with *The Last of Us*.  
 This project is **not for sale** and is **not affiliated with or endorsed by Sony or Naughty Dog**.
 
-<img width="4286" height="2411" alt="Patch Notes 0 3 1" src="https://github.com/user-attachments/assets/980f3afe-6150-4b7f-b579-e987b7d60db0" />
+![80Prdw](https://github.com/user-attachments/assets/66267246-0671-435e-9c80-b2668cb896f0)
 
-<img width="4286" height="2411" alt="Card Design Changes" src="https://github.com/user-attachments/assets/769286c3-f6c6-4699-9de7-49443a0b0bc6" />
+<img width="3215" height="1809" alt="jemuc0" src="https://github.com/user-attachments/assets/d57db330-8e6b-42a8-8431-4003542e86ad" />
+
+<img width="3215" height="1809" alt="71cS1m" src="https://github.com/user-attachments/assets/65efe562-fea2-4ace-a59b-1866f0f54d8a" />
 
 ## Roadmap
 - [x] **v0.1: Initial Setup** - Basic mechanics and card spawning.
@@ -26,15 +28,22 @@ This project is **not for sale** and is **not affiliated with or endorsed by Son
     - [x] **v0.2.1:** - Animated health/score tickers and UI SFX.
     - [x] **v0.2.2:** - Scene transition logic and board cleanup fixes.
 
-- [ ] **v0.3: Last Stand** - Modifiers and endless mode logic.
+- [x] **v0.3: Holdout** - Modifiers and endless mode logic.
     - [x] **v0.3.1:** - Random round-based gameplay modifiers.
-    - [ ] **v0.3.2:** - Difficulty curves and endless mode progression.
-
-- [ ] **v0.4: Opponent AI** - Multiple AIs, AI improvements and alignment with character playstyles.
-- [ ] **v0.5: Story Arc (June Ravel)** - Cutscenes, subtitles, and linear flow.
-- [ ] **v0.6: Data Persistence** - Save/Load system and player stats.
-- [ ] **v0.7: Options & Settings**
-- [ ] **v0.8: In-Game Tutorials**
+    - [x] **v0.3.2:** - Difficulty curves and endless mode progression.
+- [x] **v0.4: Core Systems Integration** - Data persistence (Save/Load), In-game tutorials, and Options/Settings.
+- [ ] **v0.5: Remnants Mode** - Deck building, gauntlet based game mode.
+    - [ ] **v0.5.1:** - Development of the Remnants-specific gameplay loop.
+    - [ ] **v0.5.2:** - New card logic/mechanics unique to this mode.
+    - [ ] **v0.5.3:** - Updated options/settings specific to Remnants.
+- [ ] **v0.6: Opponent AI** - Deck building, gauntlet based game mode.
+    - [ ] **v0.6.1:** - Aligning AI behavior with specific character playstyles.
+    - [ ] **v0.6.2:** - Enhanced decision-making trees for faction-based logic.
+- [ ] **v0.7: Story Arc** - June Ravel.
+    - [ ] **v0.7.1:** - Cinematic cutscenes and subtitle systems.
+    - [ ] **v0.7.2:** - Linear flow implementation and narrative-driven encounters.
+- [ ] **v0.8: Final Polish**
+- [ ] **v0.9: Post-Launch & Addresses**
 
 ## License
 This project is released under the [MIT License](./LICENSE) for its original code and assets **created by me**.  
