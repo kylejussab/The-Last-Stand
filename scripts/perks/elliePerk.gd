@@ -1,39 +1,43 @@
 extends PerkBase
 
-var card
-var value
-
 func _init() -> void:
 	timing = "midRound"
 
-func apply_mid_perk(_thisCard, _thisHand, otherCard):
+func apply_mid_perk(thisCard, thisHand, otherCard):
 	if otherCard.role.contains("Stealthy") and otherCard.cardKey != "Nora":
-		card = otherCard
-		
-		card.get_node("AnimationPlayer").animation_started.connect(_when_animation_starts)
-		
-		value = int(card.get_node("value").text)
-		value -= 1
-		
-		card.value -= 1
-		
-		card.get_node("perk").text = "-1"
-		
-		card.get_node("AnimationPlayer").queue("showPerk")
-
-func _when_animation_starts(name: String):
-	if name == "showPerk":
-		updateCardValue()
-
-func updateCardValue():
-	var label = card.get_node("value")
-	var startValue = int(label.text)
+		otherCard.modify_value(-2)
 	
-	var tween = card.create_tween()
+	var perkAmount: int = 0
+	var ellieRoles = thisCard.role.split("/")
 	
-	tween.tween_method(
-		func(val: int): label.text = str(val),
-		startValue,
-		value,
-		0.5
-	)
+	for ally in thisHand:
+		if ally.type == "Character":
+			var isMatch: bool = false
+			for role in ellieRoles:
+				if ally.role.contains(role):
+					isMatch = true
+					break
+			
+			if not isMatch:
+				perkAmount += 1
+			
+	if perkAmount > 0:
+		thisCard.modify_value(perkAmount)
+
+# Function used for forsaken honor check
+func would_perk_trigger(thisCard, thisHand, otherCard) -> bool:
+	if otherCard.role.contains("Stealthy") and otherCard.cardKey != "Nora":
+		return true
+	
+	var ellieRoles = thisCard.role.split("/")
+	for ally in thisHand:
+		if ally.type == "Character":
+			var isMatch: bool = false
+			for role in ellieRoles:
+				if ally.role.contains(role):
+					isMatch = true
+					break
+			if not isMatch:
+				return true
+			
+	return false

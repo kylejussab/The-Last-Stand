@@ -1,37 +1,30 @@
 extends PerkBase
 
-var card
-var value
-
 func _init() -> void:
 	timing = "midRound"
 
-func apply_mid_perk(thisCard, _thisHand, otherCard):
-	if otherCard.role.contains("Aggressive") || otherCard.role.contains("Stealthy"):
-		card = thisCard
-		
-		card.get_node("AnimationPlayer").animation_started.connect(_when_animation_starts)
-		
-		value = int(card.get_node("value").text)
-		value += 2
-		
-		card.value += 2
-		card.get_node("perk").text = "+2"
-		card.get_node("AnimationPlayer").queue("showPerk")
-
-func _when_animation_starts(name: String):
-	if name == "showPerk":
-		updateCardValue()
-
-func updateCardValue():
-	var label = card.get_node("value")
-	var startValue = int(label.text)
+func apply_mid_perk(thisCard, thisHand, otherCard):
+	var perkAmount: int = 0
 	
-	var tween = card.create_tween()
+	if otherCard.type == "Character":
+		if otherCard.role.contains("Aggressive") or otherCard.role.contains("Stealthy"):
+			perkAmount += 2
 	
-	tween.tween_method(
-		func(val: int): label.text = str(val),
-		startValue,
-		value,
-		0.5
-	)
+	for ally in thisHand:
+		if ally.role.contains("Stealthy") and ally.type == "Character":
+			perkAmount += 1
+			
+	if perkAmount > 0:
+		thisCard.modify_value(perkAmount)
+
+# Function used for forsaken honor check
+func would_perk_trigger(_thisCard, thisHand, otherCard) -> bool:
+	if otherCard.type == "Character":
+		if otherCard.role.contains("Aggressive") or otherCard.role.contains("Stealthy"):
+			return true
+	
+	for ally in thisHand:
+		if ally.role.contains("Stealthy") and ally.type == "Character":
+			return true
+			
+	return false

@@ -6,14 +6,7 @@ const CARD_DRAW_SPEED = 0.2
 
 const SUPPORT_DECK_POSITION = Vector2(135, 548)
 
-@onready var soundPlayer = $AudioStreamPlayer2D
-
-var shuffleSounds = [
-	preload("res://assets/sounds/cards/shuffle_1.wav"),
-	preload("res://assets/sounds/cards/shuffle_2.wav"),
-	preload("res://assets/sounds/cards/shuffle_3.wav"),
-	preload("res://assets/sounds/cards/shuffle_4.wav")
-]
+var isHovered: bool = false
 
 var deck: Array
 
@@ -34,7 +27,7 @@ func draw_card():
 	$"../playerHand".add_card_to_hand(newCard, CARD_DRAW_SPEED)
 	
 	newCard.get_node("AnimationPlayer").play("cardFlip")
-	newCard.play_draw_sound()
+	AudioManager.play_random_card_draw()
 
 func draw_opponent_card():
 	var cardDrawn = deck[0]
@@ -45,7 +38,7 @@ func draw_opponent_card():
 	var newCard = _create_card_instance(cardDrawn, OPPONENT_CARD_SCENE_PATH, false)
 	
 	$"../opponentHand".add_card_to_hand(newCard, CARD_DRAW_SPEED)
-	newCard.play_draw_sound()
+	AudioManager.play_random_card_draw()
 	
 	if $"../battleManager".showOpponentsCards:
 		newCard.get_node("AnimationPlayer").play("cardFlip")
@@ -56,7 +49,7 @@ func reshuffle_from_discards(discardedCards):
 	for card in discardedCards:
 		deck.append(card.cardKey)
 		
-		card.play_draw_sound()
+		AudioManager.play_random_card_draw()
 		await move_card_back_to_deck(card)
 		
 		card.queue_free()
@@ -68,7 +61,7 @@ func reshuffle_from_discards(discardedCards):
 	tween.tween_property($image, "scale", Vector2(0.288, 0.288), 0.15)
 	await tween.finished
 	
-	play_shuffle_sound()
+	AudioManager.play_random_card_shuffle()
 	
 	await get_tree().create_timer(0.2).timeout
 	var tween_back = create_tween().set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
@@ -81,11 +74,6 @@ func move_card_back_to_deck(card):
 	var tween = get_tree().create_tween()
 	tween.tween_property(card, "position", SUPPORT_DECK_POSITION, 0.1)
 	await tween.finished
-
-func play_shuffle_sound():
-	var randomSound = shuffleSounds.pick_random()
-	soundPlayer.stream = randomSound
-	soundPlayer.play()
 
 # Privates
 func _create_card_instance(cardKey: String, scenePath: String, isPlayer: bool = false) -> Node2D:
@@ -161,3 +149,38 @@ func apply_card_accessibility_changes():
 	for card in card_manager.get_children():
 		if card.has_method("update_visuals"):
 			card.update_visuals()
+
+func _on_mouse_entered():
+	if !%battleManager.lockPlayerInput and !%viewDeckUI.isViewDeckActive:
+		AudioManager.play_card_hover()
+		isHovered = true
+		
+		$mainText.hide()
+		$hoverText.show()
+		
+		var tween = create_tween()
+		tween.tween_property(self, "scale", Vector2(1.1, 1.1), 0.1)
+
+func _on_mouse_exited():
+	if !%battleManager.lockPlayerInput and !%viewDeckUI.isViewDeckActive:
+		isHovered = false
+		
+		$hoverText.hide()
+		$mainText.show()
+		var tween = create_tween()
+		tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.1)
+		
+		AudioManager.play_card_hover()
+
+func _on_mouse_pressed(_viewport, event, _shape_idx):
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and !%battleManager.lockPlayerInput and event.pressed:
+		%viewDeckUI.isViewDeckActive = true
+		%viewDeckUI.open_deck_view(self)
+
+func force_reset_visuals():
+	isHovered = false
+	$hoverText.hide()
+	$mainText.show()
+	
+	var tween = create_tween()
+	tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.1)

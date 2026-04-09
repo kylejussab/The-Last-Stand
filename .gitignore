@@ -30,5 +30,21 @@ Icon?
 build/
 exports/
 
+# Ignore full card assets
+assets/cards/premium/
+
+# Ignore holdout MVPs
+assets/holdout/mvp/
+
 # Ignore data logs
 game_balance_data.json
+
+# Ignore analysis graph exports
+analysis/finalGraphs/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ignore premium assets
+assets/sounds/music/The Perilous Path/
+assets/sounds/music/The Perilous Path/*.import

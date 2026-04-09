@@ -38,39 +38,30 @@ var perkValueAtRoundEnd
 var canBePlayed: bool
 var perkDescription: String
 
-@onready var soundPlayer = $AudioStreamPlayer2D
-
-@export var drawSounds = [
-	preload("res://assets/sounds/cards/deal_1.wav"),
-	preload("res://assets/sounds/cards/deal_2.wav"),
-	preload("res://assets/sounds/cards/deal_3.wav"),
-	preload("res://assets/sounds/cards/deal_4.wav"),
-	preload("res://assets/sounds/cards/deal_5.wav"),
-	preload("res://assets/sounds/cards/deal_6.wav"),
-	preload("res://assets/sounds/cards/deal_7.wav")
-]
-
 func _ready() -> void:
 	if get_parent().has_method("connect_card_signals"):
 		get_parent().connect_card_signals(self)
 
 func update_visuals():
 	_apply_accessibility_settings()
+	_apply_visibility_settings()
 	
 	if has_node("value"):
+		$value.text = str(value)
 		$value.add_theme_font_size_override("normal_font_size", CARD_TEXT_SIZE)
 	if has_node("name"):
+		$name.text = nameText
 		$name.add_theme_font_size_override("normal_font_size", CARD_TEXT_SIZE)
 	if has_node("perk"):
 		$perk.add_theme_font_size_override("normal_font_size", CARD_TEXT_SIZE)
 	
-	if has_node("supportingText/perkText"):
+	if has_node("hoverDescription/text"):
 		if perkDescription != "":
 			var formatted_text = _format_perk_text(perkDescription)
-			$supportingText/perkText.text = formatted_text
-			$supportingText/perkText.add_theme_font_size_override("normal_font_size", DESCRIPTION_TEXT_SIZE)
+			$hoverDescription/text.text = formatted_text
+			$hoverDescription/text.add_theme_font_size_override("normal_font_size", DESCRIPTION_TEXT_SIZE)
 		else:
-			$supportingText/perkText.text = ""
+			$hoverDescription/text.text = ""
 	
 	if has_node("icons"):
 		var perkOne = $icons.get_node("perk1")
@@ -84,6 +75,26 @@ func update_visuals():
 		
 		if $icons.has_node("faction"):
 			$icons.get_node("faction").scale = Vector2(FACTION_ICON_SCALE, FACTION_ICON_SCALE)
+			
+			if faction in KEYWORD_ICONS:
+				$icons.get_node("faction").texture = load("res://assets/cardIcons/" + faction + ".png")
+		
+		if role != null and role != "":
+			var roles = role.split("/")
+			
+			if roles.size() > 0 and roles.size() <= 2:
+				if roles[0] in KEYWORD_ICONS:
+					perkOne.texture = load(KEYWORD_ICONS[roles[0]])
+					perkOne.visible = true
+				
+				if roles.size() > 1 and roles[1] in KEYWORD_ICONS:
+					perkTwo.texture = load(KEYWORD_ICONS[roles[1]])
+					perkTwo.visible = true
+				else:
+					perkTwo.visible = false
+			else:
+				perkOne.visible = false
+				perkTwo.visible = false
 	
 	if has_node("line"):
 		$line.size.y = PERK_LINE_Y_SIZE
@@ -120,14 +131,34 @@ func _apply_accessibility_settings():
 			FACTION_ICON_SCALE = 0.17
 			PERK_LINE_Y_SIZE = 20
 
+func _apply_visibility_settings():
+	if has_node("name"): $name.visible = true
+	if faction != "Support": $icons/faction.visible = true
+	
+	if AccessibilityData.currentCardStyle == AccessibilityData.CardStyle.MINIMAL:
+		if has_node("name"): $name.visible = false
+		if has_node("icons/faction"): $icons/faction.visible = false
+
 func _update_art_style():
 	if not has_node("image"): return
 	
 	match AccessibilityData.currentCardStyle:
 		AccessibilityData.CardStyle.NO_ARTWORK:
-			$image.texture = load("res://assets/cards/" + faction + ".png")
-		_:
-			$image.texture = load("res://assets/cards/" + cardKey + "Card.png")
+			if faction != "":
+				$image.texture = load("res://assets/cards/" + faction + ".png")
+			else:
+				$image.texture = load("res://assets/cards/Support.png")
+				
+		AccessibilityData.CardStyle.MINIMAL, _: 
+			var cardArtPath = "res://assets/cards/premium/" + cardKey + "Card.png"
+			
+			if ResourceLoader.exists(cardArtPath):
+				$image.texture = load(cardArtPath)
+			else:
+				if faction != "":
+					$image.texture = load("res://assets/cards/" + faction + ".png")
+				else:
+					$image.texture = load("res://assets/cards/Support.png")
 
 func _format_perk_text(rawText: String) -> String:
 	var richText = rawText
@@ -137,11 +168,6 @@ func _format_perk_text(rawText: String) -> String:
 			var replacement = "[img height=%d]%s[/img]" % [DESCRIPTION_ICON_SIZE, iconPath]
 			richText = richText.replace(keyword, replacement)
 	return richText
-
-func play_draw_sound():
-	var randomSound = drawSounds.pick_random()
-	soundPlayer.stream = randomSound
-	soundPlayer.play()
 
 func _on_area_2d_mouse_entered() -> void:
 	emit_signal("hoverEntered", self)

@@ -1,133 +1,144 @@
 extends Node
 
-enum Mode { SPLASH_SCREEN, MAIN_MENU, MODIFIER_SELECTION, CARD_DRAW, JUNE_RAVEL, LAST_STAND, LAST_STAND_ROUND_COMPLETED }
+enum Mode { SPLASH_SCREEN, MAIN_MENU, MODIFIER_SELECTION, CARD_DRAW, JUNE_RAVEL, HOLDOUT, HOLDOUT_ROUND_COMPLETED, HOLDOUT_TUTORIAL }
 
 var invitationAccepted: bool = false
 var gameMode: Mode = Mode.MAIN_MENU
+
 var totalInGameTimePlayed: float = 0.0
+var showHoldoutTutorial: bool = true
+var rations: int = 0
 
-var playerHealthValue: int
-var opponentList: Array = []
-
-# Per round stats
-var currentPlayer: Actor.Avatar
-var currentOpponent: Actor.Avatar
-
-var numberOfWins: int = 0
-var roundNumber: int = 1
-var totalForceExerted: int = 0
-var opponentForceExerted: int = 0
-var highestDamageDealt: int = 0
-var roundWinsUnderdog: int = 0
-var allPlayedCards: Array = []
-var multiplierTotal: float = 1.0
-var activeModifiers: Array = []
-
-var allOpponentCards: Array = []
-
-var currentRoundDuration: float = 0.0 
-var canCountDuration: bool = false
-
-var lastStandTotalScore: int = 0
-var lastStandCurrentRoundScore: int = 0
-var replayedRound: bool = false
-
-# Data logging variables
-const LOG_FILE_PATH = "user://game_balance_data.json"
-var currentGameSession: String = ""
-
-var currentBattleSeed: int = 0
-
-func _process(delta):
-	if canCountDuration:
-		currentRoundDuration += delta
-
-func set_start_time():
-	currentRoundDuration = 0.0
-	canCountDuration = true
-
-func set_end_time():
-	canCountDuration = false
-
-func reset_round_stats():
-	roundNumber = 1
-	totalForceExerted = 0
-	opponentForceExerted = 0
-	highestDamageDealt = 0
-	roundWinsUnderdog = 0
-	lastStandCurrentRoundScore = 0
-	allPlayedCards.clear()
-	allOpponentCards.clear()
-
-func reset_all_data():
-	reset_round_stats()
+func _ready() -> void:
+	var saveData = SaveManager.load_main_state()
 	
-	numberOfWins = 0
-	lastStandTotalScore = 0
-	totalInGameTimePlayed = 0.0
-	multiplierTotal = 1.0
-	activeModifiers.clear()
-	opponentList.clear()
+	if not saveData.is_empty():
+		totalInGameTimePlayed = saveData.get("totalInGameTimePlayed", 0.0)
+		rations = saveData.get("rations", 0)
+		showHoldoutTutorial = saveData.get("showHoldoutTutorial", true)
+		
+		holdoutRunsAttempted = saveData.get("holdoutRunsAttempted", 0)
+		holdoutBattlesWon = saveData.get("holdoutBattlesWon", 0)
+		holdoutTimePlayed = saveData.get("holdoutTimePlayed", 0.0)
+		holdoutUnderdogWins = saveData.get("holdoutUnderdogWins", 0)
+		holdoutCardsPlayed = saveData.get("holdoutCardsPlayed", 0)
+		
+		holdoutHighestDominance = saveData.get("holdoutHighestDominance", 0)
+		holdoutLongestStreak = saveData.get("holdoutLongestStreak", 0)
+		holdoutHighestMultiplier = saveData.get("holdoutHighestMultiplier", 1.0)
+		holdoutFastestWin = saveData.get("holdoutFastestWin", 99999.0)
+		holdoutBestRank = saveData.get("holdoutBestRank", HoldoutStats.Rank.F)
+		
+		holdoutMvpCounts = saveData.get("holdoutMvpCounts", {})
+		holdoutFactionUses = saveData.get("holdoutFactionUses", {})
+		holdoutCardUses = saveData.get("holdoutCardUses", {})
+		holdoutNemesisKills = saveData.get("holdoutNemesisKills", {})
+		holdoutModifierUses = saveData.get("holdoutModifierUses", {})
+		
+		var savedAccolades = saveData.get("holdoutAccoladeCounts", {})
+		for key in savedAccolades:
+			holdoutAccoladeCounts[key] = savedAccolades[key]
 
-func record_played_card(faction: String, cardKey: String, value: int = 0, opponentCard: bool = false):
-	if !opponentCard:
-		allPlayedCards.append({"faction": faction, "cardKey": cardKey, "value": value})
+# Holdout stats
+var holdoutRunsAttempted: int = 0
+var holdoutBattlesWon: int = 0
+var holdoutTimePlayed: float = 0.0
+var holdoutUnderdogWins: int = 0
+var holdoutCardsPlayed: int = 0
+
+var holdoutHighestDominance: int = 0
+var holdoutLongestStreak: int = 0
+var holdoutHighestMultiplier: float = 1.0
+var holdoutFastestWin: float = 99999.0
+var holdoutBestRank: HoldoutStats.Rank = HoldoutStats.Rank.F
+
+var holdoutMvpCounts: Dictionary = {}
+var holdoutFactionUses: Dictionary = {}
+var holdoutCardUses: Dictionary = {}
+var holdoutNemesisKills: Dictionary = {}
+var holdoutModifierUses: Dictionary = {}
+var holdoutAccoladeCounts: Dictionary = {
+	"Untouchable": 0,
+	"OldWounds": 0,
+	"Executioner": 0,
+	"GiantSlayer": 0,
+	"Relentless": 0,
+	"QuickDraw": 0,
+	"ThrillSeeker": 0,
+	"Purist": 0,
+	"SpeedDemon": 0,
+	"Brawler": 0,
+	"AnalysisParalysis": 0,
+	"RubberDuck": 0
+}
+
+func push_holdout_battle_stats(isVictory: bool):
+	if isVictory:
+		holdoutBattlesWon += 1
+		
+		if HoldoutStats.currentRoundDuration > 0:
+			holdoutFastestWin = min(holdoutFastestWin, HoldoutStats.currentRoundDuration)
 	else:
-		allOpponentCards.append({"faction": faction, "cardKey": cardKey, "value": value})
-
-# Data logging function
-func start_new_run_log():
-	currentGameSession = str(Time.get_unix_time_from_system())
-
-func log_battle_results(outcome: String):
-	if not OS.is_debug_build():
-		return
+		var nemesisName = "Unknown"
+		
+		if Database.AVATARS.has(HoldoutStats.currentOpponent):
+			nemesisName = Database.AVATARS[HoldoutStats.currentOpponent]["name"]
+			
+		holdoutNemesisKills[nemesisName] = holdoutNemesisKills.get(nemesisName, 0) + 1
 	
-	var battleData = {
-		"roundCount": roundNumber,
-		"outcome": outcome,
-		"playerHealthRemaining": playerHealthValue,
-		"durationInSeconds": currentRoundDuration,
-		"totalForcePlayer": totalForceExerted,
-		"totalForceOpponent": opponentForceExerted,
-		"highestDamageDealt": highestDamageDealt,
-		"underdogRounds": roundWinsUnderdog,
-		"multiplier": multiplierTotal,
-		"activeModifiers": _get_readable_modifiers(),
-		"roundScore": lastStandCurrentRoundScore,
-		"totalScore": lastStandTotalScore + lastStandCurrentRoundScore,
-		"cardsPlayed": allPlayedCards.duplicate(),
-		"opponentCards": allOpponentCards.duplicate()
+	holdoutUnderdogWins += HoldoutStats.underdogWins
+	holdoutCardsPlayed += HoldoutStats.allPlayedCards.size()
+	
+	holdoutHighestDominance = max(holdoutHighestDominance, HoldoutStats.highestDominance)
+	holdoutLongestStreak = max(holdoutLongestStreak, HoldoutStats.longestStreak)
+	holdoutHighestMultiplier = max(holdoutHighestMultiplier, HoldoutStats.multiplierTotal)
+	
+	if HoldoutStats.currentRank < holdoutBestRank:
+		holdoutBestRank = HoldoutStats.currentRank
+	
+	holdoutTimePlayed += HoldoutStats.currentRoundDuration
+	
+	for card in HoldoutStats.allPlayedCards:
+		var faction = card["faction"]
+		var key = card["cardKey"]
+		
+		if faction != "Support":
+			holdoutFactionUses[faction] = holdoutFactionUses.get(faction, 0) + 1
+			
+		holdoutCardUses[key] = holdoutCardUses.get(key, 0) + 1
+	
+	save_game()
+
+# --- SAVING & LOADING ---
+func get_save_dict() -> Dictionary:
+	return {
+		"totalInGameTimePlayed": totalInGameTimePlayed,
+		"rations": rations,
+		"showHoldoutTutorial": showHoldoutTutorial,
+		
+		"holdoutRunsAttempted": holdoutRunsAttempted,
+		"holdoutBattlesWon": holdoutBattlesWon,
+		"holdoutTimePlayed": holdoutTimePlayed,
+		"holdoutUnderdogWins": holdoutUnderdogWins,
+		"holdoutCardsPlayed": holdoutCardsPlayed,
+		
+		"holdoutHighestDominance": holdoutHighestDominance,
+		"holdoutLongestStreak": holdoutLongestStreak,
+		"holdoutHighestMultiplier": holdoutHighestMultiplier,
+		"holdoutFastestWin": holdoutFastestWin,
+		"holdoutBestRank": holdoutBestRank,
+		
+		"holdoutMvpCounts": holdoutMvpCounts,
+		"holdoutFactionUses": holdoutFactionUses,
+		"holdoutCardUses": holdoutCardUses,
+		"holdoutNemesisKills": holdoutNemesisKills,
+		"holdoutModifierUses": holdoutModifierUses,
+		"holdoutAccoladeCounts": holdoutAccoladeCounts
 	}
 
-	_append_to_log_file(battleData)
+func save_game():
+	SaveManager.save_main_state(get_save_dict())
 
-func _get_readable_modifiers() -> Array:
-	var readable_list = []
-	for mod in activeModifiers:
-		if typeof(mod) == TYPE_DICTIONARY and mod.has("name"):
-			readable_list.append(mod["name"])
-		else:
-			readable_list.append(mod)
-	return readable_list
-
-func _append_to_log_file(new_battle_data: Dictionary):
-	var all_data = {}
-	
-	if FileAccess.file_exists(LOG_FILE_PATH):
-		var file = FileAccess.open(LOG_FILE_PATH, FileAccess.READ)
-		var text = file.get_as_text()
-		var json = JSON.new()
-		var parse_result = json.parse(text)
-		if parse_result == OK:
-			all_data = json.data
-		file.close()
-	
-	if not all_data.has(currentGameSession):
-		all_data[currentGameSession] = []
-	
-	all_data[currentGameSession].append(new_battle_data)
-	
-	var save_file = FileAccess.open(LOG_FILE_PATH, FileAccess.WRITE)
-	save_file.store_string(JSON.stringify(all_data, "\t"))
-	save_file.close()
+func record_modifier_selection(modName: String) -> void:
+	holdoutModifierUses[modName] = holdoutModifierUses.get(modName, 0) + 1
+	save_game()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=160 format=3 uid="uid://dgb52shq4jcyg"]
+[gd_scene load_steps=127 format=3 uid="uid://dgb52shq4jcyg"]
 
 [ext_resource type="Script" uid="uid://dgl6h7ryesfn8" path="res://scripts/cardManager.gd" id="1_0wfyh"]
 [ext_resource type="Script" uid="uid://c3p2rmoacsirj" path="res://scripts/inputManager.gd" id="1_o6xl0"]
@@ -8,41 +8,52 @@
 [ext_resource type="Script" uid="uid://c3df834vnm13g" path="res://scripts/supportCardSlot.gd" id="4_tipki"]
 [ext_resource type="Script" uid="uid://do1wqhx54kv7s" path="res://scripts/playerHand.gd" id="5_tbgi4"]
 [ext_resource type="Script" uid="uid://b0yx32b2u0wb1" path="res://scripts/characterDeck.gd" id="5_tefeu"]
-[ext_resource type="Script" uid="uid://bbvc5mqkkiqnw" path="res://scripts/battleAnimator.gd" id="5_yq6so"]
+[ext_resource type="Script" uid="uid://bbvc5mqkkiqnw" path="res://scripts/holdoutEndScreenAnimator.gd" id="5_yq6so"]
 [ext_resource type="PackedScene" uid="uid://cedct6rr8lclv" path="res://scenes/opponentCardSlot.tscn" id="6_85g3d"]
 [ext_resource type="Script" uid="uid://dwr382qynby8f" path="res://scripts/battleManager.gd" id="10_choun"]
 [ext_resource type="Script" uid="uid://conm4253y3tth" path="res://scripts/oppponentHand.gd" id="11_ya4ey"]
-[ext_resource type="Texture2D" uid="uid://c3mm1hh841f3a" path="res://assets/cards/CardBackCharacter.png" id="11_yc10j"]
 [ext_resource type="Script" uid="uid://che0dt2kvp0wy" path="res://scripts/supportDeck.gd" id="12_eb6dy"]
 [ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://assets/fonts/SF-Pro-Display-Black.otf" id="13_a8y0u"]
-[ext_resource type="Texture2D" uid="uid://jh2lrbkjb6tx" path="res://assets/cards/CardBackSupport.png" id="13_jscy8"]
-[ext_resource type="AudioStream" uid="uid://dy7mjokw0gggp" path="res://assets/sounds/ui/damage.wav" id="15_2wyq8"]
+[ext_resource type="Texture2D" uid="uid://brrupu340jnfx" path="res://assets/cards/DeckBack.png" id="13_ty1g6"]
+[ext_resource type="Texture2D" uid="uid://codfjgt3u16vl" path="res://assets/cards/DeckCharacterText.png" id="14_j2jfr"]
+[ext_resource type="Texture2D" uid="uid://daom81ntbh7ja" path="res://assets/cards/DeckViewText.png" id="15_bjg73"]
 [ext_resource type="Texture2D" uid="uid://xni81jo33g8f" path="res://assets/arenaHeads/JuneNeutral.png" id="15_gqmmt"]
 [ext_resource type="FontFile" uid="uid://di1dchl37cfhu" path="res://assets/fonts/SF-Pro-Display-Semibold.otf" id="15_jkv2x"]
 [ext_resource type="Texture2D" uid="uid://cc4u4mqtyb8xx" path="res://assets/arenas/EthanArena.png" id="15_yc10j"]
 [ext_resource type="Script" uid="uid://buunfomhxxyfm" path="res://scripts/arenaUI.gd" id="16_2f3dj"]
 [ext_resource type="Texture2D" uid="uid://dgqjpfbqq0f4p" path="res://assets/arenas/ActiveIndicator.png" id="16_muem4"]
 [ext_resource type="Texture2D" uid="uid://bpqj5m7tiyln" path="res://assets/arenaHeads/JuneHurt.png" id="16_yc10j"]
+[ext_resource type="Texture2D" uid="uid://bp72tjgvjowxr" path="res://assets/cards/DeckSupportText.png" id="17_bu4jf"]
 [ext_resource type="Texture2D" uid="uid://crwpvlesiqi0o" path="res://assets/arenaHeads/JuneThinking.png" id="17_jscy8"]
+[ext_resource type="Script" uid="uid://cwakiodvp7ji5" path="res://scripts/viewDeck.gd" id="18_j2jfr"]
 [ext_resource type="Texture2D" uid="uid://d2oxvh8kvsjse" path="res://assets/arenaHeads/JuneHappy.png" id="18_pm3ni"]
-[ext_resource type="AudioStream" uid="uid://b3d3fqc8ee6t7" path="res://assets/sounds/ui/buttonBack.wav" id="20_qkpxi"]
-[ext_resource type="AudioStream" uid="uid://b2sa8g17hxiwa" path="res://assets/sounds/cards/hover.wav" id="21_5q0nq"]
-[ext_resource type="AudioStream" uid="uid://cdqholmjoftew" path="res://assets/sounds/cards/lock.wav" id="22_5he1u"]
 [ext_resource type="Texture2D" uid="uid://dxbmvsoua68c4" path="res://assets/ui/GameOverOverlay.png" id="22_jscy8"]
-[ext_resource type="AudioStream" uid="uid://bams0u5k7sdgr" path="res://assets/sounds/ui/buttonClick.wav" id="23_y6deb"]
-[ext_resource type="AudioStream" uid="uid://cufo3kt8n8vs2" path="res://assets/sounds/ui/buttonHover.wav" id="24_og1vs"]
-[ext_resource type="AudioStream" uid="uid://bqgphoeowbviu" path="res://assets/sounds/ui/whoosh.wav" id="25_2wyq8"]
+[ext_resource type="PackedScene" uid="uid://chb4j7220yip1" path="res://scenes/holdoutIntro.tscn" id="29_chjal"]
 [ext_resource type="Script" uid="uid://cut6aandi16ab" path="res://scripts/modifierBubbleManager.gd" id="30_5he1u"]
+[ext_resource type="Texture2D" uid="uid://d1kqrakc80shv" path="res://assets/ui/RationsIcon.png" id="30_chjal"]
 [ext_resource type="Script" uid="uid://c50sxxmg3g1sv" path="res://scripts/pauseMenu.gd" id="30_fv21b"]
 [ext_resource type="Texture2D" uid="uid://be0aihjd72rmo" path="res://assets/ui/RightClickIcon.png" id="31_tel4y"]
+[ext_resource type="Texture2D" uid="uid://bnpmhfal8dvvl" path="res://assets/holdout/Jackson.png" id="31_vchkt"]
+[ext_resource type="Texture2D" uid="uid://bg2k5b4lwvhxc" path="res://assets/holdout/rank/F.png" id="32_txyw0"]
 [ext_resource type="Script" uid="uid://y7ghvyxu3whm" path="res://scripts/modifierUI.gd" id="33_j8jky"]
+[ext_resource type="Texture2D" uid="uid://ou4fpjcaxryp" path="res://assets/holdout/Badge Outline.png" id="33_txyw0"]
 [ext_resource type="Texture2D" uid="uid://mostfhsgyv4f" path="res://assets/modifiers/SlotInActive.png" id="34_kmb1v"]
+[ext_resource type="Script" uid="uid://b6tvg1kiq1u2l" path="res://scripts/holdButton.gd" id="34_vc5cj"]
 [ext_resource type="Script" uid="uid://cips7jy6yjg6s" path="res://scripts/slotReel.gd" id="35_fuf3a"]
-[ext_resource type="AudioStream" uid="uid://dyo8kjd5wkh67" path="res://assets/sounds/ui/slotSpin.wav" id="36_fuf3a"]
-[ext_resource type="AudioStream" uid="uid://b8o0s35fjpeg6" path="res://assets/sounds/ui/slotStop.wav" id="37_pibwh"]
+[ext_resource type="Texture2D" uid="uid://3bjo3ij5b8q8" path="res://assets/ui/HoldRing.png" id="35_nvyfr"]
+[ext_resource type="PackedScene" uid="uid://c0yhtjyqj8lpa" path="res://scenes/optionsMenu.tscn" id="38_vc5cj"]
+[ext_resource type="Texture2D" uid="uid://cw3snkugbg01q" path="res://assets/ui/Lock.png" id="40_bjg73"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jyhfs"]
 size = Vector2(140, 196)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ty1g6"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j2jfr"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
 
 [sub_resource type="FontVariation" id="FontVariation_c6pm6"]
 base_font = ExtResource("13_a8y0u")
@@ -310,223 +321,6 @@ spacing_glyph = 1
 base_font = ExtResource("15_jkv2x")
 spacing_glyph = 1
 
-[sub_resource type="FontVariation" id="FontVariation_bu4jf"]
-base_font = ExtResource("15_jkv2x")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_o7ddy"]
-base_font = ExtResource("15_jkv2x")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_0loja"]
-base_font = ExtResource("15_jkv2x")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_ids8r"]
-base_font = ExtResource("15_jkv2x")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_dnhof"]
-base_font = ExtResource("15_jkv2x")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_1v6qk"]
-base_font = ExtResource("15_jkv2x")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_augu2"]
-base_font = ExtResource("15_jkv2x")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_tm6hj"]
-base_font = ExtResource("15_jkv2x")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_kf5aa"]
-base_font = ExtResource("13_a8y0u")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_t5ykj"]
-base_font = ExtResource("15_jkv2x")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_e755i"]
-base_font = ExtResource("15_jkv2x")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_ro3en"]
-base_font = ExtResource("15_jkv2x")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_od4ux"]
-base_font = ExtResource("15_jkv2x")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_xhfw6"]
-base_font = ExtResource("15_jkv2x")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_1epgm"]
-base_font = ExtResource("15_jkv2x")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_152kg"]
-base_font = ExtResource("15_jkv2x")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_r4e17"]
-base_font = ExtResource("15_jkv2x")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_y57op"]
-base_font = ExtResource("13_a8y0u")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_mlv25"]
-base_font = ExtResource("15_jkv2x")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_a82wo"]
-base_font = ExtResource("15_jkv2x")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_gdvew"]
-base_font = ExtResource("15_jkv2x")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_kjtvk"]
-base_font = ExtResource("15_jkv2x")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_xrs0c"]
-base_font = ExtResource("15_jkv2x")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_xljpf"]
-base_font = ExtResource("15_jkv2x")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_j4bwh"]
-base_font = ExtResource("15_jkv2x")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_ksmap"]
-base_font = ExtResource("15_jkv2x")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_ygd8o"]
-base_font = ExtResource("15_jkv2x")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_2s0kr"]
-base_font = ExtResource("15_jkv2x")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_xaipn"]
-base_font = ExtResource("15_jkv2x")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_ndrjj"]
-base_font = ExtResource("15_jkv2x")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_ih3m7"]
-base_font = ExtResource("15_jkv2x")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_11yus"]
-base_font = ExtResource("15_jkv2x")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_b6ruc"]
-base_font = ExtResource("15_jkv2x")
-spacing_glyph = 1
-
-[sub_resource type="Animation" id="Animation_fv21b"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("scoreAnimationLabel:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(215, 950)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("scoreAnimationLabel:modulate")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 0)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("line2:modulate")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_yq6so"]
-resource_name = "showScoreUpdate"
-length = 2.0
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("scoreAnimationLabel:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2, 1.8, 2),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(215, 950), Vector2(120, 950), Vector2(120, 950), Vector2(215, 950)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("scoreAnimationLabel:modulate")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.2, 1.8, 1.9),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("line2:modulate")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 1.8, 2),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_tel4y"]
-_data = {
-&"RESET": SubResource("Animation_fv21b"),
-&"showScoreUpdate": SubResource("Animation_yq6so")
-}
-
 [sub_resource type="FontVariation" id="FontVariation_155or"]
 base_font = ExtResource("13_a8y0u")
 spacing_glyph = 1
@@ -560,6 +354,922 @@ spacing_glyph = 1
 base_font = ExtResource("13_a8y0u")
 spacing_glyph = 1
 
+[sub_resource type="Animation" id="Animation_txyw0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("overview/heading:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(212, 204)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("overview/heading:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("overview/line:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1e-05, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("overview/overviewStatContainer:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("performance/heading:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(212, 378)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("performance/heading:self_modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("performance/line:scale")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1e-05, 1)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("performance/performanceStatContainer:modulate")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("total/totalStatContainer:modulate")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("line:scale")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1e-05, 1)]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("wins:self_modulate")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("ContinueButton:position")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(770, 700)]
+}
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("ReplayButton:position")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(770, 770)]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("ContinueButton:self_modulate")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/14/type = "value"
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/path = NodePath("ReplayButton:self_modulate")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/15/type = "value"
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/path = NodePath("NewRunButton:self_modulate")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/16/type = "value"
+tracks/16/imported = false
+tracks/16/enabled = true
+tracks/16/path = NodePath("MainMenuButton:self_modulate")
+tracks/16/interp = 1
+tracks/16/loop_wrap = true
+tracks/16/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/17/type = "value"
+tracks/17/imported = false
+tracks/17/enabled = true
+tracks/17/path = NodePath("NewRunButton:position")
+tracks/17/interp = 1
+tracks/17/loop_wrap = true
+tracks/17/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(770, 840)]
+}
+tracks/18/type = "value"
+tracks/18/imported = false
+tracks/18/enabled = true
+tracks/18/path = NodePath("MainMenuButton:position")
+tracks/18/interp = 1
+tracks/18/loop_wrap = true
+tracks/18/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(770, 910)]
+}
+tracks/19/type = "value"
+tracks/19/imported = false
+tracks/19/enabled = true
+tracks/19/path = NodePath("total/mvpIcon:position")
+tracks/19/interp = 1
+tracks/19/loop_wrap = true
+tracks/19/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(536, 794)]
+}
+tracks/20/type = "value"
+tracks/20/imported = false
+tracks/20/enabled = true
+tracks/20/path = NodePath("total/badgeOutlineMvp:scale")
+tracks/20/interp = 1
+tracks/20/loop_wrap = true
+tracks/20/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.086, 0.086)]
+}
+tracks/21/type = "value"
+tracks/21/imported = false
+tracks/21/enabled = true
+tracks/21/path = NodePath("total/badgeOutlineMvp:self_modulate")
+tracks/21/interp = 1
+tracks/21/loop_wrap = true
+tracks/21/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/22/type = "value"
+tracks/22/imported = false
+tracks/22/enabled = true
+tracks/22/path = NodePath("total/mvpIcon:self_modulate")
+tracks/22/interp = 1
+tracks/22/loop_wrap = true
+tracks/22/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/23/type = "value"
+tracks/23/imported = false
+tracks/23/enabled = true
+tracks/23/path = NodePath("total/rankIcon:position")
+tracks/23/interp = 1
+tracks/23/loop_wrap = true
+tracks/23/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(536, 794)]
+}
+tracks/24/type = "value"
+tracks/24/imported = false
+tracks/24/enabled = true
+tracks/24/path = NodePath("total/rankIcon:self_modulate")
+tracks/24/interp = 1
+tracks/24/loop_wrap = true
+tracks/24/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/25/type = "value"
+tracks/25/imported = false
+tracks/25/enabled = true
+tracks/25/path = NodePath("total/badgeOutlineRank:self_modulate")
+tracks/25/interp = 1
+tracks/25/loop_wrap = true
+tracks/25/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/26/type = "value"
+tracks/26/imported = false
+tracks/26/enabled = true
+tracks/26/path = NodePath("total/badgeOutlineRank:scale")
+tracks/26/interp = 1
+tracks/26/loop_wrap = true
+tracks/26/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.086, 0.086)]
+}
+tracks/27/type = "value"
+tracks/27/imported = false
+tracks/27/enabled = true
+tracks/27/path = NodePath("total/accoladeIcon:self_modulate")
+tracks/27/interp = 1
+tracks/27/loop_wrap = true
+tracks/27/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/28/type = "value"
+tracks/28/imported = false
+tracks/28/enabled = true
+tracks/28/path = NodePath("total/badgeOutlineAccolade:scale")
+tracks/28/interp = 1
+tracks/28/loop_wrap = true
+tracks/28/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.086, 0.086)]
+}
+tracks/29/type = "value"
+tracks/29/imported = false
+tracks/29/enabled = true
+tracks/29/path = NodePath("total/badgeOutlineAccolade:self_modulate")
+tracks/29/interp = 1
+tracks/29/loop_wrap = true
+tracks/29/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/30/type = "value"
+tracks/30/imported = false
+tracks/30/enabled = true
+tracks/30/path = NodePath("total/badgeTextContainer:modulate")
+tracks/30/interp = 1
+tracks/30/loop_wrap = true
+tracks/30/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_bjg73"]
+resource_name = "showBadges"
+length = 2.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("total/mvpIcon:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.45, 0.65, 0.7, 0.85, 1.05, 1.11),
+"transitions": PackedFloat32Array(1, 0.8, 1.2, 1, 0.8, 1.2, 1),
+"update": 0,
+"values": [Vector2(536, 794), Vector2(536, 794), Vector2(368, 794), Vector2(374, 794), Vector2(374, 794), Vector2(205, 794), Vector2(211, 794)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("total/badgeOutlineMvp:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.3),
+"transitions": PackedFloat32Array(0.5, 1.25, 1),
+"update": 0,
+"values": [Vector2(0.086, 0.086), Vector2(0.12, 0.12), Vector2(0.16, 0.16)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("total/badgeOutlineMvp:self_modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("total/mvpIcon:self_modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("total/rankIcon:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 1.1, 1.3, 1.35),
+"transitions": PackedFloat32Array(1, 0.8, 1.2, 1),
+"update": 0,
+"values": [Vector2(536, 794), Vector2(536, 794), Vector2(368, 794), Vector2(374, 794)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("total/rankIcon:self_modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.6, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("total/badgeOutlineRank:self_modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.6, 0.7, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("total/badgeOutlineRank:scale")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 0.6, 0.7, 0.8),
+"transitions": PackedFloat32Array(1, 0.5, 1.25, 1),
+"update": 0,
+"values": [Vector2(0.086, 0.086), Vector2(0.086, 0.086), Vector2(0.12, 0.12), Vector2(0.16, 0.16)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("total/accoladeIcon:self_modulate")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0, 1.25, 1.45),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("total/badgeOutlineAccolade:scale")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0, 1.25, 1.35, 1.45),
+"transitions": PackedFloat32Array(1, 0.5, 1.25, 1),
+"update": 0,
+"values": [Vector2(0.086, 0.086), Vector2(0.086, 0.086), Vector2(0.12, 0.12), Vector2(0.16, 0.16)]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("total/badgeOutlineAccolade:self_modulate")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0, 1.25, 1.35, 1.45),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("total/badgeTextContainer:modulate")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0, 1.6, 2.1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/12/type = "method"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath(".")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0.05, 0.65, 1.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"values": [{
+"args": [],
+"method": &"trigger_badge_thud"
+}, {
+"args": [],
+"method": &"trigger_badge_thud"
+}, {
+"args": [],
+"method": &"trigger_badge_thud"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_j2jfr"]
+resource_name = "showButtons"
+length = 1.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ContinueButton:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(770, 700), Vector2(770, 720)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ReplayButton:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(770, 770), Vector2(770, 770), Vector2(770, 790)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("ContinueButton:self_modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("ReplayButton:self_modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("NewRunButton:self_modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.8, 1.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("MainMenuButton:self_modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 1.2, 1.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("NewRunButton:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.8, 1.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(770, 840), Vector2(770, 840), Vector2(770, 860)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("MainMenuButton:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 1.2, 1.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(770, 910), Vector2(770, 910), Vector2(770, 930)]
+}
+
+[sub_resource type="Animation" id="Animation_vchkt"]
+resource_name = "showOverview"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("overview/heading:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.48, 0.5),
+"transitions": PackedFloat32Array(0.25, 1, 1),
+"update": 0,
+"values": [Vector2(212, 350), Vector2(212, 202), Vector2(212, 204)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("overview/heading:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("overview/line:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.26, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1e-05, 1), Vector2(1e-05, 1), Vector2(1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("overview/overviewStatContainer:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_vc5cj"]
+resource_name = "showPerformance"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("performance/heading:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.48, 0.5),
+"transitions": PackedFloat32Array(0.25, 1, 1),
+"update": 0,
+"values": [Vector2(212, 675), Vector2(212, 376), Vector2(212, 378)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("performance/heading:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("performance/line:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.26, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1e-05, 1), Vector2(1e-05, 1), Vector2(1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("performance/performanceStatContainer:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_nvyfr"]
+resource_name = "showTotal"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("total/totalStatContainer:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_ty1g6"]
+resource_name = "showWins"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("line:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1.5, 1),
+"update": 0,
+"values": [Vector2(1e-05, 1), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("wins:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.22, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_bu4jf"]
+resource_name = "showButtonsTutorial"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("NewRunButton:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MainMenuButton:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("NewRunButton:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(235, 400), Vector2(235, 420)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("MainMenuButton:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(235, 470), Vector2(235, 470), Vector2(235, 470)]
+}
+
+[sub_resource type="Animation" id="Animation_o7ddy"]
+resource_name = "showLineTutorial"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("line:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1.5, 1),
+"update": 0,
+"values": [Vector2(1e-05, 1), Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_vc5cj"]
+_data = {
+&"RESET": SubResource("Animation_txyw0"),
+&"showBadges": SubResource("Animation_bjg73"),
+&"showButtons": SubResource("Animation_j2jfr"),
+&"showButtonsTutorial": SubResource("Animation_bu4jf"),
+&"showLineTutorial": SubResource("Animation_o7ddy"),
+&"showOverview": SubResource("Animation_vchkt"),
+&"showPerformance": SubResource("Animation_vc5cj"),
+&"showTotal": SubResource("Animation_nvyfr"),
+&"showWins": SubResource("Animation_ty1g6")
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_chjal"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="Animation" id="Animation_cjqg0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05)]
+}
+
+[sub_resource type="Animation" id="Animation_chjal"]
+resource_name = "show_tutorial_box"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.225, 0.3),
+"transitions": PackedFloat32Array(0.5, 2.25, 1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05), Vector2(1.05, 1.05), Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_vchkt"]
+_data = {
+&"RESET": SubResource("Animation_cjqg0"),
+&"show_tutorial_box": SubResource("Animation_chjal")
+}
+
 [sub_resource type="FontVariation" id="FontVariation_bfu41"]
 base_font = ExtResource("13_a8y0u")
 spacing_glyph = 1
@@ -591,68 +1301,6 @@ base_font = ExtResource("13_a8y0u")
 spacing_glyph = 1
 
 [sub_resource type="FontVariation" id="FontVariation_6nfnn"]
-base_font = ExtResource("13_a8y0u")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_4ue30"]
-base_font = ExtResource("13_a8y0u")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_k42av"]
-base_font = ExtResource("13_a8y0u")
-spacing_glyph = 1
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dgi5k"]
-bg_color = Color(0, 0, 0, 0)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j8jky"]
-bg_color = Color(0, 0, 0, 0)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kmb1v"]
-bg_color = Color(0.08627451, 0.08627451, 0.08627451, 0)
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fuf3a"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pibwh"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-
-[sub_resource type="FontVariation" id="FontVariation_gr8w0"]
-base_font = ExtResource("13_a8y0u")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_673bd"]
-base_font = ExtResource("13_a8y0u")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_akjxb"]
-base_font = ExtResource("13_a8y0u")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_vrx01"]
-base_font = ExtResource("15_jkv2x")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_1uevf"]
-base_font = ExtResource("13_a8y0u")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_tc087"]
-base_font = ExtResource("13_a8y0u")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_73205"]
-base_font = ExtResource("13_a8y0u")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_0tljd"]
-base_font = ExtResource("15_jkv2x")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_mgpkq"]
-base_font = ExtResource("13_a8y0u")
-spacing_glyph = 1
-
-[sub_resource type="FontVariation" id="FontVariation_xmrkg"]
 base_font = ExtResource("13_a8y0u")
 spacing_glyph = 1
 
@@ -1049,6 +1697,10 @@ _data = {
 base_font = ExtResource("13_a8y0u")
 spacing_glyph = 1
 
+[sub_resource type="FontVariation" id="FontVariation_akjxb"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
 [node name="main" type="Node2D"]
 
 [node name="gameStats" type="Node" parent="."]
@@ -1069,7 +1721,7 @@ script = ExtResource("1_0wfyh")
 unique_name_in_owner = true
 script = ExtResource("10_choun")
 
-[node name="battleAnimator" type="Node" parent="battleManager"]
+[node name="holdoutEndScreenAnimator" type="Node" parent="battleManager"]
 unique_name_in_owner = true
 script = ExtResource("5_yq6so")
 
@@ -1116,7 +1768,16 @@ script = ExtResource("5_tefeu")
 [node name="image" type="Sprite2D" parent="characterDeck"]
 position = Vector2(0, 3.8146973e-06)
 scale = Vector2(0.188, 0.188)
-texture = ExtResource("11_yc10j")
+texture = ExtResource("13_ty1g6")
+
+[node name="mainText" type="Sprite2D" parent="characterDeck"]
+scale = Vector2(0.188, 0.188)
+texture = ExtResource("14_j2jfr")
+
+[node name="hoverText" type="Sprite2D" parent="characterDeck"]
+visible = false
+scale = Vector2(0.188, 0.188)
+texture = ExtResource("15_bjg73")
 
 [node name="Area2D" type="Area2D" parent="characterDeck"]
 collision_layer = 3
@@ -1135,8 +1796,6 @@ text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="characterDeck"]
-
 [node name="supportDeck" type="Node2D" parent="."]
 z_index = -2
 position = Vector2(135, 536)
@@ -1145,7 +1804,16 @@ script = ExtResource("12_eb6dy")
 [node name="image" type="Sprite2D" parent="supportDeck"]
 position = Vector2(0, 3.8146973e-06)
 scale = Vector2(0.188, 0.188)
-texture = ExtResource("13_jscy8")
+texture = ExtResource("13_ty1g6")
+
+[node name="mainText" type="Sprite2D" parent="supportDeck"]
+scale = Vector2(0.188, 0.188)
+texture = ExtResource("17_bu4jf")
+
+[node name="hoverText" type="Sprite2D" parent="supportDeck"]
+visible = false
+scale = Vector2(0.188, 0.188)
+texture = ExtResource("15_bjg73")
 
 [node name="Area2D" type="Area2D" parent="supportDeck"]
 collision_layer = 3
@@ -1164,46 +1832,59 @@ text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="supportDeck"]
+[node name="viewDeckUI" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+z_index = 400
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+script = ExtResource("18_j2jfr")
+
+[node name="overlay" type="Panel" parent="viewDeckUI"]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ty1g6")
+
+[node name="viewPanel" type="Control" parent="viewDeckUI"]
+anchors_preset = 0
+offset_top = 165.0
+offset_right = 490.0
+offset_bottom = 915.0
+mouse_filter = 2
+
+[node name="background" type="Panel" parent="viewDeckUI/viewPanel"]
+layout_mode = 0
+offset_right = 490.0
+offset_bottom = 750.0
+pivot_offset = Vector2(0, 375)
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_j2jfr")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="viewDeckUI/viewPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+vertical_scroll_mode = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="viewDeckUI/viewPanel/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="viewDeckUI"]
 
 [node name="arena" type="Node2D" parent="."]
 unique_name_in_owner = true
 z_index = -99
 script = ExtResource("16_2f3dj")
-
-[node name="damageSound" type="AudioStreamPlayer2D" parent="arena"]
-unique_name_in_owner = true
-stream = ExtResource("15_2wyq8")
-volume_db = -15.0
-
-[node name="ButtonClickSound" type="AudioStreamPlayer2D" parent="arena"]
-unique_name_in_owner = true
-process_mode = 3
-position = Vector2(770, 790)
-stream = ExtResource("23_y6deb")
-volume_db = 20.0
-
-[node name="ButtonHoverSound" type="AudioStreamPlayer2D" parent="arena"]
-unique_name_in_owner = true
-process_mode = 3
-position = Vector2(770, 790)
-stream = ExtResource("24_og1vs")
-volume_db = 20.0
-
-[node name="ButtonBackSound" type="AudioStreamPlayer2D" parent="arena"]
-process_mode = 3
-position = Vector2(770, 790)
-stream = ExtResource("20_qkpxi")
-volume_db = 20.0
-
-[node name="CardHoverSound" type="AudioStreamPlayer2D" parent="arena"]
-unique_name_in_owner = true
-stream = ExtResource("21_5q0nq")
-volume_db = -10.0
-
-[node name="CardLockSound" type="AudioStreamPlayer2D" parent="arena"]
-unique_name_in_owner = true
-stream = ExtResource("22_5he1u")
 
 [node name="image" type="Sprite2D" parent="arena"]
 position = Vector2(960, 540)
@@ -1379,31 +2060,30 @@ unique_name_in_owner = true
 z_index = 10
 script = ExtResource("30_5he1u")
 
-[node name="gameOver" type="Node2D" parent="arena"]
-unique_name_in_owner = true
-z_index = 500
-
-[node name="effects" type="AudioStreamPlayer2D" parent="arena/gameOver"]
-stream = ExtResource("25_2wyq8")
-max_polyphony = 3
-
-[node name="overlay" type="Sprite2D" parent="arena/gameOver"]
+[node name="HoldoutIntro" parent="arena" instance=ExtResource("29_chjal")]
 visible = false
+
+[node name="holdoutEndStats" type="Node2D" parent="arena"]
+unique_name_in_owner = true
+visible = false
+z_index = 500
+script = ExtResource("5_yq6so")
+
+[node name="overlay" type="Sprite2D" parent="arena/holdoutEndStats"]
 scale = Vector2(0.24, 0.24)
 texture = ExtResource("22_jscy8")
 centered = false
 
-[node name="title" type="RichTextLabel" parent="arena/gameOver"]
-visible = false
+[node name="title" type="RichTextLabel" parent="arena/holdoutEndStats"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = 145.0
-offset_top = 80.0
+offset_top = 121.0
 offset_right = 445.0
-offset_bottom = 130.0
+offset_bottom = 171.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
@@ -1412,26 +2092,17 @@ theme_override_font_sizes/normal_font_size = 32
 text = "SURVIVED"
 horizontal_alignment = 1
 
-[node name="line" type="ColorRect" parent="arena/gameOver"]
-visible = false
-offset_left = 215.0
-offset_top = 137.0
-offset_right = 665.0
-offset_bottom = 139.0
-
-[node name="performance" type="Node2D" parent="arena/gameOver"]
-visible = false
-
-[node name="wins" type="RichTextLabel" parent="arena/gameOver/performance"]
+[node name="wins" type="RichTextLabel" parent="arena/holdoutEndStats"]
+self_modulate = Color(1, 1, 1, 0)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 595.0
-offset_top = 80.0
-offset_right = 665.0
-offset_bottom = 130.0
+offset_left = 462.0
+offset_top = 121.0
+offset_right = 662.0
+offset_bottom = 162.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/normal_font = SubResource("FontVariation_nvyfr")
@@ -1439,16 +2110,131 @@ theme_override_font_sizes/normal_font_size = 32
 text = "99"
 horizontal_alignment = 2
 
-[node name="heading" type="RichTextLabel" parent="arena/gameOver/performance"]
+[node name="line" type="ColorRect" parent="arena/holdoutEndStats"]
+offset_left = 212.0
+offset_top = 179.0
+offset_right = 662.0
+offset_bottom = 181.0
+scale = Vector2(1e-05, 1)
+
+[node name="overview" type="Node2D" parent="arena/holdoutEndStats"]
+
+[node name="heading" type="RichTextLabel" parent="arena/holdoutEndStats/overview"]
+self_modulate = Color(1, 1, 1, 0)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 215.0
-offset_top = 160.0
-offset_right = 665.0
-offset_bottom = 190.0
+offset_left = 212.0
+offset_top = 204.0
+offset_right = 662.0
+offset_bottom = 231.99988
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = SubResource("FontVariation_ty1g6")
+theme_override_font_sizes/normal_font_size = 20
+text = "OVERVIEW"
+
+[node name="line" type="ColorRect" parent="arena/holdoutEndStats/overview"]
+offset_left = 212.0
+offset_top = 239.0
+offset_right = 662.0
+offset_bottom = 240.0
+scale = Vector2(1e-05, 1)
+color = Color(1, 1, 1, 0.35686275)
+
+[node name="overviewStatContainer" type="Node2D" parent="arena/holdoutEndStats/overview"]
+modulate = Color(1, 1, 1, 0)
+
+[node name="roundsPlayedText" type="RichTextLabel" parent="arena/holdoutEndStats/overview/overviewStatContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 212.0
+offset_top = 256.0
+offset_right = 462.0
+offset_bottom = 296.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = SubResource("FontVariation_j2jfr")
+theme_override_font_sizes/normal_font_size = 20
+text = "Rounds Played"
+vertical_alignment = 1
+
+[node name="roundsPlayedValue" type="RichTextLabel" parent="arena/holdoutEndStats/overview/overviewStatContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 462.0
+offset_top = 256.0
+offset_right = 662.0
+offset_bottom = 296.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = SubResource("FontVariation_bjg73")
+theme_override_font_sizes/normal_font_size = 20
+text = "99"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="timeElapsedText" type="RichTextLabel" parent="arena/holdoutEndStats/overview/overviewStatContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 212.0
+offset_top = 296.0
+offset_right = 462.0
+offset_bottom = 336.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = SubResource("FontVariation_j2jfr")
+theme_override_font_sizes/normal_font_size = 20
+text = "Time Elapsed"
+vertical_alignment = 1
+
+[node name="timeElapsedValue" type="RichTextLabel" parent="arena/holdoutEndStats/overview/overviewStatContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 462.0
+offset_top = 296.0
+offset_right = 662.0
+offset_bottom = 336.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = SubResource("FontVariation_bjg73")
+theme_override_font_sizes/normal_font_size = 20
+text = "99"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="performance" type="Node2D" parent="arena/holdoutEndStats"]
+
+[node name="heading" type="RichTextLabel" parent="arena/holdoutEndStats/performance"]
+self_modulate = Color(1, 1, 1, 0)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 212.0
+offset_top = 378.0
+offset_right = 662.0
+offset_bottom = 405.99988
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
@@ -1456,665 +2242,464 @@ theme_override_fonts/normal_font = SubResource("FontVariation_ty1g6")
 theme_override_font_sizes/normal_font_size = 20
 text = "PERFORMANCE"
 
-[node name="line" type="ColorRect" parent="arena/gameOver/performance"]
-offset_left = 215.0
-offset_top = 195.0
-offset_right = 665.0
-offset_bottom = 196.0
+[node name="line" type="ColorRect" parent="arena/holdoutEndStats/performance"]
+offset_left = 212.0
+offset_top = 413.0
+offset_right = 662.0
+offset_bottom = 414.0
+scale = Vector2(1e-05, 1)
 color = Color(1, 1, 1, 0.35686275)
 
-[node name="stat1text" type="RichTextLabel" parent="arena/gameOver/performance"]
+[node name="performanceStatContainer" type="Node2D" parent="arena/holdoutEndStats/performance"]
+modulate = Color(1, 1, 1, 0)
+
+[node name="roundWinText" type="RichTextLabel" parent="arena/holdoutEndStats/performance/performanceStatContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 215.0
-offset_top = 210.0
-offset_right = 665.0
-offset_bottom = 240.0
+offset_left = 212.0
+offset_top = 430.0
+offset_right = 317.0
+offset_bottom = 470.0
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset = Vector2(150, 25)
 theme_override_fonts/normal_font = SubResource("FontVariation_j2jfr")
 theme_override_font_sizes/normal_font_size = 20
-text = "Total force exerted"
+text = "Round Win"
+vertical_alignment = 1
 
-[node name="stat1" type="RichTextLabel" parent="arena/gameOver/performance"]
+[node name="roundWinValue" type="RichTextLabel" parent="arena/holdoutEndStats/performance/performanceStatContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 215.0
-offset_top = 210.0
-offset_right = 665.0
-offset_bottom = 240.0
+offset_left = 462.0
+offset_top = 430.0
+offset_right = 642.0
+offset_bottom = 470.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
 theme_override_fonts/normal_font = SubResource("FontVariation_bjg73")
 theme_override_font_sizes/normal_font_size = 20
-text = "**"
+text = "99"
 horizontal_alignment = 2
+vertical_alignment = 1
 
-[node name="stat2text" type="RichTextLabel" parent="arena/gameOver/performance"]
+[node name="dominanceText" type="RichTextLabel" parent="arena/holdoutEndStats/performance/performanceStatContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 215.0
-offset_top = 250.0
-offset_right = 665.0
-offset_bottom = 280.0
+offset_left = 212.0
+offset_top = 470.0
+offset_right = 347.0
+offset_bottom = 510.0
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = SubResource("FontVariation_bu4jf")
+theme_override_fonts/normal_font = SubResource("FontVariation_j2jfr")
 theme_override_font_sizes/normal_font_size = 20
-text = "Opponent force exerted"
+text = "Dominance ⓘ"
+vertical_alignment = 1
 
-[node name="stat2" type="RichTextLabel" parent="arena/gameOver/performance"]
+[node name="dominanceValue" type="RichTextLabel" parent="arena/holdoutEndStats/performance/performanceStatContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 215.0
-offset_top = 250.0
-offset_right = 665.0
-offset_bottom = 280.0
+offset_left = 462.0
+offset_top = 470.0
+offset_right = 642.0
+offset_bottom = 510.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = SubResource("FontVariation_o7ddy")
+theme_override_fonts/normal_font = SubResource("FontVariation_bjg73")
 theme_override_font_sizes/normal_font_size = 20
-text = "**"
+text = "99"
 horizontal_alignment = 2
+vertical_alignment = 1
 
-[node name="stat3text" type="RichTextLabel" parent="arena/gameOver/performance"]
+[node name="streakText" type="RichTextLabel" parent="arena/holdoutEndStats/performance/performanceStatContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 215.0
-offset_top = 290.0
-offset_right = 665.0
-offset_bottom = 320.0
+offset_left = 212.0
+offset_top = 510.0
+offset_right = 302.0
+offset_bottom = 550.0
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = SubResource("FontVariation_0loja")
+theme_override_fonts/normal_font = SubResource("FontVariation_j2jfr")
 theme_override_font_sizes/normal_font_size = 20
-text = "Rounds played"
+text = "Streak ⓘ"
+vertical_alignment = 1
 
-[node name="stat3" type="RichTextLabel" parent="arena/gameOver/performance"]
+[node name="streakValue" type="RichTextLabel" parent="arena/holdoutEndStats/performance/performanceStatContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 215.0
-offset_top = 290.0
-offset_right = 665.0
-offset_bottom = 320.0
+offset_left = 462.0
+offset_top = 510.0
+offset_right = 642.0
+offset_bottom = 550.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = SubResource("FontVariation_ids8r")
+theme_override_fonts/normal_font = SubResource("FontVariation_bjg73")
 theme_override_font_sizes/normal_font_size = 20
-text = "**"
+text = "99"
 horizontal_alignment = 2
+vertical_alignment = 1
 
-[node name="stat4text" type="RichTextLabel" parent="arena/gameOver/performance"]
+[node name="efficiencyText" type="RichTextLabel" parent="arena/holdoutEndStats/performance/performanceStatContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 215.0
-offset_top = 330.0
-offset_right = 665.0
-offset_bottom = 360.0
+offset_left = 212.0
+offset_top = 550.0
+offset_right = 339.0
+offset_bottom = 590.0
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = SubResource("FontVariation_dnhof")
+theme_override_fonts/normal_font = SubResource("FontVariation_j2jfr")
 theme_override_font_sizes/normal_font_size = 20
-text = "Time elapsed"
+text = "Efficiency ⓘ"
+vertical_alignment = 1
 
-[node name="stat4" type="RichTextLabel" parent="arena/gameOver/performance"]
+[node name="efficiencyValue" type="RichTextLabel" parent="arena/holdoutEndStats/performance/performanceStatContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 215.0
-offset_top = 330.0
-offset_right = 665.0
-offset_bottom = 360.0
+offset_left = 462.0
+offset_top = 550.0
+offset_right = 642.0
+offset_bottom = 590.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = SubResource("FontVariation_1v6qk")
+theme_override_fonts/normal_font = SubResource("FontVariation_bjg73")
 theme_override_font_sizes/normal_font_size = 20
-text = "**"
+text = "99"
 horizontal_alignment = 2
+vertical_alignment = 1
 
-[node name="stat5text" type="RichTextLabel" parent="arena/gameOver/performance"]
+[node name="underdogMasteryText" type="RichTextLabel" parent="arena/holdoutEndStats/performance/performanceStatContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 215.0
-offset_top = 370.0
-offset_right = 665.0
-offset_bottom = 400.0
+offset_left = 212.0
+offset_top = 590.0
+offset_right = 424.0
+offset_bottom = 630.0
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = SubResource("FontVariation_augu2")
+theme_override_fonts/normal_font = SubResource("FontVariation_j2jfr")
 theme_override_font_sizes/normal_font_size = 20
-text = "Momentum"
+text = "Underdog Mastery ⓘ"
+vertical_alignment = 1
 
-[node name="stat5" type="RichTextLabel" parent="arena/gameOver/performance"]
+[node name="underdogMasteryValue" type="RichTextLabel" parent="arena/holdoutEndStats/performance/performanceStatContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 215.0
-offset_top = 370.0
-offset_right = 665.0
-offset_bottom = 400.0
+offset_left = 462.0
+offset_top = 590.0
+offset_right = 642.0
+offset_bottom = 630.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = SubResource("FontVariation_tm6hj")
+theme_override_fonts/normal_font = SubResource("FontVariation_bjg73")
 theme_override_font_sizes/normal_font_size = 20
-text = "**"
+text = "99"
 horizontal_alignment = 2
+vertical_alignment = 1
 
-[node name="game" type="Node2D" parent="arena/gameOver"]
+[node name="modifierMultiplierText" type="RichTextLabel" parent="arena/holdoutEndStats/performance/performanceStatContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 212.0
+offset_top = 630.0
+offset_right = 462.0
+offset_bottom = 670.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = SubResource("FontVariation_j2jfr")
+theme_override_font_sizes/normal_font_size = 20
+text = "Modifier Multiplier"
+vertical_alignment = 1
+
+[node name="modifierMultiplierValue" type="RichTextLabel" parent="arena/holdoutEndStats/performance/performanceStatContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 462.0
+offset_top = 630.0
+offset_right = 662.0
+offset_bottom = 670.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = SubResource("FontVariation_bjg73")
+theme_override_font_sizes/normal_font_size = 20
+text = "x9.9"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="rationsIcon" type="Sprite2D" parent="arena/holdoutEndStats/performance/performanceStatContainer"]
+position = Vector2(656, 449)
+scale = Vector2(0.072, 0.072)
+texture = ExtResource("30_chjal")
+
+[node name="rationsIcon2" type="Sprite2D" parent="arena/holdoutEndStats/performance/performanceStatContainer"]
+position = Vector2(656, 489)
+scale = Vector2(0.072, 0.072)
+texture = ExtResource("30_chjal")
+
+[node name="rationsIcon3" type="Sprite2D" parent="arena/holdoutEndStats/performance/performanceStatContainer"]
+position = Vector2(656, 529)
+scale = Vector2(0.072, 0.072)
+texture = ExtResource("30_chjal")
+
+[node name="rationsIcon4" type="Sprite2D" parent="arena/holdoutEndStats/performance/performanceStatContainer"]
+position = Vector2(656, 569)
+scale = Vector2(0.072, 0.072)
+texture = ExtResource("30_chjal")
+
+[node name="rationsIcon5" type="Sprite2D" parent="arena/holdoutEndStats/performance/performanceStatContainer"]
+position = Vector2(656, 609)
+scale = Vector2(0.072, 0.072)
+texture = ExtResource("30_chjal")
+
+[node name="tooltip" type="Node2D" parent="arena/holdoutEndStats/performance"]
+unique_name_in_owner = true
 visible = false
 
-[node name="heading" type="RichTextLabel" parent="arena/gameOver/game"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 215.0
+[node name="background" type="ColorRect" parent="arena/holdoutEndStats/performance/tooltip"]
+offset_left = 450.0
+offset_top = 425.0
+offset_right = 690.0
+offset_bottom = 675.0
+color = Color(0, 0, 0, 0.9607843)
+
+[node name="divider" type="ColorRect" parent="arena/holdoutEndStats/performance/tooltip"]
+offset_left = 450.0
 offset_top = 430.0
-offset_right = 665.0
-offset_bottom = 460.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = SubResource("FontVariation_kf5aa")
-theme_override_font_sizes/normal_font_size = 20
-text = "GAME"
-
-[node name="line" type="ColorRect" parent="arena/gameOver/game"]
-offset_left = 215.0
-offset_top = 465.0
-offset_right = 665.0
-offset_bottom = 466.0
+offset_right = 451.0
+offset_bottom = 670.0
 color = Color(1, 1, 1, 0.35686275)
 
-[node name="stat1text" type="RichTextLabel" parent="arena/gameOver/game"]
+[node name="tooltipText" type="RichTextLabel" parent="arena/holdoutEndStats/performance/tooltip"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 215.0
-offset_top = 480.0
-offset_right = 665.0
-offset_bottom = 510.0
+offset_left = 485.0
+offset_top = 435.0
+offset_right = 660.0
+offset_bottom = 665.0
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = SubResource("FontVariation_t5ykj")
-theme_override_font_sizes/normal_font_size = 20
-text = "Most valuable card"
-
-[node name="stat1" type="RichTextLabel" parent="arena/gameOver/game"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 215.0
-offset_top = 480.0
-offset_right = 665.0
-offset_bottom = 510.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = SubResource("FontVariation_e755i")
-theme_override_font_sizes/normal_font_size = 20
-text = "lorem"
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_j2jfr")
+theme_override_font_sizes/normal_font_size = 18
+bbcode_enabled = true
 horizontal_alignment = 2
+vertical_alignment = 1
 
-[node name="stat2text" type="RichTextLabel" parent="arena/gameOver/game"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 215.0
-offset_top = 520.0
-offset_right = 665.0
-offset_bottom = 550.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = SubResource("FontVariation_ro3en")
-theme_override_font_sizes/normal_font_size = 20
-text = "Most played faction"
-
-[node name="stat2" type="RichTextLabel" parent="arena/gameOver/game"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 215.0
-offset_top = 520.0
-offset_right = 665.0
-offset_bottom = 550.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = SubResource("FontVariation_od4ux")
-theme_override_font_sizes/normal_font_size = 20
-text = "lorem"
-horizontal_alignment = 2
-
-[node name="stat3text" type="RichTextLabel" parent="arena/gameOver/game"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 215.0
-offset_top = 560.0
-offset_right = 665.0
-offset_bottom = 590.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = SubResource("FontVariation_xhfw6")
-theme_override_font_sizes/normal_font_size = 20
-text = "Highest damage dealt"
-
-[node name="stat3" type="RichTextLabel" parent="arena/gameOver/game"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 215.0
-offset_top = 560.0
-offset_right = 665.0
-offset_bottom = 590.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = SubResource("FontVariation_1epgm")
-theme_override_font_sizes/normal_font_size = 20
-text = "**"
-horizontal_alignment = 2
-
-[node name="stat4text" type="RichTextLabel" parent="arena/gameOver/game"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 215.0
-offset_top = 600.0
-offset_right = 665.0
-offset_bottom = 630.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = SubResource("FontVariation_152kg")
-theme_override_font_sizes/normal_font_size = 20
-text = "Round wins with weaker character"
-
-[node name="stat4" type="RichTextLabel" parent="arena/gameOver/game"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 215.0
-offset_top = 600.0
-offset_right = 665.0
-offset_bottom = 630.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = SubResource("FontVariation_r4e17")
-theme_override_font_sizes/normal_font_size = 20
-text = "**"
-horizontal_alignment = 2
-
-[node name="score" type="Node2D" parent="arena/gameOver"]
-visible = false
-
-[node name="heading" type="RichTextLabel" parent="arena/gameOver/score"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 215.0
-offset_top = 660.0
-offset_right = 665.0
-offset_bottom = 690.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = SubResource("FontVariation_y57op")
-theme_override_font_sizes/normal_font_size = 20
-text = "SCORE"
-
-[node name="line" type="ColorRect" parent="arena/gameOver/score"]
-offset_left = 215.0
-offset_top = 695.0
-offset_right = 665.0
-offset_bottom = 696.0
+[node name="indicator" type="ColorRect" parent="arena/holdoutEndStats/performance/tooltip"]
+offset_left = 435.0
+offset_top = 489.5
+offset_right = 450.0
+offset_bottom = 490.5
 color = Color(1, 1, 1, 0.35686275)
 
-[node name="stat1text" type="RichTextLabel" parent="arena/gameOver/score"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 215.0
-offset_top = 710.0
-offset_right = 665.0
-offset_bottom = 740.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = SubResource("FontVariation_mlv25")
-theme_override_font_sizes/normal_font_size = 20
-text = "Victory"
+[node name="total" type="Node2D" parent="arena/holdoutEndStats"]
 
-[node name="stat1" type="RichTextLabel" parent="arena/gameOver/score"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 215.0
-offset_top = 710.0
-offset_right = 665.0
-offset_bottom = 740.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = SubResource("FontVariation_a82wo")
-theme_override_font_sizes/normal_font_size = 20
-text = "**"
-horizontal_alignment = 2
-
-[node name="stat2text" type="RichTextLabel" parent="arena/gameOver/score"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 215.0
-offset_top = 750.0
-offset_right = 665.0
-offset_bottom = 780.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = SubResource("FontVariation_gdvew")
-theme_override_font_sizes/normal_font_size = 20
-text = "Force difference"
-
-[node name="stat2" type="RichTextLabel" parent="arena/gameOver/score"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 215.0
-offset_top = 750.0
-offset_right = 665.0
-offset_bottom = 780.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = SubResource("FontVariation_kjtvk")
-theme_override_font_sizes/normal_font_size = 20
-text = "**"
-horizontal_alignment = 2
-
-[node name="stat3text" type="RichTextLabel" parent="arena/gameOver/score"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 215.0
-offset_top = 790.0
-offset_right = 665.0
-offset_bottom = 820.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = SubResource("FontVariation_xrs0c")
-theme_override_font_sizes/normal_font_size = 20
-text = "Efficiency"
-
-[node name="stat3" type="RichTextLabel" parent="arena/gameOver/score"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 215.0
-offset_top = 790.0
-offset_right = 665.0
-offset_bottom = 820.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = SubResource("FontVariation_xljpf")
-theme_override_font_sizes/normal_font_size = 20
-text = "**"
-horizontal_alignment = 2
-
-[node name="stat4text" type="RichTextLabel" parent="arena/gameOver/score"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 215.0
-offset_top = 830.0
-offset_right = 665.0
-offset_bottom = 860.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = SubResource("FontVariation_j4bwh")
-theme_override_font_sizes/normal_font_size = 20
-text = "Underdog round wins"
-
-[node name="stat4" type="RichTextLabel" parent="arena/gameOver/score"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 215.0
-offset_top = 830.0
-offset_right = 665.0
-offset_bottom = 860.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = SubResource("FontVariation_ksmap")
-theme_override_font_sizes/normal_font_size = 20
-text = "**"
-horizontal_alignment = 2
-
-[node name="stat5text" type="RichTextLabel" parent="arena/gameOver/score"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 215.0
-offset_top = 870.0
-offset_right = 665.0
-offset_bottom = 900.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = SubResource("FontVariation_ygd8o")
-theme_override_font_sizes/normal_font_size = 20
-text = "Momentum bonus"
-
-[node name="stat5" type="RichTextLabel" parent="arena/gameOver/score"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 215.0
-offset_top = 870.0
-offset_right = 665.0
-offset_bottom = 900.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = SubResource("FontVariation_2s0kr")
-theme_override_font_sizes/normal_font_size = 20
-text = "**"
-horizontal_alignment = 2
-
-[node name="stat6text" type="RichTextLabel" parent="arena/gameOver/score"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 215.0
-offset_top = 910.0
-offset_right = 665.0
-offset_bottom = 940.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = SubResource("FontVariation_xaipn")
-theme_override_font_sizes/normal_font_size = 20
-text = "Modifier multiplier"
-
-[node name="stat6" type="RichTextLabel" parent="arena/gameOver/score"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 215.0
-offset_top = 910.0
-offset_right = 665.0
-offset_bottom = 940.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = SubResource("FontVariation_ndrjj")
-theme_override_font_sizes/normal_font_size = 20
-text = "**"
-horizontal_alignment = 2
-
-[node name="stat7text" type="RichTextLabel" parent="arena/gameOver/score"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 215.0
-offset_top = 950.0
-offset_right = 665.0
-offset_bottom = 980.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = SubResource("FontVariation_ih3m7")
-theme_override_font_sizes/normal_font_size = 20
-text = "Total score"
-
-[node name="stat7" type="RichTextLabel" parent="arena/gameOver/score"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 215.0
-offset_top = 950.0
-offset_right = 665.0
-offset_bottom = 980.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = SubResource("FontVariation_11yus")
-theme_override_font_sizes/normal_font_size = 20
-text = "*****"
-horizontal_alignment = 2
-
-[node name="line2" type="ColorRect" parent="arena/gameOver/score"]
+[node name="totalStatContainer" type="Node2D" parent="arena/holdoutEndStats/total"]
 modulate = Color(1, 1, 1, 0)
-offset_left = 585.0
-offset_top = 954.5
-offset_right = 586.0
-offset_bottom = 972.5
 
-[node name="scoreAnimationLabel" type="RichTextLabel" parent="arena/gameOver/score"]
-modulate = Color(1, 1, 1, 0)
+[node name="line" type="ColorRect" parent="arena/holdoutEndStats/total/totalStatContainer"]
+offset_left = 212.0
+offset_top = 712.0
+offset_right = 662.0
+offset_bottom = 713.0
+color = Color(1, 1, 1, 0.35686275)
+
+[node name="totalText" type="RichTextLabel" parent="arena/holdoutEndStats/total/totalStatContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 215.0
-offset_top = 950.0
-offset_right = 665.0012
-offset_bottom = 980.0
+offset_left = 212.0
+offset_top = 729.0
+offset_right = 462.0
+offset_bottom = 769.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
-theme_override_fonts/normal_font = SubResource("FontVariation_b6ruc")
+theme_override_fonts/normal_font = SubResource("FontVariation_j2jfr")
 theme_override_font_sizes/normal_font_size = 20
-text = "+99"
+text = "Total"
+vertical_alignment = 1
+
+[node name="totalValue" type="RichTextLabel" parent="arena/holdoutEndStats/total/totalStatContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 462.0
+offset_top = 729.0
+offset_right = 642.0
+offset_bottom = 769.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = SubResource("FontVariation_bjg73")
+theme_override_font_sizes/normal_font_size = 20
+text = "0"
 horizontal_alignment = 2
+vertical_alignment = 1
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="arena/gameOver/score"]
-libraries = {
-&"": SubResource("AnimationLibrary_tel4y")
-}
+[node name="rationsIcon" type="Sprite2D" parent="arena/holdoutEndStats/total/totalStatContainer"]
+position = Vector2(656, 748)
+scale = Vector2(0.072, 0.072)
+texture = ExtResource("30_chjal")
 
-[node name="ContinueButton" type="Button" parent="arena/gameOver"]
-visible = false
+[node name="mvpIcon" type="Sprite2D" parent="arena/holdoutEndStats/total"]
+self_modulate = Color(1, 1, 1, 0)
+position = Vector2(536, 794)
+scale = Vector2(0.086, 0.086)
+texture = ExtResource("31_vchkt")
+offset = Vector2(729.5, 729.5)
+
+[node name="rankIcon" type="Sprite2D" parent="arena/holdoutEndStats/total"]
+self_modulate = Color(1, 1, 1, 0)
+position = Vector2(536, 794)
+scale = Vector2(0.086, 0.086)
+texture = ExtResource("32_txyw0")
+offset = Vector2(729.5, 729.5)
+
+[node name="accoladeIcon" type="Sprite2D" parent="arena/holdoutEndStats/total"]
+self_modulate = Color(1, 1, 1, 0)
+position = Vector2(536, 794)
+scale = Vector2(0.086, 0.086)
+texture = ExtResource("32_txyw0")
+offset = Vector2(729.5, 729.5)
+
+[node name="badgeTextContainer" type="Node2D" parent="arena/holdoutEndStats/total"]
+modulate = Color(1, 1, 1, 0)
+
+[node name="mvpText" type="RichTextLabel" parent="arena/holdoutEndStats/total/badgeTextContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 223.0
+offset_top = 930.0
+offset_right = 325.0
+offset_bottom = 970.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = SubResource("FontVariation_ty1g6")
+theme_override_font_sizes/normal_font_size = 16
+text = "Most Valuable"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="rankText" type="RichTextLabel" parent="arena/holdoutEndStats/total/badgeTextContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 391.0
+offset_top = 930.0
+offset_right = 487.0
+offset_bottom = 970.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_fonts/normal_font = SubResource("FontVariation_ty1g6")
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+text = "99 [img width=10]res://assets/ui/RationsIconSlim.png[/img] to Rank S"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="accoladeText" type="RichTextLabel" parent="arena/holdoutEndStats/total/badgeTextContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 543.0
+offset_top = 930.0
+offset_right = 655.0
+offset_bottom = 970.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/normal_font = SubResource("FontVariation_ty1g6")
+theme_override_font_sizes/normal_font_size = 16
+text = "Analysis Paralysis"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="badgeOutlineMvp" type="Sprite2D" parent="arena/holdoutEndStats/total"]
+self_modulate = Color(1, 1, 1, 0)
+position = Vector2(598.5, 857)
+scale = Vector2(0.086, 0.086)
+texture = ExtResource("33_txyw0")
+
+[node name="badgeOutlineRank" type="Sprite2D" parent="arena/holdoutEndStats/total"]
+self_modulate = Color(1, 1, 1, 0)
+position = Vector2(598.5, 857)
+scale = Vector2(0.086, 0.086)
+texture = ExtResource("33_txyw0")
+
+[node name="badgeOutlineAccolade" type="Sprite2D" parent="arena/holdoutEndStats/total"]
+self_modulate = Color(1, 1, 1, 0)
+position = Vector2(598.5, 857)
+scale = Vector2(0.086, 0.086)
+texture = ExtResource("33_txyw0")
+
+[node name="ContinueButton" type="Button" parent="arena/holdoutEndStats"]
+unique_name_in_owner = true
+self_modulate = Color(1, 1, 1, 0)
 z_index = 201
 offset_left = 770.0
-offset_top = 930.0
-offset_right = 875.0
-offset_bottom = 960.0
+offset_top = 700.0
+offset_right = 882.0
+offset_bottom = 730.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
@@ -2128,13 +2713,13 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_jkv2x")
 text = "CONTINUE"
 alignment = 0
 
-[node name="ReplayButton" type="Button" parent="arena/gameOver"]
-visible = false
+[node name="ReplayButton" type="Button" parent="arena/holdoutEndStats"]
+self_modulate = Color(1, 1, 1, 0)
 z_index = 201
 offset_left = 770.0
-offset_top = 790.0
-offset_right = 988.0
-offset_bottom = 820.0
+offset_top = 770.0
+offset_right = 1004.0
+offset_bottom = 800.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
@@ -2147,14 +2732,28 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_a8y0u")
 theme_override_styles/focus = SubResource("StyleBoxFlat_y6deb")
 text = "RESTART ENCOUNTER"
 alignment = 0
+script = ExtResource("34_vc5cj")
 
-[node name="NewRunButton" type="Button" parent="arena/gameOver"]
+[node name="HoldProgress" type="TextureProgressBar" parent="arena/holdoutEndStats/ReplayButton"]
 visible = false
+layout_mode = 0
+offset_left = 264.0
+offset_right = 294.0
+offset_bottom = 30.0
+scale = Vector2(0.25, 0.25)
+mouse_filter = 2
+max_value = 1.0
+step = 0.01
+fill_mode = 4
+texture_progress = ExtResource("35_nvyfr")
+
+[node name="NewRunButton" type="Button" parent="arena/holdoutEndStats"]
+self_modulate = Color(1, 1, 1, 0)
 z_index = 201
 offset_left = 770.0
-offset_top = 790.0
-offset_right = 988.0
-offset_bottom = 820.0
+offset_top = 840.0
+offset_right = 870.0
+offset_bottom = 870.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
@@ -2167,14 +2766,28 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_a8y0u")
 theme_override_styles/focus = SubResource("StyleBoxFlat_y6deb")
 text = "NEW RUN"
 alignment = 0
+script = ExtResource("34_vc5cj")
 
-[node name="MainMenuButton" type="Button" parent="arena/gameOver"]
+[node name="HoldProgress" type="TextureProgressBar" parent="arena/holdoutEndStats/NewRunButton"]
 visible = false
+layout_mode = 0
+offset_left = 130.0
+offset_right = 250.0
+offset_bottom = 120.0
+scale = Vector2(0.25, 0.25)
+mouse_filter = 2
+max_value = 1.0
+step = 0.01
+fill_mode = 4
+texture_progress = ExtResource("35_nvyfr")
+
+[node name="MainMenuButton" type="Button" parent="arena/holdoutEndStats"]
+self_modulate = Color(1, 1, 1, 0)
 z_index = 201
 offset_left = 770.0
-offset_top = 860.0
-offset_right = 877.0
-offset_bottom = 890.0
+offset_top = 910.0
+offset_right = 894.0
+offset_bottom = 940.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
@@ -2187,8 +2800,124 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_a8y0u")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_jkv2x")
 text = "MAIN MENU"
 alignment = 0
+script = ExtResource("34_vc5cj")
+
+[node name="HoldProgress" type="TextureProgressBar" parent="arena/holdoutEndStats/MainMenuButton"]
+visible = false
+layout_mode = 0
+offset_left = 154.0
+offset_right = 274.0
+offset_bottom = 120.0
+scale = Vector2(0.25, 0.25)
+mouse_filter = 2
+max_value = 1.0
+step = 0.01
+fill_mode = 4
+texture_progress = ExtResource("35_nvyfr")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="arena/holdoutEndStats"]
+unique_name_in_owner = true
+libraries = {
+&"": SubResource("AnimationLibrary_vc5cj")
+}
+
+[node name="tutorialBox" type="Control" parent="arena"]
+z_index = 399
+layout_mode = 3
+anchors_preset = 0
+offset_left = 225.0
+offset_top = 250.0
+offset_right = 525.0
+offset_bottom = 750.0
+scale = Vector2(1e-05, 1e-05)
+pivot_offset = Vector2(150, 0)
+mouse_filter = 2
+
+[node name="Box" type="Panel" parent="arena/tutorialBox"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 300.0
+offset_bottom = 470.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_chjal")
+
+[node name="number" type="RichTextLabel" parent="arena/tutorialBox"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -110.0
+offset_top = -225.0
+offset_right = -50.0
+offset_bottom = -175.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/normal_font = SubResource("FontVariation_ty1g6")
+theme_override_font_sizes/normal_font_size = 24
+text = "6/6"
+vertical_alignment = 1
+
+[node name="heading" type="RichTextLabel" parent="arena/tutorialBox"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -225.0
+offset_right = 110.0
+offset_bottom = -175.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/normal_font = SubResource("FontVariation_ty1g6")
+theme_override_font_sizes/normal_font_size = 20
+text = "CHARACTER CARDS"
+vertical_alignment = 1
+
+[node name="line" type="ColorRect" parent="arena/tutorialBox"]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 90.0
+offset_right = 260.0
+offset_bottom = 91.0
+mouse_filter = 2
+color = Color(1, 1, 1, 0.35686275)
+
+[node name="instruction" type="RichTextLabel" parent="arena/tutorialBox"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -110.0
+offset_top = -135.0
+offset_right = 110.0
+offset_bottom = 230.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_j2jfr")
+theme_override_font_sizes/normal_font_size = 20
+text = "The combination of both supports and perks can swing a losing battle into a winning one.
+
+Use both wisely to deal more, or take less damage.
+
+Play a matching support to deal additional damage."
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="arena/tutorialBox"]
+libraries = {
+&"": SubResource("AnimationLibrary_vchkt")
+}
 
 [node name="pause" type="Node2D" parent="arena"]
+unique_name_in_owner = true
 visible = false
 z_index = 601
 script = ExtResource("30_fv21b")
@@ -2196,7 +2925,7 @@ script = ExtResource("30_fv21b")
 [node name="overlay" type="ColorRect" parent="arena/pause"]
 offset_right = 1920.0
 offset_bottom = 1080.0
-color = Color(0, 0, 0, 0.9019608)
+color = Color(0, 0, 0, 1)
 
 [node name="mainButtonContainer" type="Control" parent="arena/pause"]
 layout_mode = 3
@@ -2214,9 +2943,9 @@ grow_vertical = 2
 [node name="Heading" type="RichTextLabel" parent="arena/pause/mainButtonContainer"]
 layout_mode = 0
 offset_left = 120.0
-offset_top = 110.0
+offset_top = 80.0
 offset_right = 320.0
-offset_bottom = 165.0
+offset_bottom = 135.0
 pivot_offset = Vector2(150, 25)
 theme_override_colors/default_color = Color(1, 1, 1, 1)
 theme_override_fonts/normal_font = SubResource("FontVariation_bfu41")
@@ -2228,9 +2957,9 @@ vertical_alignment = 1
 z_index = 201
 layout_mode = 0
 offset_left = 140.0
-offset_top = 160.0
-offset_right = 249.0
-offset_bottom = 215.0
+offset_top = 130.0
+offset_right = 255.0
+offset_bottom = 185.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
@@ -2248,9 +2977,9 @@ alignment = 0
 z_index = 201
 layout_mode = 0
 offset_left = 140.0
-offset_top = 210.0
-offset_right = 260.0
-offset_bottom = 265.0
+offset_top = 180.0
+offset_right = 267.0
+offset_bottom = 235.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
@@ -2268,9 +2997,9 @@ alignment = 0
 z_index = 201
 layout_mode = 0
 offset_left = 140.0
-offset_top = 260.0
-offset_right = 401.0
-offset_bottom = 315.0
+offset_top = 230.0
+offset_right = 418.0
+offset_bottom = 285.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
@@ -2283,14 +3012,29 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_qkpxi")
 theme_override_styles/focus = SubResource("StyleBoxFlat_5q0nq")
 text = "RESTART ENCOUNTER"
 alignment = 0
+script = ExtResource("34_vc5cj")
+
+[node name="HoldProgress" type="TextureProgressBar" parent="arena/pause/mainButtonContainer/RestartButton"]
+visible = false
+layout_mode = 0
+offset_left = 308.0
+offset_top = 12.0
+offset_right = 428.0
+offset_bottom = 132.0
+scale = Vector2(0.25, 0.25)
+mouse_filter = 2
+max_value = 1.0
+step = 0.01
+fill_mode = 4
+texture_progress = ExtResource("35_nvyfr")
 
 [node name="MainMenuButton" type="Button" parent="arena/pause/mainButtonContainer"]
 z_index = 201
 layout_mode = 0
 offset_left = 140.0
-offset_top = 310.0
-offset_right = 379.0
-offset_bottom = 365.0
+offset_top = 280.0
+offset_right = 396.0
+offset_bottom = 335.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
@@ -2303,295 +3047,42 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_qkpxi")
 theme_override_styles/focus = SubResource("StyleBoxFlat_5q0nq")
 text = "QUIT TO MAIN MENU"
 alignment = 0
+script = ExtResource("34_vc5cj")
 
-[node name="OptionsButtonContainer" type="Control" parent="arena/pause"]
-process_mode = 4
+[node name="HoldProgress" type="TextureProgressBar" parent="arena/pause/mainButtonContainer/MainMenuButton"]
 visible = false
-layout_mode = 3
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_top = 270.0
-offset_right = 1920.0
-offset_bottom = 810.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Heading" type="RichTextLabel" parent="arena/pause/OptionsButtonContainer"]
-layout_mode = 1
-offset_left = 120.0
-offset_top = 110.0
-offset_right = 320.0
-offset_bottom = 165.0
-pivot_offset = Vector2(150, 25)
-theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_fonts/normal_font = SubResource("FontVariation_4ue30")
-theme_override_font_sizes/normal_font_size = 24
-text = "OPTIONS"
-vertical_alignment = 1
-
-[node name="DisplayButton" type="Button" parent="arena/pause/OptionsButtonContainer"]
-z_index = 201
 layout_mode = 0
-offset_left = 140.0
-offset_top = 160.0
-offset_right = 243.0
-offset_bottom = 215.0
-theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
-theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = SubResource("FontVariation_k42av")
-theme_override_font_sizes/font_size = 24
-theme_override_styles/normal = SubResource("StyleBoxFlat_dgi5k")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_j8jky")
-theme_override_styles/hover = SubResource("StyleBoxFlat_kmb1v")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_fuf3a")
-theme_override_styles/focus = SubResource("StyleBoxFlat_pibwh")
-text = "DISPLAY"
-alignment = 0
+offset_left = 286.0
+offset_top = 12.0
+offset_right = 406.0
+offset_bottom = 132.0
+scale = Vector2(0.25, 0.25)
+mouse_filter = 2
+max_value = 1.0
+step = 0.01
+fill_mode = 4
+texture_progress = ExtResource("35_nvyfr")
 
-[node name="AudioButton" type="Button" parent="arena/pause/OptionsButtonContainer"]
-z_index = 201
-layout_mode = 0
-offset_left = 140.0
-offset_top = 210.0
-offset_right = 218.0
-offset_bottom = 265.0
-theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
-theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = SubResource("FontVariation_gr8w0")
-theme_override_font_sizes/font_size = 24
-theme_override_styles/normal = SubResource("StyleBoxFlat_dgi5k")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_j8jky")
-theme_override_styles/hover = SubResource("StyleBoxFlat_kmb1v")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_fuf3a")
-theme_override_styles/focus = SubResource("StyleBoxFlat_pibwh")
-text = "AUDIO"
-alignment = 0
+[node name="Temporary Lock Icons" type="Control" parent="arena/pause/mainButtonContainer"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
 
-[node name="AccessibilityButton" type="Button" parent="arena/pause/OptionsButtonContainer"]
-z_index = 201
-layout_mode = 0
-offset_left = 140.0
-offset_top = 260.0
-offset_right = 322.0
-offset_bottom = 315.0
-theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
-theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = SubResource("FontVariation_673bd")
-theme_override_font_sizes/font_size = 24
-theme_override_styles/normal = SubResource("StyleBoxFlat_dgi5k")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_j8jky")
-theme_override_styles/hover = SubResource("StyleBoxFlat_kmb1v")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_fuf3a")
-theme_override_styles/focus = SubResource("StyleBoxFlat_pibwh")
-text = "ACCESSIBILITY"
-alignment = 0
+[node name="Lock1" type="Sprite2D" parent="arena/pause/mainButtonContainer/Temporary Lock Icons"]
+modulate = Color(0.29803923, 0.29803923, 0.29803923, 1)
+position = Vector2(292, 205)
+scale = Vector2(0.06, 0.06)
+texture = ExtResource("40_bjg73")
 
-[node name="restartConfirmation" type="Control" parent="arena/pause"]
+[node name="OptionsMenu" parent="arena/pause" instance=ExtResource("38_vc5cj")]
 visible = false
-layout_mode = 3
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_top = 270.0
-offset_right = 1920.0
-offset_bottom = 810.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="overlay" type="ColorRect" parent="arena/pause/restartConfirmation"]
-layout_mode = 0
-offset_top = -270.0
-offset_right = 1920.0
-offset_bottom = 810.0
-color = Color(0, 0, 0, 0.39215687)
-
-[node name="Heading" type="RichTextLabel" parent="arena/pause/restartConfirmation"]
-layout_mode = 0
-offset_left = 400.0
-offset_top = 110.0
-offset_right = 700.0
-offset_bottom = 165.0
-pivot_offset = Vector2(150, 25)
-theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_fonts/normal_font = SubResource("FontVariation_akjxb")
-theme_override_font_sizes/normal_font_size = 24
-text = "RESTART ENCOUNTER"
-vertical_alignment = 1
-
-[node name="warningText" type="RichTextLabel" parent="arena/pause/restartConfirmation"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -540.0
-offset_top = -90.0
-offset_right = 140.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(150, 25)
-theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
-theme_override_fonts/normal_font = SubResource("FontVariation_vrx01")
-theme_override_font_sizes/normal_font_size = 24
-text = "Restart the current encounter? 
-All earned progress from previous encounters has been saved."
-
-[node name="YesButton" type="Button" parent="arena/pause/restartConfirmation"]
-z_index = 201
-layout_mode = 0
-offset_left = 1100.0
-offset_top = 250.0
-offset_right = 1148.0
-offset_bottom = 305.0
-theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
-theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = SubResource("FontVariation_1uevf")
-theme_override_font_sizes/font_size = 24
-theme_override_styles/normal = SubResource("StyleBoxFlat_yq6so")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_fv21b")
-theme_override_styles/hover = SubResource("StyleBoxFlat_tel4y")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_qkpxi")
-theme_override_styles/focus = SubResource("StyleBoxFlat_5q0nq")
-text = "YES"
-alignment = 0
-
-[node name="NoButton" type="Button" parent="arena/pause/restartConfirmation"]
-z_index = 201
-layout_mode = 0
-offset_left = 1200.0
-offset_top = 250.0
-offset_right = 1248.0
-offset_bottom = 305.0
-theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
-theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = SubResource("FontVariation_tc087")
-theme_override_font_sizes/font_size = 24
-theme_override_styles/normal = SubResource("StyleBoxFlat_yq6so")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_fv21b")
-theme_override_styles/hover = SubResource("StyleBoxFlat_tel4y")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_qkpxi")
-theme_override_styles/focus = SubResource("StyleBoxFlat_5q0nq")
-text = "NO"
-alignment = 0
-
-[node name="mainMenuConfirmation" type="Control" parent="arena/pause"]
-visible = false
-layout_mode = 3
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_top = 270.0
-offset_right = 1920.0
-offset_bottom = 810.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="overlay" type="ColorRect" parent="arena/pause/mainMenuConfirmation"]
-layout_mode = 0
-offset_top = -270.0
-offset_right = 1920.0
-offset_bottom = 810.0
-color = Color(0, 0, 0, 0.39215687)
-
-[node name="Heading" type="RichTextLabel" parent="arena/pause/mainMenuConfirmation"]
-layout_mode = 0
-offset_left = 400.0
-offset_top = 110.0
-offset_right = 700.0
-offset_bottom = 165.0
-pivot_offset = Vector2(150, 25)
-theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_fonts/normal_font = SubResource("FontVariation_73205")
-theme_override_font_sizes/normal_font_size = 24
-text = "QUIT TO MAIN MENU"
-vertical_alignment = 1
-
-[node name="warningText" type="RichTextLabel" parent="arena/pause/mainMenuConfirmation"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -540.0
-offset_top = -90.0
-offset_right = 140.0
-offset_bottom = -20.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(150, 25)
-theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
-theme_override_fonts/normal_font = SubResource("FontVariation_0tljd")
-theme_override_font_sizes/normal_font_size = 24
-text = "Quit to the main menu? 
-All progress has been saved."
-
-[node name="YesButton" type="Button" parent="arena/pause/mainMenuConfirmation"]
-z_index = 201
-layout_mode = 0
-offset_left = 750.0
-offset_top = 250.0
-offset_right = 798.0
-offset_bottom = 305.0
-theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
-theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = SubResource("FontVariation_mgpkq")
-theme_override_font_sizes/font_size = 24
-theme_override_styles/normal = SubResource("StyleBoxFlat_yq6so")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_fv21b")
-theme_override_styles/hover = SubResource("StyleBoxFlat_tel4y")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_qkpxi")
-theme_override_styles/focus = SubResource("StyleBoxFlat_5q0nq")
-text = "YES"
-alignment = 0
-
-[node name="NoButton" type="Button" parent="arena/pause/mainMenuConfirmation"]
-z_index = 201
-layout_mode = 0
-offset_left = 850.0
-offset_top = 250.0
-offset_right = 898.0
-offset_bottom = 305.0
-theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
-theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = SubResource("FontVariation_xmrkg")
-theme_override_font_sizes/font_size = 24
-theme_override_styles/normal = SubResource("StyleBoxFlat_yq6so")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_fv21b")
-theme_override_styles/hover = SubResource("StyleBoxFlat_tel4y")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_qkpxi")
-theme_override_styles/focus = SubResource("StyleBoxFlat_5q0nq")
-text = "NO"
-alignment = 0
 
 [node name="modifier" type="Node2D" parent="arena"]
 unique_name_in_owner = true
 visible = false
 z_index = 200
 script = ExtResource("33_j8jky")
-
-[node name="SlotSpin" type="AudioStreamPlayer2D" parent="arena/modifier"]
-stream = ExtResource("36_fuf3a")
-volume_db = -3.0
-
-[node name="SlotStop" type="AudioStreamPlayer2D" parent="arena/modifier"]
-stream = ExtResource("37_pibwh")
-max_polyphony = 3
 
 [node name="overlay" type="ColorRect" parent="arena/modifier"]
 offset_right = 1920.0
@@ -2780,10 +3271,6 @@ libraries = {
 &"": SubResource("AnimationLibrary_c6pm6")
 }
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="arena/modifier/Slot 1"]
-stream = ExtResource("37_pibwh")
-volume_db = -10.0
-
 [node name="Slot 2" type="Node2D" parent="arena/modifier"]
 z_index = 5
 position = Vector2(960, 540)
@@ -2930,9 +3417,6 @@ shape = SubResource("RectangleShape2D_j8jky")
 libraries = {
 &"": SubResource("AnimationLibrary_c6pm6")
 }
-
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="arena/modifier/Slot 2"]
-stream = ExtResource("37_pibwh")
 
 [node name="Slot 3" type="Node2D" parent="arena/modifier"]
 z_index = 1
@@ -3081,10 +3565,6 @@ libraries = {
 &"": SubResource("AnimationLibrary_c6pm6")
 }
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="arena/modifier/Slot 3"]
-stream = ExtResource("37_pibwh")
-volume_db = -10.0
-
 [node name="ConfirmButton" type="Button" parent="arena/modifier"]
 z_index = 201
 offset_left = 913.0
@@ -3109,9 +3589,93 @@ libraries = {
 &"": SubResource("AnimationLibrary_5poiv")
 }
 
+[node name="saveFileCorrupt" type="Node2D" parent="arena"]
+unique_name_in_owner = true
+visible = false
+z_index = 500
+
+[node name="overlay" type="ColorRect" parent="arena/saveFileCorrupt"]
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.92156863)
+
+[node name="title" type="RichTextLabel" parent="arena/saveFileCorrupt"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 212.0
+offset_top = 337.0
+offset_right = 562.0
+offset_bottom = 387.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/normal_font = SubResource("FontVariation_vc5cj")
+theme_override_font_sizes/normal_font_size = 32
+text = "CORRUPTED DATA"
+
+[node name="flavorText" type="RichTextLabel" parent="arena/saveFileCorrupt"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 212.0
+offset_top = 397.0
+offset_right = 832.0
+offset_bottom = 437.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_j2jfr")
+theme_override_font_sizes/normal_font_size = 20
+text = "Unable to read save data. Your previous session has been lost."
+vertical_alignment = 1
+
+[node name="CorruptStartNewRunButton" type="Button" parent="arena/saveFileCorrupt"]
+z_index = 201
+offset_left = 212.0
+offset_top = 475.0
+offset_right = 386.0
+offset_bottom = 505.0
+theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = SubResource("FontVariation_155or")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_a8y0u")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_jbj1t")
+theme_override_styles/hover = SubResource("StyleBoxFlat_jkv2x")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_a8y0u")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_jkv2x")
+text = "START NEW RUN"
+alignment = 0
+
+[node name="CorruptMainMenuButton" type="Button" parent="arena/saveFileCorrupt"]
+z_index = 201
+offset_left = 212.0
+offset_top = 527.0
+offset_right = 336.0
+offset_bottom = 557.0
+theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = SubResource("FontVariation_155or")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_a8y0u")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_jbj1t")
+theme_override_styles/hover = SubResource("StyleBoxFlat_jkv2x")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_a8y0u")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_jkv2x")
+text = "MAIN MENU"
+alignment = 0
+
 [node name="pauseIcon" type="Node2D" parent="."]
 unique_name_in_owner = true
-z_index = 202
+z_index = 700
 
 [node name="image" type="Sprite2D" parent="pauseIcon"]
 position = Vector2(1800, 1040)
@@ -3138,6 +3702,37 @@ fit_content = true
 autowrap_mode = 0
 vertical_alignment = 1
 
+[node name="holdIcon" type="Node2D" parent="."]
+unique_name_in_owner = true
+visible = false
+z_index = 700
+
+[node name="image" type="Sprite2D" parent="holdIcon"]
+position = Vector2(1675, 1040)
+scale = Vector2(-0.05, 0.05)
+texture = ExtResource("31_tel4y")
+
+[node name="text" type="RichTextLabel" parent="holdIcon"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1700.0
+offset_top = 1025.0
+offset_right = 1753.0
+offset_bottom = 1055.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_akjxb")
+theme_override_font_sizes/normal_font_size = 16
+text = "HOLD"
+fit_content = true
+autowrap_mode = 0
+vertical_alignment = 1
+
 [node name="EndTurnButton" type="Button" parent="."]
 unique_name_in_owner = true
 visible = false
@@ -3159,17 +3754,38 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_jkv2x")
 text = "END TURN"
 
 [connection signal="timeout" from="inputManager/Timer" to="inputManager" method="_on_timer_timeout"]
-[connection signal="pressed" from="arena/gameOver/ContinueButton" to="arena" method="_on_continue_button_pressed"]
-[connection signal="pressed" from="arena/gameOver/ReplayButton" to="arena" method="_on_replay_button_pressed"]
-[connection signal="pressed" from="arena/gameOver/NewRunButton" to="arena" method="_on_new_run_button_pressed"]
-[connection signal="pressed" from="arena/gameOver/MainMenuButton" to="arena" method="_on_main_menu_button_pressed"]
+[connection signal="input_event" from="characterDeck/Area2D" to="characterDeck" method="_on_mouse_pressed"]
+[connection signal="mouse_entered" from="characterDeck/Area2D" to="characterDeck" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="characterDeck/Area2D" to="characterDeck" method="_on_mouse_exited"]
+[connection signal="input_event" from="supportDeck/Area2D" to="supportDeck" method="_on_mouse_pressed"]
+[connection signal="mouse_entered" from="supportDeck/Area2D" to="supportDeck" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="supportDeck/Area2D" to="supportDeck" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="arena/holdoutEndStats/performance/performanceStatContainer/dominanceText" to="arena/holdoutEndStats" method="_on_dominance_text_mouse_entered"]
+[connection signal="mouse_exited" from="arena/holdoutEndStats/performance/performanceStatContainer/dominanceText" to="arena/holdoutEndStats" method="_on_dominance_text_mouse_exited"]
+[connection signal="mouse_entered" from="arena/holdoutEndStats/performance/performanceStatContainer/streakText" to="arena/holdoutEndStats" method="_on_streak_text_mouse_entered"]
+[connection signal="mouse_exited" from="arena/holdoutEndStats/performance/performanceStatContainer/streakText" to="arena/holdoutEndStats" method="_on_streak_text_mouse_exited"]
+[connection signal="mouse_entered" from="arena/holdoutEndStats/performance/performanceStatContainer/efficiencyText" to="arena/holdoutEndStats" method="_on_efficiency_text_mouse_entered"]
+[connection signal="mouse_exited" from="arena/holdoutEndStats/performance/performanceStatContainer/efficiencyText" to="arena/holdoutEndStats" method="_on_efficiency_text_mouse_exited"]
+[connection signal="mouse_entered" from="arena/holdoutEndStats/performance/performanceStatContainer/underdogMasteryText" to="arena/holdoutEndStats" method="_on_underdog_mastery_text_mouse_entered"]
+[connection signal="mouse_exited" from="arena/holdoutEndStats/performance/performanceStatContainer/underdogMasteryText" to="arena/holdoutEndStats" method="_on_underdog_mastery_text_mouse_exited"]
+[connection signal="pressed" from="arena/holdoutEndStats/ContinueButton" to="arena" method="_on_continue_button_pressed"]
+[connection signal="hold_complete" from="arena/holdoutEndStats/ReplayButton" to="arena" method="_on_replay_button_hold_complete"]
+[connection signal="mouse_entered" from="arena/holdoutEndStats/ReplayButton" to="arena" method="_on_replay_button_mouse_entered"]
+[connection signal="mouse_exited" from="arena/holdoutEndStats/ReplayButton" to="arena" method="_on_replay_button_mouse_exited"]
+[connection signal="hold_complete" from="arena/holdoutEndStats/NewRunButton" to="arena" method="_on_new_run_button_hold_complete"]
+[connection signal="mouse_entered" from="arena/holdoutEndStats/NewRunButton" to="arena" method="_on_new_run_button_mouse_entered"]
+[connection signal="mouse_exited" from="arena/holdoutEndStats/NewRunButton" to="arena" method="_on_new_run_button_mouse_exited"]
+[connection signal="hold_complete" from="arena/holdoutEndStats/MainMenuButton" to="arena" method="_on_main_menu_button_hold_complete"]
+[connection signal="mouse_entered" from="arena/holdoutEndStats/MainMenuButton" to="arena" method="_on_main_menu_button_mouse_entered"]
+[connection signal="mouse_exited" from="arena/holdoutEndStats/MainMenuButton" to="arena" method="_on_main_menu_button_mouse_exited"]
 [connection signal="pressed" from="arena/pause/mainButtonContainer/OptionsButton" to="arena/pause" method="_on_options_button_pressed"]
-[connection signal="pressed" from="arena/pause/mainButtonContainer/RestartButton" to="arena/pause" method="_on_restart_button_pressed"]
-[connection signal="pressed" from="arena/pause/mainButtonContainer/MainMenuButton" to="arena/pause" method="_on_main_menu_button_pressed"]
-[connection signal="pressed" from="arena/pause/restartConfirmation/YesButton" to="arena/pause" method="_on_restart_yes_button_pressed"]
-[connection signal="pressed" from="arena/pause/restartConfirmation/NoButton" to="arena/pause" method="_on_restart_no_button_pressed"]
-[connection signal="pressed" from="arena/pause/mainMenuConfirmation/YesButton" to="arena/pause" method="_on_main_menu_yes_button_pressed"]
-[connection signal="pressed" from="arena/pause/mainMenuConfirmation/NoButton" to="arena/pause" method="_on_main_menu_no_button_pressed"]
+[connection signal="pressed" from="arena/pause/mainButtonContainer/TutorialButton" to="arena/pause" method="_on_tutorial_button_pressed"]
+[connection signal="hold_complete" from="arena/pause/mainButtonContainer/RestartButton" to="arena/pause" method="_on_restart_button_hold_complete"]
+[connection signal="mouse_entered" from="arena/pause/mainButtonContainer/RestartButton" to="arena/pause" method="_on_restart_button_mouse_entered"]
+[connection signal="mouse_exited" from="arena/pause/mainButtonContainer/RestartButton" to="arena/pause" method="_on_restart_button_mouse_exited"]
+[connection signal="hold_complete" from="arena/pause/mainButtonContainer/MainMenuButton" to="arena/pause" method="_on_main_menu_button_hold_complete"]
+[connection signal="mouse_entered" from="arena/pause/mainButtonContainer/MainMenuButton" to="arena/pause" method="_on_main_menu_button_mouse_entered"]
+[connection signal="mouse_exited" from="arena/pause/mainButtonContainer/MainMenuButton" to="arena/pause" method="_on_main_menu_button_mouse_exited"]
 [connection signal="input_event" from="arena/modifier/Slot 1/Area2D" to="arena/modifier" method="_on_slot1_area_2d_input_event"]
 [connection signal="mouse_entered" from="arena/modifier/Slot 1/Area2D" to="arena/modifier" method="_on_slot1_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="arena/modifier/Slot 1/Area2D" to="arena/modifier" method="_on_slot1_area_2d_mouse_exited"]
@@ -3181,4 +3797,6 @@ text = "END TURN"
 [connection signal="mouse_exited" from="arena/modifier/Slot 3/Area2D" to="arena/modifier" method="_on_slot3_area_2d_mouse_exited"]
 [connection signal="mouse_entered" from="arena/modifier/ConfirmButton" to="arena/modifier" method="_on_confirm_button_mouse_entered"]
 [connection signal="pressed" from="arena/modifier/ConfirmButton" to="arena/modifier" method="_on_confirm_button_pressed"]
+[connection signal="pressed" from="arena/saveFileCorrupt/CorruptStartNewRunButton" to="battleManager" method="_on_corrupt_start_new_run_button_pressed"]
+[connection signal="pressed" from="arena/saveFileCorrupt/CorruptMainMenuButton" to="arena/pause" method="_on_corrupt_main_menu_button_pressed"]
 [connection signal="pressed" from="EndTurnButton" to="battleManager" method="_on_end_turn_button_pressed"]

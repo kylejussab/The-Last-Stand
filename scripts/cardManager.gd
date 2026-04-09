@@ -12,8 +12,6 @@ var screenSize: Vector2
 var hoveredCard: Node2D = null
 var playerHandReference: Node
 
-var canPlayHoverSound: bool = true
-
 @onready var battleManager = %battleManager
 
 func _ready() -> void:
@@ -31,16 +29,19 @@ func _process(_delta: float) -> void:
 func start_drag(card):
 	if not "cardSlot" in card:
 		return
+		
+	if battleManager.get("isTutorialActive") == true and "canBePlayed" in card and not card.canBePlayed:
+		return
 	
 	if !battleManager.lockPlayerInput and card.cardSlot == null:
 		draggedCard = card
-		draggedCard.play_draw_sound()
+		AudioManager.play_random_card_draw()
 		card.scale = Vector2(1, 1)
 		card.z_index += 50
 
 func finish_drag():
 	draggedCard.scale = Vector2(1.05, 1.05)
-	draggedCard.play_draw_sound()
+	AudioManager.play_random_card_draw()
 	
 	var cardSlot = get_card_slot()
 	
@@ -66,7 +67,7 @@ func finish_drag():
 				
 				# Ensure its not highlighted
 				draggedCard.scale = Vector2(1, 1)
-				draggedCard.get_node("AnimationPlayer").play("hideDescription")
+				draggedCard.get_node("AnimationPlayer").play_backwards("showPerkDescription")
 				var endTime = draggedCard.get_node("AnimationPlayer").current_animation_length
 				draggedCard.get_node("AnimationPlayer").seek(endTime, true)
 				
@@ -110,8 +111,15 @@ func on_card_hover_enter(card):
 	
 	var isCardDisabled: bool = false
 	
-	if "type" in card and card.type == "Character" and card.canBePlayed == false:
-		isCardDisabled = true
+	#if "type" in card and card.type == "Character" and card.canBePlayed == false:
+		#isCardDisabled = true
+		
+	if battleManager.get("isTutorialActive") == true:
+		if "canBePlayed" in card and card.canBePlayed == false:
+			isCardDisabled = true
+	else:
+		if "type" in card and card.type == "Character" and card.canBePlayed == false:
+			isCardDisabled = true
 
 	if isCardDisabled:
 		if hoveredCard:
@@ -147,14 +155,21 @@ func highlight_card(card, hovered: bool):
 		if animationPlayer.current_animation == "showPerk" or animationPlayer.current_animation == "cardFlip":
 			return
 	
-	_play_card_hover_sound()
+	AudioManager.play_card_hover()
+	
+	var canShowPerk: bool = false
+	if card.perk != null:
+		canShowPerk = true
+		
+		if battleManager.get("isTutorialActive") == true and battleManager.get("arePerksActiveInTutorial") == false:
+			canShowPerk = false
 	
 	if hovered:
 		if !AccessibilityData.animationsDisabled:
 			card.scale = Vector2(1.35, 1.35)
 		
-		if card.perk and !draggedCard:
-			card.get_node("AnimationPlayer").play("showDescription")
+		if canShowPerk and !draggedCard:
+			card.get_node("AnimationPlayer").play("showPerkDescription")
 			
 			if AccessibilityData.animationsDisabled:
 				var endTime = card.get_node("AnimationPlayer").current_animation_length
@@ -162,9 +177,9 @@ func highlight_card(card, hovered: bool):
 	else:
 		if !AccessibilityData.animationsDisabled:
 			card.scale = Vector2(1, 1)
-			
-		if card.perk:
-			card.get_node("AnimationPlayer").play("hideDescription")
+		
+		if canShowPerk:
+			card.get_node("AnimationPlayer").play_backwards("showPerkDescription")
 			
 			if AccessibilityData.animationsDisabled:
 				var endTime = card.get_node("AnimationPlayer").current_animation_length
@@ -190,6 +205,9 @@ func on_left_click_released():
 
 # Double Click functionality
 func auto_play_card(card):
+	if not "type" in card:
+		return
+	
 	if !$"../battleManager".lockPlayerInput:
 		var characterSlot = $"../cardSlots/cardSlotCharacter"
 		var supportSlot = $"../cardSlots/cardSlotSupport"
@@ -203,13 +221,12 @@ func move_card_on_double_click(card, cardSlot):
 	if !cardSlot.occupied:
 		var tween = get_tree().create_tween()
 		tween.tween_property(card, "position", cardSlot.position, 0.1)
-		tween.finished.connect(func(): card.play_draw_sound())
+		tween.finished.connect(AudioManager.play_random_card_draw)
 		
 		playerHandReference.remove_card_from_hand(card)
 		
 		card.z_index = -1
 		card.position = cardSlot.position
-		#card.get_node("Area2D/CollisionShape2D").disabled = true
 		cardSlot.occupied = true
 		card.cardSlot = cardSlot
 		
@@ -223,22 +240,11 @@ func move_card_on_double_click(card, cardSlot):
 		
 		# Ensure its not highlighted
 		draggedCard.scale = Vector2(1, 1)
-		draggedCard.get_node("AnimationPlayer").play("hideDescription")
-		var endTime = draggedCard.get_node("AnimationPlayer").current_animation_length
-		draggedCard.get_node("AnimationPlayer").seek(endTime, true)
+		var anim = draggedCard.get_node("AnimationPlayer")
+		anim.play_backwards("showPerkDescription")
+		anim.seek(0, true)
 		
 		draggedCard = null
-
-func _play_card_hover_sound() -> void:
-	if %CardHoverSound.playing:
-		return
-	
-	if canPlayHoverSound:
-		%CardHoverSound.play()
-		canPlayHoverSound = false
-		
-	await get_tree().create_timer(.1).timeout
-	canPlayHoverSound = true
 
 func play_top_character_from_deck() -> void:
 	var card = $"../characterDeck".spawn_top_card_node()
@@ -254,7 +260,7 @@ func play_top_character_from_deck() -> void:
 	tween.tween_property(card, "position", characterSlot.position, 0.3).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	
 	tween.finished.connect(func(): 
-		card.play_draw_sound()
+		AudioManager.play_random_card_draw()
 		card.z_index = 0
 	)
 
@@ -262,3 +268,37 @@ func play_top_character_from_deck() -> void:
 	card.cardSlot = characterSlot
 
 	emit_signal("characterPlayed", card)
+
+# Used to stop hovering when player input is locked
+func force_unhighlight_all_cards() -> void:
+	if hoveredCard and is_instance_valid(hoveredCard):
+		_reset_card_visuals(hoveredCard)
+		hoveredCard = null
+	
+	if "playerHand" in playerHandReference:
+		for card in playerHandReference.playerHand:
+			if is_instance_valid(card):
+				_reset_card_visuals(card)
+
+# Reset without audio
+func _reset_card_visuals(card: Node2D) -> void:
+	if !AccessibilityData.animationsDisabled:
+		card.scale = Vector2(1, 1)
+	
+	if not "perk" in card or card.perk == null: 
+		return
+		
+	var anim = card.get_node("AnimationPlayer")
+	
+	if anim.current_animation == "showPerkDescription":
+		if AccessibilityData.animationsDisabled:
+			anim.play("showPerkDescription")
+			anim.seek(0, true)
+			anim.stop()
+		else:
+			anim.play_backwards("showPerkDescription")
+			
+	elif anim.assigned_animation == "showPerkDescription" and not anim.is_playing():
+		anim.play("showPerkDescription")
+		anim.seek(0, true)
+		anim.stop()

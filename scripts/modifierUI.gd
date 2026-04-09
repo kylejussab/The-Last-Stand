@@ -13,9 +13,6 @@ var slotTwoActive: bool = false
 var slotThreeActive: bool = false
 
 var playingStartAnimation: bool = false
-var canPlayHoverSound: bool = true
-
-@onready var battleAnimator: Node = %battleAnimator
 
 func _ready() -> void:
 	%pauseIcon.hide()
@@ -52,9 +49,9 @@ func show_modifier_menu() -> void:
 	growTween.tween_property($title, "modulate:a", 1.0, 0.5)
 	growTween.tween_property($title, "scale", Vector2(3.0, 3.0), 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	
-	var sound = %gameOver.get_node("effects")
-	sound.stream = battleAnimator.whooshSounds[0]
-	sound.play()
+	AudioManager.play_whoosh()
+	
+	AudioManager.change_volume_background(-50, 6.0)
 	
 	var fadeTween = create_tween()
 	fadeTween.tween_property($title, "modulate:a", 1.0, 0.3)
@@ -69,8 +66,7 @@ func show_modifier_menu() -> void:
 	
 	var slideTween = create_tween().set_parallel(true)
 	
-	sound.stream = battleAnimator.whooshSounds[1]
-	sound.play()
+	AudioManager.play_whoosh(true)
 	
 	slideTween.tween_property($title, "position:y", -375.0, 0.5).as_relative().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
 	
@@ -98,80 +94,65 @@ func show_modifier_menu() -> void:
 	var audioTween = create_tween()
 	
 	audioTween.tween_interval(2.0)
-	audioTween.tween_callback(func(): get_node("SlotSpin").play())
+	audioTween.tween_callback(AudioManager.play_slot_spin)
 	
 	audioTween.tween_interval(1.8) 
-	audioTween.tween_callback(func(): 
-		get_node("SlotStop").play()
-	)
+	audioTween.tween_callback(AudioManager.play_slot_stop)
 	
 	audioTween.tween_interval(0.7)
-	audioTween.tween_callback(func(): 
-		get_node("SlotStop").play()
-	)
+	audioTween.tween_callback(AudioManager.play_slot_stop)
 	
 	audioTween.tween_interval(0.6)
-	audioTween.tween_callback(func(): 
-		get_node("SlotStop").play()
-	)
+	audioTween.tween_callback(AudioManager.play_slot_stop)
+	
+	await audioTween.finished
+	AudioManager.change_volume_background(-35.0, 6.0)
 
 # Privates
 func _select_modifiers() -> void:
 	if not is_node_ready():
 		await ready
-		
-	var availableModifiers = {
-		1: [],
-		2: [],
-		3: []
-	}
 	
+	var availableByTier = { 1: [], 2: [], 3: [] }
 	var activeIdModifiers = []
-	for active in GameStats.activeModifiers:
+	for active in HoldoutStats.activeModifiers:
 		activeIdModifiers.append(active["id"])
-
+	
 	for modifier in Database.MODIFIERS.values():
 		if not modifier["id"] in activeIdModifiers:
 			var tier = modifier["tier"]
 			
-			if modifier.has("healthCost") and GameStats.playerHealthValue <= modifier["healthCost"]:
+			if modifier.has("healthCost") and HoldoutStats.playerHealthValue <= modifier["healthCost"]:
 				continue
 			
-			if availableModifiers.has(tier):
-				availableModifiers[tier].append(modifier)
+			if availableByTier.has(tier):
+				availableByTier[tier].append(modifier)
 	
-	if availableModifiers[1].size() > 0:
-		tierOneModifier = availableModifiers[1].pick_random()
-		_update_slot_ui(tierOneModifier, slotOne)
+	tierOneModifier = _pick_weighted_modifier(availableByTier[1])
+	tierTwoModifier = _pick_weighted_modifier(availableByTier[2])
+	tierThreeModifier = _pick_weighted_modifier(availableByTier[3])
 	
-	if availableModifiers[2].size() > 0:
-		tierTwoModifier = availableModifiers[2].pick_random()
-		_update_slot_ui(tierTwoModifier, slotTwo)
-
-	if availableModifiers[3].size() > 0:
-		tierThreeModifier = availableModifiers[3].pick_random()
-		_update_slot_ui(tierThreeModifier, slotThree)
+	var currentPicks = [tierOneModifier.id, tierTwoModifier.id, tierThreeModifier.id]
 	
-	$"Slot 1/visuals/ReelWindow".setup_reel(availableModifiers[1])
-	$"Slot 2/visuals/ReelWindow".setup_reel(availableModifiers[2])
-	$"Slot 3/visuals/ReelWindow".setup_reel(availableModifiers[3])
+	HoldoutStats.lastOfferedModifierIds.append_array(currentPicks)
+	
+	if HoldoutStats.lastOfferedModifierIds.size() >= 12: # currently 60% of the entire list (20 mods)
+		HoldoutStats.lastOfferedModifierIds.clear()
+		HoldoutStats.lastOfferedModifierIds.append_array(currentPicks)
+	
+	_update_slot_ui(tierOneModifier, slotOne)
+	_update_slot_ui(tierTwoModifier, slotTwo)
+	_update_slot_ui(tierThreeModifier, slotThree)
+	
+	$"Slot 1/visuals/ReelWindow".setup_reel(availableByTier[1])
+	$"Slot 2/visuals/ReelWindow".setup_reel(availableByTier[2])
+	$"Slot 3/visuals/ReelWindow".setup_reel(availableByTier[3])
 
 func _update_slot_ui(modifier, slot) -> void:
 	slot.get_node("visuals/text/name").text = modifier.name
 	slot.get_node("visuals/text/description").text = modifier.description
 	slot.get_node("visuals/text/multiplier").text = "+ " + str(modifier.multiplier) + "x"
 	slot.get_node("visuals/text/duration").text = str(modifier.duration) + " Game" + ("s" if modifier.duration > 1 else "")
-
-func _play_card_hover_sound() -> void:
-	if %CardHoverSound.playing:
-		return
-	
-	if canPlayHoverSound:
-		%CardHoverSound.play()
-		canPlayHoverSound = false
-		
-	await get_tree().create_timer(.1).timeout
-	canPlayHoverSound = true
 
 func _animate_single_slot(slot: Node2D, modifierData: Dictionary) -> void:
 	var tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
@@ -190,6 +171,24 @@ func _animate_single_slot(slot: Node2D, modifierData: Dictionary) -> void:
 	tween.parallel().tween_property(slot.get_node("visuals/text"), "position:y", -60.0, 0.6).as_relative().set_ease(Tween.EASE_OUT).set_delay(0.1)
 	
 	tween.tween_callback(func(): slot.get_node("AnimationPlayer").play("showMultiplier"))
+
+func _pick_weighted_modifier(tierPool: Array) -> Dictionary:
+	if tierPool.is_empty(): 
+		return {}
+	
+	# 80% chance to try and pick something "fresh" (not shown last time)
+	if randf() < 0.8:
+		var freshPool = []
+		for modifier in tierPool:
+			if not modifier.id in HoldoutStats.lastOfferedModifierIds:
+				freshPool.append(modifier)
+		
+		# Fallback if too many "fresh" picks were chosen
+		if not freshPool.is_empty():
+			return freshPool.pick_random()
+
+	# 20% chance (or ultiamte fallback) for pure randomness
+	return tierPool.pick_random()
 
 # Signals
 func _on_slot1_area_2d_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
@@ -232,37 +231,37 @@ func _on_slot1_area_2d_mouse_entered() -> void:
 	if !playingStartAnimation:
 		var tween = create_tween()
 		tween.tween_property(slotOne.get_node("visuals"), "scale", Vector2(1.05, 1.05), 0.1)
-		_play_card_hover_sound()
+		AudioManager.play_card_hover()
 
 func _on_slot1_area_2d_mouse_exited() -> void:
 	if !playingStartAnimation:
 		var tween = create_tween()
 		tween.tween_property(slotOne.get_node("visuals"), "scale", Vector2(1, 1), 0.1)
-		_play_card_hover_sound()
+		AudioManager.play_card_hover()
 
 func _on_slot2_area_2d_mouse_entered() -> void:
 	if !playingStartAnimation:
 		var tween = create_tween()
 		tween.tween_property(slotTwo.get_node("visuals"), "scale", Vector2(1.05, 1.05), 0.1)
-		_play_card_hover_sound()
+		AudioManager.play_card_hover()
 
 func _on_slot2_area_2d_mouse_exited() -> void:
 	if !playingStartAnimation:
 		var tween = create_tween()
 		tween.tween_property(slotTwo.get_node("visuals"), "scale", Vector2(1, 1), 0.1)
-		_play_card_hover_sound()
+		AudioManager.play_card_hover()
 
 func _on_slot3_area_2d_mouse_entered() -> void:
 	if !playingStartAnimation:
 		var tween = create_tween()
 		tween.tween_property(slotThree.get_node("visuals"), "scale", Vector2(1.05, 1.05), 0.1)
-		_play_card_hover_sound()
+		AudioManager.play_card_hover()
 
 func _on_slot3_area_2d_mouse_exited() -> void:
 	if !playingStartAnimation:
 		var tween = create_tween()
 		tween.tween_property(slotThree.get_node("visuals"), "scale", Vector2(1, 1), 0.1)
-		_play_card_hover_sound()
+		AudioManager.play_card_hover()
 
 func _on_confirm_button_pressed() -> void:
 	if !slotOneActive and !slotTwoActive and !slotThreeActive:
@@ -274,12 +273,15 @@ func _on_confirm_button_pressed() -> void:
 	
 	if slotOneActive:
 		%battleManager.add_modifier(tierOneModifier.id)
+		GameStats.record_modifier_selection(tierOneModifier.name)
 	if slotTwoActive:
 		%battleManager.add_modifier(tierTwoModifier.id)
+		GameStats.record_modifier_selection(tierTwoModifier.name)
 	if slotThreeActive:
 		%battleManager.add_modifier(tierThreeModifier.id)
+		GameStats.record_modifier_selection(tierThreeModifier.name)
 	
-	%ButtonClickSound.play()
+	AudioManager.play_button_click()
 	
 	slotOneActive = false
 	slotTwoActive = false
@@ -292,9 +294,7 @@ func _on_confirm_button_pressed() -> void:
 	slotThree.get_node("visuals/background").texture = load("res://assets/modifiers/SlotInActive.png")
 	slotThree.get_node("visuals/text/selectedText").visible = false
 	
-	var sound = %gameOver.get_node("effects")
-	sound.stream = battleAnimator.whooshSounds[1]
-	sound.play()
+	AudioManager.play_whoosh(true)
 	
 	get_node("AnimationPlayer").play("hideUI")
 	await get_node("AnimationPlayer").animation_finished
@@ -307,10 +307,10 @@ func _on_confirm_button_pressed() -> void:
 	tierTwoModifier = null
 	tierThreeModifier = null
 	
-	GameStats.gameMode = GameStats.Mode.LAST_STAND
+	GameStats.gameMode = GameStats.Mode.HOLDOUT
 	%battleManager.initialize_game()
 	
 	playingStartAnimation = false
 
 func _on_confirm_button_mouse_entered() -> void:
-	%ButtonHoverSound.play()
+	AudioManager.play_button_hover()

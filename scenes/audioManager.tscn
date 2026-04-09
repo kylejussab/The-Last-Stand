@@ -1,0 +1,113 @@
+[gd_scene load_steps=14 format=3 uid="uid://c5nsbseki1g1a"]
+
+[ext_resource type="AudioStream" uid="uid://dy7mjokw0gggp" path="res://assets/sounds/ui/damage.wav" id="1_tv3ta"]
+[ext_resource type="Script" uid="uid://chucmh2mqp136" path="res://scripts/audioManager.gd" id="1_twrc3"]
+[ext_resource type="AudioStream" uid="uid://b2sa8g17hxiwa" path="res://assets/sounds/cards/hover.wav" id="2_twrc3"]
+[ext_resource type="AudioStream" uid="uid://cdqholmjoftew" path="res://assets/sounds/cards/lock.wav" id="3_6x1q5"]
+[ext_resource type="AudioStream" uid="uid://bams0u5k7sdgr" path="res://assets/sounds/ui/buttonClick.wav" id="4_rmmm8"]
+[ext_resource type="AudioStream" uid="uid://cufo3kt8n8vs2" path="res://assets/sounds/ui/buttonHover.wav" id="5_mk1kq"]
+[ext_resource type="AudioStream" uid="uid://b3d3fqc8ee6t7" path="res://assets/sounds/ui/buttonBack.wav" id="6_hh26a"]
+[ext_resource type="AudioStream" uid="uid://bqgphoeowbviu" path="res://assets/sounds/ui/whoosh.wav" id="7_s14o2"]
+[ext_resource type="AudioStream" uid="uid://dyo8kjd5wkh67" path="res://assets/sounds/ui/slotSpin.wav" id="8_63sg2"]
+[ext_resource type="AudioStream" uid="uid://b8o0s35fjpeg6" path="res://assets/sounds/ui/slotStop.wav" id="9_pvqy7"]
+[ext_resource type="AudioStream" uid="uid://djnpl708un3ba" path="res://assets/sounds/ui/ClickerCry.wav" id="11_6x1q5"]
+[ext_resource type="AudioStream" uid="uid://bsmaoth1s6aw7" path="res://assets/sounds/ui/rationsCollected.wav" id="14_hh26a"]
+[ext_resource type="AudioStream" uid="uid://beupnkbrx4as4" path="res://assets/sounds/ui/badgeThud.wav" id="15_s14o2"]
+
+[node name="audioManager" type="Node"]
+process_mode = 3
+script = ExtResource("1_twrc3")
+
+[node name="Music" type="Node" parent="."]
+
+[node name="layer1" type="AudioStreamPlayer2D" parent="Music"]
+volume_db = -10.0
+bus = &"Music"
+
+[node name="layer2" type="AudioStreamPlayer2D" parent="Music"]
+volume_db = -10.0
+bus = &"Music"
+
+[node name="background" type="AudioStreamPlayer2D" parent="Music"]
+volume_db = -10.0
+bus = &"Music"
+
+[node name="Effects" type="Node" parent="."]
+
+[node name="TakeDamage" type="AudioStreamPlayer2D" parent="Effects"]
+stream = ExtResource("1_tv3ta")
+volume_db = -15.0
+bus = &"Effects"
+
+[node name="CardHover" type="AudioStreamPlayer2D" parent="Effects"]
+process_mode = 3
+stream = ExtResource("2_twrc3")
+volume_db = -15.0
+bus = &"Effects"
+
+[node name="CardLock" type="AudioStreamPlayer2D" parent="Effects"]
+stream = ExtResource("3_6x1q5")
+volume_db = -10.0
+bus = &"Effects"
+
+[node name="CardDraw" type="AudioStreamPlayer2D" parent="Effects"]
+volume_db = -10.0
+bus = &"Effects"
+
+[node name="CardShuffle" type="AudioStreamPlayer2D" parent="Effects"]
+volume_db = -10.0
+bus = &"Effects"
+
+[node name="UI" type="Node" parent="."]
+
+[node name="ButtonClick" type="AudioStreamPlayer2D" parent="UI"]
+process_mode = 3
+position = Vector2(770, 790)
+stream = ExtResource("4_rmmm8")
+max_polyphony = 4
+bus = &"UI"
+
+[node name="ButtonHover" type="AudioStreamPlayer2D" parent="UI"]
+process_mode = 3
+position = Vector2(770, 790)
+stream = ExtResource("5_mk1kq")
+bus = &"UI"
+
+[node name="ButtonBack" type="AudioStreamPlayer2D" parent="UI"]
+process_mode = 3
+position = Vector2(770, 790)
+stream = ExtResource("6_hh26a")
+max_polyphony = 4
+bus = &"UI"
+
+[node name="Whoosh" type="AudioStreamPlayer2D" parent="UI"]
+stream = ExtResource("7_s14o2")
+volume_db = -10.0
+max_polyphony = 3
+bus = &"UI"
+
+[node name="SlotSpin" type="AudioStreamPlayer2D" parent="UI"]
+stream = ExtResource("8_63sg2")
+volume_db = -10.0
+bus = &"UI"
+
+[node name="SlotStop" type="AudioStreamPlayer2D" parent="UI"]
+stream = ExtResource("9_pvqy7")
+volume_db = -10.0
+max_polyphony = 3
+bus = &"UI"
+
+[node name="ClickerCry" type="AudioStreamPlayer2D" parent="UI"]
+stream = ExtResource("11_6x1q5")
+volume_db = -20.0
+bus = &"UI"
+
+[node name="RationsCollected" type="AudioStreamPlayer2D" parent="UI"]
+stream = ExtResource("14_hh26a")
+volume_db = -10.0
+bus = &"UI"
+
+[node name="BadgeThud" type="AudioStreamPlayer2D" parent="UI"]
+stream = ExtResource("15_s14o2")
+volume_db = -15.0
+bus = &"UI"

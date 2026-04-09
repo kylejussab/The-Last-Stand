@@ -1,50 +1,24 @@
 extends PerkBase
 
-var card
-var value
-
 func _init() -> void:
 	timing = "midRound"
 
 func apply_mid_perk(thisCard, thisHand, otherCard):
-	var total = 0
-	var infectedTotal = 0
-	card = thisCard
+	var toAdd = 0
 	
 	for infected in thisHand:
 		if infected.type == "Character" && infected.faction == "Infected":
-			infectedTotal += 1
+			toAdd += 1
 	
 	if otherCard.faction == "Infected":
-		total += 2
+		toAdd += 2
 	
-	total += infectedTotal
-	
-	if total != 0:
-		card.get_node("AnimationPlayer").animation_started.connect(_when_animation_starts)
-		
-		value = int(card.get_node("value").text)
-		value += total
-		
-		card.value += total
-		card.get_node("perk").text = "+" + str(total)
-		card.get_node("AnimationPlayer").queue("showPerk")
-		card.get_node("value").text = str(value)
+	if toAdd != 0:
+		thisCard.modify_value(toAdd)
 
-
-func _when_animation_starts(name: String):
-	if name == "showPerk":
-		updateCardValue()
-
-func updateCardValue():
-	var label = card.get_node("value")
-	var startValue = int(label.text)
-	
-	var tween = card.create_tween()
-	
-	tween.tween_method(
-		func(val: int): label.text = str(val),
-		startValue,
-		value,
-		0.5
-	)
+# Function used for forsaken honor check
+func would_perk_trigger(_thisCard, _thisHand, otherCard) -> bool:
+	if otherCard.faction == "Infected":
+		return true
+	else:
+		return false

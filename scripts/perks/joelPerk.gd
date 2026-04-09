@@ -1,38 +1,28 @@
 extends PerkBase
 
-var card
-var value
-
 func _init() -> void:
 	timing = "midRound"
 
-func apply_mid_perk(thisCard, thisHand, _otherCard):	
-	for ellie in thisHand:
-		if ellie.cardKey == "Ellie":
-			thisCard.get_node("AnimationPlayer").animation_started.connect(_when_animation_starts)
-			
-			card = thisCard
-			
-			value = int(card.get_node("value").text)
-			value += 4
-			
-			card.value += 4
-			card.get_node("perk").text = "+4"
-			card.get_node("AnimationPlayer").queue("showPerk")
-
-func _when_animation_starts(name: String):
-	if name == "showPerk":
-		updateCardValue()
-
-func updateCardValue():
-	var label = card.get_node("value")
-	var startValue = int(label.text)
+func apply_mid_perk(thisCard, thisHand, otherCard):
+	var perkAmount: int = 0
 	
-	var tween = card.create_tween()
-	
-	tween.tween_method(
-		func(val: int): label.text = str(val),
-		startValue,
-		value,
-		0.5
-	)
+	for ally in thisHand:
+		if ally.cardKey == "Ellie" or ally.cardKey == "Tommy" or ally.cardKey == "TommyFirefly":
+			perkAmount += 4
+			break
+			
+	if otherCard.role.contains("/"):
+		perkAmount += 2
+			
+	if perkAmount > 0:
+		thisCard.modify_value(perkAmount)
+
+func would_perk_trigger(_thisCard, thisHand, otherCard) -> bool:
+	for ally in thisHand:
+		if ally.cardKey == "Ellie" or ally.cardKey == "Tommy":
+			return true
+			
+	if otherCard.role.contains("/"):
+		return true
+			
+	return false

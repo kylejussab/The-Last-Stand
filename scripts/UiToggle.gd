@@ -23,15 +23,17 @@ func _ready():
 	
 	if areAnimationsOn:
 		knob.position.x = xPositionOn
+		textLabel.text = "On"
 	else:
 		knob.position.x = xPositionOff
+		textLabel.text = "Off"
 	
 	toggled.connect(_on_toggled)
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
 
 func _on_toggled(buttonState: bool):
-	%ButtonClickSound.play()
+	AudioManager.play_button_click()
 	
 	AccessibilityData.animationsDisabled = not buttonState
 	
@@ -45,14 +47,15 @@ func _on_toggled(buttonState: bool):
 	else:
 		textLabel.text = "On"
 	
-	if owner.has_method("update_preview_card"):
-		owner.update_preview_card()
+	var optionsMenu = find_parent("OptionsMenu")
+	if optionsMenu and optionsMenu.has_method("update_preview_card"):
+		optionsMenu.update_preview_card()
 
 func _on_mouse_entered():
 	_set_element_color(knob, KNOB_COLOR_HOVER)
 	_set_element_color(track, TRACK_COLOR_HOVER)
 	
-	%ButtonHoverSound.play()
+	AudioManager.play_button_hover()
 
 func _on_mouse_exited():
 	_set_element_color(knob, KNOB_COLOR_DEFAULT)

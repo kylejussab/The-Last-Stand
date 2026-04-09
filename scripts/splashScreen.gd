@@ -7,8 +7,13 @@ func _ready() -> void:
 	
 	# Disclaimer
 	fade_out()
-	await get_tree().create_timer(7).timeout
-	await fade_in()
+	await get_tree().create_timer(7).timeout #7
+	
+	fade_in()
+	
+	await get_tree().create_timer(.5).timeout
+	AudioManager.play_beyondTheThreshold(-20, -20)
+	await get_tree().create_timer(.5).timeout
 	
 	$Disclaimer.hide()
 	$MadeBy.show()
@@ -16,22 +21,29 @@ func _ready() -> void:
 	# A game made by
 	fade_out()
 	
-	await get_tree().create_timer(5).timeout
+	await get_tree().create_timer(5).timeout #5
 	
-	await fade_in()
+	fade_in()
+	
+	await get_tree().create_timer(.35).timeout
+	AudioManager.play_clicker_cry()
+	await get_tree().create_timer(.65).timeout
 	
 	$MadeBy.hide()
 	$MadeWith.show()
 	
-	# Made with Godot
+	# Made with Godot	
 	fade_out()
 	
 	await get_tree().create_timer(2).timeout
 	
 	$MadeWith/AnimationPlayer.play("flickerOut")
 	
+	AudioManager.change_volume_layer1(-10, 9)
+	AudioManager.change_volume_layer2(-10, 9)
+	
 	# Potential animation in here
-	await get_tree().create_timer(6).timeout
+	await get_tree().create_timer(6.5).timeout
 	
 	await fade_in()
 	
@@ -42,7 +54,7 @@ func _ready() -> void:
 	fade_out()
 	
 	# Potential animation in here
-	await get_tree().create_timer(5).timeout
+	await get_tree().create_timer(7).timeout
 	
 	GameStats.gameMode = GameStats.Mode.MAIN_MENU
 	Curtain.change_scene("res://scenes/mainMenu.tscn", 2.0)
