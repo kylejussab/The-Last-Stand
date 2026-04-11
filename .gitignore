@@ -27,7 +27,7 @@ Icon?
 *.log
 
 # Build artifacts (if you export builds into a subfolder)
-build/
+builds/
 exports/
 
 # Ignore full card assets
