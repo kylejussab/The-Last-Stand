@@ -1,9 +1,11 @@
-[gd_scene load_steps=47 format=3 uid="uid://btdd4ppvwtnvy"]
+[gd_scene load_steps=49 format=3 uid="uid://btdd4ppvwtnvy"]
 
 [ext_resource type="Script" uid="uid://bmorqef62jko2" path="res://scripts/mainMenu.gd" id="1_l7wge"]
 [ext_resource type="Texture2D" uid="uid://bmewebekh15ca" path="res://assets/mainMenu/main.png" id="1_qkhwq"]
 [ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://assets/fonts/SF-Pro-Display-Black.otf" id="2_3d1i7"]
 [ext_resource type="FontFile" uid="uid://di1dchl37cfhu" path="res://assets/fonts/SF-Pro-Display-Semibold.otf" id="3_48ign"]
+[ext_resource type="Texture2D" uid="uid://cydsq6dh3yo0u" path="res://assets/mainMenu/HoldoutBackground.png" id="6_tlicg"]
+[ext_resource type="Texture2D" uid="uid://daa1ve154t77d" path="res://assets/mainMenu/HoldoutForeground.png" id="7_808lr"]
 [ext_resource type="Texture2D" uid="uid://be0aihjd72rmo" path="res://assets/ui/RightClickIcon.png" id="7_ldpc3"]
 [ext_resource type="Texture2D" uid="uid://dydypvn71hw1a" path="res://assets/holdout/accolade/Analysis Paralysis.png" id="8_d7xfv"]
 [ext_resource type="PackedScene" uid="uid://c0yhtjyqj8lpa" path="res://scenes/optionsMenu.tscn" id="8_lam2r"]
@@ -126,6 +128,7 @@ scale = Vector2(0.24, 0.24)
 texture = ExtResource("1_qkhwq")
 
 [node name="pressAnywhere" type="Control" parent="."]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -231,7 +234,6 @@ text = "OPTIONS"
 alignment = 0
 
 [node name="QuitButton" type="Button" parent="mainButtonContainer"]
-visible = false
 z_index = 201
 layout_mode = 0
 offset_left = 120.0
@@ -364,6 +366,16 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+
+[node name="Background" type="Sprite2D" parent="holdoutButtonContainer"]
+position = Vector2(1350, 540)
+scale = Vector2(0.24, 0.24)
+texture = ExtResource("6_tlicg")
+
+[node name="Foreground" type="Sprite2D" parent="holdoutButtonContainer"]
+position = Vector2(800, 540)
+scale = Vector2(0.24, 0.24)
+texture = ExtResource("7_808lr")
 
 [node name="Heading" type="RichTextLabel" parent="holdoutButtonContainer"]
 layout_mode = 1
@@ -1437,6 +1449,25 @@ theme_override_fonts/normal_font = SubResource("FontVariation_uwljm")
 theme_override_font_sizes/normal_font_size = 24
 bbcode_enabled = true
 
+[node name="versionNumber" type="RichTextLabel" parent="."]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 120.0
+offset_top = 1000.0
+offset_right = 570.0
+offset_bottom = 1030.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0.17254902, 0.17254902, 0.17254902, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_uwljm")
+theme_override_font_sizes/normal_font_size = 18
+bbcode_enabled = true
+text = "Pre-Alpha v0.4.0"
+
 [node name="pauseIcon" type="Node2D" parent="."]
 visible = false
 z_index = 202
@@ -1514,7 +1545,11 @@ vertical_alignment = 1
 [connection signal="hold_complete" from="holdoutButtonContainer/NewButton" to="." method="_on_new_button_hold_complete"]
 [connection signal="mouse_entered" from="holdoutButtonContainer/NewButton" to="." method="_on_new_button_mouse_entered"]
 [connection signal="mouse_exited" from="holdoutButtonContainer/NewButton" to="." method="_on_new_button_mouse_exited"]
+[connection signal="mouse_entered" from="holdoutButtonContainer/ContinueButton" to="." method="_on_continue_button_mouse_entered"]
+[connection signal="mouse_exited" from="holdoutButtonContainer/ContinueButton" to="." method="_on_continue_button_mouse_exited"]
 [connection signal="pressed" from="holdoutButtonContainer/ContinueButton" to="." method="_on_continue_button_pressed"]
+[connection signal="mouse_entered" from="holdoutButtonContainer/TutorialButton" to="." method="_on_tutorial_button_mouse_entered"]
+[connection signal="mouse_exited" from="holdoutButtonContainer/TutorialButton" to="." method="_on_tutorial_button_mouse_exited"]
 [connection signal="pressed" from="holdoutButtonContainer/TutorialButton" to="." method="_on_tutorial_button_pressed"]
 [connection signal="pressed" from="holdoutButtonContainer/StatisticsButton" to="." method="_on_statistics_button_pressed"]
 [connection signal="mouse_entered" from="StatisticsMenu/accolades/AnalysisParalysis" to="." method="_on_analysis_paralysis_mouse_entered"]

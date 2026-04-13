@@ -1,6 +1,9 @@
 extends Node2D
 
 func _ready() -> void:
+	# Start loading scene changes
+	ResourceLoader.load_threaded_request("res://scenes/mainMenu.tscn")
+	
 	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 	
 	GameStats.gameMode = GameStats.Mode.SPLASH_SCREEN
@@ -57,7 +60,8 @@ func _ready() -> void:
 	await get_tree().create_timer(7).timeout
 	
 	GameStats.gameMode = GameStats.Mode.MAIN_MENU
-	Curtain.change_scene("res://scenes/mainMenu.tscn", 2.0)
+	
+	Curtain.change_scene_to_packed(ResourceLoader.load_threaded_get("res://scenes/mainMenu.tscn"), 2.0)
 
 func fade_in():
 	$fader.visible = true

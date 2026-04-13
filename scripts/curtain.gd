@@ -6,7 +6,7 @@ func _ready() -> void:
 	color_rect.modulate.a = 0.0
 	color_rect.visible = false
 
-func change_scene(target_path: String, fadeOutDuration: float = 1.0) -> void:
+func change_scene(target_path: String, fadeOutDuration: float = 1.0, delay: float = 0.0) -> void:
 	color_rect.visible = true
 	var inTween = create_tween()
 	inTween.tween_property(color_rect, "modulate:a", 1.0, 1)
@@ -14,6 +14,25 @@ func change_scene(target_path: String, fadeOutDuration: float = 1.0) -> void:
 	await inTween.finished
 	
 	get_tree().change_scene_to_file(target_path)
+	
+	await get_tree().process_frame
+	
+	await get_tree().create_timer(delay).timeout
+	
+	var outTween = create_tween()
+	outTween.tween_property(color_rect, "modulate:a", 0.0, fadeOutDuration)
+	
+	await outTween.finished
+	color_rect.visible = false
+
+func change_scene_to_packed(targetScene: PackedScene, fadeOutDuration: float = 1.0) -> void:
+	color_rect.visible = true
+	var inTween = create_tween()
+	inTween.tween_property(color_rect, "modulate:a", 1.0, 1)
+	
+	await inTween.finished
+	
+	get_tree().change_scene_to_packed(targetScene)
 	
 	await get_tree().process_frame
 	
