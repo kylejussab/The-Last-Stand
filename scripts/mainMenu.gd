@@ -32,9 +32,9 @@ const BACKGROUNDS = {
 
 const SUPPLEMENTTEXT = {
 	"Story": "What is the cost of doing what you believe is right?",
-	"Holdout": "A roguelite gauntlet where you overcome escalating enemies and unpredictable modifiers.\n\nYeilds: [img width=14 color=#4c4c4c]res://assets/ui/RationsIconSlim.png[/img]",
+	"Holdout": "A near-endless gauntlet where you overcome escalating enemies and unpredictable modifiers.\n\nYeilds: [img width=14 color=#4c4c4c]res://assets/ui/RationsIconSlim.png[/img]",
 	"June": "What is the cost of doing what you believe is right?",
-	"Remnants": "A tactical deck-building campaign where you lead a Faction, master card synergies, and secure territory.\n\nYeilds: [img width=14 color=#4c4c4c]res://assets/ui/RationsIconSlim.png[/img]"
+	"Remnants": "A tactical deck-building campaign where you lead a faction, master card synergies, and secure territory.\n\nYeilds: [img width=14 color=#4c4c4c]res://assets/ui/RationsIconSlim.png[/img]"
 }
 
 # Card for Accessibility Card Graphics
@@ -331,12 +331,17 @@ func _show_tutorial_button() -> void:
 func _show_statistics_button() -> void:
 	%StatisticsButton.visible = false
 	%StatisticsButton.disabled = true
-	
+
 	if SaveManager.has_main_save():
 		var saveData = SaveManager.load_main_state()
 		var modifierCounts = saveData.get("holdoutModifierUses", {})
 		
-		if modifierCounts.size() >= 3:
+		var actuallyUsedCount = 0
+		for modKey in modifierCounts:
+			if modifierCounts[modKey] > 0:
+				actuallyUsedCount += 1
+
+		if actuallyUsedCount >= 3:
 			%StatisticsButton.visible = true
 			%StatisticsButton.disabled = false
 

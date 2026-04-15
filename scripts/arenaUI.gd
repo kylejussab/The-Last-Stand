@@ -214,7 +214,7 @@ func _fade_with_round_reset() -> void:
 	
 	update_health(Actor.Type.PLAYER, HoldoutStats.playerHealthValue, true)
 	
-	await get_tree().create_timer(1).timeout
+	await get_tree().create_timer(1.5).timeout
 	Curtain.fade_out()
 	
 	battleManager.prepare_opponent()
