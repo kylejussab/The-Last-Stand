@@ -214,10 +214,10 @@ func _fade_with_round_reset() -> void:
 	
 	update_health(Actor.Type.PLAYER, HoldoutStats.playerHealthValue, true)
 	
-	await get_tree().create_timer(1.5).timeout
-	Curtain.fade_out()
-	
 	battleManager.prepare_opponent()
+	
+	await get_tree().create_timer(1.0).timeout
+	Curtain.fade_out()
 	
 	if HoldoutStats.numberOfWins % 2 == 1 and not HoldoutStats.replayedRound:
 		GameStats.gameMode = GameStats.Mode.MODIFIER_SELECTION
