@@ -142,3 +142,29 @@ func save_game():
 func record_modifier_selection(modName: String) -> void:
 	holdoutModifierUses[modName] = holdoutModifierUses.get(modName, 0) + 1
 	save_game()
+
+func reset_all_data() -> void:
+	totalInGameTimePlayed = 0.0
+	showHoldoutTutorial = true
+	rations = 0
+	
+	holdoutRunsAttempted = 0
+	holdoutBattlesWon = 0
+	holdoutTimePlayed = 0.0
+	holdoutUnderdogWins = 0
+	holdoutCardsPlayed = 0
+	
+	holdoutHighestDominance = 0
+	holdoutLongestStreak = 0
+	holdoutHighestMultiplier = 1.0
+	holdoutFastestWin = 99999.0
+	holdoutBestRank = HoldoutStats.Rank.F
+	
+	holdoutMvpCounts.clear()
+	holdoutFactionUses.clear()
+	holdoutCardUses.clear()
+	holdoutNemesisKills.clear()
+	holdoutModifierUses.clear()
+	
+	for key in holdoutAccoladeCounts:
+		holdoutAccoladeCounts[key] = 0

@@ -65,13 +65,13 @@ func setup_avatar(avatar: Actor.Avatar, type: Actor.Type) -> void:
 	var basePath: String = "%s%s" % [data.headPath, data.name.get_slice(" ", 0)]
 	
 	var headNode: Node2D = avatarParent.get_node("head")
-	headNode.get_node("neutral").texture = load(basePath + "Neutral.png")
-	headNode.get_node("hurt").texture = load(basePath + "Hurt.png")
-	headNode.get_node("thinking").texture = load(basePath + "Thinking.png")
-	headNode.get_node("happy").texture = load(basePath + "Happy.png")
+	headNode.get_node("neutral").texture = Database.get_avatar_head_texture(basePath + "Neutral.png")
+	headNode.get_node("hurt").texture = Database.get_avatar_head_texture(basePath + "Hurt.png")
+	headNode.get_node("thinking").texture = Database.get_avatar_head_texture(basePath + "Thinking.png")
+	headNode.get_node("happy").texture = Database.get_avatar_head_texture(basePath + "Happy.png")
 	
 	if type == Actor.Type.OPPONENT:
-		$image.texture = load("%s%sArena.png" % [data.arenaPath, data.name.get_slice(" ", 0)])
+		$image.texture = Database.get_avatar_head_texture("%s%sArena.png" % [data.arenaPath, data.name.get_slice(" ", 0)])
 
 func change_mood(who: Actor.Type, mood: Actor.Mood) -> void:
 	if not is_node_ready():
@@ -179,11 +179,12 @@ func _on_new_run_button_hold_complete() -> void:
 	GameStats.gameMode = GameStats.Mode.HOLDOUT
 	HoldoutStats.reset_for_new_run()
 	
-	Curtain.change_scene("res://scenes/main.tscn")
+	Curtain.change_scene("res://scenes/holdoutGame.tscn")
 
 func _on_main_menu_button_hold_complete() -> void:
+	Database.clear_avatar_cache()
 	GameStats.gameMode = GameStats.Mode.MAIN_MENU
-	Curtain.change_scene("res://scenes/mainMenu.tscn")
+	Curtain.change_scene("res://scenes/mainMenu.tscn", 1.0, 0.75) # wait .75 seconds while the screen is black for scene load
 	
 	AudioManager.stop_background()
 	AudioManager.play_beyondTheThreshold(-20, -80, 4)
@@ -202,6 +203,7 @@ func _on_main_menu_button_mouse_exited() -> void:
 func _fade_with_round_reset() -> void:
 	await Curtain.fade_in()
 	
+	Database.clear_avatar_cache()
 	%bubbleContainer.clear_modifiers()
 	%pauseIcon/text.text = "PAUSE"
 	change_mood(Actor.Type.PLAYER, Actor.Mood.NEUTRAL)
@@ -212,10 +214,10 @@ func _fade_with_round_reset() -> void:
 	
 	update_health(Actor.Type.PLAYER, HoldoutStats.playerHealthValue, true)
 	
-	await get_tree().create_timer(1).timeout
-	Curtain.fade_out()
-	
 	battleManager.prepare_opponent()
+	
+	await get_tree().create_timer(1.0).timeout
+	Curtain.fade_out()
 	
 	if HoldoutStats.numberOfWins % 2 == 1 and not HoldoutStats.replayedRound:
 		GameStats.gameMode = GameStats.Mode.MODIFIER_SELECTION

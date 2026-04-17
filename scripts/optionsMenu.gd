@@ -132,6 +132,8 @@ func _on_delete_data_button_hold_complete() -> void:
 	SaveManager.clear_main_save()
 	SaveManager.clear_holdout_save()
 	
+	GameStats.reset_all_data()
+	
 	deleteDataButton.visible = false
 
 # --- PREVIEW CARD LOGIC ---

@@ -666,6 +666,9 @@ func _pick_next_opponent() -> Actor.Avatar:
 				
 				if HoldoutStats.currentPlayer in list:
 					list.erase(HoldoutStats.currentPlayer)
+					
+				if Actor.Avatar.DUMMY in list:
+					list.erase(Actor.Avatar.DUMMY)
 				
 				list.shuffle()
 				

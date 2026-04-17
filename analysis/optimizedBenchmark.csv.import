@@ -1,0 +1,15 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://ciqti0v1x15nm"
+valid=false
+
+[deps]
+
+source_file="res://analysis/optimizedBenchmark.csv"
+
+[params]
+
+compress=true
+delimiter=0

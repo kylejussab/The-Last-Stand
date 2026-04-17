@@ -8,6 +8,19 @@ extends Node2D
 @onready var holdoutButtonContainer = $holdoutButtonContainer
 @onready var holdoutStatsContainer = $StatisticsMenu
 
+# Background sprites
+@onready var holdoutBg = $holdoutButtonContainer/Background
+@onready var holdoutFg = $holdoutButtonContainer/Foreground
+
+var startingHoldoutBackgroundPosition: Vector2
+var startingHoldoutForegroundPosition: Vector2
+
+var parallax_tween: Tween
+var is_parallax_hovered: bool = false
+
+const PARALLAX_DURATION: float = 0.6 # How long the tween takes
+const HOVER_DELAY: float = 0.1 # Delay before tweening to prevent jitter
+
 @onready var supplementText = $supplementText
 
 var currentNavigation: String = "Main"
@@ -19,15 +32,19 @@ const BACKGROUNDS = {
 
 const SUPPLEMENTTEXT = {
 	"Story": "What is the cost of doing what you believe is right?",
-	"Holdout": "A roguelite gauntlet where you overcome escalating enemies and unpredictable modifiers.\n\nYeilds: [img width=14 color=#4c4c4c]res://assets/ui/RationsIconSlim.png[/img]",
+	"Holdout": "A near-endless gauntlet where you overcome escalating enemies and unpredictable modifiers.\n\nYeilds: [img width=14 color=#4c4c4c]res://assets/ui/RationsIconSlim.png[/img]",
 	"June": "What is the cost of doing what you believe is right?",
-	"Remnants": "A tactical deck-building campaign where you lead a Faction, master card synergies, and secure territory.\n\nYeilds: [img width=14 color=#4c4c4c]res://assets/ui/RationsIconSlim.png[/img]"
+	"Remnants": "A tactical deck-building campaign where you lead a faction, master card synergies, and secure territory.\n\nYeilds: [img width=14 color=#4c4c4c]res://assets/ui/RationsIconSlim.png[/img]"
 }
 
 # Card for Accessibility Card Graphics
 var previewCard: Node2D = null
 
 func _ready() -> void:
+	startingHoldoutBackgroundPosition = holdoutBg.position
+	startingHoldoutForegroundPosition = holdoutFg.position
+	$versionNumber.hide()
+	
 	optionsMenu.options_exited.connect(_on_options_menu_exited)
 	
 	setup_button_sounds(mainButtonContainer)
@@ -36,6 +53,7 @@ func _ready() -> void:
 	
 	if GameStats.invitationAccepted:
 		$pressAnywhere.hide()
+		$versionNumber.show()
 		mainButtonContainer.show()
 		mainButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
 	else:
@@ -47,6 +65,9 @@ func _ready() -> void:
 	_show_continue_button()
 	_show_tutorial_button()
 	_show_statistics_button()
+	
+	if OS.has_feature("web"):
+		$mainButtonContainer/QuitButton.hide()
 
 func pulse_text():
 	var pulse = create_tween().set_loops()
@@ -69,6 +90,7 @@ func _input(event: InputEvent) -> void:
 		outTween.tween_property($pressAnywhere, "modulate:a", 0.0, 0.3)
 		await outTween.finished
 		$pressAnywhere.hide()
+		$versionNumber.show()
 		
 		var inTween = create_tween()
 		inTween.tween_property(mainButtonContainer, "modulate:a", 1.0, 0.3)
@@ -90,6 +112,7 @@ func _input(event: InputEvent) -> void:
 			mainButtonContainer.show()
 			mainButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
 		elif currentNavigation == "Holdout":
+			await Curtain.fade_in(0.75)
 			$pauseIcon.hide()
 			currentNavigation = "Main"
 			holdoutButtonContainer.hide()
@@ -99,6 +122,7 @@ func _input(event: InputEvent) -> void:
 			
 			mainButtonContainer.show()
 			mainButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
+			Curtain.fade_out(0.75)
 		elif currentNavigation == "HoldoutStatistics":
 			currentNavigation = "Holdout"
 			await Curtain.fade_in(0.25)
@@ -145,7 +169,6 @@ func _on_june_button_mouse_exited() -> void:
 
 func _on_june_button_pressed() -> void:
 	#GameStats.gameMode = GameStats.Mode.JUNE_RAVEL
-	#Curtain.change_scene("res://scenes/main.tscn")
 	pass
 
 func _on_holdout_button_mouse_entered() -> void:
@@ -155,6 +178,7 @@ func _on_holdout_button_mouse_exited() -> void:
 	supplementText.text = ""
 
 func _on_holdout_button_pressed() -> void:
+	await Curtain.fade_in(0.75)
 	$pauseIcon.show()
 	currentNavigation = "Holdout"
 	
@@ -163,22 +187,34 @@ func _on_holdout_button_pressed() -> void:
 	
 	holdoutButtonContainer.show()
 	holdoutButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
+	
+	await get_tree().create_timer(0.5).timeout
+	
+	Curtain.fade_out(0.75)
 
 func _on_new_button_mouse_entered() -> void:
 	$holdIcon.show()
+	_start_parallax_effect()
 
 func _on_new_button_mouse_exited() -> void:
 	$holdIcon.hide()
+	_stop_parallax_effect()
 
 func _on_new_button_hold_complete() -> void:
 	GameStats.gameMode = GameStats.Mode.HOLDOUT
 	HoldoutStats.reset_for_new_run()
 	
-	Curtain.change_scene("res://scenes/main.tscn")
+	Curtain.change_scene("res://scenes/holdoutGame.tscn")
 	
 	AudioManager.stop_music(2.5)
 	
 	AudioManager.start_background_playlist()
+
+func _on_continue_button_mouse_entered() -> void:
+	_start_parallax_effect()
+
+func _on_continue_button_mouse_exited() -> void:
+	_stop_parallax_effect()
 
 func _on_continue_button_pressed() -> void:
 	if SaveManager.has_holdout_save():
@@ -187,18 +223,18 @@ func _on_continue_button_pressed() -> void:
 		SaveManager.isLoadingSave = true 
 		GameStats.gameMode = GameStats.Mode.HOLDOUT
 		
-		Curtain.change_scene("res://scenes/main.tscn")
+		Curtain.change_scene("res://scenes/holdoutGame.tscn", 1.0, 0.75) # wait .75 seconds while the screen is black for scene load
 		AudioManager.stop_music(2.5)
 		
 		AudioManager.start_background_playlist()
 	else:
 		_play_denied_animation($holdoutButtonContainer/ContinueButton)
 
-func _on_remnants_button_mouse_entered() -> void:
-	supplementText.text = SUPPLEMENTTEXT["Remnants"]
+func _on_tutorial_button_mouse_entered() -> void:
+	_start_parallax_effect()
 
-func _on_remnants_button_mouse_exited() -> void:
-	supplementText.text = ""
+func _on_tutorial_button_mouse_exited() -> void:
+	_stop_parallax_effect()
 
 func _on_tutorial_button_pressed() -> void:
 	AudioManager.play_button_click()
@@ -206,7 +242,7 @@ func _on_tutorial_button_pressed() -> void:
 	
 	GameStats.gameMode = GameStats.Mode.HOLDOUT_TUTORIAL 
 	
-	Curtain.change_scene("res://scenes/main.tscn")
+	Curtain.change_scene("res://scenes/holdoutGame.tscn", 1.0, 0.75) # wait .75 seconds while the screen is black for scene load
 	
 	AudioManager.start_background_playlist()
 
@@ -221,6 +257,12 @@ func _on_statistics_button_pressed() -> void:
 	holdoutStatsContainer.show()
 	
 	Curtain.fade_out(0.25)
+
+func _on_remnants_button_mouse_entered() -> void:
+	supplementText.text = SUPPLEMENTTEXT["Remnants"]
+
+func _on_remnants_button_mouse_exited() -> void:
+	supplementText.text = ""
 
 func _on_remnants_button_pressed() -> void:
 	_play_denied_animation($mainButtonContainer/RemnantsButton)
@@ -289,15 +331,53 @@ func _show_tutorial_button() -> void:
 func _show_statistics_button() -> void:
 	%StatisticsButton.visible = false
 	%StatisticsButton.disabled = true
-	
+
 	if SaveManager.has_main_save():
 		var saveData = SaveManager.load_main_state()
 		var modifierCounts = saveData.get("holdoutModifierUses", {})
 		
-		if modifierCounts.size() >= 3:
+		var actuallyUsedCount = 0
+		for modKey in modifierCounts:
+			if modifierCounts[modKey] > 0:
+				actuallyUsedCount += 1
+
+		if actuallyUsedCount >= 3:
 			%StatisticsButton.visible = true
 			%StatisticsButton.disabled = false
 
+func _start_parallax_effect() -> void:
+	is_parallax_hovered = true
+	
+	await get_tree().create_timer(HOVER_DELAY).timeout
+	
+	if not is_parallax_hovered:
+		return
+		
+	if parallax_tween and parallax_tween.is_valid():
+		parallax_tween.kill()
+		
+	parallax_tween = create_tween().set_parallel(true)
+	parallax_tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	
+	parallax_tween.tween_property(holdoutBg, "position:x", 1050, PARALLAX_DURATION)
+	parallax_tween.tween_property(holdoutFg, "position:x", 880, PARALLAX_DURATION)
+
+func _stop_parallax_effect() -> void:
+	is_parallax_hovered = false
+	
+	await get_tree().create_timer(HOVER_DELAY).timeout
+	
+	if is_parallax_hovered:
+		return
+		
+	if parallax_tween and parallax_tween.is_valid():
+		parallax_tween.kill()
+		
+	parallax_tween = create_tween().set_parallel(true)
+	parallax_tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	
+	parallax_tween.tween_property(holdoutBg, "position:x", startingHoldoutBackgroundPosition.x, PARALLAX_DURATION)
+	parallax_tween.tween_property(holdoutFg, "position:x", startingHoldoutForegroundPosition.x, PARALLAX_DURATION)
 
 func _update_stats_screen() -> void:
 	var saveData = SaveManager.load_main_state()

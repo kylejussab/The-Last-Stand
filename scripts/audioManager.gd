@@ -168,7 +168,7 @@ func stop_music(fadeTime: float = 2.0) -> void:
 	music2.stop()
 
 func _transition_to_track(pathLayer1: String, pathLayer2: String, maxVolume1: float = 0.0, maxVolume2: float = 0.0, fadeTime: float = 1.5) -> void:
-	if not FileAccess.file_exists(pathLayer1) or not FileAccess.file_exists(pathLayer2):
+	if not ResourceLoader.exists(pathLayer1) or not ResourceLoader.exists(pathLayer2):
 		return
 	
 	var streamLayer1 = load(pathLayer1)
@@ -247,7 +247,7 @@ func start_background_playlist(playlist: Array = suspenseBackground, targetVolum
 func _play_current_background_track(fadeTime: float = 0.0) -> void:
 	var track_path = current_playlist[current_playlist_index]
 	
-	if not FileAccess.file_exists(track_path):
+	if not ResourceLoader.exists(track_path):
 		push_error("Audio file not found: " + track_path)
 		return
 	
