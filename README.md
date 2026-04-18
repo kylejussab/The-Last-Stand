@@ -1,6 +1,6 @@
 **Current Version:** `v0.4.0` (Core Systems Integration)
 
-<img width="5335" height="1780" alt="Last Stand Banner" src="https://github.com/user-attachments/assets/07732bec-68d5-4e32-acb5-a529d0c1e090" />
+<img width="5335" alt="Last Stand Banner" src="https://github.com/user-attachments/assets/07732bec-68d5-4e32-acb5-a529d0c1e090" />
 
 A fan-made card game inspired by 'The Last of Us'.
 <br>
@@ -14,9 +14,9 @@ This project is **not for sale** and is **not affiliated with or endorsed by Son
 
 ![80Prdw](https://github.com/user-attachments/assets/66267246-0671-435e-9c80-b2668cb896f0)
 
-<img width="3215" height="1809" alt="jemuc0" src="https://github.com/user-attachments/assets/d57db330-8e6b-42a8-8431-4003542e86ad" />
+<img width="3215" alt="jemuc0" src="https://github.com/user-attachments/assets/d57db330-8e6b-42a8-8431-4003542e86ad" />
 
-<img width="3215" height="1809" alt="71cS1m" src="https://github.com/user-attachments/assets/65efe562-fea2-4ace-a59b-1866f0f54d8a" />
+<img width="3215" alt="71cS1m" src="https://github.com/user-attachments/assets/65efe562-fea2-4ace-a59b-1866f0f54d8a" />
 
 ## Roadmap
 - [x] **v0.1: Initial Setup** - Basic mechanics and card spawning.
