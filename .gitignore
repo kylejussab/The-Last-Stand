@@ -50,4 +50,4 @@ assets/sounds/music/The Perilous Path/
 assets/sounds/music/The Perilous Path/*.import
 
 # Ignore working files
-working files/
+docs/
