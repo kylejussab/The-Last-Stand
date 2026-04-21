@@ -43,7 +43,7 @@ func draw_opponent_card():
 	AudioManager.play_random_card_draw()
 	
 	# This if statement hides and shows the cards (In place for now, for debugging)
-	if $"../battleManager".showOpponentsCards:
+	if %battleManager.showOpponentsCards:
 		newCard.get_node("AnimationPlayer").play("cardFlip")
 	else:
 		newCard.get_node("image").visible = false

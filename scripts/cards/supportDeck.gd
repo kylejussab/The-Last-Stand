@@ -40,7 +40,7 @@ func draw_opponent_card():
 	$"../opponentHand".add_card_to_hand(newCard, CARD_DRAW_SPEED)
 	AudioManager.play_random_card_draw()
 	
-	if $"../battleManager".showOpponentsCards:
+	if %battleManager.showOpponentsCards:
 		newCard.get_node("AnimationPlayer").play("cardFlip")
 	else:
 		newCard.get_node("image").visible = false
