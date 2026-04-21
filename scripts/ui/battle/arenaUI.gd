@@ -71,7 +71,7 @@ func setup_avatar(avatar: Actor.Avatar, type: Actor.Type) -> void:
 	headNode.get_node("happy").texture = Database.get_avatar_head_texture(basePath + "Happy.png")
 	
 	if type == Actor.Type.OPPONENT:
-		$image.texture = Database.get_avatar_head_texture("%s%sArena.png" % [data.arenaPath, data.name.get_slice(" ", 0)])
+		$background/static/image.texture = Database.get_avatar_head_texture("%s%sArena.png" % [data.arenaPath, data.name.get_slice(" ", 0)])
 
 func change_mood(who: Actor.Type, mood: Actor.Mood) -> void:
 	if not is_node_ready():

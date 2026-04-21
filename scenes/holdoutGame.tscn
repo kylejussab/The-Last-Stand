@@ -1,4 +1,4 @@
-[gd_scene load_steps=127 format=3 uid="uid://dgb52shq4jcyg"]
+[gd_scene load_steps=134 format=3 uid="uid://dgb52shq4jcyg"]
 
 [ext_resource type="Script" uid="uid://dgl6h7ryesfn8" path="res://scripts/battle/cardManager.gd" id="1_0wfyh"]
 [ext_resource type="Script" uid="uid://c3p2rmoacsirj" path="res://scripts/core/inputManager.gd" id="1_o6xl0"]
@@ -27,7 +27,13 @@
 [ext_resource type="Texture2D" uid="uid://crwpvlesiqi0o" path="res://assets/arenaHeads/JuneThinking.png" id="17_jscy8"]
 [ext_resource type="Script" uid="uid://cwakiodvp7ji5" path="res://scripts/ui/battle/viewDeck.gd" id="18_j2jfr"]
 [ext_resource type="Texture2D" uid="uid://d2oxvh8kvsjse" path="res://assets/arenaHeads/JuneHappy.png" id="18_pm3ni"]
+[ext_resource type="Texture2D" uid="uid://bbnk86v0eu3u3" path="res://assets/arenas/DiscardCardSlot.png" id="21_isbj4"]
 [ext_resource type="Texture2D" uid="uid://dxbmvsoua68c4" path="res://assets/ui/GameOverOverlay.png" id="22_jscy8"]
+[ext_resource type="Texture2D" uid="uid://bhqmjvh2qnbys" path="res://assets/arenas/BlankCardSlot.png" id="22_nmj0o"]
+[ext_resource type="Texture2D" uid="uid://8hw6od81twwb" path="res://assets/arenas/SupportCardSlot.png" id="23_omfyk"]
+[ext_resource type="Texture2D" uid="uid://c6lrinhn8btly" path="res://assets/arenas/CharacterCardSlot.png" id="24_q0l3x"]
+[ext_resource type="Texture2D" uid="uid://d4ge0yb1rledw" path="res://assets/arenas/HeadCircle.png" id="25_omfyk"]
+[ext_resource type="Texture2D" uid="uid://ct3dvs5fypuo1" path="res://assets/arenas/HeartIcon.png" id="26_q0l3x"]
 [ext_resource type="PackedScene" uid="uid://chb4j7220yip1" path="res://scenes/holdoutIntro.tscn" id="29_chjal"]
 [ext_resource type="Script" uid="uid://cut6aandi16ab" path="res://scripts/battle/modifierBubbleManager.gd" id="30_5he1u"]
 [ext_resource type="Texture2D" uid="uid://d1kqrakc80shv" path="res://assets/ui/RationsIcon.png" id="30_chjal"]
@@ -54,6 +60,11 @@ bg_color = Color(0, 0, 0, 1)
 bg_color = Color(0, 0, 0, 1)
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0bq0b"]
+bg_color = Color(0, 0, 0, 0.49803922)
+corner_radius_top_left = 10
+corner_radius_bottom_left = 10
 
 [sub_resource type="FontVariation" id="FontVariation_c6pm6"]
 base_font = ExtResource("13_a8y0u")
@@ -1886,10 +1897,97 @@ unique_name_in_owner = true
 z_index = -99
 script = ExtResource("16_2f3dj")
 
-[node name="image" type="Sprite2D" parent="arena"]
+[node name="background" type="Control" parent="arena"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+
+[node name="static" type="Control" parent="arena/background"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+
+[node name="image" type="Sprite2D" parent="arena/background/static"]
 position = Vector2(960, 540)
 scale = Vector2(0.24000001, 0.24000001)
 texture = ExtResource("15_yc10j")
+
+[node name="discardSlot" type="Sprite2D" parent="arena/background/static"]
+position = Vector2(132, 292)
+scale = Vector2(0.24000001, 0.24000001)
+texture = ExtResource("21_isbj4")
+
+[node name="supportDeckSlot" type="Sprite2D" parent="arena/background/static"]
+position = Vector2(132, 535.5)
+scale = Vector2(0.24000001, 0.24000001)
+texture = ExtResource("22_nmj0o")
+
+[node name="characterDeckSlot" type="Sprite2D" parent="arena/background/static"]
+position = Vector2(132, 779)
+scale = Vector2(0.24000001, 0.24000001)
+texture = ExtResource("22_nmj0o")
+
+[node name="opponentCharacterSlot" type="Sprite2D" parent="arena/background/static"]
+position = Vector2(1094.5, 455)
+scale = Vector2(0.24000001, 0.24000001)
+texture = ExtResource("22_nmj0o")
+
+[node name="opponentSupportSlot" type="Sprite2D" parent="arena/background/static"]
+position = Vector2(1300.5, 455)
+scale = Vector2(0.24000001, 0.24000001)
+texture = ExtResource("22_nmj0o")
+
+[node name="playerSupportSlot" type="Sprite2D" parent="arena/background/static"]
+position = Vector2(619, 455)
+scale = Vector2(0.24000001, 0.24000001)
+texture = ExtResource("23_omfyk")
+
+[node name="playerCharacterSlot" type="Sprite2D" parent="arena/background/static"]
+position = Vector2(825, 455)
+scale = Vector2(0.24000001, 0.24000001)
+texture = ExtResource("24_q0l3x")
+
+[node name="headsOverlay" type="Panel" parent="arena/background"]
+layout_mode = 0
+offset_left = 1657.0
+offset_top = 177.0
+offset_right = 1920.0
+offset_bottom = 753.0
+pivot_offset = Vector2(131.5, 288)
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_0bq0b")
+
+[node name="opponentHeadCircle" type="Sprite2D" parent="arena/background"]
+position = Vector2(1787, 272)
+scale = Vector2(0.24000001, 0.24000001)
+texture = ExtResource("25_omfyk")
+
+[node name="playerHeadCircle" type="Sprite2D" parent="arena/background"]
+position = Vector2(1792, 657)
+scale = Vector2(0.24000001, 0.24000001)
+texture = ExtResource("25_omfyk")
+
+[node name="opponentHeart" type="Sprite2D" parent="arena/background"]
+position = Vector2(1870, 416)
+scale = Vector2(0.24000001, 0.24000001)
+texture = ExtResource("26_q0l3x")
+
+[node name="playerHeart" type="Sprite2D" parent="arena/background"]
+position = Vector2(1870, 561)
+scale = Vector2(0.24000001, 0.24000001)
+texture = ExtResource("26_q0l3x")
+
+[node name="divider" type="ColorRect" parent="arena/background"]
+layout_mode = 0
+offset_left = 1701.0
+offset_top = 464.0
+offset_right = 1876.0
+offset_bottom = 466.0
+pivot_offset = Vector2(87.5, 1)
+mouse_filter = 2
 
 [node name="opponent" type="Node2D" parent="arena"]
 
