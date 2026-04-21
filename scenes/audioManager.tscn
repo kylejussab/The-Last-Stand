@@ -1,7 +1,7 @@
 [gd_scene load_steps=14 format=3 uid="uid://c5nsbseki1g1a"]
 
 [ext_resource type="AudioStream" uid="uid://dy7mjokw0gggp" path="res://assets/sounds/ui/damage.wav" id="1_tv3ta"]
-[ext_resource type="Script" uid="uid://chucmh2mqp136" path="res://scripts/audioManager.gd" id="1_twrc3"]
+[ext_resource type="Script" uid="uid://chucmh2mqp136" path="res://scripts/core/audioManager.gd" id="1_twrc3"]
 [ext_resource type="AudioStream" uid="uid://b2sa8g17hxiwa" path="res://assets/sounds/cards/hover.wav" id="2_twrc3"]
 [ext_resource type="AudioStream" uid="uid://cdqholmjoftew" path="res://assets/sounds/cards/lock.wav" id="3_6x1q5"]
 [ext_resource type="AudioStream" uid="uid://bams0u5k7sdgr" path="res://assets/sounds/ui/buttonClick.wav" id="4_rmmm8"]

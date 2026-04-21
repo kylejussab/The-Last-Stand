@@ -14,7 +14,7 @@ var cardDatabaseReference
 
 func _ready() -> void:
 	$RichTextLabel.text = str(deck.size())
-	cardDatabaseReference = preload("res://scripts/database.gd")
+	cardDatabaseReference = preload("res://scripts/core/database.gd")
 
 func draw_card() -> Tween:
 	var cardDrawn = deck[0]

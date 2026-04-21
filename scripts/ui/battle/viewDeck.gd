@@ -10,7 +10,7 @@ const HEADER_FONT_PATH = "res://assets/fonts/SF-Pro-Display-Black.otf"
 const SUBHEADER_FONT_PATH = "res://assets/fonts/SF-Pro-Display-Semibold.otf"
 
 @onready var contentContainer = $viewPanel/ScrollContainer/VBoxContainer
-@onready var cardDatabase = preload("res://scripts/database.gd")
+@onready var cardDatabase = preload("res://scripts/core/database.gd")
 
 @onready var soundPlayer = $AudioStreamPlayer2D
 

@@ -23,11 +23,11 @@ config/windows_native_icon="res://assets/mainMenu/AppIconWindows.ico"
 [autoload]
 
 Curtain="*res://scenes/curtain.tscn"
-GameStats="*res://scripts/gameStats.gd"
-Database="*res://scripts/database.gd"
-AccessibilityData="*res://scripts/accessibilityData.gd"
+GameStats="*res://scripts/core/gameStats.gd"
+Database="*res://scripts/core/database.gd"
+AccessibilityData="*res://scripts/core/accessibilityData.gd"
 AudioManager="*res://scenes/audioManager.tscn"
-SaveManager="*res://scripts/saveManager.gd"
+SaveManager="*res://scripts/core/saveManager.gd"
 
 [display]
 

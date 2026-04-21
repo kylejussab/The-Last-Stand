@@ -1,6 +1,6 @@
 [gd_scene load_steps=22 format=3 uid="uid://bn88i42vic2bw"]
 
-[ext_resource type="Script" uid="uid://df6vntpyt6v25" path="res://scripts/opponentCard.gd" id="1_6ngam"]
+[ext_resource type="Script" uid="uid://df6vntpyt6v25" path="res://scripts/cards/opponentCard.gd" id="1_6ngam"]
 [ext_resource type="Texture2D" uid="uid://cbgv0l1d6fl7k" path="res://assets/cards/CardBackBlank.png" id="2_4jfu0"]
 [ext_resource type="Texture2D" uid="uid://xm6j3gsou8ve" path="res://assets/cards/ExampleCard.png" id="3_3qk15"]
 [ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://assets/fonts/SF-Pro-Display-Black.otf" id="4_3qk15"]

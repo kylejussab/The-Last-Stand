@@ -1,18 +1,19 @@
-[gd_scene load_steps=127 format=3 uid="uid://dgb52shq4jcyg"]
+[gd_scene load_steps=128 format=3 uid="uid://dgb52shq4jcyg"]
 
-[ext_resource type="Script" uid="uid://dgl6h7ryesfn8" path="res://scripts/cardManager.gd" id="1_0wfyh"]
-[ext_resource type="Script" uid="uid://c3p2rmoacsirj" path="res://scripts/inputManager.gd" id="1_o6xl0"]
-[ext_resource type="Script" uid="uid://dfohy7ltt78s3" path="res://scripts/gameStats.gd" id="1_vxglm"]
+[ext_resource type="Script" uid="uid://dgl6h7ryesfn8" path="res://scripts/battle/cardManager.gd" id="1_0wfyh"]
+[ext_resource type="Script" uid="uid://c3p2rmoacsirj" path="res://scripts/core/inputManager.gd" id="1_o6xl0"]
+[ext_resource type="Script" uid="uid://dfohy7ltt78s3" path="res://scripts/core/gameStats.gd" id="1_vxglm"]
 [ext_resource type="PackedScene" uid="uid://ekswpxuouhg1" path="res://scenes/cardSlot.tscn" id="3_sugp2"]
-[ext_resource type="Script" uid="uid://g2x8dqt8pa4f" path="res://scripts/characterCardSlot.gd" id="4_jyhfs"]
-[ext_resource type="Script" uid="uid://c3df834vnm13g" path="res://scripts/supportCardSlot.gd" id="4_tipki"]
-[ext_resource type="Script" uid="uid://do1wqhx54kv7s" path="res://scripts/playerHand.gd" id="5_tbgi4"]
-[ext_resource type="Script" uid="uid://b0yx32b2u0wb1" path="res://scripts/characterDeck.gd" id="5_tefeu"]
-[ext_resource type="Script" uid="uid://bbvc5mqkkiqnw" path="res://scripts/holdoutEndScreenAnimator.gd" id="5_yq6so"]
+[ext_resource type="Script" uid="uid://g2x8dqt8pa4f" path="res://scripts/cards/characterCardSlot.gd" id="4_jyhfs"]
+[ext_resource type="Script" uid="uid://c3df834vnm13g" path="res://scripts/cards/supportCardSlot.gd" id="4_tipki"]
+[ext_resource type="Script" path="res://scripts/modes/holdout/endScreenAnimator.gd" id="5_kixxj"]
+[ext_resource type="Script" uid="uid://do1wqhx54kv7s" path="res://scripts/cards/playerHand.gd" id="5_tbgi4"]
+[ext_resource type="Script" uid="uid://b0yx32b2u0wb1" path="res://scripts/cards/characterDeck.gd" id="5_tefeu"]
+[ext_resource type="Script" path="res://scripts/modes/holdout/endScreenAnimator.gd" id="5_yq6so"]
 [ext_resource type="PackedScene" uid="uid://cedct6rr8lclv" path="res://scenes/opponentCardSlot.tscn" id="6_85g3d"]
-[ext_resource type="Script" uid="uid://dwr382qynby8f" path="res://scripts/battleManager.gd" id="10_choun"]
-[ext_resource type="Script" uid="uid://conm4253y3tth" path="res://scripts/oppponentHand.gd" id="11_ya4ey"]
-[ext_resource type="Script" uid="uid://che0dt2kvp0wy" path="res://scripts/supportDeck.gd" id="12_eb6dy"]
+[ext_resource type="Script" uid="uid://dwr382qynby8f" path="res://scripts/battle/battleManager.gd" id="10_choun"]
+[ext_resource type="Script" uid="uid://conm4253y3tth" path="res://scripts/cards/oppponentHand.gd" id="11_ya4ey"]
+[ext_resource type="Script" uid="uid://che0dt2kvp0wy" path="res://scripts/cards/supportDeck.gd" id="12_eb6dy"]
 [ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://assets/fonts/SF-Pro-Display-Black.otf" id="13_a8y0u"]
 [ext_resource type="Texture2D" uid="uid://brrupu340jnfx" path="res://assets/cards/DeckBack.png" id="13_ty1g6"]
 [ext_resource type="Texture2D" uid="uid://codfjgt3u16vl" path="res://assets/cards/DeckCharacterText.png" id="14_j2jfr"]
@@ -20,26 +21,26 @@
 [ext_resource type="Texture2D" uid="uid://xni81jo33g8f" path="res://assets/arenaHeads/JuneNeutral.png" id="15_gqmmt"]
 [ext_resource type="FontFile" uid="uid://di1dchl37cfhu" path="res://assets/fonts/SF-Pro-Display-Semibold.otf" id="15_jkv2x"]
 [ext_resource type="Texture2D" uid="uid://cc4u4mqtyb8xx" path="res://assets/arenas/EthanArena.png" id="15_yc10j"]
-[ext_resource type="Script" uid="uid://buunfomhxxyfm" path="res://scripts/arenaUI.gd" id="16_2f3dj"]
+[ext_resource type="Script" uid="uid://buunfomhxxyfm" path="res://scripts/ui/battle/arenaUI.gd" id="16_2f3dj"]
 [ext_resource type="Texture2D" uid="uid://dgqjpfbqq0f4p" path="res://assets/arenas/ActiveIndicator.png" id="16_muem4"]
 [ext_resource type="Texture2D" uid="uid://bpqj5m7tiyln" path="res://assets/arenaHeads/JuneHurt.png" id="16_yc10j"]
 [ext_resource type="Texture2D" uid="uid://bp72tjgvjowxr" path="res://assets/cards/DeckSupportText.png" id="17_bu4jf"]
 [ext_resource type="Texture2D" uid="uid://crwpvlesiqi0o" path="res://assets/arenaHeads/JuneThinking.png" id="17_jscy8"]
-[ext_resource type="Script" uid="uid://cwakiodvp7ji5" path="res://scripts/viewDeck.gd" id="18_j2jfr"]
+[ext_resource type="Script" uid="uid://cwakiodvp7ji5" path="res://scripts/ui/battle/viewDeck.gd" id="18_j2jfr"]
 [ext_resource type="Texture2D" uid="uid://d2oxvh8kvsjse" path="res://assets/arenaHeads/JuneHappy.png" id="18_pm3ni"]
 [ext_resource type="Texture2D" uid="uid://dxbmvsoua68c4" path="res://assets/ui/GameOverOverlay.png" id="22_jscy8"]
 [ext_resource type="PackedScene" uid="uid://chb4j7220yip1" path="res://scenes/holdoutIntro.tscn" id="29_chjal"]
-[ext_resource type="Script" uid="uid://cut6aandi16ab" path="res://scripts/modifierBubbleManager.gd" id="30_5he1u"]
+[ext_resource type="Script" uid="uid://cut6aandi16ab" path="res://scripts/battle/modifierBubbleManager.gd" id="30_5he1u"]
 [ext_resource type="Texture2D" uid="uid://d1kqrakc80shv" path="res://assets/ui/RationsIcon.png" id="30_chjal"]
-[ext_resource type="Script" uid="uid://c50sxxmg3g1sv" path="res://scripts/pauseMenu.gd" id="30_fv21b"]
+[ext_resource type="Script" uid="uid://c50sxxmg3g1sv" path="res://scripts/ui/menus/pauseMenu.gd" id="30_fv21b"]
 [ext_resource type="Texture2D" uid="uid://be0aihjd72rmo" path="res://assets/ui/RightClickIcon.png" id="31_tel4y"]
 [ext_resource type="Texture2D" uid="uid://bnpmhfal8dvvl" path="res://assets/holdout/Jackson.png" id="31_vchkt"]
 [ext_resource type="Texture2D" uid="uid://bg2k5b4lwvhxc" path="res://assets/holdout/rank/F.png" id="32_txyw0"]
-[ext_resource type="Script" uid="uid://y7ghvyxu3whm" path="res://scripts/modifierUI.gd" id="33_j8jky"]
+[ext_resource type="Script" uid="uid://y7ghvyxu3whm" path="res://scripts/ui/battle/modifierUI.gd" id="33_j8jky"]
 [ext_resource type="Texture2D" uid="uid://ou4fpjcaxryp" path="res://assets/holdout/Badge Outline.png" id="33_txyw0"]
 [ext_resource type="Texture2D" uid="uid://mostfhsgyv4f" path="res://assets/modifiers/SlotInActive.png" id="34_kmb1v"]
-[ext_resource type="Script" uid="uid://b6tvg1kiq1u2l" path="res://scripts/holdButton.gd" id="34_vc5cj"]
-[ext_resource type="Script" uid="uid://cips7jy6yjg6s" path="res://scripts/slotReel.gd" id="35_fuf3a"]
+[ext_resource type="Script" uid="uid://b6tvg1kiq1u2l" path="res://scripts/ui/elements/holdButton.gd" id="34_vc5cj"]
+[ext_resource type="Script" uid="uid://cips7jy6yjg6s" path="res://scripts/battle/slotReel.gd" id="35_fuf3a"]
 [ext_resource type="Texture2D" uid="uid://3bjo3ij5b8q8" path="res://assets/ui/HoldRing.png" id="35_nvyfr"]
 [ext_resource type="PackedScene" uid="uid://c0yhtjyqj8lpa" path="res://scenes/optionsMenu.tscn" id="38_vc5cj"]
 [ext_resource type="Texture2D" uid="uid://cw3snkugbg01q" path="res://assets/ui/Lock.png" id="40_bjg73"]
@@ -997,6 +998,74 @@ tracks/7/keys = {
 "values": [Vector2(770, 910), Vector2(770, 910), Vector2(770, 930)]
 }
 
+[sub_resource type="Animation" id="Animation_bu4jf"]
+resource_name = "showButtonsTutorial"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("NewRunButton:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MainMenuButton:self_modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("NewRunButton:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(235, 400), Vector2(235, 420)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("MainMenuButton:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(235, 470), Vector2(235, 470), Vector2(235, 470)]
+}
+
+[sub_resource type="Animation" id="Animation_o7ddy"]
+resource_name = "showLineTutorial"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("line:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1.5, 1),
+"update": 0,
+"values": [Vector2(1e-05, 1), Vector2(1, 1)]
+}
+
 [sub_resource type="Animation" id="Animation_vchkt"]
 resource_name = "showOverview"
 length = 0.5
@@ -1143,74 +1212,6 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
-}
-
-[sub_resource type="Animation" id="Animation_bu4jf"]
-resource_name = "showButtonsTutorial"
-length = 0.8
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("NewRunButton:self_modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.4),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("MainMenuButton:self_modulate")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.4, 0.8),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("NewRunButton:position")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.4),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(235, 400), Vector2(235, 420)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("MainMenuButton:position")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.4, 0.8),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector2(235, 470), Vector2(235, 470), Vector2(235, 470)]
-}
-
-[sub_resource type="Animation" id="Animation_o7ddy"]
-resource_name = "showLineTutorial"
-length = 0.3
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("line:scale")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.3),
-"transitions": PackedFloat32Array(1.5, 1),
-"update": 0,
-"values": [Vector2(1e-05, 1), Vector2(1, 1)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_vc5cj"]
@@ -1723,7 +1724,7 @@ script = ExtResource("10_choun")
 
 [node name="holdoutEndScreenAnimator" type="Node" parent="battleManager"]
 unique_name_in_owner = true
-script = ExtResource("5_yq6so")
+script = ExtResource("5_kixxj")
 
 [node name="battleTimer" type="Timer" parent="."]
 one_shot = true
