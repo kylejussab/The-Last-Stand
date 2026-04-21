@@ -109,7 +109,7 @@ func _create_card_instance(cardKey: String, scenePath: String, isPlayer: bool = 
 	if data.size() > 5:
 		newCard.perkDescription = data[5]
 	
-	if %battleManager.loudNoiseActive and "Stealthy" in newCard.role and isPlayer:
+	if %battleManager.battleEngine.has_modifier(Database.Modifier.LOUD_NOISE) and "Stealthy" in newCard.role and isPlayer:
 		var roles = Array(newCard.role.split("/"))
 		
 		roles.erase("Stealthy")
@@ -119,12 +119,12 @@ func _create_card_instance(cardKey: String, scenePath: String, isPlayer: bool = 
 		
 		roles.sort()
 		newCard.role = "/".join(roles)
-	if %battleManager.loudNoiseActive and "Aggressive" in newCard.role and isPlayer:
+	if %battleManager.battleEngine.has_modifier(Database.Modifier.LOUD_NOISE) and "Aggressive" in newCard.role and isPlayer:
 		newCard.value -= 1
 	
-	if %battleManager.noDefenseActive and "Defensive" in newCard.role and isPlayer:
+	if %battleManager.battleEngine.has_modifier(Database.Modifier.NO_DEFENSE) and "Defensive" in newCard.role and isPlayer:
 		newCard.value = 0
-	if %battleManager.loneWolfActive and isPlayer:
+	if%battleManager.battleEngine.has_modifier(Database.Modifier.LONE_WOLF) and isPlayer:
 		newCard.value *= 1.5
 	
 	newCard.get_node("value").text = str(newCard.value)

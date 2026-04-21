@@ -8,7 +8,7 @@
 [ext_resource type="Script" uid="uid://c3df834vnm13g" path="res://scripts/cards/supportCardSlot.gd" id="4_tipki"]
 [ext_resource type="Script" uid="uid://do1wqhx54kv7s" path="res://scripts/cards/playerHand.gd" id="5_tbgi4"]
 [ext_resource type="Script" uid="uid://b0yx32b2u0wb1" path="res://scripts/cards/characterDeck.gd" id="5_tefeu"]
-[ext_resource type="Script" path="res://scripts/modes/holdout/endScreenAnimator.gd" id="5_yq6so"]
+[ext_resource type="Script" uid="uid://bbvc5mqkkiqnw" path="res://scripts/modes/holdout/endScreenAnimator.gd" id="5_yq6so"]
 [ext_resource type="PackedScene" uid="uid://cedct6rr8lclv" path="res://scenes/opponentCardSlot.tscn" id="6_85g3d"]
 [ext_resource type="Script" uid="uid://dwr382qynby8f" path="res://scripts/modes/holdout/holdoutBattle.gd" id="10_choun"]
 [ext_resource type="Script" uid="uid://conm4253y3tth" path="res://scripts/cards/oppponentHand.gd" id="11_ya4ey"]
