@@ -424,12 +424,12 @@ func _start_new_round() -> void:
 	_save_round_checkpoint()
 
 func _on_end_turn_button_pressed() -> void:
-	if isTutorialActive and (tutorialStep == 4 or tutorialStep == 5 or tutorialStep == 6):
+	if isTutorialActive and (battleEngine.tutorialStep == 4 or battleEngine.tutorialStep == 5 or battleEngine.tutorialStep == 6):
 		return
 	
 	ui.show_end_turn_button(false)
 	
-	if tutorialStep == 2:
+	if battleEngine.tutorialStep == 2:
 		tutorialAnimationPlayer.play_backwards("show_tutorial_box")
 		await tutorialAnimationPlayer.animation_finished
 	
@@ -905,7 +905,7 @@ func _apply_guerrilla_tactics_restrictions() -> void:
 		if card.type == "Character":
 			card.canBePlayed = true
 	
-	if not battleEngine.has_modifier(Database.Modifier.GUERRILLA_TACTICS) or battleEngine.previous_round_faction == "":
+	if not battleEngine.has_modifier(Database.Modifier.GUERRILLA_TACTICS) or battleEngine.previousRoundFaction == "":
 		for card in playerHand:
 			if card.type == "Character":
 				_animate_card_unlock(card)
@@ -1187,69 +1187,69 @@ func _load_game_from_snapshot() -> void:
 		ui.change_mood(Actor.Type.PLAYER, Actor.Mood.NEUTRAL)
 		_execute_opponent_character_play()
 
-func _rebuild_cards_from_save(saved_card_array: Array, hand_node: Node) -> void:
-	var is_opponent = (hand_node == %opponentHand)
+func _rebuild_cards_from_save(savedCardArray: Array, handNode: Node) -> void:
+	var isOpponent = (handNode == %opponentHand)
 	
-	for saved_card in saved_card_array:
-		var new_card = _spawn_single_card(saved_card, is_opponent)
+	for savedCard in savedCardArray:
+		var newCard = _spawn_single_card(savedCard, isOpponent)
 		
-		new_card.position = Vector2(hand_node.centerScreenX, hand_node.HAND_Y_POSITION)
+		newCard.position = Vector2(handNode.centerScreenX, handNode.HAND_Y_POSITION)
 		
-		$"../cardManager".add_child(new_card)
+		$"../cardManager".add_child(newCard)
 		
-		hand_node.add_card_to_hand(new_card, 0.0)
+		handNode.add_card_to_hand(newCard, 0.0)
 
-func _spawn_single_card(card_data: Dictionary, is_opponent: bool = false) -> Node2D:
-	var new_card
-	if is_opponent:
-		new_card = opponentCardScene.instantiate()
+func _spawn_single_card(cardData: Dictionary, isOpponent: bool = false) -> Node2D:
+	var newCard
+	if isOpponent:
+		newCard = opponentCardScene.instantiate()
 	else:
-		new_card = playerCardScene.instantiate()
+		newCard = playerCardScene.instantiate()
 	
-	var key = card_data["cardKey"]
-	new_card.cardKey = key
+	var key = cardData["cardKey"]
+	newCard.cardKey = key
 	
 	if Database.CHARACTERS.has(key):
-		var char_data = Database.CHARACTERS[key]
-		new_card.type = char_data[1]
-		new_card.faction = char_data[2]
-		new_card.role = char_data[3]
-		new_card.nameText = char_data[4]
-		if char_data.size() > 5:
-			new_card.perkDescription = char_data[5]
+		var characterData = Database.CHARACTERS[key]
+		newCard.type = characterData[1]
+		newCard.faction = characterData[2]
+		newCard.role = characterData[3]
+		newCard.nameText = characterData[4]
+		if characterData.size() > 5:
+			newCard.perkDescription = characterData[5]
 		
-		new_card.canBePlayed = true
+		newCard.canBePlayed = true
 		
 	elif Database.SUPPORTS.has(key):
-		var supp_data = Database.SUPPORTS[key]
-		new_card.type = supp_data[1]
-		new_card.faction = "Support" 
-		new_card.role = supp_data[2]
-		new_card.nameText = supp_data[4]
-		if supp_data.size() > 5:
-			new_card.perkDescription = supp_data[5]
+		var supportData = Database.SUPPORTS[key]
+		newCard.type = supportData[1]
+		newCard.faction = "Support" 
+		newCard.role = supportData[2]
+		newCard.nameText = supportData[4]
+		if supportData.size() > 5:
+			newCard.perkDescription = supportData[5]
 		
-		new_card.canBePlayed = false
+		newCard.canBePlayed = false
 		
 	if Database.PERKS.has(key):
-		var perk_script = load(Database.PERKS[key])
-		if perk_script:
-			new_card.perk = perk_script.new()
+		var perkScript = load(Database.PERKS[key])
+		if perkScript:
+			newCard.perk = perkScript.new()
 
-	new_card.value = card_data["value"]
+	newCard.value = cardData["value"]
 	
-	if card_data.has("role"):
-		new_card.role = card_data["role"]
+	if cardData.has("role"):
+		newCard.role = cardData["role"]
 	
-	new_card.update_visuals()
+	newCard.update_visuals()
 	
-	if is_opponent and not showOpponentsCards:
-		if new_card.has_node("image"): 
-			new_card.get_node("image").visible = false
-		if new_card.has_node("imageBack"): 
-			new_card.get_node("imageBack").visible = true
+	if isOpponent and not showOpponentsCards:
+		if newCard.has_node("image"): 
+			newCard.get_node("image").visible = false
+		if newCard.has_node("imageBack"): 
+			newCard.get_node("imageBack").visible = true
 	
-	return new_card
+	return newCard
 
 func _on_corrupt_start_new_run_button_pressed() -> void:
 	var tween = create_tween()
@@ -1264,13 +1264,12 @@ func _on_corrupt_start_new_run_button_pressed() -> void:
 var isTutorialRun: bool = false
 var isTutorialActive: bool = false
 var arePerksActiveInTutorial: bool = false
-var tutorialStep: int = 0
 @onready var tutorialAnimationPlayer = $"../arena/tutorialBox/AnimationPlayer"
 
 func start_tutorial() -> void:
 	isTutorialRun = true
 	isTutorialActive = true
-	tutorialStep = 1
+	battleEngine.set_tutorial_step(1)
 	
 	HoldoutStats.currentOpponent = Actor.Avatar.DUMMY 
 	_initialize_opponent(HoldoutStats.currentPlayer, HoldoutStats.currentOpponent)
@@ -1280,15 +1279,13 @@ func start_tutorial() -> void:
 	$"../characterDeck".deck = Database.tutorialCharacterDeck.duplicate()
 	$"../supportDeck".deck = Database.tutorialSupportDeck.duplicate()
 	
-	battleEngine.whoStartedRound = Actor.Type.PLAYER
-	battleEngine.roundStage = battleEngine.RoundStage.PLAYER_CHARACTER
+	battleEngine.setup_tutorial_state()
 	
 	ui.set_indicator(Actor.Type.PLAYER)
 	ui.change_mood(Actor.Type.PLAYER, Actor.Mood.THINKING)
 	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
 	
 	lockPlayerInput = false
-	battleEngine.isRoundActive = true
 	
 	await _draw_cards_at_start(false)
 	
@@ -1297,43 +1294,24 @@ func start_tutorial() -> void:
 	%instruction.text = "A character's value is located in the top-left corner of the card.\n\nClick and drag Marlene to the Character Slot to play her.\n\nAlternatively you can double click to instantly play it."
 	%Box.size.y = 450
 	
-	_update_tutorial_card_locks(tutorialStep)
+	_update_tutorial_card_locks()
 	
 	await get_tree().create_timer(0.75).timeout
 	
 	tutorialAnimationPlayer.play("show_tutorial_box")
 	await tutorialAnimationPlayer.animation_finished
 
-func _update_tutorial_card_locks(step: int) -> void:
-	var allowed_card_keys: Array = []
-	var enforce_tutorial_locks: bool = true
+func _update_tutorial_card_locks() -> void:
+	var currentStep = battleEngine.tutorialStep
+	var enforceLocks = battleEngine.is_tutorial_lock_enforced(currentStep)
+	var allowedKeys = battleEngine.get_allowed_tutorial_cards(currentStep)
 	
-	match step:
-		1:
-			allowed_card_keys = ["Marlene"]
-		2:
-			allowed_card_keys = [] 
-			enforce_tutorial_locks = true
-		3:  
-			allowed_card_keys = ["Li"] 
-			enforce_tutorial_locks = true
-		4:
-			allowed_card_keys = ["Resilience"]
-			enforce_tutorial_locks = true 
-		5:
-			allowed_card_keys = ["Dina"]
-			enforce_tutorial_locks = true
-		6:
-			enforce_tutorial_locks = false
-		_:
-			enforce_tutorial_locks = false
-			
 	for card in playerHand:
 		if not is_instance_valid(card):
 			continue
 			
-		if enforce_tutorial_locks:
-			card.canBePlayed = (card.cardKey in allowed_card_keys)
+		if enforceLocks:
+			card.canBePlayed = (card.cardKey in allowedKeys)
 		else:
 			if card.type == "Character":
 				card.canBePlayed = true
@@ -1342,17 +1320,15 @@ func advance_tutorial(trigger: String, card: Node2D = null) -> void:
 	if not isTutorialActive:
 		return
 		
-	match tutorialStep:
+	match battleEngine.tutorialStep:
 		1:
 			if trigger == "player_played_character" and card.cardKey == "Marlene":
-				tutorialStep = 2
+				battleEngine.set_tutorial_step(2)
 				
 				tutorialAnimationPlayer.play_backwards("show_tutorial_box")
 				await tutorialAnimationPlayer.animation_finished
 				
-				if opponentAI is OpponentAITutorialDummy:
-					opponentAI.forcedCharacterKey = "Runner"
-					opponentAI.forcedSupportKey = ""
+				_update_tutorial_ai_moves()
 				
 				%number.text = "2/6"
 				%heading.text = "Dealing Damage"
@@ -1365,12 +1341,10 @@ func advance_tutorial(trigger: String, card: Node2D = null) -> void:
 				await tutorialAnimationPlayer.animation_finished
 		2:
 			if trigger == "support_phase_started":
-				_update_tutorial_card_locks(tutorialStep)
+				_update_tutorial_card_locks()
 			elif trigger == "round_started":
-				tutorialStep = 3
-				if opponentAI is OpponentAITutorialDummy:
-					opponentAI.forcedCharacterKey = "Tommy"
-					opponentAI.forcedSupportKey = ""
+				battleEngine.set_tutorial_step(3)
+				_update_tutorial_ai_moves()
 				
 				await get_tree().create_timer(1.5).timeout
 				
@@ -1382,15 +1356,15 @@ func advance_tutorial(trigger: String, card: Node2D = null) -> void:
 				tutorialAnimationPlayer.play("show_tutorial_box")
 				await tutorialAnimationPlayer.animation_finished
 				
-				_update_tutorial_card_locks(tutorialStep)
+				_update_tutorial_card_locks()
 		3:
 			if trigger == "player_played_character":
-				tutorialStep = 4
+				battleEngine.set_tutorial_step(4)
 				tutorialAnimationPlayer.play_backwards("show_tutorial_box")
 				await tutorialAnimationPlayer.animation_finished
 		4:
 			if trigger == "support_phase_started":
-				_update_tutorial_card_locks(tutorialStep)
+				_update_tutorial_card_locks()
 				ui.show_end_turn_button(false)
 				
 				await get_tree().create_timer(1.5).timeout
@@ -1406,14 +1380,12 @@ func advance_tutorial(trigger: String, card: Node2D = null) -> void:
 				tutorialAnimationPlayer.play_backwards("show_tutorial_box")
 				await tutorialAnimationPlayer.animation_finished
 			elif trigger == "round_started":
-				tutorialStep = 5
+				battleEngine.set_tutorial_step(5)
 				arePerksActiveInTutorial = true
 				
-				if opponentAI is OpponentAITutorialDummy:
-					opponentAI.forcedCharacterKey = "SeraphiteInitiate"
-					opponentAI.forcedSupportKey = "ScavengedParts"
+				_update_tutorial_ai_moves()
 				
-				_update_tutorial_card_locks(tutorialStep)
+				_update_tutorial_card_locks()
 				
 				await get_tree().create_timer(0.75).timeout
 				
@@ -1429,9 +1401,9 @@ func advance_tutorial(trigger: String, card: Node2D = null) -> void:
 				tutorialAnimationPlayer.play_backwards("show_tutorial_box")
 				await tutorialAnimationPlayer.animation_finished
 			if trigger == "support_phase_started":
-				tutorialStep = 6
+				battleEngine.set_tutorial_step(6)
 				
-				_update_tutorial_card_locks(tutorialStep)
+				_update_tutorial_card_locks()
 				
 				%number.text = "6/6"
 				%heading.text = "Conclusion"
@@ -1473,3 +1445,9 @@ func _conclude_tutorial_match() -> void:
 	
 	GameStats.showHoldoutTutorial = false
 	GameStats.save_game()
+
+func _update_tutorial_ai_moves() -> void:
+	if opponentAI is OpponentAITutorialDummy:
+		var moves = battleEngine.get_forced_ai_moves(battleEngine.tutorialStep)
+		opponentAI.forcedCharacterKey = moves.character
+		opponentAI.forcedSupportKey = moves.support

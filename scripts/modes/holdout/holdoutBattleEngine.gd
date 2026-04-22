@@ -212,3 +212,41 @@ func load_engine_save_dict(data: Dictionary) -> void:
 	var saved_mods = data.get("activeModifierIds", [])
 	for mod_id in saved_mods:
 		add_modifier(int(mod_id))
+
+# --- TUTORIAL ---
+signal tutorial_step_changed(newStep: int)
+var tutorialStep: int = 0
+
+func setup_tutorial_state() -> void:
+	whoStartedRound = Actor.Type.PLAYER
+	set_phase(RoundStage.PLAYER_CHARACTER) 
+	isRoundActive = true
+
+func set_tutorial_step(step: int) -> void:
+	tutorialStep = step
+	tutorial_step_changed.emit(tutorialStep)
+
+func get_allowed_tutorial_cards(step: int) -> Array:
+	match step:
+		1: return ["Marlene"]
+		3: return ["Li"]
+		4: return ["Resilience"]
+		5: return ["Dina"]
+		_: return []
+
+func is_tutorial_lock_enforced(step: int) -> bool:
+	return step >= 1 and step <= 5
+
+func get_forced_ai_moves(step: int) -> Dictionary:
+	var moves = {"character": "", "support": ""}
+	
+	match step:
+		2:
+			moves.character = "Runner"
+		3:
+			moves.character = "Tommy"
+		5:
+			moves.character = "SeraphiteInitiate"
+			moves.support = "ScavengedParts"
+			
+	return moves
