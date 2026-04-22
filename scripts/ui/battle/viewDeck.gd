@@ -10,7 +10,7 @@ const HEADER_FONT_PATH = "res://assets/fonts/SF-Pro-Display-Black.otf"
 const SUBHEADER_FONT_PATH = "res://assets/fonts/SF-Pro-Display-Semibold.otf"
 
 @onready var contentContainer = $viewPanel/ScrollContainer/VBoxContainer
-@onready var cardDatabase = preload("res://scripts/database.gd")
+@onready var cardDatabase = preload("res://scripts/core/database.gd")
 
 @onready var soundPlayer = $AudioStreamPlayer2D
 
@@ -61,9 +61,9 @@ func open_deck_view(deckCaller = null):
 			style.bg_color = Color(0.0, 0.0, 0.0, 1.0)
 			$viewPanel/background.add_theme_stylebox_override("panel", style)
 			
-			if %battleManager.infectedDeckActive:
+			if%battleManager.battleEngine.has_modifier(Database.Modifier.INFECTED_DECK):
 				deckData = cardDatabase.infectedHeavyCharacterDeck.duplicate()
-			elif %battleManager.humanityRestoredActive:
+			elif%battleManager.battleEngine.has_modifier(Database.Modifier.HUMANITY_RESTORED):
 				deckData = cardDatabase.humanityRestoredCharacterDeck.duplicate()
 			else:
 				deckData = cardDatabase.standardCharacterDeck.duplicate()
@@ -73,9 +73,9 @@ func open_deck_view(deckCaller = null):
 			style.bg_color = Color(0.07, 0.07, 0.07, 1.0)
 			$viewPanel/background.add_theme_stylebox_override("panel", style)
 			
-			if %battleManager.infectedDeckActive:
+			if%battleManager.battleEngine.has_modifier(Database.Modifier.INFECTED_DECK):
 				deckData = cardDatabase.infectedHeavySupportDeck.duplicate()
-			elif %battleManager.humanityRestoredActive:
+			elif%battleManager.battleEngine.has_modifier(Database.Modifier.HUMANITY_RESTORED):
 				deckData = cardDatabase.humanityRestoredSupportDeck.duplicate()
 			else:
 				deckData = cardDatabase.standardSupportDeck.duplicate()

@@ -1,6 +1,6 @@
 [gd_scene load_steps=15 format=3 uid="uid://cl8rvsmifx6fm"]
 
-[ext_resource type="Script" uid="uid://dmasc8kmsscj8" path="res://scripts/splashScreen.gd" id="1_ec0dw"]
+[ext_resource type="Script" uid="uid://dmasc8kmsscj8" path="res://scripts/ui/menus/splashScreen.gd" id="1_ec0dw"]
 [ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://assets/fonts/SF-Pro-Display-Black.otf" id="1_nvlgv"]
 [ext_resource type="FontFile" uid="uid://di1dchl37cfhu" path="res://assets/fonts/SF-Pro-Display-Semibold.otf" id="2_ec0dw"]
 [ext_resource type="Texture2D" uid="uid://b37xhslxrgg87" path="res://assets/mainMenu/Godot Icon Infected.png" id="4_by7hm"]

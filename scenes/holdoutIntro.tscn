@@ -1,8 +1,8 @@
 [gd_scene load_steps=15 format=3 uid="uid://chb4j7220yip1"]
 
-[ext_resource type="Script" uid="uid://71sqnaai55pn" path="res://scripts/holdoutOpeningAnimation.gd" id="1_j41m5"]
+[ext_resource type="Script" path="res://scripts/modes/holdout/openingAnimation.gd" id="1_j41m5"]
 [ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://assets/fonts/SF-Pro-Display-Black.otf" id="2_ph2vm"]
-[ext_resource type="Script" uid="uid://6kltjsmd4ojl" path="res://scripts/holdoutInfinityAnimation.gd" id="3_y12vd"]
+[ext_resource type="Script" path="res://scripts/modes/holdout/infinityAnimation.gd" id="3_ph2vm"]
 
 [sub_resource type="FontVariation" id="FontVariation_r1y6c"]
 base_font = ExtResource("2_ph2vm")
@@ -221,7 +221,7 @@ vertical_alignment = 1
 
 [node name="OrbitContainer" type="Node2D" parent="Container"]
 position = Vector2(960, 540)
-script = ExtResource("3_y12vd")
+script = ExtResource("3_ph2vm")
 
 [node name="TutorialText" type="RichTextLabel" parent="Container"]
 self_modulate = Color(1, 1, 1, 0)

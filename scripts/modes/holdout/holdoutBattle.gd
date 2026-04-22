@@ -1,102 +1,64 @@
 extends Node
 
-const PERK_CALCULATION_TIME: float = 1.0
-const PERK_CALCULATION_TIME_AFTER_ROUND_END: float = 0.5
-const OPPONENT_THINKING_TIME: float = 1.0
-const END_ROUND_TIME: float = 1.2
-const CARD_MOVE_SPEED: float = 0.2
-const CARD_MOVE_FAST_SPEED: float = 0.15
+# --- TIMINGS & SPEEDS ---
+@export_category("Battle Timings")
+@export var perkCalculationTime: float = 1.0
+@export var perkCalculationTimeAfterRoundEnd: float = 0.5
+@export var opponentThinkingTime: float = 1.0
+@export var endRoundTime: float = 1.2
+@export var cardMoveSpeed: float = 0.2
+@export var cardMoveFastSpeed: float = 0.15
 
-const DISCARD_PILE_POSITION: Vector2 = Vector2(135, 292)
+# --- LAYOUT ---
+@export_category("Layout & UI")
+@export var discardPilePosition: Vector2 = Vector2(135, 292)
 
-const HALF_MAXIMUM_HAND_SIZE: int = 4
+# --- DEBUG ---
+@export_category("Debug")
+@export var showOpponentsCards: bool = false
 
-var minimumCardsForReshuffle: int = 5
-
-# Modifiers
-var cardRotActive: bool = false
-var guerrillaTacticsActive: bool = false
-var infectedDeckActive: bool = false
-var humanityRestoredActive: bool = false
-var slowBleedActive: bool = false
-var alwaysFirstActive: bool = false
-var volatileHandActive: bool = false
-var reducedHandActive: bool = false
-var noDefenseActive: bool = false
-var loudNoiseActive: bool = false
-var loneWolfActive: bool = false
-var supplyLineActive: bool = false
-var forsakenHonorActive: bool = false
-var calculatedRiskActive: bool = false
-var deepWoundsActive: bool = false
-var heavyHitterActive: bool = false
-var overExertionActive: bool = false
-var stackedOddsActive: bool = false
-var friendlyFireActive: bool = false
-var desperateMeasuresActive: bool = false
-
-var previousRoundFaction: String = ""
-var previousRoundRoles: Array = []
-
-var maximumCharacterCardsInHand: int = 4
-var maximumSupportCardsInHand: int = 4
-
+# --- SCENE REFERENCES ---
+@onready var ui: Node2D = %arena
+@onready var endScreenAnimator: Node = %holdoutEndScreenAnimator
 @onready var opponentCharacterCardSlot: Node2D = %opponentCardSlotCharacter
 @onready var opponentSupportCardSlot: Node2D = %opponentCardSlotSupport
 @onready var playerHand: Array = %playerHand.playerHand
 @onready var opponentHand: Array = %opponentHand.opponentHand
 
+var playerCardScene = preload("res://scenes/card.tscn")
+var opponentCardScene = preload("res://scenes/opponentCard.tscn")
+
+# --- ENGINE & LOGIC ---
+var battleEngine: HoldoutBattleEngine
+var opponentAI: OpponentAI
+
+# --- CURRENT ROUND STATE (Physical Cards) ---
 var playerCharacterCard: Node2D
 var playerSupportCard: Node2D
 var opponentCharacterCard: Node2D
 var opponentSupportCard: Node2D
 
+var discardedCards: Array = []
+var discardedCardZIndex: int = 1
+
+# --- UI SEQUENCE FLAGS ---
 var opponentPlayedSupport: bool = false
 var lockPlayerInput: bool = true:
 	set(value):
 		lockPlayerInput = value
+		battleEngine.set_player_thinking(not value)
 		if value == true:
-			currentThinkTime = 0.0
-			
 			if is_instance_valid(%cardManager):
 				%cardManager.force_unhighlight_all_cards()
 
-enum RoundStage { PLAYER_CHARACTER, OPPONENT_CHARACTER, PLAYER_SUPPORT, OPPONENT_SUPPORT, END_CALCULATION }
-
-var whoStartedRound: Actor.Type = Actor.Type.PLAYER
-var roundStage: RoundStage
-var isRoundActive: bool = false
-var currentThinkTime: float = 0.0
-
-var opponentAI: OpponentAI
-
-var discardedCards: Array = []
-var discardedCardZIndex: int = 1
-
-@onready var ui: Node2D = %arena
-@onready var endScreenAnimator: Node = %holdoutEndScreenAnimator
-var playerCardScene = preload("res://scenes/card.tscn")
-var opponentCardScene = preload("res://scenes/opponentCard.tscn")
-
-#Debug variable [also delete the check in opponentHand.gd when done]
-var showOpponentsCards: bool = false
-
-func _process(delta):
-	if isRoundActive:
-		HoldoutStats.count_time_played(delta)
-		
-		# Analysis Paralysis Accolade tracker
-		if not lockPlayerInput:
-			currentThinkTime += delta
-			
-			if currentThinkTime > HoldoutStats.longestThinkTime:
-				HoldoutStats.longestThinkTime = currentThinkTime
-
 func _ready() -> void:
+	battleEngine = HoldoutBattleEngine.new()
+	add_child(battleEngine)
+	
 	$"../arena/HoldoutIntro".show()
 	HoldoutStats.replayedRound = false
 	
-	$"../battleTimer".wait_time = OPPONENT_THINKING_TIME
+	$"../battleTimer".wait_time = opponentThinkingTime
 	$"../cardManager".connect("characterPlayed", Callable(self, "_on_player_character_played"))
 	$"../cardManager".connect("supportPlayed", Callable(self, "_on_player_support_played"))
 	
@@ -141,10 +103,10 @@ func initialize_game() -> void:
 		
 	%pauseIcon.show()
 	
-	if infectedDeckActive:
+	if battleEngine.has_modifier(Database.Modifier.INFECTED_DECK):
 		$"../characterDeck".deck = Database.infectedHeavyCharacterDeck.duplicate()
 		$"../supportDeck".deck = Database.infectedHeavySupportDeck.duplicate()
-	elif humanityRestoredActive: 
+	elif battleEngine.has_modifier(Database.Modifier.HUMANITY_RESTORED): 
 		$"../characterDeck".deck = Database.humanityRestoredCharacterDeck.duplicate()
 		$"../supportDeck".deck = Database.humanityRestoredSupportDeck.duplicate()
 	else:
@@ -156,19 +118,18 @@ func initialize_game() -> void:
 	
 	await _draw_cards_at_start(false)
 	
-	whoStartedRound = Actor.Type.PLAYER
-	roundStage = RoundStage.PLAYER_CHARACTER
+	battleEngine.start_new_round(battleEngine.has_modifier(Database.Modifier.ALWAYS_FIRST), 1)
 	
 	ui.set_indicator(Actor.Type.PLAYER)
 	ui.change_mood(Actor.Type.PLAYER, Actor.Mood.THINKING)
 	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
 	
-	if supplyLineActive:
-		await get_tree().create_timer(OPPONENT_THINKING_TIME).timeout
+	if battleEngine.has_modifier(Database.Modifier.SUPPLY_LINE):
+		await get_tree().create_timer(opponentThinkingTime).timeout
 		%cardManager.play_top_character_from_deck()
 	
 	lockPlayerInput = false
-	isRoundActive = true
+	battleEngine.isRoundActive = true
 	
 	%bubbleContainer.render_active_modifiers()
 	
@@ -181,69 +142,10 @@ func add_modifier(modifier: Database.Modifier) -> void:
 	HoldoutStats.activeModifiers.append(instance)
 	HoldoutStats.multiplierTotal += instance["multiplier"]
 	
-	match modifier:
-		Database.Modifier.CARD_ROT:
-			cardRotActive = true
-		Database.Modifier.NO_DEFENSE:
-			noDefenseActive = true
-		Database.Modifier.LOUD_NOISE:
-			loudNoiseActive = true
-		Database.Modifier.CALCULATED_RISK:
-			calculatedRiskActive = true
-		Database.Modifier.DEEP_WOUNDS:
-			deepWoundsActive = true
-		Database.Modifier.HEAVY_HITTER:
-			heavyHitterActive = true
-		Database.Modifier.OVER_EXERTION:
-			overExertionActive = true
-		Database.Modifier.STACKED_ODDS:
-			stackedOddsActive = true
-		Database.Modifier.FRIENDLY_FIRE:
-			friendlyFireActive = true
-		Database.Modifier.DESPERATE_MEASURES:
-			desperateMeasuresActive = true
-		Database.Modifier.GUERRILLA_TACTICS:
-			guerrillaTacticsActive = true
-		Database.Modifier.INFECTED_DECK:
-			infectedDeckActive = true
-		Database.Modifier.HUMANITY_RESTORED:
-			humanityRestoredActive = true
-		Database.Modifier.FORSAKEN_HONOR:
-			forsakenHonorActive = true
-			ui.update_health(Actor.Type.PLAYER, HoldoutStats.playerHealthValue - 20)
-		Database.Modifier.REDUCED_HAND:
-			reducedHandActive = true
-			if loneWolfActive:
-				maximumCharacterCardsInHand = 6
-				maximumSupportCardsInHand = 0
-			else:
-				maximumCharacterCardsInHand = 3
-				maximumSupportCardsInHand = 3
-		Database.Modifier.SLOW_BLEED:
-			slowBleedActive = true
-		Database.Modifier.ALWAYS_FIRST:
-			alwaysFirstActive = true
-		Database.Modifier.VOLATILE_HAND:
-			minimumCardsForReshuffle = 6
-			volatileHandActive = true
-		Database.Modifier.LONE_WOLF:
-			if volatileHandActive:
-				minimumCardsForReshuffle = 10
-			if reducedHandActive:
-				maximumCharacterCardsInHand = 6
-			else:
-				maximumCharacterCardsInHand = 8
-			maximumSupportCardsInHand = 0
-			loneWolfActive = true
-		Database.Modifier.SUPPLY_LINE:
-			if volatileHandActive:
-				minimumCardsForReshuffle = 10
-			if reducedHandActive:
-				maximumSupportCardsInHand = 6
-			else:
-				maximumSupportCardsInHand = 8
-			maximumCharacterCardsInHand = 0
-			supplyLineActive = true
+	battleEngine.add_modifier(modifier)
+	
+	if modifier == Database.Modifier.FORSAKEN_HONOR:
+		ui.update_health(Actor.Type.PLAYER, HoldoutStats.playerHealthValue - 20)
 
 func remove_modifier(modifier: Database.Modifier) -> void:
 	for i in range(HoldoutStats.activeModifiers.size() - 1, -1, -1):
@@ -251,77 +153,17 @@ func remove_modifier(modifier: Database.Modifier) -> void:
 			HoldoutStats.multiplierTotal -= HoldoutStats.activeModifiers[i]["multiplier"]
 			HoldoutStats.activeModifiers.remove_at(i)
 			break
-	
-	match modifier:
-		Database.Modifier.CARD_ROT:
-			cardRotActive = false
-		Database.Modifier.NO_DEFENSE:
-			noDefenseActive = false
-		Database.Modifier.LOUD_NOISE:
-			loudNoiseActive = false
-		Database.Modifier.CALCULATED_RISK:
-			calculatedRiskActive = false
-		Database.Modifier.DEEP_WOUNDS:
-			deepWoundsActive = false
-		Database.Modifier.HEAVY_HITTER:
-			heavyHitterActive = false
-		Database.Modifier.OVER_EXERTION:
-			overExertionActive = false
-		Database.Modifier.STACKED_ODDS:
-			stackedOddsActive = false
-		Database.Modifier.FRIENDLY_FIRE:
-			friendlyFireActive = false
-		Database.Modifier.DESPERATE_MEASURES:
-			desperateMeasuresActive = false
-		Database.Modifier.INFECTED_DECK:
-			infectedDeckActive = false
-		Database.Modifier.HUMANITY_RESTORED:
-			humanityRestoredActive = false
-		Database.Modifier.GUERRILLA_TACTICS:
-			guerrillaTacticsActive = false
-		Database.Modifier.FORSAKEN_HONOR:
-			forsakenHonorActive = false
-		Database.Modifier.REDUCED_HAND:
-			reducedHandActive = false
-			maximumCharacterCardsInHand = 4
-			maximumSupportCardsInHand = 4
-		Database.Modifier.SLOW_BLEED:
-			slowBleedActive = false
-		Database.Modifier.ALWAYS_FIRST:
-			alwaysFirstActive = false
-		Database.Modifier.VOLATILE_HAND:
-			minimumCardsForReshuffle = 3
-			volatileHandActive = false
-		Database.Modifier.LONE_WOLF:
-			if volatileHandActive:
-				minimumCardsForReshuffle = 5
-			if reducedHandActive:
-				maximumCharacterCardsInHand = 3
-				maximumSupportCardsInHand = 3
-			else:
-				maximumCharacterCardsInHand = 4
-				maximumSupportCardsInHand = 4
-			loneWolfActive = false
-		Database.Modifier.SUPPLY_LINE:
-			if volatileHandActive:
-				minimumCardsForReshuffle = 5
-			if reducedHandActive:
-				maximumCharacterCardsInHand = 3
-				maximumSupportCardsInHand = 3
-			else:
-				maximumCharacterCardsInHand = 4
-				maximumSupportCardsInHand = 4
-			supplyLineActive = false
+			
+	battleEngine.remove_modifier(modifier)
 
-# Privates
+# --- PRIVATES ---
 func _initialize_opponent(player: Actor.Avatar, opponent: Actor.Avatar) -> void:
 	ui.setup_avatar(player, Actor.Type.PLAYER)
 	
-	# We assign different Ais here when they are made
 	match opponent:
 		Actor.Avatar.DUMMY:
 			ui.setup_avatar(opponent, Actor.Type.OPPONENT)
-			opponentAI = OpponentAITutorialDummy.new() # Change this to opponent dummy
+			opponentAI = OpponentAITutorialDummy.new()
 		Actor.Avatar.ETHAN:
 			ui.setup_avatar(opponent, Actor.Type.OPPONENT)
 			opponentAI = OpponentAIHighestValue.new()
@@ -350,12 +192,11 @@ func _on_player_character_played(card: Node2D) -> void:
 	if isTutorialActive:
 		advance_tutorial("player_played_character", card)
 	
-	# If the opponent started the round
 	if opponentCharacterCard != null:
 		await _apply_mid_round_perks()
 		_transition_to_support_phase()
 	else:
-		roundStage = RoundStage.OPPONENT_CHARACTER
+		battleEngine.player_played_character()
 		_execute_opponent_character_play()
 	
 	ui.change_mood(Actor.Type.PLAYER, Actor.Mood.NEUTRAL)
@@ -364,7 +205,7 @@ func _execute_opponent_character_play() -> void:
 	ui.set_indicator(Actor.Type.OPPONENT)
 	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.THINKING)
 	lockPlayerInput = true
-	await get_tree().create_timer(OPPONENT_THINKING_TIME).timeout
+	await get_tree().create_timer(opponentThinkingTime).timeout
 	
 	var card = opponentAI.play_character_card(opponentHand, playerHand)
 	card.cardSlot = opponentCharacterCardSlot
@@ -374,20 +215,18 @@ func _execute_opponent_character_play() -> void:
 	
 	ui.set_indicator(Actor.Type.PLAYER)
 	
-	# If the player started the round
 	if playerCharacterCard != null:
 		ui.show_end_turn_button()
 		await _apply_mid_round_perks()
 		_transition_to_support_phase()
-
 	else:
 		ui.change_mood(Actor.Type.PLAYER, Actor.Mood.THINKING)
 		lockPlayerInput = false
-		roundStage = RoundStage.PLAYER_CHARACTER
+		battleEngine.opponent_played_character()
 		
-		if supplyLineActive:
+		if battleEngine.has_modifier(Database.Modifier.SUPPLY_LINE):
 			ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
-			await get_tree().create_timer(OPPONENT_THINKING_TIME).timeout
+			await get_tree().create_timer(opponentThinkingTime).timeout
 			%cardManager.play_top_character_from_deck()
 	
 	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
@@ -402,17 +241,16 @@ func _transition_to_support_phase() -> void:
 	if isTutorialActive:
 		advance_tutorial("support_phase_started")
 	
-	if whoStartedRound == Actor.Type.PLAYER:
-		roundStage = RoundStage.PLAYER_SUPPORT
+	if battleEngine.whoStartedRound == Actor.Type.PLAYER:
+		battleEngine.set_phase(battleEngine.RoundStage.PLAYER_SUPPORT)
 		ui.change_mood(Actor.Type.PLAYER, Actor.Mood.THINKING)
 	else:
-		roundStage = RoundStage.OPPONENT_SUPPORT
+		battleEngine.set_phase(battleEngine.RoundStage.OPPONENT_SUPPORT)
 		ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.THINKING)
 		_execute_opponent_support_play()
 
 func _on_player_support_played(card: Node2D) -> void:
 	ui.change_mood(Actor.Type.PLAYER, Actor.Mood.NEUTRAL)
-	
 	ui.show_end_turn_button(false)
 	
 	playerSupportCard = card
@@ -424,7 +262,9 @@ func _on_player_support_played(card: Node2D) -> void:
 	
 	await _apply_player_support(playerSupportCard, opponentCharacterCard, playerCharacterCard)
 	
-	if whoStartedRound == Actor.Type.PLAYER:
+	battleEngine.player_played_support()
+	
+	if battleEngine.whoStartedRound == Actor.Type.PLAYER:
 		_execute_opponent_support_play()
 	else:
 		lockPlayerInput = true
@@ -439,7 +279,7 @@ func _execute_opponent_support_play() -> void:
 	
 	lockPlayerInput = true
 	
-	await get_tree().create_timer(OPPONENT_THINKING_TIME).timeout
+	await get_tree().create_timer(opponentThinkingTime).timeout
 	
 	var card = opponentAI.choose_support_card(opponentHand, opponentCharacterCard, playerCharacterCard)
 	
@@ -454,37 +294,36 @@ func _execute_opponent_support_play() -> void:
 	
 	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
 	
-	if whoStartedRound == Actor.Type.PLAYER:
+	battleEngine.opponent_played_support()
+	
+	if battleEngine.whoStartedRound == Actor.Type.PLAYER:
 		ui.set_indicator(Actor.Type.NONE)
 		await _apply_end_round_perks()
 		_transition_to_resolution_phase()
 	else:
 		lockPlayerInput = false
-		roundStage = RoundStage.PLAYER_SUPPORT
 		ui.set_indicator(Actor.Type.PLAYER)
 		ui.change_mood(Actor.Type.PLAYER, Actor.Mood.THINKING)
 		ui.show_end_turn_button()
 
-	
 	opponentPlayedSupport = true
 
 func _transition_to_resolution_phase() -> void:
-	roundStage = RoundStage.END_CALCULATION
+	battleEngine.set_phase(battleEngine.RoundStage.END_CALCULATION)
 	
-	if desperateMeasuresActive and !_is_player_support_matched():
+	if battleEngine.has_modifier(Database.Modifier.DESPERATE_MEASURES) and !_is_player_support_matched():
 		playerCharacterCard.get_node("ModifierIndicator").texture = load("res://assets/modifiers/Desperate Measures.png")
 		playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
 		await _deal_damage(Actor.Type.PLAYER, 3)
 	
-	if stackedOddsActive:
+	if battleEngine.has_modifier(Database.Modifier.STACKED_ODDS):
 		opponentCharacterCard.get_node("ModifierIndicator").texture = load("res://assets/modifiers/Stacked Odds.png")
 		opponentCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
 		opponentCharacterCard.modify_value(1)
 	
 	await _calculate_damage()
-	await get_tree().create_timer(END_ROUND_TIME).timeout
+	await get_tree().create_timer(endRoundTime).timeout
 	
-	# Check for game over first
 	var playerHealth = ui.get_health(Actor.Type.PLAYER)
 	var opponentHealth = ui.get_health(Actor.Type.OPPONENT)
 	
@@ -496,15 +335,10 @@ func _transition_to_resolution_phase() -> void:
 		return
 	
 	var cardsToDiscard = []
-	
-	if playerSupportCard:
-		cardsToDiscard.append(playerSupportCard)
-
+	if playerSupportCard: cardsToDiscard.append(playerSupportCard)
 	cardsToDiscard.append(playerCharacterCard)
 	cardsToDiscard.append(opponentCharacterCard)
-	
-	if opponentSupportCard:
-		cardsToDiscard.append(opponentSupportCard)
+	if opponentSupportCard: cardsToDiscard.append(opponentSupportCard)
 	
 	await _move_cards_to_discard(cardsToDiscard)
 	ui.show_end_turn_button(false)
@@ -512,13 +346,13 @@ func _transition_to_resolution_phase() -> void:
 	await _repopulate_hand(playerHand, Actor.Type.PLAYER)
 	await _repopulate_hand(opponentHand, Actor.Type.OPPONENT)
 	
-	HoldoutStats.roundsPlayed += 1
-	cardsToDiscard = []
+	battleEngine.end_round_cleanup(playerCharacterCard.faction, playerCharacterCard.role)
 	
+	cardsToDiscard = []
 	_start_new_round()
 
 func _conclude_match() -> void:
-	isRoundActive = true
+	battleEngine.isRoundActive = true
 	GameStats.gameMode = GameStats.Mode.HOLDOUT_ROUND_COMPLETED
 	GameStats.totalInGameTimePlayed += HoldoutStats.currentRoundDuration
 	
@@ -556,41 +390,33 @@ func _conclude_match() -> void:
 	GameStats.push_holdout_battle_stats(ui.get_health(Actor.Type.PLAYER) > 0)
 
 func _start_new_round() -> void:
-	previousRoundFaction = playerCharacterCard.faction
-	previousRoundRoles = Array(playerCharacterCard.role.split("/"))
-	
 	playerCharacterCard = null
 	playerSupportCard = null
 	opponentCharacterCard = null
 	opponentSupportCard = null
 	
 	opponentPlayedSupport = false
-	
 	ui.show_end_turn_button(false)
 	
-	# Shuffle cards from discard back into decks if needed
 	await _repopulate_decks()
-	
 	_apply_guerrilla_tactics_restrictions()
 	
 	if isTutorialActive:
 		advance_tutorial("round_started")
 	
-	if HoldoutStats.roundsPlayed % 2 == 0 and !alwaysFirstActive:
-		whoStartedRound = Actor.Type.OPPONENT
-		
+	battleEngine.start_new_round(battleEngine.has_modifier(Database.Modifier.ALWAYS_FIRST), HoldoutStats.roundsPlayed)
+	
+	if battleEngine.whoStartedRound == Actor.Type.OPPONENT:
 		ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.THINKING)
 		ui.change_mood(Actor.Type.PLAYER, Actor.Mood.NEUTRAL)
 		_execute_opponent_character_play()
 	else:
-		whoStartedRound = Actor.Type.PLAYER
-		
 		ui.set_indicator(Actor.Type.PLAYER)
 		ui.change_mood(Actor.Type.PLAYER, Actor.Mood.THINKING)
 		ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
 		
-		if supplyLineActive:
-			await get_tree().create_timer(OPPONENT_THINKING_TIME).timeout
+		if battleEngine.has_modifier(Database.Modifier.SUPPLY_LINE):
+			await get_tree().create_timer(opponentThinkingTime).timeout
 			%cardManager.play_top_character_from_deck()
 		
 		lockPlayerInput = false
@@ -598,12 +424,12 @@ func _start_new_round() -> void:
 	_save_round_checkpoint()
 
 func _on_end_turn_button_pressed() -> void:
-	if isTutorialActive and (tutorialStep == 4 or tutorialStep == 5 or tutorialStep == 6):
+	if isTutorialActive and (battleEngine.tutorialStep == 4 or battleEngine.tutorialStep == 5 or battleEngine.tutorialStep == 6):
 		return
 	
 	ui.show_end_turn_button(false)
 	
-	if tutorialStep == 2:
+	if battleEngine.tutorialStep == 2:
 		tutorialAnimationPlayer.play_backwards("show_tutorial_box")
 		await tutorialAnimationPlayer.animation_finished
 	
@@ -619,7 +445,7 @@ func _on_end_turn_button_pressed() -> void:
 	await _apply_end_round_perks()
 	_transition_to_resolution_phase()
 
-# Helpers
+# --- HELPERS ---
 func _draw_cards_at_start(firstStart: bool = true) -> void:
 	%pauseIcon.hide()
 	
@@ -630,26 +456,26 @@ func _draw_cards_at_start(firstStart: bool = true) -> void:
 	
 	GameStats.gameMode = GameStats.Mode.CARD_DRAW
 	
-	var characterDrawLoop = max(maximumCharacterCardsInHand, HALF_MAXIMUM_HAND_SIZE)
+	var characterDrawLoop = max(battleEngine.maxCharacterCards, battleEngine.opponentMaxCards)
 	
 	for i in range(characterDrawLoop):
-		if i < maximumCharacterCardsInHand:
-			await get_tree().create_timer(CARD_MOVE_FAST_SPEED).timeout
+		if i < battleEngine.maxCharacterCards:
+			await get_tree().create_timer(cardMoveFastSpeed).timeout
 			$"../characterDeck".draw_card()
 			
-		if i < HALF_MAXIMUM_HAND_SIZE:
-			await get_tree().create_timer(CARD_MOVE_FAST_SPEED).timeout
+		if i < battleEngine.opponentMaxCards:
+			await get_tree().create_timer(cardMoveFastSpeed).timeout
 			$"../characterDeck".draw_opponent_card()
 	
-	var supportDrawLoop = max(maximumSupportCardsInHand, HALF_MAXIMUM_HAND_SIZE)
+	var supportDrawLoop = max(battleEngine.maxSupportCards, battleEngine.opponentMaxCards)
 
 	for i in range(supportDrawLoop):
-		if i < maximumSupportCardsInHand:
-			await get_tree().create_timer(CARD_MOVE_FAST_SPEED).timeout
+		if i < battleEngine.maxSupportCards:
+			await get_tree().create_timer(cardMoveFastSpeed).timeout
 			$"../supportDeck".draw_card()
 			
-		if i < HALF_MAXIMUM_HAND_SIZE:
-			await get_tree().create_timer(CARD_MOVE_FAST_SPEED).timeout
+		if i < battleEngine.opponentMaxCards:
+			await get_tree().create_timer(cardMoveFastSpeed).timeout
 			$"../supportDeck".draw_opponent_card()
 	
 	GameStats.gameMode = GameStats.Mode.HOLDOUT
@@ -658,27 +484,25 @@ func _draw_cards_at_start(firstStart: bool = true) -> void:
 
 func _pick_next_opponent() -> Actor.Avatar:
 	if HoldoutStats.opponentList.is_empty():
-		match GameStats.gameMode:
-			GameStats.Mode.JUNE_RAVEL:
-				HoldoutStats.opponentList = Database.JUNE_OPPONENTS.duplicate()
-			GameStats.Mode.HOLDOUT:
-				var list = Database.AVATARS.keys()
-				
-				if HoldoutStats.currentPlayer in list:
-					list.erase(HoldoutStats.currentPlayer)
-					
-				if Actor.Avatar.DUMMY in list:
-					list.erase(Actor.Avatar.DUMMY)
-				
-				list.shuffle()
-				
-				if HoldoutStats.currentOpponent in list and list.size() > 1:
-					if list[0] == HoldoutStats.currentOpponent:
-						var temp = list[0]
-						list[0] = list[1]
-						list[1] = temp
-				
-				HoldoutStats.opponentList = list
+		assert(GameStats.gameMode == GameStats.Mode.HOLDOUT, "CRITICAL: holdoutBattle.gd run without HOLDOUT mode set. RUn the game fully or load from the Main Menu.")
+		
+		var list = Database.AVATARS.keys()
+		
+		if HoldoutStats.currentPlayer in list:
+			list.erase(HoldoutStats.currentPlayer)
+			
+		if Actor.Avatar.DUMMY in list:
+			list.erase(Actor.Avatar.DUMMY)
+		
+		list.shuffle()
+		
+		if HoldoutStats.currentOpponent in list and list.size() > 1:
+			if list[0] == HoldoutStats.currentOpponent:
+				var temp = list[0]
+				list[0] = list[1]
+				list[1] = temp
+		
+		HoldoutStats.opponentList = list
 	
 	return HoldoutStats.opponentList.pop_front()
 
@@ -690,7 +514,7 @@ func _animate_opponent_playing_card(opponentCard: Node2D, opponentCardSlot: Node
 	
 	var tween = get_tree().create_tween()
 	tween.finished.connect(AudioManager.play_random_card_draw)
-	tween.tween_property(opponentCard, "position", opponentCardSlot.position, CARD_MOVE_SPEED)
+	tween.tween_property(opponentCard, "position", opponentCardSlot.position, cardMoveSpeed)
 	
 	$"../opponentHand".remove_card_from_hand(opponentCard)
 
@@ -698,21 +522,21 @@ func _apply_mid_round_perks() -> void:
 	if isTutorialActive and not arePerksActiveInTutorial:
 		return
 		
-	if friendlyFireActive and (playerCharacterCard.faction == opponentCharacterCard.faction):
+	if battleEngine.has_modifier(Database.Modifier.FRIENDLY_FIRE) and (playerCharacterCard.faction == opponentCharacterCard.faction):
 		await get_tree().create_timer(0.3).timeout
 		playerCharacterCard.get_node("ModifierIndicator").texture = load("res://assets/modifiers/Friendly Fire.png")
 		playerCharacterCard.get_node("AnimationPlayer").queue("modifierIndicator")
 		playerCharacterCard.modify_value(-int(ceil(playerCharacterCard.value / 2.0)))
 		await playerCharacterCard.get_node("AnimationPlayer").animation_finished
 	
-	if whoStartedRound == Actor.Type.PLAYER:
+	if battleEngine.whoStartedRound == Actor.Type.PLAYER:
 		await _execute_player_mid_perk()
 		await _execute_opponent_mid_perk()
 	else:
 		await _execute_opponent_mid_perk()
 		await _execute_player_mid_perk()
 	
-	if heavyHitterActive && playerCharacterCard.value >= 5:
+	if battleEngine.has_modifier(Database.Modifier.HEAVY_HITTER) && playerCharacterCard.value >= 5:
 		playerCharacterCard.get_node("ModifierIndicator").texture = load("res://assets/modifiers/Heavy Hitter.png")
 		playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
 		await _deal_damage(Actor.Type.PLAYER, 1)
@@ -720,30 +544,22 @@ func _apply_mid_round_perks() -> void:
 	_handle_runner_perk()
 
 func _update_playable_support_cards() -> void:
-	var playerCharacterCardRoles = playerCharacterCard.role.split("/")
 	for card in playerHand:
 		if is_instance_valid(card) and card.type == "Support":
-			if desperateMeasuresActive:
+			if battleEngine.has_modifier(Database.Modifier.DESPERATE_MEASURES):
 				card.canBePlayed = true
 			else:
-				var playerSupportCardRoles = card.role.split("/")
-				for role in playerCharacterCardRoles:
-					if role in playerSupportCardRoles:
-						card.canBePlayed = true
+				card.canBePlayed = battleEngine.check_support_match(playerCharacterCard.role, card.role)
 	
-	var opponentCharacterCardRoles = opponentCharacterCard.role.split("/")
 	for card in opponentHand:
 		if is_instance_valid(card) and card.type == "Support":
-			var opponentSupportCardRoles = card.role.split("/")
-			for role in opponentCharacterCardRoles:
-				if role in opponentSupportCardRoles:
-					card.canBePlayed = true
+			card.canBePlayed = battleEngine.check_support_match(opponentCharacterCard.role, card.role)
 
 func _apply_end_round_perks() -> void:
 	if isTutorialActive and not arePerksActiveInTutorial:
 		return
 		
-	if whoStartedRound == Actor.Type.PLAYER:
+	if battleEngine.whoStartedRound == Actor.Type.PLAYER:
 		# Character Phase
 		await _execute_player_char_end_perk()
 		await _execute_opponent_char_end_perk()
@@ -763,7 +579,7 @@ func _apply_end_round_perks() -> void:
 		await _execute_opponent_late_end_perk()
 		await _execute_player_late_end_perk()
 
-	await get_tree().create_timer(PERK_CALCULATION_TIME).timeout
+	await get_tree().create_timer(perkCalculationTime).timeout
 
 func _calculate_damage() -> void:
 	var playerTotal = playerCharacterCard.value
@@ -772,28 +588,25 @@ func _calculate_damage() -> void:
 	HoldoutStats.record_played_card(playerCharacterCard.faction, playerCharacterCard.cardKey, playerTotal)
 	HoldoutStats.record_played_card(opponentCharacterCard.faction, opponentCharacterCard.cardKey, opponentTotal, true)
 	
-	if HoldoutStats.highestDominance < playerTotal - opponentTotal:
-		HoldoutStats.highestDominance = playerTotal - opponentTotal
-	
 	_apply_calculation_round_perks(playerTotal, opponentTotal)
 	
-	if playerTotal >= 10 && overExertionActive:
+	var report = battleEngine.process_combat_stats(playerTotal, opponentTotal, playerCharacterCard.cardKey, opponentCharacterCard.cardKey)
+	
+	if report.triggerOverExertion:
 		playerCharacterCard.get_node("ModifierIndicator").texture = load("res://assets/modifiers/Over Exertion.png")
 		playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
 		_deal_damage(Actor.Type.PLAYER, 1)
 		await _deal_damage(Actor.Type.OPPONENT, 2)
 	
-	if playerTotal > opponentTotal:
-		await _handle_player_win(playerTotal, opponentTotal)
-	elif opponentTotal > playerTotal:
-		await _handle_opponent_win(playerTotal, opponentTotal)
-	else:
-		HoldoutStats.currentStreak = 0
+	if report.winner == battleEngine.Winner.PLAYER:
+		await _handle_player_win(report.damage, report.triggerCalculatedRisk)
+	elif report.winner == battleEngine.Winner.OPPONENT:
+		await _handle_opponent_win(report.damage, report.triggerDeepWounds)
 	
-	if slowBleedActive and HoldoutStats.roundsPlayed % 2 == 0 and Database.MODIFIERS.has(Database.Modifier.SLOW_BLEED):
+	if battleEngine.has_modifier(Database.Modifier.SLOW_BLEED) and HoldoutStats.roundsPlayed % 2 == 0 and Database.MODIFIERS.has(Database.Modifier.SLOW_BLEED):
 		await _deal_damage(Actor.Type.PLAYER, Database.MODIFIERS.get(Database.Modifier.SLOW_BLEED)["amount"])
 	
-	if cardRotActive and HoldoutStats.roundsPlayed % 3 == 0:
+	if battleEngine.has_modifier(Database.Modifier.CARD_ROT) and HoldoutStats.roundsPlayed % 3 == 0:
 		for card in playerHand:
 			card.get_node("ModifierIndicator").texture = load("res://assets/modifiers/Card Rot.png")
 			card.get_node("AnimationPlayer").queue("modifierIndicator")
@@ -833,7 +646,7 @@ func _apply_calculation_round_perks(playerTotal: int, opponentTotal: int) -> voi
 	if isTutorialActive and not arePerksActiveInTutorial:
 		return
 		
-	if whoStartedRound == Actor.Type.PLAYER:
+	if battleEngine.whoStartedRound == Actor.Type.PLAYER:
 		await _execute_player_calc_perk(playerTotal, opponentTotal)
 		await _execute_opponent_calc_perk(playerTotal, opponentTotal)
 	else:
@@ -865,14 +678,14 @@ func _move_cards_to_discard(cards: Array) -> void:
 		discardedCardZIndex += 1
 		var tween = get_tree().create_tween()
 		tween.finished.connect(AudioManager.play_random_card_draw)
-		tween.tween_property(card, "position", DISCARD_PILE_POSITION, CARD_MOVE_FAST_SPEED)
+		tween.tween_property(card, "position", discardPilePosition, cardMoveFastSpeed)
 		
 		await tween.finished
 	
 	$"../cardSlots/cardSlotSupport".occupied = false
 	$"../cardSlots/cardSlotCharacter".occupied = false
 	
-	if HoldoutStats.roundsPlayed % 2 == 0 and volatileHandActive and GameStats.gameMode == GameStats.Mode.HOLDOUT:
+	if HoldoutStats.roundsPlayed % 2 == 0 and battleEngine.has_modifier(Database.Modifier.VOLATILE_HAND) and GameStats.gameMode == GameStats.Mode.HOLDOUT:
 		for card in playerHand.duplicate():
 			await _place_card_in_discard(card, %playerHand)
 
@@ -914,28 +727,28 @@ func _repopulate_hand(hand: Array, who: Actor.Type) -> void:
 			supportCount += 1
 	
 	if who == Actor.Type.PLAYER:
-		while characterCount < maximumCharacterCardsInHand:
+		while characterCount < battleEngine.maxCharacterCards:
 			characterDeckReference.draw_card()
 			characterCount += 1
-			await get_tree().create_timer(CARD_MOVE_SPEED).timeout
+			await get_tree().create_timer(cardMoveSpeed).timeout
 	else:
 		@warning_ignore("integer_division")
-		while characterCount < HALF_MAXIMUM_HAND_SIZE:
+		while characterCount < battleEngine.opponentMaxCards:
 			characterDeckReference.draw_opponent_card()
 			characterCount += 1
-			await get_tree().create_timer(CARD_MOVE_SPEED).timeout
+			await get_tree().create_timer(cardMoveSpeed).timeout
 	
 	if who == Actor.Type.PLAYER:
-		while supportCount < maximumSupportCardsInHand:
+		while supportCount < battleEngine.maxSupportCards:
 			supportDeckReference.draw_card()
 			supportCount += 1
-			await get_tree().create_timer(CARD_MOVE_SPEED).timeout
+			await get_tree().create_timer(cardMoveSpeed).timeout
 	else:
 		@warning_ignore("integer_division")
-		while supportCount < HALF_MAXIMUM_HAND_SIZE:
+		while supportCount < battleEngine.opponentMaxCards:
 			supportDeckReference.draw_opponent_card()
 			supportCount += 1
-			await get_tree().create_timer(CARD_MOVE_SPEED).timeout
+			await get_tree().create_timer(cardMoveSpeed).timeout
 	lockPlayerInput = false
 
 func _repopulate_decks(endGame: bool = false) -> void:
@@ -969,7 +782,7 @@ func _repopulate_decks(endGame: bool = false) -> void:
 		
 		return
 	
-	if $"../supportDeck".deck.size() < minimumCardsForReshuffle:
+	if $"../supportDeck".deck.size() < battleEngine.minCardsForReshuffle:
 		discardedCards = discardedCharactersReversed + discardedSupportsReversed
 		
 		for i in range(discardedSupportsReversed.size()):
@@ -981,7 +794,7 @@ func _repopulate_decks(endGame: bool = false) -> void:
 		
 		return
 	
-	if $"../characterDeck".deck.size() < minimumCardsForReshuffle:
+	if $"../characterDeck".deck.size() < battleEngine.minCardsForReshuffle:
 		discardedCards = discardedSupportsReversed + discardedCharactersReversed
 		
 		for i in range(discardedCharactersReversed.size()):
@@ -1003,7 +816,7 @@ func _place_card_in_discard(card: Node2D, hand: Node2D) -> void:
 	discardedCardZIndex += 1
 	var tween = get_tree().create_tween()
 	tween.finished.connect(func(): AudioManager.play_random_card_draw())
-	tween.tween_property(card, "position", DISCARD_PILE_POSITION, CARD_MOVE_FAST_SPEED)
+	tween.tween_property(card, "position", discardPilePosition, cardMoveFastSpeed)
 	
 	await tween.finished
 	
@@ -1031,57 +844,40 @@ func _handle_runner_perk() -> void:
 				card.get_node("AnimationPlayer").play("cardFlip")
 				await _place_card_in_discard(card, %opponentHand)
 
-func _handle_player_win(playerTotal: int, opponentTotal: int) -> void:
-	HoldoutStats.currentStreak += 1
-	if HoldoutStats.longestStreak < HoldoutStats.currentStreak:
-		HoldoutStats.longestStreak = HoldoutStats.currentStreak
-		
-	var damage = playerTotal - opponentTotal
-	
-	_check_old_wounds_accolade()
-	
+func _handle_player_win(damage: int, triggerCalculatedRisk: bool) -> void:
 	ui.change_mood(Actor.Type.PLAYER, Actor.Mood.HAPPY)
 	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.HURT)
 	
 	if opponentCharacterCard.cardKey == "Owen":
-		await get_tree().create_timer(PERK_CALCULATION_TIME_AFTER_ROUND_END).timeout
+		await get_tree().create_timer(perkCalculationTimeAfterRoundEnd).timeout
 		return
 	
 	await _deal_damage(Actor.Type.OPPONENT, damage, false)
-	
 	await _handle_shambler_perk(Actor.Type.PLAYER)
 	
-	if playerCharacterCard.perkValueAtRoundEnd: # Any non-special perks that need triggering on round end
+	if playerCharacterCard.perkValueAtRoundEnd:
 		await _deal_damage(Actor.Type.OPPONENT, playerCharacterCard.perkValueAtRoundEnd)
 	
-	if calculatedRiskActive and damage == 1:
+	if triggerCalculatedRisk:
 		playerCharacterCard.get_node("ModifierIndicator").texture = load("res://assets/modifiers/Calculated Risk.png")
 		playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
 		await _deal_damage(Actor.Type.OPPONENT, 3)
-	
-	if Database.CHARACTERS[playerCharacterCard.cardKey][0] <= 3 or Database.CHARACTERS[playerCharacterCard.cardKey][0] < Database.CHARACTERS[opponentCharacterCard.cardKey][0]:
-		HoldoutStats.underdogWins += 1
 
-func _handle_opponent_win(playerTotal: int, opponentTotal: int) -> void:
-	HoldoutStats.currentStreak = 0
-	
-	var damage = opponentTotal - playerTotal
-	
+func _handle_opponent_win(damage: int, triggerDeepWounds: bool) -> void:
 	ui.change_mood(Actor.Type.PLAYER, Actor.Mood.HURT)
 	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.HAPPY)
 	
 	if playerCharacterCard.cardKey == "Owen":
-		await get_tree().create_timer(PERK_CALCULATION_TIME_AFTER_ROUND_END).timeout
+		await get_tree().create_timer(perkCalculationTimeAfterRoundEnd).timeout
 		return
 	
 	await _deal_damage(Actor.Type.PLAYER, damage, false)
-	
 	await _handle_shambler_perk(Actor.Type.OPPONENT)
 	
-	if opponentCharacterCard.perkValueAtRoundEnd: # Any non-special perks that need triggering on round end
+	if opponentCharacterCard.perkValueAtRoundEnd: 
 		await _deal_damage(Actor.Type.PLAYER, opponentCharacterCard.perkValueAtRoundEnd)
 	
-	if deepWoundsActive and damage >= 5:
+	if triggerDeepWounds:
 		playerCharacterCard.get_node("ModifierIndicator").texture = load("res://assets/modifiers/Deep Wounds.png")
 		playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
 		await _deal_damage(Actor.Type.PLAYER, 2)
@@ -1096,7 +892,7 @@ func _handle_shambler_perk(winner: Actor.Type) -> void:
 
 func _deal_damage(who: Actor.Type, amount: int, isDelay: bool = true) -> void:
 	if isDelay:
-		await get_tree().create_timer(PERK_CALCULATION_TIME_AFTER_ROUND_END).timeout
+		await get_tree().create_timer(perkCalculationTimeAfterRoundEnd).timeout
 	
 	var currentHealth = ui.get_health(who)
 	currentHealth -= amount
@@ -1109,55 +905,39 @@ func _apply_guerrilla_tactics_restrictions() -> void:
 		if card.type == "Character":
 			card.canBePlayed = true
 	
-	if not guerrillaTacticsActive or previousRoundFaction == "":
+	if not battleEngine.has_modifier(Database.Modifier.GUERRILLA_TACTICS) or battleEngine.previousRoundFaction == "":
 		for card in playerHand:
 			if card.type == "Character":
 				_animate_card_unlock(card)
 		return
 	
-	var cards_to_lock: Array = []
-	
+	var cardsToLock: Array = []
 	for card in playerHand:
 		if card.type == "Character":
-			var isRestricted: bool = false
-			
-			if card.faction == previousRoundFaction:
-				isRestricted = true
-			
-			if not isRestricted:
-				var currentCardRoles = card.role.split("/")
-				for role in currentCardRoles:
-					if role in previousRoundRoles:
-						isRestricted = true
-						break
-			
+			var isRestricted = battleEngine.check_guerrilla_restriction(card.faction, card.role)
 			if isRestricted:
-				cards_to_lock.append(card)
+				cardsToLock.append(card)
 	
 	var totalCharacters: int = 0
 	for card in playerHand:
 		if is_instance_valid(card) and card.type == "Character":
 			totalCharacters += 1
 			
+	var failSafeActive = (totalCharacters > 0 and cardsToLock.size() == totalCharacters)
 	
-	var fail_safe_active = (totalCharacters > 0 and cards_to_lock.size() == totalCharacters)
-	
-	if fail_safe_active:
-		for card in cards_to_lock:
+	if failSafeActive:
+		for card in cardsToLock:
 			card.canBePlayed = false
 			_animate_card_lock(card)
-		
 		await get_tree().create_timer(0.5).timeout
-		
 		for card in playerHand:
 			if card.type == "Character":
 				card.canBePlayed = true
 				_animate_card_unlock(card)
-				
 	else:
 		for card in playerHand:
 			if card.type == "Character":
-				if card in cards_to_lock:
+				if card in cardsToLock:
 					card.canBePlayed = false
 					_animate_card_lock(card)
 				else:
@@ -1179,15 +959,8 @@ func _animate_card_unlock(card):
 func _is_player_support_matched() -> bool:
 	if playerSupportCard == null: 
 		return true
-	
-	var characterRoles = playerCharacterCard.role.split("/")
-	var supportRoles = playerSupportCard.role.split("/")
-	
-	for role in characterRoles:
-		if role in supportRoles:
-			return true
 		
-	return false
+	return battleEngine.check_support_match(playerCharacterCard.role, playerSupportCard.role)
 
 func _check_old_wounds_accolade() -> void:
 	if HoldoutStats.RIVALRIES.has(playerCharacterCard.cardKey):
@@ -1195,10 +968,10 @@ func _check_old_wounds_accolade() -> void:
 		if opponentCharacterCard.cardKey in rivals:
 			HoldoutStats.achievedOldWounds = true
 
-# Perk Helpers
+# --- PERK HELPERS ---
 func _execute_player_mid_perk() -> void:
 	if playerCharacterCard.perk && playerCharacterCard.perk.timing == "midRound":
-		await get_tree().create_timer(PERK_CALCULATION_TIME).timeout
+		await get_tree().create_timer(perkCalculationTime).timeout
 		await playerCharacterCard.perk.apply_mid_perk(playerCharacterCard, playerHand, opponentCharacterCard)
 
 func _execute_opponent_mid_perk() -> void:
@@ -1206,7 +979,7 @@ func _execute_opponent_mid_perk() -> void:
 		var playerRealRole = playerCharacterCard.role
 		var playerRealFaction = playerCharacterCard.faction
 		
-		if forsakenHonorActive:
+		if battleEngine.has_modifier(Database.Modifier.FORSAKEN_HONOR):
 			if opponentCharacterCard.perk.has_method("would_perk_trigger") and opponentCharacterCard.perk.would_perk_trigger(opponentCharacterCard, opponentHand, playerCharacterCard):
 				playerCharacterCard.get_node("ModifierIndicator").texture = load("res://assets/modifiers/Forsaken Honor.png")
 				playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
@@ -1215,10 +988,10 @@ func _execute_opponent_mid_perk() -> void:
 			playerCharacterCard.role = "Unknown"
 			playerCharacterCard.faction = "Unknown"
 		
-		await get_tree().create_timer(PERK_CALCULATION_TIME).timeout
+		await get_tree().create_timer(perkCalculationTime).timeout
 		await opponentCharacterCard.perk.apply_mid_perk(opponentCharacterCard, opponentHand, playerCharacterCard)
 		
-		if forsakenHonorActive:
+		if battleEngine.has_modifier(Database.Modifier.FORSAKEN_HONOR):
 			playerCharacterCard.role = playerRealRole
 			playerCharacterCard.faction = playerRealFaction
 			_update_playable_support_cards()
@@ -1232,7 +1005,7 @@ func _execute_opponent_char_end_perk() -> void:
 		var playerRealRole = playerCharacterCard.role
 		var playerRealFaction = playerCharacterCard.faction
 		
-		if forsakenHonorActive:
+		if battleEngine.has_modifier(Database.Modifier.FORSAKEN_HONOR):
 			if opponentCharacterCard.perk.has_method("would_perk_trigger") and opponentCharacterCard.perk.would_perk_trigger(opponentCharacterCard, opponentSupportCard, playerCharacterCard, playerSupportCard, opponentHand):
 				playerCharacterCard.get_node("ModifierIndicator").texture = load("res://assets/modifiers/Forsaken Honor.png")
 				playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
@@ -1243,7 +1016,7 @@ func _execute_opponent_char_end_perk() -> void:
 			
 		await opponentCharacterCard.perk.apply_end_perk(opponentCharacterCard, opponentSupportCard, playerCharacterCard, playerSupportCard, opponentHand)
 		
-		if forsakenHonorActive:
+		if battleEngine.has_modifier(Database.Modifier.FORSAKEN_HONOR):
 			playerCharacterCard.role = playerRealRole
 			playerCharacterCard.faction = playerRealFaction
 			_update_playable_support_cards()
@@ -1254,12 +1027,12 @@ func _execute_player_supp_end_perk() -> void:
 
 func _execute_opponent_supp_end_perk() -> void:
 	if opponentSupportCard && opponentSupportCard.perk && opponentSupportCard.perk.timing == "endRound":
-		await get_tree().create_timer(PERK_CALCULATION_TIME).timeout
+		await get_tree().create_timer(perkCalculationTime).timeout
 		await opponentSupportCard.perk.apply_end_perk(opponentCharacterCard, opponentSupportCard, playerCharacterCard, playerSupportCard, opponentHand)
 
 func _execute_player_late_end_perk() -> void:
 	if playerCharacterCard.perk && playerCharacterCard.perk.timing == "lateEndRound":
-		await get_tree().create_timer(PERK_CALCULATION_TIME).timeout
+		await get_tree().create_timer(perkCalculationTime).timeout
 		await playerCharacterCard.perk.apply_end_perk(playerCharacterCard, playerSupportCard, opponentCharacterCard, opponentSupportCard, playerHand)
 
 func _execute_opponent_late_end_perk() -> void:
@@ -1274,7 +1047,7 @@ func _execute_opponent_calc_perk(playerTotal: int, opponentTotal: int) -> void:
 	if opponentCharacterCard.perk && opponentCharacterCard.perk.timing == "calculationRound":
 		await opponentCharacterCard.perk.apply_after_calculation_perk(opponentCharacterCard, opponentHand, opponentTotal, playerTotal)
 
-# Saving and loading extractors
+# --- SAVE & LOAD EXTRACTORS ---
 func _get_card_array_save_data(cardArray: Array) -> Array:
 	var parsedData = []
 	for card in cardArray:
@@ -1287,15 +1060,16 @@ func _get_card_array_save_data(cardArray: Array) -> Array:
 	return parsedData
 
 func get_arena_save_dict() -> Dictionary:
-	return {
-		"whoStartedRound": whoStartedRound,
-		"opponentHealth": ui.get_health(Actor.Type.OPPONENT),
-		"characterDeck": $"../characterDeck".deck,
-		"supportDeck": $"../supportDeck".deck,
-		"playerHand": _get_card_array_save_data(playerHand),
-		"opponentHand": _get_card_array_save_data(opponentHand),
-		"discardedCards": _get_card_array_save_data(discardedCards)
-	}
+	var arenaData = battleEngine.get_engine_save_dict()
+
+	arenaData["opponentHealth"] = ui.get_health(Actor.Type.OPPONENT)
+	arenaData["characterDeck"] = $"../characterDeck".deck
+	arenaData["supportDeck"] = $"../supportDeck".deck
+	arenaData["playerHand"] = _get_card_array_save_data(playerHand)
+	arenaData["opponentHand"] = _get_card_array_save_data(opponentHand)
+	arenaData["discardedCards"] = _get_card_array_save_data(discardedCards)
+	
+	return arenaData
 
 func _save_round_checkpoint() -> void:
 	if SaveManager.isLoadingSave or isTutorialRun:
@@ -1309,13 +1083,12 @@ func _save_round_checkpoint() -> void:
 	SaveManager.save_holdout_state(fullSaveData)
 
 func _load_game_from_snapshot() -> void:
-	var save_data = SaveManager.load_holdout_state()
+	var saveData = SaveManager.load_holdout_state()
 	
-	if save_data.is_empty():
+	if saveData.is_empty():
 		printerr("Save data corrupted.")
 		
 		%saveFileCorrupt.modulate.a = 1.0
-		
 		HoldoutStats.currentPlayer = Actor.Avatar.JUNE
 		HoldoutStats.playerHealthValue = 99
 		HoldoutStats.playerHealthAtRoundStart = 99
@@ -1335,11 +1108,12 @@ func _load_game_from_snapshot() -> void:
 		%pauseIcon.visible = false
 		return
 		
-	var stats = save_data["stats"]
-	var arena = save_data["arena"]
-
+	var stats = saveData["stats"]
+	var arena = saveData["arena"]
+	
 	HoldoutStats.load_save_dict(stats)
-	_restore_modifier_flags()
+	
+	battleEngine.load_engine_save_dict(arena)
 	
 	# If coming from the main menu on a round win
 	if arena.has("opponentHealth") and int(arena["opponentHealth"]) <= 0:
@@ -1370,10 +1144,8 @@ func _load_game_from_snapshot() -> void:
 	if arena.has("opponentHealth"): 
 		ui.update_health(Actor.Type.OPPONENT, arena["opponentHealth"], true)
 	
-	
 	seed(HoldoutStats.currentBattleSeed) 
 	
-	whoStartedRound = int(arena["whoStartedRound"]) as Actor.Type
 	$"../characterDeck".deck = arena["characterDeck"]
 	$"../supportDeck".deck = arena["supportDeck"]
 	
@@ -1387,7 +1159,7 @@ func _load_game_from_snapshot() -> void:
 	
 	for saved_card in arena["discardedCards"]:
 		var new_card = _spawn_single_card(saved_card)
-		new_card.position = DISCARD_PILE_POSITION
+		new_card.position = discardPilePosition
 		new_card.scale = Vector2(1, 1)
 		new_card.z_index = discardedCardZIndex
 		discardedCardZIndex += 1
@@ -1395,144 +1167,89 @@ func _load_game_from_snapshot() -> void:
 		discardedCards.append(new_card)
 		$"../cardManager".add_child(new_card) 
 
-	isRoundActive = true
+	battleEngine.isRoundActive = true
 	%pauseIcon.show()
 	%bubbleContainer.render_active_modifiers()
 	
 	_apply_guerrilla_tactics_restrictions()
 	
-	if whoStartedRound == Actor.Type.PLAYER:
-		roundStage = RoundStage.PLAYER_CHARACTER
+	if battleEngine.whoStartedRound == Actor.Type.PLAYER:
 		ui.set_indicator(Actor.Type.PLAYER)
 		ui.change_mood(Actor.Type.PLAYER, Actor.Mood.THINKING)
 		ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
 		lockPlayerInput = false
 		
-		if supplyLineActive:
-			await get_tree().create_timer(OPPONENT_THINKING_TIME).timeout
+		if battleEngine.has_modifier(Database.Modifier.SUPPLY_LINE):
+			await get_tree().create_timer(opponentThinkingTime).timeout
 			%cardManager.play_top_character_from_deck()
 	else:
-		roundStage = RoundStage.OPPONENT_CHARACTER
 		ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.THINKING)
 		ui.change_mood(Actor.Type.PLAYER, Actor.Mood.NEUTRAL)
 		_execute_opponent_character_play()
 
-func _rebuild_cards_from_save(saved_card_array: Array, hand_node: Node) -> void:
-	var is_opponent = (hand_node == %opponentHand)
+func _rebuild_cards_from_save(savedCardArray: Array, handNode: Node) -> void:
+	var isOpponent = (handNode == %opponentHand)
 	
-	for saved_card in saved_card_array:
-		var new_card = _spawn_single_card(saved_card, is_opponent)
+	for savedCard in savedCardArray:
+		var newCard = _spawn_single_card(savedCard, isOpponent)
 		
-		new_card.position = Vector2(hand_node.centerScreenX, hand_node.HAND_Y_POSITION)
+		newCard.position = Vector2(handNode.centerScreenX, handNode.HAND_Y_POSITION)
 		
-		$"../cardManager".add_child(new_card)
+		$"../cardManager".add_child(newCard)
 		
-		hand_node.add_card_to_hand(new_card, 0.0)
+		handNode.add_card_to_hand(newCard, 0.0)
 
-func _spawn_single_card(card_data: Dictionary, is_opponent: bool = false) -> Node2D:
-	var new_card
-	if is_opponent:
-		new_card = opponentCardScene.instantiate()
+func _spawn_single_card(cardData: Dictionary, isOpponent: bool = false) -> Node2D:
+	var newCard
+	if isOpponent:
+		newCard = opponentCardScene.instantiate()
 	else:
-		new_card = playerCardScene.instantiate()
+		newCard = playerCardScene.instantiate()
 	
-	var key = card_data["cardKey"]
-	new_card.cardKey = key
+	var key = cardData["cardKey"]
+	newCard.cardKey = key
 	
 	if Database.CHARACTERS.has(key):
-		var char_data = Database.CHARACTERS[key]
-		new_card.type = char_data[1]
-		new_card.faction = char_data[2]
-		new_card.role = char_data[3]
-		new_card.nameText = char_data[4]
-		if char_data.size() > 5:
-			new_card.perkDescription = char_data[5]
+		var characterData = Database.CHARACTERS[key]
+		newCard.type = characterData[1]
+		newCard.faction = characterData[2]
+		newCard.role = characterData[3]
+		newCard.nameText = characterData[4]
+		if characterData.size() > 5:
+			newCard.perkDescription = characterData[5]
 		
-		new_card.canBePlayed = true
+		newCard.canBePlayed = true
 		
 	elif Database.SUPPORTS.has(key):
-		var supp_data = Database.SUPPORTS[key]
-		new_card.type = supp_data[1]
-		new_card.faction = "Support" 
-		new_card.role = supp_data[2]
-		new_card.nameText = supp_data[4]
-		if supp_data.size() > 5:
-			new_card.perkDescription = supp_data[5]
+		var supportData = Database.SUPPORTS[key]
+		newCard.type = supportData[1]
+		newCard.faction = "Support" 
+		newCard.role = supportData[2]
+		newCard.nameText = supportData[4]
+		if supportData.size() > 5:
+			newCard.perkDescription = supportData[5]
 		
-		new_card.canBePlayed = false
+		newCard.canBePlayed = false
 		
 	if Database.PERKS.has(key):
-		var perk_script = load(Database.PERKS[key])
-		if perk_script:
-			new_card.perk = perk_script.new()
+		var perkScript = load(Database.PERKS[key])
+		if perkScript:
+			newCard.perk = perkScript.new()
 
-	new_card.value = card_data["value"]
+	newCard.value = cardData["value"]
 	
-	if card_data.has("role"):
-		new_card.role = card_data["role"]
+	if cardData.has("role"):
+		newCard.role = cardData["role"]
 	
-	new_card.update_visuals()
+	newCard.update_visuals()
 	
-	if is_opponent and not showOpponentsCards:
-		if new_card.has_node("image"): 
-			new_card.get_node("image").visible = false
-		if new_card.has_node("imageBack"): 
-			new_card.get_node("imageBack").visible = true
+	if isOpponent and not showOpponentsCards:
+		if newCard.has_node("image"): 
+			newCard.get_node("image").visible = false
+		if newCard.has_node("imageBack"): 
+			newCard.get_node("imageBack").visible = true
 	
-	return new_card
-
-func _restore_modifier_flags() -> void:
-	maximumCharacterCardsInHand = 4
-	maximumSupportCardsInHand = 4
-	minimumCardsForReshuffle = 5
-	
-	for mod in HoldoutStats.activeModifiers:
-		var modifier_id = int(mod["id"])
-		
-		match modifier_id:
-			Database.Modifier.CARD_ROT: cardRotActive = true
-			Database.Modifier.NO_DEFENSE: noDefenseActive = true
-			Database.Modifier.LOUD_NOISE: loudNoiseActive = true
-			Database.Modifier.CALCULATED_RISK: calculatedRiskActive = true
-			Database.Modifier.DEEP_WOUNDS: deepWoundsActive = true
-			Database.Modifier.HEAVY_HITTER: heavyHitterActive = true
-			Database.Modifier.OVER_EXERTION: overExertionActive = true
-			Database.Modifier.STACKED_ODDS: stackedOddsActive = true
-			Database.Modifier.FRIENDLY_FIRE: friendlyFireActive = true
-			Database.Modifier.DESPERATE_MEASURES: desperateMeasuresActive = true
-			Database.Modifier.GUERRILLA_TACTICS: guerrillaTacticsActive = true
-			Database.Modifier.INFECTED_DECK: infectedDeckActive = true
-			Database.Modifier.HUMANITY_RESTORED: humanityRestoredActive = true
-			Database.Modifier.FORSAKEN_HONOR: forsakenHonorActive = true
-			Database.Modifier.SLOW_BLEED: slowBleedActive = true
-			Database.Modifier.ALWAYS_FIRST: alwaysFirstActive = true
-			
-			Database.Modifier.REDUCED_HAND:
-				reducedHandActive = true
-				if loneWolfActive:
-					maximumCharacterCardsInHand = 6
-					maximumSupportCardsInHand = 0
-				else:
-					maximumCharacterCardsInHand = 3
-					maximumSupportCardsInHand = 3
-					
-			Database.Modifier.VOLATILE_HAND:
-				volatileHandActive = true
-				minimumCardsForReshuffle = 6
-				
-			Database.Modifier.LONE_WOLF:
-				loneWolfActive = true
-				if volatileHandActive: minimumCardsForReshuffle = 10
-				if reducedHandActive: maximumCharacterCardsInHand = 6
-				else: maximumCharacterCardsInHand = 8
-				maximumSupportCardsInHand = 0
-				
-			Database.Modifier.SUPPLY_LINE:
-				supplyLineActive = true
-				if volatileHandActive: minimumCardsForReshuffle = 10
-				if reducedHandActive: maximumSupportCardsInHand = 6
-				else: maximumSupportCardsInHand = 8
-				maximumCharacterCardsInHand = 0
+	return newCard
 
 func _on_corrupt_start_new_run_button_pressed() -> void:
 	var tween = create_tween()
@@ -1543,17 +1260,16 @@ func _on_corrupt_start_new_run_button_pressed() -> void:
 	
 	initialize_game()
 
-# Tutorial stuff
+# --- TUTORIAL ---
 var isTutorialRun: bool = false
 var isTutorialActive: bool = false
 var arePerksActiveInTutorial: bool = false
-var tutorialStep: int = 0
 @onready var tutorialAnimationPlayer = $"../arena/tutorialBox/AnimationPlayer"
 
 func start_tutorial() -> void:
 	isTutorialRun = true
 	isTutorialActive = true
-	tutorialStep = 1
+	battleEngine.set_tutorial_step(1)
 	
 	HoldoutStats.currentOpponent = Actor.Avatar.DUMMY 
 	_initialize_opponent(HoldoutStats.currentPlayer, HoldoutStats.currentOpponent)
@@ -1563,15 +1279,13 @@ func start_tutorial() -> void:
 	$"../characterDeck".deck = Database.tutorialCharacterDeck.duplicate()
 	$"../supportDeck".deck = Database.tutorialSupportDeck.duplicate()
 	
-	whoStartedRound = Actor.Type.PLAYER
-	roundStage = RoundStage.PLAYER_CHARACTER
+	battleEngine.setup_tutorial_state()
 	
 	ui.set_indicator(Actor.Type.PLAYER)
 	ui.change_mood(Actor.Type.PLAYER, Actor.Mood.THINKING)
 	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
 	
 	lockPlayerInput = false
-	isRoundActive = true
 	
 	await _draw_cards_at_start(false)
 	
@@ -1580,43 +1294,24 @@ func start_tutorial() -> void:
 	%instruction.text = "A character's value is located in the top-left corner of the card.\n\nClick and drag Marlene to the Character Slot to play her.\n\nAlternatively you can double click to instantly play it."
 	%Box.size.y = 450
 	
-	_update_tutorial_card_locks(tutorialStep)
+	_update_tutorial_card_locks()
 	
 	await get_tree().create_timer(0.75).timeout
 	
 	tutorialAnimationPlayer.play("show_tutorial_box")
 	await tutorialAnimationPlayer.animation_finished
 
-func _update_tutorial_card_locks(step: int) -> void:
-	var allowed_card_keys: Array = []
-	var enforce_tutorial_locks: bool = true
+func _update_tutorial_card_locks() -> void:
+	var currentStep = battleEngine.tutorialStep
+	var enforceLocks = battleEngine.is_tutorial_lock_enforced(currentStep)
+	var allowedKeys = battleEngine.get_allowed_tutorial_cards(currentStep)
 	
-	match step:
-		1:
-			allowed_card_keys = ["Marlene"]
-		2:
-			allowed_card_keys = [] 
-			enforce_tutorial_locks = true
-		3:  
-			allowed_card_keys = ["Li"] 
-			enforce_tutorial_locks = true
-		4:
-			allowed_card_keys = ["Resilience"]
-			enforce_tutorial_locks = true 
-		5:
-			allowed_card_keys = ["Dina"]
-			enforce_tutorial_locks = true
-		6:
-			enforce_tutorial_locks = false
-		_:
-			enforce_tutorial_locks = false
-			
 	for card in playerHand:
 		if not is_instance_valid(card):
 			continue
 			
-		if enforce_tutorial_locks:
-			card.canBePlayed = (card.cardKey in allowed_card_keys)
+		if enforceLocks:
+			card.canBePlayed = (card.cardKey in allowedKeys)
 		else:
 			if card.type == "Character":
 				card.canBePlayed = true
@@ -1625,17 +1320,15 @@ func advance_tutorial(trigger: String, card: Node2D = null) -> void:
 	if not isTutorialActive:
 		return
 		
-	match tutorialStep:
+	match battleEngine.tutorialStep:
 		1:
 			if trigger == "player_played_character" and card.cardKey == "Marlene":
-				tutorialStep = 2
+				battleEngine.set_tutorial_step(2)
 				
 				tutorialAnimationPlayer.play_backwards("show_tutorial_box")
 				await tutorialAnimationPlayer.animation_finished
 				
-				if opponentAI is OpponentAITutorialDummy:
-					opponentAI.forcedCharacterKey = "Runner"
-					opponentAI.forcedSupportKey = ""
+				_update_tutorial_ai_moves()
 				
 				%number.text = "2/6"
 				%heading.text = "Dealing Damage"
@@ -1648,12 +1341,10 @@ func advance_tutorial(trigger: String, card: Node2D = null) -> void:
 				await tutorialAnimationPlayer.animation_finished
 		2:
 			if trigger == "support_phase_started":
-				_update_tutorial_card_locks(tutorialStep)
+				_update_tutorial_card_locks()
 			elif trigger == "round_started":
-				tutorialStep = 3
-				if opponentAI is OpponentAITutorialDummy:
-					opponentAI.forcedCharacterKey = "Tommy"
-					opponentAI.forcedSupportKey = ""
+				battleEngine.set_tutorial_step(3)
+				_update_tutorial_ai_moves()
 				
 				await get_tree().create_timer(1.5).timeout
 				
@@ -1665,15 +1356,15 @@ func advance_tutorial(trigger: String, card: Node2D = null) -> void:
 				tutorialAnimationPlayer.play("show_tutorial_box")
 				await tutorialAnimationPlayer.animation_finished
 				
-				_update_tutorial_card_locks(tutorialStep)
+				_update_tutorial_card_locks()
 		3:
 			if trigger == "player_played_character":
-				tutorialStep = 4
+				battleEngine.set_tutorial_step(4)
 				tutorialAnimationPlayer.play_backwards("show_tutorial_box")
 				await tutorialAnimationPlayer.animation_finished
 		4:
 			if trigger == "support_phase_started":
-				_update_tutorial_card_locks(tutorialStep)
+				_update_tutorial_card_locks()
 				ui.show_end_turn_button(false)
 				
 				await get_tree().create_timer(1.5).timeout
@@ -1689,14 +1380,12 @@ func advance_tutorial(trigger: String, card: Node2D = null) -> void:
 				tutorialAnimationPlayer.play_backwards("show_tutorial_box")
 				await tutorialAnimationPlayer.animation_finished
 			elif trigger == "round_started":
-				tutorialStep = 5
+				battleEngine.set_tutorial_step(5)
 				arePerksActiveInTutorial = true
 				
-				if opponentAI is OpponentAITutorialDummy:
-					opponentAI.forcedCharacterKey = "SeraphiteInitiate"
-					opponentAI.forcedSupportKey = "ScavengedParts"
+				_update_tutorial_ai_moves()
 				
-				_update_tutorial_card_locks(tutorialStep)
+				_update_tutorial_card_locks()
 				
 				await get_tree().create_timer(0.75).timeout
 				
@@ -1712,9 +1401,9 @@ func advance_tutorial(trigger: String, card: Node2D = null) -> void:
 				tutorialAnimationPlayer.play_backwards("show_tutorial_box")
 				await tutorialAnimationPlayer.animation_finished
 			if trigger == "support_phase_started":
-				tutorialStep = 6
+				battleEngine.set_tutorial_step(6)
 				
-				_update_tutorial_card_locks(tutorialStep)
+				_update_tutorial_card_locks()
 				
 				%number.text = "6/6"
 				%heading.text = "Conclusion"
@@ -1731,7 +1420,7 @@ func advance_tutorial(trigger: String, card: Node2D = null) -> void:
 				isTutorialActive = false
 
 func _conclude_tutorial_match() -> void:
-	isRoundActive = false
+	battleEngine.isRoundActive = false
 	%pauseIcon.hide()
 	
 	var cardsToDiscard = []
@@ -1756,3 +1445,9 @@ func _conclude_tutorial_match() -> void:
 	
 	GameStats.showHoldoutTutorial = false
 	GameStats.save_game()
+
+func _update_tutorial_ai_moves() -> void:
+	if opponentAI is OpponentAITutorialDummy:
+		var moves = battleEngine.get_forced_ai_moves(battleEngine.tutorialStep)
+		opponentAI.forcedCharacterKey = moves.character
+		opponentAI.forcedSupportKey = moves.support
