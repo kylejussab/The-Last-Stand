@@ -77,18 +77,18 @@ func update_visuals():
 			$icons.get_node("faction").scale = Vector2(FACTION_ICON_SCALE, FACTION_ICON_SCALE)
 			
 			if faction in KEYWORD_ICONS:
-				$icons.get_node("faction").texture = load("res://assets/cardIcons/" + faction + ".png")
+				$icons.get_node("faction").texture = load(_apply_cb_suffix("res://assets/cardIcons/" + faction + ".png"))
 		
 		if role != null and role != "":
 			var roles = role.split("/")
 			
 			if roles.size() > 0 and roles.size() <= 2:
 				if roles[0] in KEYWORD_ICONS:
-					perkOne.texture = load(KEYWORD_ICONS[roles[0]])
+					perkOne.texture = load(_get_icon_path(roles[0]))
 					perkOne.visible = true
 				
 				if roles.size() > 1 and roles[1] in KEYWORD_ICONS:
-					perkTwo.texture = load(KEYWORD_ICONS[roles[1]])
+					perkTwo.texture = load(_get_icon_path(roles[1]))
 					perkTwo.visible = true
 				else:
 					perkTwo.visible = false
@@ -169,10 +169,20 @@ func _format_perk_text(rawText: String) -> String:
 	var richText = rawText
 	for keyword in KEYWORD_ICONS:
 		if keyword in richText:
-			var iconPath = KEYWORD_ICONS[keyword]
+			var iconPath = _get_icon_path(keyword)
 			var replacement = "[img height=%d]%s[/img]" % [DESCRIPTION_ICON_SIZE, iconPath]
 			richText = richText.replace(keyword, replacement)
 	return richText
+
+func _apply_cb_suffix(basePath: String) -> String:
+	if AccessibilityData.useColorblindAccents:
+		return basePath.replace(".png", "_CB.png")
+	return basePath
+
+func _get_icon_path(keyword: String) -> String:
+	if not keyword in KEYWORD_ICONS:
+		return ""
+	return _apply_cb_suffix(KEYWORD_ICONS[keyword])
 
 func _on_area_2d_mouse_entered() -> void:
 	emit_signal("hoverEntered", self)
