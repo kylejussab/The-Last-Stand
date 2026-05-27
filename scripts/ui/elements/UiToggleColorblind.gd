@@ -43,9 +43,9 @@ func _on_toggled(buttonState: bool):
 	tween.tween_property(knob, "position:x", targetX, 0.1)
 	
 	if AccessibilityData.useColorblindAccents:
-		textLabel.text = "Off"
-	else:
 		textLabel.text = "On"
+	else:
+		textLabel.text = "Off"
 	
 	var optionsMenu = find_parent("OptionsMenu")
 	if optionsMenu and optionsMenu.has_method("update_preview_card"):

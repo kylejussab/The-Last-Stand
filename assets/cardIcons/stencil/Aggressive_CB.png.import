@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://rvbt8l3ifac4"
-path="res://.godot/imported/Jackson.png-d47901088949116c21bc73aa5be3efe0.ctex"
+uid="uid://763emy0m5r7i"
+path="res://.godot/imported/Aggressive_CB.png-ac1209b0b423d29161f5305f0144c340.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/cardIcons/colorFaction/Jackson.png"
-dest_files=["res://.godot/imported/Jackson.png-d47901088949116c21bc73aa5be3efe0.ctex"]
+source_file="res://assets/cardIcons/stencil/Aggressive_CB.png"
+dest_files=["res://.godot/imported/Aggressive_CB.png-ac1209b0b423d29161f5305f0144c340.ctex"]
 
 [params]
 

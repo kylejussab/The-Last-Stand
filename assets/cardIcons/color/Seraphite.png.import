@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://eoyg7xw4005y"
-path="res://.godot/imported/Smuggler.png-65f52d12c621c7e933463c3f8abc1cfd.ctex"
+uid="uid://1ywl83bwbmwo"
+path="res://.godot/imported/Seraphite.png-d1bef9f51f3e0bc8fc8893b4644e6e0f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/cardIcons/colorFaction/Smuggler.png"
-dest_files=["res://.godot/imported/Smuggler.png-65f52d12c621c7e933463c3f8abc1cfd.ctex"]
+source_file="res://assets/cardIcons/color/Seraphite.png"
+dest_files=["res://.godot/imported/Seraphite.png-d1bef9f51f3e0bc8fc8893b4644e6e0f.ctex"]
 
 [params]
 

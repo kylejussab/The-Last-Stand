@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://1ywl83bwbmwo"
-path="res://.godot/imported/Seraphite.png-52caae707e1fdc584cfc1016ef530c24.ctex"
+uid="uid://db2ljsc58senr"
+path="res://.godot/imported/Seraphite_CB.png-072f79707070d8f64a069d866d40bb31.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/cardIcons/colorFaction/Seraphite.png"
-dest_files=["res://.godot/imported/Seraphite.png-52caae707e1fdc584cfc1016ef530c24.ctex"]
+source_file="res://assets/cardIcons/stencil/Seraphite_CB.png"
+dest_files=["res://.godot/imported/Seraphite_CB.png-072f79707070d8f64a069d866d40bb31.ctex"]
 
 [params]
 

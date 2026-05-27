@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c7vph4lv066yx"
-path="res://.godot/imported/Firefly_CB.png-664522284beaa77bb97c82896bf096c8.ctex"
+uid="uid://boro2nb74qhj1"
+path="res://.godot/imported/Firefly.png-3f4647a8efafa71a92ca1aab78f84ec0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/cardIcons/colorFaction/Firefly_CB.png"
-dest_files=["res://.godot/imported/Firefly_CB.png-664522284beaa77bb97c82896bf096c8.ctex"]
+source_file="res://assets/cardIcons/stencil/Firefly.png"
+dest_files=["res://.godot/imported/Firefly.png-3f4647a8efafa71a92ca1aab78f84ec0.ctex"]
 
 [params]
 

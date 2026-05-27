@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://iudybi0tp6ni"
-path="res://.godot/imported/Infected.png-ce553e829eeefa7f76d557eacf816496.ctex"
+uid="uid://c1f0ogyshamv6"
+path="res://.godot/imported/SeraphiteStencil.png-b1cb29044da6ec42b6e90d19af38489c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/cardIcons/colorFaction/Infected.png"
-dest_files=["res://.godot/imported/Infected.png-ce553e829eeefa7f76d557eacf816496.ctex"]
+source_file="res://assets/cards/SeraphiteStencil.png"
+dest_files=["res://.godot/imported/SeraphiteStencil.png-b1cb29044da6ec42b6e90d19af38489c.ctex"]
 
 [params]
 
