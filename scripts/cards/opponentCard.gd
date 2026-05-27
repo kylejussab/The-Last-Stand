@@ -192,7 +192,10 @@ func _get_description_icon_path(keyword: String) -> String:
 	var basePath = KEYWORD_ICONS[keyword]
 	
 	if AccessibilityData.currentCardStyle == AccessibilityData.CardStyle.STENCIL:
-		basePath = "res://assets/cardIcons/stencil/" + keyword + ".png"
+		if "/color/" in KEYWORD_ICONS[keyword]: # Use white icons for factions (better contrast)
+			basePath = "res://assets/cardIcons/" + keyword + ".png"
+		else:
+			basePath = "res://assets/cardIcons/stencil/" + keyword + ".png"
 		
 	return _apply_cb_suffix(basePath)
 
