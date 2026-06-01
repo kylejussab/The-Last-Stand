@@ -57,6 +57,7 @@ func _ready() -> void:
 	
 	$"../arena/HoldoutIntro".show()
 	HoldoutStats.replayedRound = false
+	%phaseTracker.modulate.a = 0.0
 	
 	$"../battleTimer".wait_time = opponentThinkingTime
 	$"../cardManager".connect("characterPlayed", Callable(self, "_on_player_character_played"))
@@ -117,6 +118,10 @@ func initialize_game() -> void:
 	$"../supportDeck".deck.shuffle()
 	
 	await _draw_cards_at_start(false)
+	
+	if not isTutorialActive:
+		var tween = get_tree().create_tween()
+		tween.tween_property(%phaseTracker, "modulate:a", 1.0, perkCalculationTime)
 	
 	battleEngine.start_new_round(battleEngine.has_modifier(Database.Modifier.ALWAYS_FIRST), 1)
 	
@@ -358,6 +363,10 @@ func _conclude_match() -> void:
 	
 	%pauseIcon.hide()
 	
+	if not isTutorialActive:
+		var tween = get_tree().create_tween()
+		tween.tween_property(%phaseTracker, "modulate:a", 0.0, perkCalculationTime)
+	
 	var cardsToDiscard = []
 	
 	if playerSupportCard: cardsToDiscard.append(playerSupportCard)
@@ -403,6 +412,9 @@ func _start_new_round() -> void:
 	
 	if isTutorialActive:
 		advance_tutorial("round_started")
+	else:
+		var tween = get_tree().create_tween()
+		tween.tween_property(%phaseTracker, "modulate:a", 1.0, perkCalculationTime)
 	
 	battleEngine.start_new_round(battleEngine.has_modifier(Database.Modifier.ALWAYS_FIRST), HoldoutStats.roundsPlayed)
 	
@@ -1172,6 +1184,9 @@ func _load_game_from_snapshot() -> void:
 	%bubbleContainer.render_active_modifiers()
 	
 	_apply_guerrilla_tactics_restrictions()
+	
+	if battleEngine.roundStage != battleEngine.RoundStage.END_CALCULATION and not isTutorialActive:
+		%phaseTracker.modulate.a = 1.0
 	
 	if battleEngine.whoStartedRound == Actor.Type.PLAYER:
 		ui.set_indicator(Actor.Type.PLAYER)

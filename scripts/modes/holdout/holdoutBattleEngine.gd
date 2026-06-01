@@ -78,10 +78,12 @@ func has_modifier(modifierId: int) -> bool:
 func add_modifier(modifierId: int) -> void:
 	if not activeModifierIds.has(modifierId):
 		activeModifierIds.append(modifierId)
+		_recalculate_limits()
 		modifier_toggled.emit(modifierId, true)
 
 func remove_modifier(modifierId: int) -> void:
 	activeModifierIds.erase(modifierId)
+	_recalculate_limits()
 	modifier_toggled.emit(modifierId, false)
 
 # --- VALIDATION MATH ---

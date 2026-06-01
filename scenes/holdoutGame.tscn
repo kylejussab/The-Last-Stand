@@ -1,4 +1,4 @@
-[gd_scene load_steps=134 format=3 uid="uid://dgb52shq4jcyg"]
+[gd_scene load_steps=139 format=3 uid="uid://dgb52shq4jcyg"]
 
 [ext_resource type="Script" uid="uid://dgl6h7ryesfn8" path="res://scripts/battle/cardManager.gd" id="1_0wfyh"]
 [ext_resource type="Script" uid="uid://c3p2rmoacsirj" path="res://scripts/core/inputManager.gd" id="1_o6xl0"]
@@ -34,6 +34,9 @@
 [ext_resource type="Texture2D" uid="uid://c6lrinhn8btly" path="res://assets/arenas/CharacterCardSlot.png" id="24_q0l3x"]
 [ext_resource type="Texture2D" uid="uid://d4ge0yb1rledw" path="res://assets/arenas/HeadCircle.png" id="25_omfyk"]
 [ext_resource type="Texture2D" uid="uid://ct3dvs5fypuo1" path="res://assets/arenas/HeartIcon.png" id="26_q0l3x"]
+[ext_resource type="Script" uid="uid://bsauufx1n4tot" path="res://scripts/ui/elements/phaseTracker.gd" id="27_ergn5"]
+[ext_resource type="Texture2D" uid="uid://bp7ysicyaf3kj" path="res://assets/ui/currentPhaseIcon.png" id="28_nrvn0"]
+[ext_resource type="Texture2D" uid="uid://dbaqiv1wfmcf" path="res://assets/ui/otherPhaseIcon.png" id="29_7ks2l"]
 [ext_resource type="PackedScene" uid="uid://chb4j7220yip1" path="res://scenes/holdoutIntro.tscn" id="29_chjal"]
 [ext_resource type="Script" uid="uid://cut6aandi16ab" path="res://scripts/battle/modifierBubbleManager.gd" id="30_5he1u"]
 [ext_resource type="Texture2D" uid="uid://d1kqrakc80shv" path="res://assets/ui/RationsIcon.png" id="30_chjal"]
@@ -65,6 +68,14 @@ corner_radius_bottom_right = 10
 bg_color = Color(0, 0, 0, 0.49803922)
 corner_radius_top_left = 10
 corner_radius_bottom_left = 10
+
+[sub_resource type="FontVariation" id="FontVariation_ergn5"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_nrvn0"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
 
 [sub_resource type="FontVariation" id="FontVariation_c6pm6"]
 base_font = ExtResource("13_a8y0u")
@@ -1988,6 +1999,139 @@ offset_right = 1876.0
 offset_bottom = 466.0
 pivot_offset = Vector2(87.5, 1)
 mouse_filter = 2
+
+[node name="phaseTracker" type="Control" parent="arena"]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_left = 720.0
+offset_top = 270.0
+offset_right = 1200.0
+offset_bottom = 300.0
+script = ExtResource("27_ergn5")
+
+[node name="characterPhaseIcon" type="TextureRect" parent="arena/phaseTracker"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 172.5
+offset_top = 15.0
+offset_right = 217.5
+offset_bottom = 60.0
+scale = Vector2(0.33, 0.33)
+texture = ExtResource("28_nrvn0")
+
+[node name="supportPhaseIcon" type="TextureRect" parent="arena/phaseTracker"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 232.5
+offset_top = 15.0
+offset_right = 277.5
+offset_bottom = 60.0
+scale = Vector2(0.33, 0.33)
+texture = ExtResource("29_7ks2l")
+
+[node name="resolutionPhaseIcon" type="TextureRect" parent="arena/phaseTracker"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 292.5
+offset_top = 15.0
+offset_right = 337.5
+offset_bottom = 60.0
+scale = Vector2(0.33, 0.33)
+texture = ExtResource("29_7ks2l")
+
+[node name="characterPhaseText" type="Control" parent="arena/phaseTracker"]
+unique_name_in_owner = true
+anchors_preset = 0
+offset_left = -270.0
+offset_top = -90.0
+offset_right = 280.0
+mouse_filter = 2
+
+[node name="Heading" type="RichTextLabel" parent="arena/phaseTracker/characterPhaseText"]
+layout_mode = 0
+offset_left = 175.0
+offset_right = 355.0
+offset_bottom = 30.0
+theme_override_fonts/normal_font = SubResource("FontVariation_ergn5")
+theme_override_font_sizes/normal_font_size = 18
+text = "Character Phase"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Description" type="RichTextLabel" parent="arena/phaseTracker/characterPhaseText"]
+layout_mode = 0
+offset_top = 40.0
+offset_right = 550.0
+offset_bottom = 80.0
+theme_override_fonts/normal_font = SubResource("FontVariation_nrvn0")
+theme_override_font_sizes/normal_font_size = 14
+text = "Any character perks or related modifiers are applied on 
+conclusion of this phase, unless otherwise specified."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="supportPhaseText" type="Control" parent="arena/phaseTracker"]
+unique_name_in_owner = true
+anchors_preset = 0
+offset_left = -35.0
+offset_top = -90.0
+offset_right = 515.0
+mouse_filter = 2
+
+[node name="Heading" type="RichTextLabel" parent="arena/phaseTracker/supportPhaseText"]
+layout_mode = 0
+offset_left = 175.0
+offset_right = 355.0
+offset_bottom = 30.0
+theme_override_fonts/normal_font = SubResource("FontVariation_ergn5")
+theme_override_font_sizes/normal_font_size = 18
+text = "Support Phase"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Description" type="RichTextLabel" parent="arena/phaseTracker/supportPhaseText"]
+layout_mode = 0
+offset_top = 40.0
+offset_right = 550.0
+offset_bottom = 80.0
+theme_override_fonts/normal_font = SubResource("FontVariation_nrvn0")
+theme_override_font_sizes/normal_font_size = 14
+text = "Matching support cards buff or debuff character values.
+Relating perks are triggered at the conclusion of this phase."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="resolutionPhaseText" type="Control" parent="arena/phaseTracker"]
+unique_name_in_owner = true
+anchors_preset = 0
+offset_left = 205.0
+offset_top = -90.0
+offset_right = 755.0
+mouse_filter = 2
+
+[node name="Heading" type="RichTextLabel" parent="arena/phaseTracker/resolutionPhaseText"]
+layout_mode = 0
+offset_left = 175.0
+offset_right = 355.0
+offset_bottom = 30.0
+theme_override_fonts/normal_font = SubResource("FontVariation_ergn5")
+theme_override_font_sizes/normal_font_size = 18
+text = "Resolution Phase"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Description" type="RichTextLabel" parent="arena/phaseTracker/resolutionPhaseText"]
+layout_mode = 0
+offset_top = 40.0
+offset_right = 550.0
+offset_bottom = 80.0
+theme_override_fonts/normal_font = SubResource("FontVariation_nrvn0")
+theme_override_font_sizes/normal_font_size = 14
+text = "All calculations are completed in play order, and damage
+is dealt based on the total value difference."
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="opponent" type="Node2D" parent="arena"]
 
