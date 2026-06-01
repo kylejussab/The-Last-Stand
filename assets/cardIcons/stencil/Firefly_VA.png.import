@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ocka7bbyovju"
-path="res://.godot/imported/Survivor_CB.png-4e7536d7b94de33ef48e3620a9c19d0c.ctex"
+uid="uid://c24n3cip582gh"
+path="res://.godot/imported/Firefly_VA.png-9fe61b764b58e2df1e5762720d9ed09b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/cardIcons/Survivor_CB.png"
-dest_files=["res://.godot/imported/Survivor_CB.png-4e7536d7b94de33ef48e3620a9c19d0c.ctex"]
+source_file="res://assets/cardIcons/stencil/Firefly_VA.png"
+dest_files=["res://.godot/imported/Firefly_VA.png-9fe61b764b58e2df1e5762720d9ed09b.ctex"]
 
 [params]
 

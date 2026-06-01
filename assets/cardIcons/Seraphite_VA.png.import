@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cfisliuoio6uc"
-path="res://.godot/imported/Aggressive_CB.png-c4c2f5c6734dfee85bacbb5b6aa1eb25.ctex"
+uid="uid://bvwqgx1vw06eq"
+path="res://.godot/imported/Seraphite_VA.png-6698b0feedcf2078ac5e3e99c96be009.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/cardIcons/Aggressive_CB.png"
-dest_files=["res://.godot/imported/Aggressive_CB.png-c4c2f5c6734dfee85bacbb5b6aa1eb25.ctex"]
+source_file="res://assets/cardIcons/Seraphite_VA.png"
+dest_files=["res://.godot/imported/Seraphite_VA.png-6698b0feedcf2078ac5e3e99c96be009.ctex"]
 
 [params]
 

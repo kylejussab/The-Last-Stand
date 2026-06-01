@@ -6,7 +6,7 @@ enum CardUISize { SMALL, MEDIUM, LARGE }
 
 var currentCardStyle: CardStyle = CardStyle.STENCIL
 var currentCardUISize: CardUISize = CardUISize.MEDIUM
-var useColorblindAccents: bool = false
+var useVisualAssistIcons: bool = false
 var animationsDisabled: bool = false
 
 func _ready() -> void:
@@ -15,7 +15,7 @@ func _ready() -> void:
 	if saveData.has("accessibility"):
 		currentCardStyle = saveData["accessibility"].get("currentCardStyle", currentCardStyle)
 		currentCardUISize = saveData["accessibility"].get("currentCardUISize", currentCardUISize)
-		useColorblindAccents = saveData["accessibility"].get("useColorblindAccents", useColorblindAccents)
+		useVisualAssistIcons = saveData["accessibility"].get("useVisualAssistIcons", useVisualAssistIcons)
 		animationsDisabled = saveData["accessibility"].get("animationsDisabled", animationsDisabled)
 
 func save_to_file() -> void:
@@ -24,7 +24,7 @@ func save_to_file() -> void:
 	saveData["accessibility"] = {
 		"currentCardStyle": currentCardStyle,
 		"currentCardUISize": currentCardUISize,
-		"useColorblindAccents": useColorblindAccents,
+		"useVisualAssistIcons": useVisualAssistIcons,
 		"animationsDisabled": animationsDisabled
 	}
 	SaveManager.save_main_state(saveData)

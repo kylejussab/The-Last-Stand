@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dl8l7gpjin1f7"
-path="res://.godot/imported/Survivor_CB.png-8e7b8c553c58ca260ddf3ff733da822f.ctex"
+uid="uid://vohshj58a84h"
+path="res://.godot/imported/Jackson_VA.png-f9c289de8b08e3f9b38af3bd2d9db07a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/cardIcons/stencil/Survivor_CB.png"
-dest_files=["res://.godot/imported/Survivor_CB.png-8e7b8c553c58ca260ddf3ff733da822f.ctex"]
+source_file="res://assets/cardIcons/Jackson_VA.png"
+dest_files=["res://.godot/imported/Jackson_VA.png-f9c289de8b08e3f9b38af3bd2d9db07a.ctex"]
 
 [params]
 

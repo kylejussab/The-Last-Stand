@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c5uasc1b7qmop"
-path="res://.godot/imported/Infected_CB.png-00e6feb95de78fcbfcd66c695168e2ba.ctex"
+uid="uid://cfisliuoio6uc"
+path="res://.godot/imported/Aggressive_VA.png-196084e212c5aba705e85ffbe18a3cc0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/cardIcons/stencil/Infected_CB.png"
-dest_files=["res://.godot/imported/Infected_CB.png-00e6feb95de78fcbfcd66c695168e2ba.ctex"]
+source_file="res://assets/cardIcons/Aggressive_VA.png"
+dest_files=["res://.godot/imported/Aggressive_VA.png-196084e212c5aba705e85ffbe18a3cc0.ctex"]
 
 [params]
 

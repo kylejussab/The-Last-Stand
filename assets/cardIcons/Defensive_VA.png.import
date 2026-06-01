@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://5mpqefwsmnpx"
-path="res://.godot/imported/Crafty_CB.png-ef5baaa6ae8fad06b43d086fcd7c9dea.ctex"
+uid="uid://ce1ohdvs47tsk"
+path="res://.godot/imported/Defensive_VA.png-d6e19737ab6b4ced9b76d5cfb0e9b003.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/cardIcons/Crafty_CB.png"
-dest_files=["res://.godot/imported/Crafty_CB.png-ef5baaa6ae8fad06b43d086fcd7c9dea.ctex"]
+source_file="res://assets/cardIcons/Defensive_VA.png"
+dest_files=["res://.godot/imported/Defensive_VA.png-d6e19737ab6b4ced9b76d5cfb0e9b003.ctex"]
 
 [params]
 

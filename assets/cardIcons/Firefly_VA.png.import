@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dl6hbgf6q48sx"
-path="res://.godot/imported/WLF_CB.png-9acfc887d4fb5c037284d494342a889e.ctex"
+uid="uid://cqlwdxi38wimb"
+path="res://.godot/imported/Firefly_VA.png-4973c5f576a2b899cb73b78bc0791984.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/cardIcons/WLF_CB.png"
-dest_files=["res://.godot/imported/WLF_CB.png-9acfc887d4fb5c037284d494342a889e.ctex"]
+source_file="res://assets/cardIcons/Firefly_VA.png"
+dest_files=["res://.godot/imported/Firefly_VA.png-4973c5f576a2b899cb73b78bc0791984.ctex"]
 
 [params]
 

@@ -12,16 +12,16 @@ const KNOB_COLOR_HOVER = Color.WHITE
 const TRACK_COLOR_DEFAULT = Color("2c2c2c")
 const TRACK_COLOR_HOVER = Color("4c4c4c")
 
-@onready var textLabel = $"../ColorblindDescriptionLabel"
+@onready var textLabel = $"../VisualAssistIconDescriptionLabel"
 
 func _ready():
 	toggle_mode = true
 	focus_mode = Control.FOCUS_NONE
 	
-	var isColorblindOn = AccessibilityData.useColorblindAccents
-	set_pressed_no_signal(isColorblindOn)
+	var isVisualAssistOn = AccessibilityData.useVisualAssistIcons
+	set_pressed_no_signal(isVisualAssistOn)
 	
-	if isColorblindOn:
+	if isVisualAssistOn:
 		knob.position.x = xPositionOn
 		textLabel.text = "On"
 	else:
@@ -35,14 +35,14 @@ func _ready():
 func _on_toggled(buttonState: bool):
 	AudioManager.play_button_click()
 	
-	AccessibilityData.useColorblindAccents = buttonState
+	AccessibilityData.useVisualAssistIcons = buttonState
 	
 	var targetX = xPositionOn if buttonState else xPositionOff
 	
 	var tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	tween.tween_property(knob, "position:x", targetX, 0.1)
 	
-	if AccessibilityData.useColorblindAccents:
+	if AccessibilityData.useVisualAssistIcons:
 		textLabel.text = "On"
 	else:
 		textLabel.text = "Off"

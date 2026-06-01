@@ -181,9 +181,9 @@ func _format_perk_text(rawText: String) -> String:
 			richText = richText.replace(keyword, replacement)
 	return richText
 
-func _apply_cb_suffix(basePath: String) -> String:
-	if AccessibilityData.useColorblindAccents:
-		return basePath.replace(".png", "_CB.png")
+func _apply_va_suffix(basePath: String) -> String:
+	if AccessibilityData.useVisualAssistIcons:
+		return basePath.replace(".png", "_VA.png")
 	return basePath
 
 func _get_description_icon_path(keyword: String) -> String:
@@ -198,7 +198,7 @@ func _get_description_icon_path(keyword: String) -> String:
 		else:
 			basePath = "res://assets/cardIcons/stencil/" + keyword + ".png"
 		
-	return _apply_cb_suffix(basePath)
+	return _apply_va_suffix(basePath)
 
 func _get_card_icon_path(iconName: String) -> String:
 	var basePath = "res://assets/cardIcons/"
@@ -208,7 +208,7 @@ func _get_card_icon_path(iconName: String) -> String:
 		
 	basePath += iconName + ".png"
 	
-	return _apply_cb_suffix(basePath)
+	return _apply_va_suffix(basePath)
 
 func _on_area_2d_mouse_entered() -> void:
 	emit_signal("hoverEntered", self)

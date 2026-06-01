@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bxpo1efumur3"
-path="res://.godot/imported/WLF_CB.png-fb1ecbe1df6b2b20752fbacb005b360a.ctex"
+uid="uid://dl6hbgf6q48sx"
+path="res://.godot/imported/WLF_VA.png-656ac7a05e89a25f276492aa673a1fb3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/cardIcons/stencil/WLF_CB.png"
-dest_files=["res://.godot/imported/WLF_CB.png-fb1ecbe1df6b2b20752fbacb005b360a.ctex"]
+source_file="res://assets/cardIcons/WLF_VA.png"
+dest_files=["res://.godot/imported/WLF_VA.png-656ac7a05e89a25f276492aa673a1fb3.ctex"]
 
 [params]
 

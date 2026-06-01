@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://db2ljsc58senr"
-path="res://.godot/imported/Seraphite_CB.png-072f79707070d8f64a069d866d40bb31.ctex"
+uid="uid://ocka7bbyovju"
+path="res://.godot/imported/Survivor_VA.png-d4dcfd4b3a418e266997526c957a7dbc.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/cardIcons/stencil/Seraphite_CB.png"
-dest_files=["res://.godot/imported/Seraphite_CB.png-072f79707070d8f64a069d866d40bb31.ctex"]
+source_file="res://assets/cardIcons/Survivor_VA.png"
+dest_files=["res://.godot/imported/Survivor_VA.png-d4dcfd4b3a418e266997526c957a7dbc.ctex"]
 
 [params]
 

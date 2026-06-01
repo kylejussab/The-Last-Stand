@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b5s6vjod34nbd"
-path="res://.godot/imported/Stealthy_CB.png-f9811273278a2af271bb47a2510c350f.ctex"
+uid="uid://dh16e5i7nal2c"
+path="res://.godot/imported/Smuggler_VA.png-374ffae50686256453890d408d68b778.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/cardIcons/stencil/Stealthy_CB.png"
-dest_files=["res://.godot/imported/Stealthy_CB.png-f9811273278a2af271bb47a2510c350f.ctex"]
+source_file="res://assets/cardIcons/stencil/Smuggler_VA.png"
+dest_files=["res://.godot/imported/Smuggler_VA.png-374ffae50686256453890d408d68b778.ctex"]
 
 [params]
 

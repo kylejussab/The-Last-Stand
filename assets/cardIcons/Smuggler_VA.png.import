@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://763emy0m5r7i"
-path="res://.godot/imported/Aggressive_CB.png-ac1209b0b423d29161f5305f0144c340.ctex"
+uid="uid://ers6oo36rhnt"
+path="res://.godot/imported/Smuggler_VA.png-1a20a1d574f1d4c899d6b2e5f5352c3f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/cardIcons/stencil/Aggressive_CB.png"
-dest_files=["res://.godot/imported/Aggressive_CB.png-ac1209b0b423d29161f5305f0144c340.ctex"]
+source_file="res://assets/cardIcons/Smuggler_VA.png"
+dest_files=["res://.godot/imported/Smuggler_VA.png-1a20a1d574f1d4c899d6b2e5f5352c3f.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://vohshj58a84h"
-path="res://.godot/imported/Jackson_CB.png-c82945c8f9893ffae621d12e8a24b94a.ctex"
+uid="uid://5mpqefwsmnpx"
+path="res://.godot/imported/Crafty_VA.png-b3d8f7b538dc414c7024aa2325ed5194.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/cardIcons/Jackson_CB.png"
-dest_files=["res://.godot/imported/Jackson_CB.png-c82945c8f9893ffae621d12e8a24b94a.ctex"]
+source_file="res://assets/cardIcons/Crafty_VA.png"
+dest_files=["res://.godot/imported/Crafty_VA.png-b3d8f7b538dc414c7024aa2325ed5194.ctex"]
 
 [params]
 

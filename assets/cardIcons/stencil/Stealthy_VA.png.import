@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dpddk34tvuywa"
-path="res://.godot/imported/Jackson_CB.png-aba7e02e2074cb0a8e6cf9842e3ef096.ctex"
+uid="uid://b5s6vjod34nbd"
+path="res://.godot/imported/Stealthy_VA.png-074b99a1a18dff41320d9fc7d09b5f7b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/cardIcons/stencil/Jackson_CB.png"
-dest_files=["res://.godot/imported/Jackson_CB.png-aba7e02e2074cb0a8e6cf9842e3ef096.ctex"]
+source_file="res://assets/cardIcons/stencil/Stealthy_VA.png"
+dest_files=["res://.godot/imported/Stealthy_VA.png-074b99a1a18dff41320d9fc7d09b5f7b.ctex"]
 
 [params]
 
