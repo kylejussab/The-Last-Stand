@@ -8,4 +8,7 @@ func apply_mid_perk(thisCard, thisHand, _otherCard):
 		if joel.cardKey == "JoelSmuggler":
 			thisCard.modify_value(4)
 			joel.modify_value(2)
-			break
+			
+			return [[4, "self"], [2, "an in-hand card"]]
+	
+	return 0

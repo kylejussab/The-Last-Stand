@@ -12,3 +12,6 @@ func apply_after_calculation_perk(thisCard, thisHand, thisTotal, otherTotal):
 				updatedHand.append(item)
 		
 		updatedHand.pick_random().modify_value(2)
+		return [2, "a random in-hand card"]
+	
+	return 0

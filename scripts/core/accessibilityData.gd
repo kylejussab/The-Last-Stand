@@ -4,7 +4,7 @@ enum CardStyle { DEFAULT, STENCIL }
 
 enum CardUISize { SMALL, MEDIUM, LARGE }
 
-var currentCardStyle: CardStyle = CardStyle.STENCIL
+var currentCardStyle: CardStyle = CardStyle.DEFAULT
 var currentCardUISize: CardUISize = CardUISize.MEDIUM
 var useVisualAssistIcons: bool = false
 var animationsDisabled: bool = false

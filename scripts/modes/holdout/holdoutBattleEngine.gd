@@ -159,6 +159,17 @@ func process_combat_stats(playerTotal: int, opponentTotal: int, playerKey: Strin
 		"triggerOverExertion": triggerOverExertion
 	}
 
+# --- ACTION HISTORY ---
+var actionHistory: Array[String] = []
+
+func log_action(message: String) -> void:
+	actionHistory.append(message)
+	
+	print(message) # Delete when finished
+
+func clear_history() -> void:
+	actionHistory.clear()
+
 # --- STATE MACHINE CONTROLS ---
 func start_new_round(isAlwaysFirst: bool, roundsPlayed: int) -> void:
 	if roundsPlayed % 2 == 0 and not isAlwaysFirst:
@@ -203,12 +214,14 @@ func get_engine_save_dict() -> Dictionary:
 	return {
 		"whoStartedRound": whoStartedRound,
 		"roundStage": roundStage,
-		"activeModifierIds": activeModifierIds.duplicate()
+		"activeModifierIds": activeModifierIds.duplicate(),
+		"actionHistory": actionHistory.duplicate()
 	}
 
 func load_engine_save_dict(data: Dictionary) -> void:
 	whoStartedRound = int(data.get("whoStartedRound", 0))
 	roundStage = int(data.get("roundStage", 0)) as RoundStage
+	actionHistory = data.get("actionHistory", [])
 	
 	activeModifierIds.clear()
 	var saved_mods = data.get("activeModifierIds", [])
