@@ -1,4 +1,4 @@
-[gd_scene load_steps=139 format=3 uid="uid://dgb52shq4jcyg"]
+[gd_scene load_steps=141 format=3 uid="uid://dgb52shq4jcyg"]
 
 [ext_resource type="Script" uid="uid://dgl6h7ryesfn8" path="res://scripts/battle/cardManager.gd" id="1_0wfyh"]
 [ext_resource type="Script" uid="uid://c3p2rmoacsirj" path="res://scripts/core/inputManager.gd" id="1_o6xl0"]
@@ -13,6 +13,8 @@
 [ext_resource type="Script" uid="uid://dwr382qynby8f" path="res://scripts/modes/holdout/holdoutBattle.gd" id="10_choun"]
 [ext_resource type="Script" uid="uid://conm4253y3tth" path="res://scripts/cards/oppponentHand.gd" id="11_ya4ey"]
 [ext_resource type="Script" uid="uid://che0dt2kvp0wy" path="res://scripts/cards/supportDeck.gd" id="12_eb6dy"]
+[ext_resource type="Script" uid="uid://dsnfgqvebk60r" path="res://scripts/ui/battle/discardPile.gd" id="12_nrvn0"]
+[ext_resource type="Texture2D" uid="uid://cw1kj4xxki0vi" path="res://assets/cards/ViewHistoryText.png" id="13_7ks2l"]
 [ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://assets/fonts/SF-Pro-Display-Black.otf" id="13_a8y0u"]
 [ext_resource type="Texture2D" uid="uid://brrupu340jnfx" path="res://assets/cards/DeckBack.png" id="13_ty1g6"]
 [ext_resource type="Texture2D" uid="uid://codfjgt3u16vl" path="res://assets/cards/DeckCharacterText.png" id="14_j2jfr"]
@@ -1781,6 +1783,22 @@ script = ExtResource("5_tbgi4")
 [node name="opponentHand" type="Node2D" parent="."]
 unique_name_in_owner = true
 script = ExtResource("11_ya4ey")
+
+[node name="discardPile" type="Node2D" parent="."]
+position = Vector2(135, 292)
+script = ExtResource("12_nrvn0")
+
+[node name="hoverText" type="Sprite2D" parent="discardPile"]
+visible = false
+scale = Vector2(0.188, 0.188)
+texture = ExtResource("13_7ks2l")
+
+[node name="Area2D" type="Area2D" parent="discardPile"]
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="discardPile/Area2D"]
+shape = SubResource("RectangleShape2D_jyhfs")
 
 [node name="characterDeck" type="Node2D" parent="."]
 z_index = -2
@@ -4003,6 +4021,9 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_jkv2x")
 text = "END TURN"
 
 [connection signal="timeout" from="inputManager/Timer" to="inputManager" method="_on_timer_timeout"]
+[connection signal="input_event" from="discardPile/Area2D" to="discardPile" method="_on_mouse_pressed"]
+[connection signal="mouse_entered" from="discardPile/Area2D" to="discardPile" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="discardPile/Area2D" to="discardPile" method="_on_mouse_exited"]
 [connection signal="input_event" from="characterDeck/Area2D" to="characterDeck" method="_on_mouse_pressed"]
 [connection signal="mouse_entered" from="characterDeck/Area2D" to="characterDeck" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="characterDeck/Area2D" to="characterDeck" method="_on_mouse_exited"]

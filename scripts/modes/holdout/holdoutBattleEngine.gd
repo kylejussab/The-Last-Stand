@@ -164,8 +164,6 @@ var actionHistory: Array[String] = []
 
 func log_action(message: String) -> void:
 	actionHistory.append(message)
-	
-	print(message) # Delete when finished
 
 func clear_history() -> void:
 	actionHistory.clear()
@@ -221,7 +219,7 @@ func get_engine_save_dict() -> Dictionary:
 func load_engine_save_dict(data: Dictionary) -> void:
 	whoStartedRound = int(data.get("whoStartedRound", 0))
 	roundStage = int(data.get("roundStage", 0)) as RoundStage
-	actionHistory = data.get("actionHistory", [])
+	actionHistory.assign(data.get("actionHistory", []))
 	
 	activeModifierIds.clear()
 	var saved_mods = data.get("activeModifierIds", [])

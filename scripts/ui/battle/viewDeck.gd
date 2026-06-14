@@ -1,6 +1,7 @@
 extends Control
 
 var isViewDeckActive: bool = false
+var isViewHistoryActive: bool = false
 
 const CARD_SCENE_PATH = "res://scenes/card.tscn"
 const CARD_SCALE = Vector2(0.8, 0.8)
@@ -214,10 +215,16 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_RIGHT:
 			get_viewport().set_input_as_handled()
-			close_deck_view()
+			if isViewDeckActive:
+				close_deck_view()
+			elif isViewHistoryActive:
+				close_history_view()
 		elif event.button_index == MOUSE_BUTTON_LEFT and not $viewPanel/background.get_global_rect().has_point(event.position):
 			get_viewport().set_input_as_handled()
-			close_deck_view()
+			if isViewDeckActive:
+				close_deck_view()
+			elif isViewHistoryActive:
+				close_history_view()
 
 func _add_deck_header(titleText: String, count: int):
 	var headerPanel = PanelContainer.new()
@@ -305,3 +312,186 @@ func _play_draw_sound():
 	var randomSound = drawSounds.pick_random()
 	soundPlayer.stream = randomSound
 	soundPlayer.play()
+
+func open_history_view(historyArray: Array, caller = null):
+	_play_draw_sound()
+	
+	activeDeckReference = caller
+	
+	if stickyHeader:
+		stickyHeader.queue_free()
+		stickyHeader = null
+	
+	for child in contentContainer.get_children():
+		child.queue_free()
+	
+	var style = $viewPanel/background.get_theme_stylebox("panel").duplicate()
+	style.bg_color = Color(0.05, 0.05, 0.05, 1.0)
+	$viewPanel/background.add_theme_stylebox_override("panel", style)
+	
+	_populate_history_text(historyArray)
+	
+	show()
+	$overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+	
+	%pause.currentNavigation = "View Deck"
+	$"../pauseIcon/text".text = "BACK"
+	
+	var tween = create_tween().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tween.tween_property($viewPanel/background, "scale:x", 1.0, 0.5)
+	
+	tween.parallel().tween_property($viewPanel/ScrollContainer, "modulate:a", 1.0, 0.4).set_delay(0.1).set_trans(Tween.TRANS_LINEAR)
+	tween.parallel().tween_property($overlay, "modulate:a", 0.6, 0.4).set_trans(Tween.TRANS_LINEAR)
+	
+	stickyHeader.modulate.a = 0.0
+	tween.parallel().tween_property(stickyHeader, "modulate:a", 1.0, 0.4).set_delay(0.1).set_trans(Tween.TRANS_LINEAR)
+	
+	isViewHistoryActive = true
+
+func close_history_view():
+	_play_draw_sound()
+	%pause.currentNavigation = "Main"
+	$"../pauseIcon/text".text = "PAUSE"
+	
+	var tween = create_tween()
+	tween.tween_property($viewPanel/background, "scale:x", 0.0, 0.2).set_trans(Tween.TRANS_CUBIC)
+	tween.parallel().tween_property($viewPanel/ScrollContainer, "modulate:a", 0.0, 0.1).set_trans(Tween.TRANS_LINEAR)
+	tween.parallel().tween_property($overlay, "modulate:a", 0.0, 0.2).set_trans(Tween.TRANS_LINEAR)
+	
+	tween.parallel().tween_property(stickyHeader, "modulate:a", 0.0, 0.1).set_trans(Tween.TRANS_LINEAR)
+	
+	tween.finished.connect(hide)
+	await tween.finished
+	
+	if activeDeckReference:
+		if activeDeckReference.has_method("force_reset_visuals"):
+			activeDeckReference.force_reset_visuals()
+	
+	activeDeckReference = null
+	
+	isViewHistoryActive = false
+	$overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+func _populate_history_text(historyArray: Array):
+	_add_history_header("Combat History", historyArray.size())
+	
+	var marginWrapper = MarginContainer.new()
+	marginWrapper.add_theme_constant_override("margin_left", 30)
+	marginWrapper.add_theme_constant_override("margin_right", 30)
+	marginWrapper.add_theme_constant_override("margin_bottom", 30)
+	marginWrapper.add_theme_constant_override("margin_top", 10)
+	marginWrapper.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	marginWrapper.mouse_filter = Control.MOUSE_FILTER_PASS
+	
+	var listContainer = VBoxContainer.new()
+	listContainer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	listContainer.add_theme_constant_override("separation", 24) 
+	
+	var baseFont = load(SUBHEADER_FONT_PATH)
+	var previousCaller = ""
+	
+	for logLine in historyArray:
+		var parts = logLine.split(".", false, 1)
+		var caller = parts[0].strip_edges()
+		var message = parts[1].strip_edges()
+		
+		var entry = Label.new()
+		entry.text = message
+		entry.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		entry.modulate = Color(0.8, 0.8, 0.8, 1.0)
+		
+		if previousCaller != "" and previousCaller != caller:
+			var spacer = Control.new()
+			spacer.custom_minimum_size.y = 30
+			listContainer.add_child(spacer)
+		
+		if caller == "Player":
+			entry.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		elif caller == "Opponent":
+			entry.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+		elif caller == "System":
+			entry.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		
+		var fontVariation = FontVariation.new()
+		fontVariation.base_font = baseFont
+		
+		entry.add_theme_font_override("font", fontVariation)
+		entry.add_theme_font_size_override("font_size", 14)
+		
+		listContainer.add_child(entry)
+		
+		previousCaller = caller
+	
+	marginWrapper.add_child(listContainer)
+	contentContainer.add_child(marginWrapper)
+
+func _add_history_header(titleText: String, count: int):
+	var headerPanel = PanelContainer.new()
+	headerPanel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
+	var currentStyle = $viewPanel/background.get_theme_stylebox("panel")
+	if currentStyle:
+		var headerStyle = currentStyle.duplicate()
+		headerPanel.add_theme_stylebox_override("panel", headerStyle)
+	
+	headerPanel.anchor_left = 0.0
+	headerPanel.anchor_right = 1.0
+	headerPanel.offset_left = 0.0
+	headerPanel.offset_right = 0.0
+	
+	var headerMargin = MarginContainer.new()
+	headerMargin.add_theme_constant_override("margin_left", 30)
+	headerMargin.add_theme_constant_override("margin_top", 20)
+	headerMargin.add_theme_constant_override("margin_right", 30)
+	headerMargin.add_theme_constant_override("margin_bottom", 20)
+	headerMargin.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
+	var vbox = VBoxContainer.new()
+	vbox.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	vbox.add_theme_constant_override("separation", -5)
+	
+	var headerRow = HBoxContainer.new()
+	headerRow.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
+	var baseFont = load(HEADER_FONT_PATH)
+	var fontVariation = FontVariation.new()
+	fontVariation.base_font = baseFont
+	fontVariation.spacing_glyph = 1
+	
+	var heading = Label.new()
+	heading.text = titleText
+	heading.add_theme_font_size_override("font_size", 22)
+	heading.add_theme_font_override("font", fontVariation)
+	heading.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
+	var spacer = Control.new()
+	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
+	var countLabel = Label.new()
+	countLabel.text = str(count) + " Actions"
+	countLabel.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	countLabel.add_theme_font_size_override("font_size", 22)
+	countLabel.add_theme_font_override("font", fontVariation)
+	countLabel.modulate = Color(0.6, 0.6, 0.6, 1.0)
+	countLabel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
+	headerRow.add_child(heading)
+	headerRow.add_child(spacer)
+	headerRow.add_child(countLabel)
+	
+	vbox.add_child(headerRow)
+	headerMargin.add_child(vbox)
+	
+	headerPanel.add_child(headerMargin)
+	
+	$viewPanel.add_child(headerPanel)
+	
+	headerPanel.set_anchors_preset(Control.PRESET_TOP_WIDE)
+	
+	stickyHeader = headerPanel
+	
+	var scrollSpacer = Control.new()
+	scrollSpacer.custom_minimum_size.y = 90
+	scrollSpacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	contentContainer.add_child(scrollSpacer)
