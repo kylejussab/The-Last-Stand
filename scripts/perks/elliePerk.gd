@@ -4,8 +4,10 @@ func _init() -> void:
 	timing = "midRound"
 
 func apply_mid_perk(thisCard, thisHand, otherCard):
+	var logEffects = []
 	if otherCard.role.contains("Stealthy") and otherCard.cardKey != "Nora":
 		otherCard.modify_value(-2)
+		logEffects.append([-2, "opponent"])
 	
 	var perkAmount: int = 0
 	var ellieRoles = thisCard.role.split("/")
@@ -23,6 +25,11 @@ func apply_mid_perk(thisCard, thisHand, otherCard):
 			
 	if perkAmount > 0:
 		thisCard.modify_value(perkAmount)
+		logEffects.append([perkAmount, "self"])
+	
+	if logEffects.is_empty():
+		return 0
+	return logEffects
 
 # Function used for forsaken honor check
 func would_perk_trigger(thisCard, thisHand, otherCard) -> bool:

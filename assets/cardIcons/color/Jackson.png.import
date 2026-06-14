@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://iudybi0tp6ni"
-path="res://.godot/imported/Infected.png-ce553e829eeefa7f76d557eacf816496.ctex"
+uid="uid://rvbt8l3ifac4"
+path="res://.godot/imported/Jackson.png-eb7f8fed914319d7827748e431c28364.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/cardIcons/colorFaction/Infected.png"
-dest_files=["res://.godot/imported/Infected.png-ce553e829eeefa7f76d557eacf816496.ctex"]
+source_file="res://assets/cardIcons/color/Jackson.png"
+dest_files=["res://.godot/imported/Jackson.png-eb7f8fed914319d7827748e431c28364.ctex"]
 
 [params]
 

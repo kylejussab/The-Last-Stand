@@ -1,4 +1,4 @@
-[gd_scene load_steps=134 format=3 uid="uid://dgb52shq4jcyg"]
+[gd_scene load_steps=141 format=3 uid="uid://dgb52shq4jcyg"]
 
 [ext_resource type="Script" uid="uid://dgl6h7ryesfn8" path="res://scripts/battle/cardManager.gd" id="1_0wfyh"]
 [ext_resource type="Script" uid="uid://c3p2rmoacsirj" path="res://scripts/core/inputManager.gd" id="1_o6xl0"]
@@ -13,6 +13,8 @@
 [ext_resource type="Script" uid="uid://dwr382qynby8f" path="res://scripts/modes/holdout/holdoutBattle.gd" id="10_choun"]
 [ext_resource type="Script" uid="uid://conm4253y3tth" path="res://scripts/cards/oppponentHand.gd" id="11_ya4ey"]
 [ext_resource type="Script" uid="uid://che0dt2kvp0wy" path="res://scripts/cards/supportDeck.gd" id="12_eb6dy"]
+[ext_resource type="Script" uid="uid://dsnfgqvebk60r" path="res://scripts/ui/battle/discardPile.gd" id="12_nrvn0"]
+[ext_resource type="Texture2D" uid="uid://cw1kj4xxki0vi" path="res://assets/cards/ViewHistoryText.png" id="13_7ks2l"]
 [ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://assets/fonts/SF-Pro-Display-Black.otf" id="13_a8y0u"]
 [ext_resource type="Texture2D" uid="uid://brrupu340jnfx" path="res://assets/cards/DeckBack.png" id="13_ty1g6"]
 [ext_resource type="Texture2D" uid="uid://codfjgt3u16vl" path="res://assets/cards/DeckCharacterText.png" id="14_j2jfr"]
@@ -34,6 +36,9 @@
 [ext_resource type="Texture2D" uid="uid://c6lrinhn8btly" path="res://assets/arenas/CharacterCardSlot.png" id="24_q0l3x"]
 [ext_resource type="Texture2D" uid="uid://d4ge0yb1rledw" path="res://assets/arenas/HeadCircle.png" id="25_omfyk"]
 [ext_resource type="Texture2D" uid="uid://ct3dvs5fypuo1" path="res://assets/arenas/HeartIcon.png" id="26_q0l3x"]
+[ext_resource type="Script" uid="uid://bsauufx1n4tot" path="res://scripts/ui/elements/phaseTracker.gd" id="27_ergn5"]
+[ext_resource type="Texture2D" uid="uid://bp7ysicyaf3kj" path="res://assets/ui/currentPhaseIcon.png" id="28_nrvn0"]
+[ext_resource type="Texture2D" uid="uid://dbaqiv1wfmcf" path="res://assets/ui/otherPhaseIcon.png" id="29_7ks2l"]
 [ext_resource type="PackedScene" uid="uid://chb4j7220yip1" path="res://scenes/holdoutIntro.tscn" id="29_chjal"]
 [ext_resource type="Script" uid="uid://cut6aandi16ab" path="res://scripts/battle/modifierBubbleManager.gd" id="30_5he1u"]
 [ext_resource type="Texture2D" uid="uid://d1kqrakc80shv" path="res://assets/ui/RationsIcon.png" id="30_chjal"]
@@ -65,6 +70,14 @@ corner_radius_bottom_right = 10
 bg_color = Color(0, 0, 0, 0.49803922)
 corner_radius_top_left = 10
 corner_radius_bottom_left = 10
+
+[sub_resource type="FontVariation" id="FontVariation_ergn5"]
+base_font = ExtResource("13_a8y0u")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_nrvn0"]
+base_font = ExtResource("15_jkv2x")
+spacing_glyph = 1
 
 [sub_resource type="FontVariation" id="FontVariation_c6pm6"]
 base_font = ExtResource("13_a8y0u")
@@ -1771,6 +1784,22 @@ script = ExtResource("5_tbgi4")
 unique_name_in_owner = true
 script = ExtResource("11_ya4ey")
 
+[node name="discardPile" type="Node2D" parent="."]
+position = Vector2(135, 292)
+script = ExtResource("12_nrvn0")
+
+[node name="hoverText" type="Sprite2D" parent="discardPile"]
+visible = false
+scale = Vector2(0.188, 0.188)
+texture = ExtResource("13_7ks2l")
+
+[node name="Area2D" type="Area2D" parent="discardPile"]
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="discardPile/Area2D"]
+shape = SubResource("RectangleShape2D_jyhfs")
+
 [node name="characterDeck" type="Node2D" parent="."]
 z_index = -2
 position = Vector2(135, 780)
@@ -1988,6 +2017,142 @@ offset_right = 1876.0
 offset_bottom = 466.0
 pivot_offset = Vector2(87.5, 1)
 mouse_filter = 2
+
+[node name="phaseTracker" type="Control" parent="arena"]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_left = 720.0
+offset_top = 270.0
+offset_right = 1200.0
+offset_bottom = 300.0
+script = ExtResource("27_ergn5")
+
+[node name="characterPhaseIcon" type="TextureRect" parent="arena/phaseTracker"]
+unique_name_in_owner = true
+self_modulate = Color(1, 1, 1, 0.5019608)
+layout_mode = 0
+offset_left = 172.5
+offset_top = 15.0
+offset_right = 217.5
+offset_bottom = 60.0
+scale = Vector2(0.33, 0.33)
+texture = ExtResource("28_nrvn0")
+
+[node name="supportPhaseIcon" type="TextureRect" parent="arena/phaseTracker"]
+unique_name_in_owner = true
+self_modulate = Color(1, 1, 1, 0.5019608)
+layout_mode = 0
+offset_left = 232.5
+offset_top = 15.0
+offset_right = 277.5
+offset_bottom = 60.0
+scale = Vector2(0.33, 0.33)
+texture = ExtResource("29_7ks2l")
+
+[node name="resolutionPhaseIcon" type="TextureRect" parent="arena/phaseTracker"]
+unique_name_in_owner = true
+self_modulate = Color(1, 1, 1, 0.5019608)
+layout_mode = 0
+offset_left = 292.5
+offset_top = 15.0
+offset_right = 337.5
+offset_bottom = 60.0
+scale = Vector2(0.33, 0.33)
+texture = ExtResource("29_7ks2l")
+
+[node name="characterPhaseText" type="Control" parent="arena/phaseTracker"]
+unique_name_in_owner = true
+anchors_preset = 0
+offset_left = -270.0
+offset_top = -90.0
+offset_right = 280.0
+mouse_filter = 2
+
+[node name="Heading" type="RichTextLabel" parent="arena/phaseTracker/characterPhaseText"]
+layout_mode = 0
+offset_left = 175.0
+offset_right = 355.0
+offset_bottom = 30.0
+theme_override_fonts/normal_font = SubResource("FontVariation_ergn5")
+theme_override_font_sizes/normal_font_size = 18
+text = "Character Phase"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Description" type="RichTextLabel" parent="arena/phaseTracker/characterPhaseText"]
+layout_mode = 0
+offset_top = 40.0
+offset_right = 550.0
+offset_bottom = 80.0
+theme_override_fonts/normal_font = SubResource("FontVariation_nrvn0")
+theme_override_font_sizes/normal_font_size = 14
+text = "Any character perks or related modifiers are applied on 
+conclusion of this phase, unless otherwise specified."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="supportPhaseText" type="Control" parent="arena/phaseTracker"]
+unique_name_in_owner = true
+anchors_preset = 0
+offset_left = -35.0
+offset_top = -90.0
+offset_right = 515.0
+mouse_filter = 2
+
+[node name="Heading" type="RichTextLabel" parent="arena/phaseTracker/supportPhaseText"]
+layout_mode = 0
+offset_left = 175.0
+offset_right = 355.0
+offset_bottom = 30.0
+theme_override_fonts/normal_font = SubResource("FontVariation_ergn5")
+theme_override_font_sizes/normal_font_size = 18
+text = "Support Phase"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Description" type="RichTextLabel" parent="arena/phaseTracker/supportPhaseText"]
+layout_mode = 0
+offset_top = 40.0
+offset_right = 550.0
+offset_bottom = 80.0
+theme_override_fonts/normal_font = SubResource("FontVariation_nrvn0")
+theme_override_font_sizes/normal_font_size = 14
+text = "Matching support cards buff or debuff character values.
+Relating perks are triggered at the conclusion of this phase."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="resolutionPhaseText" type="Control" parent="arena/phaseTracker"]
+unique_name_in_owner = true
+anchors_preset = 0
+offset_left = 205.0
+offset_top = -90.0
+offset_right = 755.0
+mouse_filter = 2
+
+[node name="Heading" type="RichTextLabel" parent="arena/phaseTracker/resolutionPhaseText"]
+layout_mode = 0
+offset_left = 175.0
+offset_right = 355.0
+offset_bottom = 30.0
+theme_override_fonts/normal_font = SubResource("FontVariation_ergn5")
+theme_override_font_sizes/normal_font_size = 18
+text = "Resolution Phase"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Description" type="RichTextLabel" parent="arena/phaseTracker/resolutionPhaseText"]
+layout_mode = 0
+offset_top = 40.0
+offset_right = 550.0
+offset_bottom = 80.0
+theme_override_fonts/normal_font = SubResource("FontVariation_nrvn0")
+theme_override_font_sizes/normal_font_size = 14
+text = "All calculations are completed in play order, and damage
+is dealt based on the total value difference."
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="opponent" type="Node2D" parent="arena"]
 
@@ -2227,7 +2392,7 @@ anchor_bottom = 0.5
 offset_left = 212.0
 offset_top = 204.0
 offset_right = 662.0
-offset_bottom = 231.99988
+offset_bottom = 231.99995
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
@@ -2332,7 +2497,7 @@ anchor_bottom = 0.5
 offset_left = 212.0
 offset_top = 378.0
 offset_right = 662.0
-offset_bottom = 405.99988
+offset_bottom = 405.99982
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
@@ -2401,7 +2566,8 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/normal_font = SubResource("FontVariation_j2jfr")
 theme_override_font_sizes/normal_font_size = 20
-text = "Dominance ⓘ"
+bbcode_enabled = true
+text = "Dominance [img=20]res://assets/ui/info.png[/img]"
 vertical_alignment = 1
 
 [node name="dominanceValue" type="RichTextLabel" parent="arena/holdoutEndStats/performance/performanceStatContainer"]
@@ -2431,13 +2597,14 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = 212.0
 offset_top = 510.0
-offset_right = 302.0
+offset_right = 312.0
 offset_bottom = 550.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/normal_font = SubResource("FontVariation_j2jfr")
 theme_override_font_sizes/normal_font_size = 20
-text = "Streak ⓘ"
+bbcode_enabled = true
+text = "Streak [img=20]res://assets/ui/info.png[/img]"
 vertical_alignment = 1
 
 [node name="streakValue" type="RichTextLabel" parent="arena/holdoutEndStats/performance/performanceStatContainer"]
@@ -2473,7 +2640,8 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/normal_font = SubResource("FontVariation_j2jfr")
 theme_override_font_sizes/normal_font_size = 20
-text = "Efficiency ⓘ"
+bbcode_enabled = true
+text = "Efficiency [img=20]res://assets/ui/info.png[/img]"
 vertical_alignment = 1
 
 [node name="efficiencyValue" type="RichTextLabel" parent="arena/holdoutEndStats/performance/performanceStatContainer"]
@@ -2503,13 +2671,14 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = 212.0
 offset_top = 590.0
-offset_right = 424.0
+offset_right = 430.0
 offset_bottom = 630.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/normal_font = SubResource("FontVariation_j2jfr")
 theme_override_font_sizes/normal_font_size = 20
-text = "Underdog Mastery ⓘ"
+bbcode_enabled = true
+text = "Underdog Mastery [img=20]res://assets/ui/info.png[/img]"
 vertical_alignment = 1
 
 [node name="underdogMasteryValue" type="RichTextLabel" parent="arena/holdoutEndStats/performance/performanceStatContainer"]
@@ -3852,6 +4021,9 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_jkv2x")
 text = "END TURN"
 
 [connection signal="timeout" from="inputManager/Timer" to="inputManager" method="_on_timer_timeout"]
+[connection signal="input_event" from="discardPile/Area2D" to="discardPile" method="_on_mouse_pressed"]
+[connection signal="mouse_entered" from="discardPile/Area2D" to="discardPile" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="discardPile/Area2D" to="discardPile" method="_on_mouse_exited"]
 [connection signal="input_event" from="characterDeck/Area2D" to="characterDeck" method="_on_mouse_pressed"]
 [connection signal="mouse_entered" from="characterDeck/Area2D" to="characterDeck" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="characterDeck/Area2D" to="characterDeck" method="_on_mouse_exited"]

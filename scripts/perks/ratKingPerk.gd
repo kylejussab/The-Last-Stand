@@ -6,3 +6,5 @@ func _init() -> void:
 func apply_after_calculation_perk(thisCard, _thisHand, thisTotal, otherTotal):
 	if thisTotal > otherTotal:
 		thisCard.perkValueAtRoundEnd = 4
+	
+	return 0

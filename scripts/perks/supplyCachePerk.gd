@@ -12,3 +12,6 @@ func apply_end_perk(_thisCharacterCard, thisSupportCard, _otherCharacterCard, _o
 				updatedHand.append(item)
 		
 		updatedHand.pick_random().modify_value(2)
+		return [2, "a random in-hand card"]
+	
+	return 0

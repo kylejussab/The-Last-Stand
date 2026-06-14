@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://c0yhtjyqj8lpa"]
+[gd_scene load_steps=35 format=3 uid="uid://c0yhtjyqj8lpa"]
 
 [ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://assets/fonts/SF-Pro-Display-Black.otf" id="1_2sggb"]
 [ext_resource type="Script" uid="uid://dujlyjrkvvdgr" path="res://scripts/ui/menus/optionsMenu.gd" id="1_k3ncn"]
@@ -10,7 +10,8 @@
 [ext_resource type="Texture2D" uid="uid://cf8imluhjhkne" path="res://assets/mainMenu/ArrowLeft.png" id="5_p4a6x"]
 [ext_resource type="Texture2D" uid="uid://cxd55axo1w2rm" path="res://assets/mainMenu/ArrowLeftPressed.png" id="6_f5pmu"]
 [ext_resource type="Script" uid="uid://bhtjov1bciv1h" path="res://scripts/ui/elements/cardSizeSelect.gd" id="7_c0y4r"]
-[ext_resource type="Script" uid="uid://dppx6bu5jxwqw" path="res://scripts/ui/elements/UiToggle.gd" id="8_xp7pe"]
+[ext_resource type="Script" uid="uid://dppx6bu5jxwqw" path="res://scripts/ui/elements/UiToggleAnimations.gd" id="8_xp7pe"]
+[ext_resource type="Script" uid="uid://dpu6pibbjwhkb" path="res://scripts/ui/elements/UiToggleVisualAssistIcons.gd" id="12_f5pmu"]
 [ext_resource type="Texture2D" uid="uid://be0aihjd72rmo" path="res://assets/ui/RightClickIcon.png" id="12_p4a6x"]
 
 [sub_resource type="FontVariation" id="FontVariation_r6kji"]
@@ -393,6 +394,26 @@ theme_override_font_sizes/normal_font_size = 24
 text = "Animations"
 vertical_alignment = 1
 
+[node name="VisualAssistIconLabel" type="RichTextLabel" parent="container/accessibilityMenuContainer/cardsContainer"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 120.0
+offset_top = 500.0
+offset_right = 410.0
+offset_bottom = 555.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_ij1mq")
+theme_override_font_sizes/normal_font_size = 24
+text = "Visually Assisted Icons"
+vertical_alignment = 1
+
 [node name="CardStyleSelect" type="Control" parent="container/accessibilityMenuContainer/cardsContainer"]
 anchors_preset = 0
 offset_right = 40.0
@@ -544,6 +565,62 @@ mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ubbwe")
 
 [node name="Knob" type="Panel" parent="container/accessibilityMenuContainer/cardsContainer/CardAnimationToggle/Toggle"]
+layout_mode = 0
+offset_left = 41.0
+offset_top = 3.0
+offset_right = 67.0
+offset_bottom = 29.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_nfh4n")
+
+[node name="VisualAssistIconToggle" type="Control" parent="container/accessibilityMenuContainer/cardsContainer"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="VisualAssistIconDescriptionLabel" type="RichTextLabel" parent="container/accessibilityMenuContainer/cardsContainer/VisualAssistIconToggle"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 616.0
+offset_top = 500.0
+offset_right = 910.0
+offset_bottom = 555.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_ij1mq")
+theme_override_font_sizes/normal_font_size = 24
+text = "On"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Toggle" type="Button" parent="container/accessibilityMenuContainer/cardsContainer/VisualAssistIconToggle"]
+layout_mode = 0
+offset_left = 980.0
+offset_top = 531.0
+offset_right = 1050.0
+offset_bottom = 563.0
+focus_mode = 0
+toggle_mode = true
+flat = true
+script = ExtResource("12_f5pmu")
+
+[node name="Track" type="Panel" parent="container/accessibilityMenuContainer/cardsContainer/VisualAssistIconToggle/Toggle"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ubbwe")
+
+[node name="Knob" type="Panel" parent="container/accessibilityMenuContainer/cardsContainer/VisualAssistIconToggle/Toggle"]
 layout_mode = 0
 offset_left = 41.0
 offset_top = 3.0

@@ -3,7 +3,7 @@ extends PerkBase
 func _init() -> void:
 	timing = "midRound"
 
-func apply_mid_perk(thisCard, _thisHand, otherCard):
+func apply_mid_perk(thisCard, _thisHand, otherCard) -> int:
 	var toAdd = 0
 	
 	if otherCard.role.contains("Aggressive"):
@@ -14,6 +14,8 @@ func apply_mid_perk(thisCard, _thisHand, otherCard):
 	
 	if toAdd != 0:
 		thisCard.modify_value(toAdd)
+	
+	return toAdd
 
 # Function used for forsaken honor check
 func would_perk_trigger(_thisCard, _thisHand, otherCard) -> bool:

@@ -18,11 +18,11 @@ const KEYWORD_ICONS = {
 	"Stealthy": "res://assets/cardIcons/Stealthy.png",
 	"Survivor": "res://assets/cardIcons/Survivor.png",
 	"Crafty": "res://assets/cardIcons/Crafty.png",
-	"Seraphite": "res://assets/cardIcons/colorFaction/Seraphite.png",
-	"WLF": "res://assets/cardIcons/colorFaction/WLF.png",
-	"Firefly": "res://assets/cardIcons/colorFaction/Firefly.png",
-	"Jackson": "res://assets/cardIcons/colorFaction/Jackson.png",
-	"Infected": "res://assets/cardIcons/colorFaction/Infected.png"
+	"Seraphite": "res://assets/cardIcons/color/Seraphite.png",
+	"WLF": "res://assets/cardIcons/color/WLF.png",
+	"Firefly": "res://assets/cardIcons/color/Firefly.png",
+	"Jackson": "res://assets/cardIcons/color/Jackson.png",
+	"Infected": "res://assets/cardIcons/color/Infected.png"
 }
 
 var cardSlot
@@ -78,18 +78,18 @@ func update_visuals():
 			$icons.get_node("faction").scale = Vector2(FACTION_ICON_SCALE, FACTION_ICON_SCALE)
 			
 			if faction in KEYWORD_ICONS:
-				$icons.get_node("faction").texture = load("res://assets/cardIcons/" + faction + ".png")
+				$icons.get_node("faction").texture = load(_get_card_icon_path(faction))
 		
 		if role != null and role != "":
 			var roles = role.split("/")
 			
 			if roles.size() > 0 and roles.size() <= 2:
 				if roles[0] in KEYWORD_ICONS:
-					perkOne.texture = load(KEYWORD_ICONS[roles[0]])
+					perkOne.texture = load(_get_card_icon_path(roles[0]))
 					perkOne.visible = true
 				
 				if roles.size() > 1 and roles[1] in KEYWORD_ICONS:
-					perkTwo.texture = load(KEYWORD_ICONS[roles[1]])
+					perkTwo.texture = load(_get_card_icon_path(roles[1]))
 					perkTwo.visible = true
 				else:
 					perkTwo.visible = false
@@ -140,40 +140,75 @@ func _apply_visibility_settings():
 			$icons/faction.visible = true
 		else:
 			$icons/faction.visible = false
-	
-	if AccessibilityData.currentCardStyle == AccessibilityData.CardStyle.MINIMAL:
-		if has_node("name"): $name.visible = false
-		if has_node("icons/faction"): $icons/faction.visible = false
 
 func _update_art_style():
 	if not has_node("image"): return
 	
+	var premiumPath = ""
+	var fallbackPath = ""
+	var safeFaction = faction if faction != "" else "Support"
+	
 	match AccessibilityData.currentCardStyle:
-		AccessibilityData.CardStyle.NO_ARTWORK:
-			if faction != "":
-				$image.texture = load("res://assets/cards/" + faction + ".png")
-			else:
-				$image.texture = load("res://assets/cards/Support.png")
-				
-		AccessibilityData.CardStyle.MINIMAL, _: 
-			var cardArtPath = "res://assets/cards/premium/" + cardKey + "Card.png"
-			
-			if ResourceLoader.exists(cardArtPath):
-				$image.texture = load(cardArtPath)
-			else:
-				if faction != "":
-					$image.texture = load("res://assets/cards/" + faction + ".png")
-				else:
-					$image.texture = load("res://assets/cards/Support.png")
+		AccessibilityData.CardStyle.STENCIL:
+			premiumPath = "res://assets/cards/premium/stencil/" + cardKey + "Card.png"
+			fallbackPath = "res://assets/cards/" + safeFaction + "Stencil.png"
+		
+		AccessibilityData.CardStyle.DEFAULT, _:
+			premiumPath = "res://assets/cards/premium/" + cardKey + "Card.png"
+			fallbackPath = "res://assets/cards/" + safeFaction + ".png"
+		
+	if ResourceLoader.exists(premiumPath):
+		$image.texture = load(premiumPath)
+	else:
+		$image.texture = load(fallbackPath)
+	
+	var targetColor = Color.WHITE
+	
+	if faction != "Support" and AccessibilityData.currentCardStyle == AccessibilityData.CardStyle.STENCIL:
+		targetColor = Color("#353535")
+		
+	$name.add_theme_color_override("default_color", targetColor)
+	$value.add_theme_color_override("default_color", targetColor)
+	$perk.add_theme_color_override("default_color", targetColor)
+	$line.color = targetColor
 
 func _format_perk_text(rawText: String) -> String:
 	var richText = rawText
 	for keyword in KEYWORD_ICONS:
 		if keyword in richText:
-			var iconPath = KEYWORD_ICONS[keyword]
+			var iconPath = _get_description_icon_path(keyword)
 			var replacement = "[img height=%d]%s[/img]" % [DESCRIPTION_ICON_SIZE, iconPath]
 			richText = richText.replace(keyword, replacement)
 	return richText
+
+func _apply_va_suffix(basePath: String) -> String:
+	if AccessibilityData.useVisualAssistIcons:
+		return basePath.replace(".png", "_VA.png")
+	return basePath
+
+func _get_description_icon_path(keyword: String) -> String:
+	if not keyword in KEYWORD_ICONS:
+		return ""
+		
+	var basePath = KEYWORD_ICONS[keyword]
+	
+	if AccessibilityData.currentCardStyle == AccessibilityData.CardStyle.STENCIL:
+		if "/color/" in KEYWORD_ICONS[keyword]: # Use white icons for factions (better contrast)
+			basePath = "res://assets/cardIcons/" + keyword + ".png"
+		else:
+			basePath = "res://assets/cardIcons/stencil/" + keyword + ".png"
+		
+	return _apply_va_suffix(basePath)
+
+func _get_card_icon_path(iconName: String) -> String:
+	var basePath = "res://assets/cardIcons/"
+	
+	if AccessibilityData.currentCardStyle == AccessibilityData.CardStyle.STENCIL:
+		basePath += "stencil/"
+		
+	basePath += iconName + ".png"
+	
+	return _apply_va_suffix(basePath)
 
 func _on_area_2d_mouse_entered() -> void:
 	emit_signal("hoverEntered", self)

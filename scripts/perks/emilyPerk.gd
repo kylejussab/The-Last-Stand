@@ -3,7 +3,7 @@ extends PerkBase
 func _init() -> void:
 	timing = "midRound"
 
-func apply_mid_perk(thisCard, thisHand, _otherCard):
+func apply_mid_perk(thisCard, thisHand, _otherCard) -> int:
 	var seraphiteTotal = 0
 
 	for seraphite in thisHand:
@@ -12,3 +12,5 @@ func apply_mid_perk(thisCard, thisHand, _otherCard):
 	
 	if seraphiteTotal != 0:
 		thisCard.modify_value(seraphiteTotal)
+	
+	return seraphiteTotal

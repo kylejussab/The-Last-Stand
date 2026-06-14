@@ -151,7 +151,7 @@ func apply_card_accessibility_changes():
 			card.update_visuals()
 
 func _on_mouse_entered():
-	if !%battleManager.lockPlayerInput and !%viewDeckUI.isViewDeckActive:
+	if !%battleManager.lockPlayerInput and (!%viewDeckUI.isViewDeckActive and !%viewDeckUI.isViewHistoryActive):
 		AudioManager.play_card_hover()
 		isHovered = true
 		
@@ -162,7 +162,7 @@ func _on_mouse_entered():
 		tween.tween_property(self, "scale", Vector2(1.1, 1.1), 0.1)
 
 func _on_mouse_exited():
-	if !%battleManager.lockPlayerInput and !%viewDeckUI.isViewDeckActive:
+	if !%battleManager.lockPlayerInput and (!%viewDeckUI.isViewDeckActive and !%viewDeckUI.isViewHistoryActive):
 		isHovered = false
 		
 		$hoverText.hide()

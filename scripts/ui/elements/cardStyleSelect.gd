@@ -8,7 +8,7 @@ const ARROW = preload("res://assets/mainMenu/ArrowLeft.png")
 const ARROW_HOVER = preload("res://assets/mainMenu/ArrowLeftPressed.png")
 const ARROW_EMPTY = preload("res://assets/mainMenu/ArrowLeftNone.png")
 
-var STYLE_LABELS = ["Default", "No Character", "Minimal"]
+var STYLE_LABELS = ["Default", "Stencil"]
 
 func _ready():
 	leftButton.mouse_entered.connect(_play_hover.bind(leftButton))

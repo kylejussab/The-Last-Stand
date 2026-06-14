@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b2pm8cdc83i61"
-path="res://.godot/imported/Firefly.png-939ec5cf6240a009a18e10c61db98379.ctex"
+uid="uid://1ywl83bwbmwo"
+path="res://.godot/imported/Seraphite.png-d1bef9f51f3e0bc8fc8893b4644e6e0f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/cardIcons/colorFaction/Firefly.png"
-dest_files=["res://.godot/imported/Firefly.png-939ec5cf6240a009a18e10c61db98379.ctex"]
+source_file="res://assets/cardIcons/color/Seraphite.png"
+dest_files=["res://.godot/imported/Seraphite.png-d1bef9f51f3e0bc8fc8893b4644e6e0f.ctex"]
 
 [params]
 

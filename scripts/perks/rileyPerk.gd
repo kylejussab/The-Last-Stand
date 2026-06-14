@@ -3,7 +3,7 @@ extends PerkBase
 func _init() -> void:
 	timing = "midRound"
 
-func apply_mid_perk(thisCard, thisHand, _otherCard):
+func apply_mid_perk(thisCard, thisHand, _otherCard) -> int:
 	var hasEllie: bool = false
 	var hasStealthy: bool = false
 	
@@ -15,8 +15,12 @@ func apply_mid_perk(thisCard, thisHand, _otherCard):
 			
 	if hasEllie:
 		thisCard.modify_value(3)
+		return 3
 	elif not hasStealthy:
 		thisCard.modify_value(2)
+		return 2
+	
+	return 0
 
 func would_perk_trigger(_thisCard, thisHand, _otherCard) -> bool:
 	var hasEllie: bool = false

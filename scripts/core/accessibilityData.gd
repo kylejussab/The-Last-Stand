@@ -1,11 +1,12 @@
 extends Node
 
-enum CardStyle { DEFAULT, NO_ARTWORK, MINIMAL }
+enum CardStyle { DEFAULT, STENCIL }
 
 enum CardUISize { SMALL, MEDIUM, LARGE }
 
 var currentCardStyle: CardStyle = CardStyle.DEFAULT
 var currentCardUISize: CardUISize = CardUISize.MEDIUM
+var useVisualAssistIcons: bool = false
 var animationsDisabled: bool = false
 
 func _ready() -> void:
@@ -14,6 +15,7 @@ func _ready() -> void:
 	if saveData.has("accessibility"):
 		currentCardStyle = saveData["accessibility"].get("currentCardStyle", currentCardStyle)
 		currentCardUISize = saveData["accessibility"].get("currentCardUISize", currentCardUISize)
+		useVisualAssistIcons = saveData["accessibility"].get("useVisualAssistIcons", useVisualAssistIcons)
 		animationsDisabled = saveData["accessibility"].get("animationsDisabled", animationsDisabled)
 
 func save_to_file() -> void:
@@ -22,6 +24,7 @@ func save_to_file() -> void:
 	saveData["accessibility"] = {
 		"currentCardStyle": currentCardStyle,
 		"currentCardUISize": currentCardUISize,
+		"useVisualAssistIcons": useVisualAssistIcons,
 		"animationsDisabled": animationsDisabled
 	}
 	SaveManager.save_main_state(saveData)

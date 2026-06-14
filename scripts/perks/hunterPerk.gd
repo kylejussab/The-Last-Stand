@@ -3,7 +3,7 @@ extends PerkBase
 func _init() -> void:
 	timing = "midRound"
 
-func apply_mid_perk(thisCard, thisHand, _otherCard):
+func apply_mid_perk(thisCard, thisHand, _otherCard) -> int:
 	var smugglerTotal = 0
 	
 	for smuggler in thisHand:
@@ -12,3 +12,6 @@ func apply_mid_perk(thisCard, thisHand, _otherCard):
 	
 	if smugglerTotal == 0:
 		thisCard.modify_value(3)
+		return 3
+	
+	return 0

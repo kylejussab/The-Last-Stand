@@ -75,7 +75,6 @@ func _input(event: InputEvent) -> void:
 			
 			_clear_preview_card()
 			
-			# Shout to the parent that we left the card menu, in case they need to update things
 			card_accessibility_closed.emit() 
 
 func setup_button_sounds(container: Node):
