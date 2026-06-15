@@ -146,6 +146,9 @@ func _update_all_game_card_visuals():
 		%battleManager.playerSupportCard.update_visuals()
 	if %battleManager.opponentSupportCard:
 		%battleManager.opponentSupportCard.update_visuals()
+	
+	for card in %battleManager.discardedCards:
+		card.update_visuals()
 
 func _make_background_invisible():
 	var tween = create_tween()
