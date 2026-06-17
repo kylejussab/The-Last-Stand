@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bfwx1jbh3l0i"
-path="res://.godot/imported/SliderKnobHighlighted.png-9dfdbc5fefb469ae32b04332037bf5de.ctex"
+uid="uid://bry2ungdeas4m"
+path="res://.godot/imported/sliderGrabberHighlighted.png-b28acbd4e7206cd09faf50cdacac877d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/SliderKnobHighlighted.png"
-dest_files=["res://.godot/imported/SliderKnobHighlighted.png-9dfdbc5fefb469ae32b04332037bf5de.ctex"]
+source_file="res://assets/ui/sliderGrabberHighlighted.png"
+dest_files=["res://.godot/imported/sliderGrabberHighlighted.png-b28acbd4e7206cd09faf50cdacac877d.ctex"]
 
 [params]
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://c0yhtjyqj8lpa"]
+[gd_scene load_steps=67 format=3 uid="uid://c0yhtjyqj8lpa"]
 
 [ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://assets/fonts/SF-Pro-Display-Black.otf" id="1_2sggb"]
 [ext_resource type="Script" uid="uid://dujlyjrkvvdgr" path="res://scripts/ui/menus/optionsMenu.gd" id="1_k3ncn"]
@@ -17,9 +17,9 @@
 [ext_resource type="Script" uid="uid://bmuc4rqv2wx5w" path="res://scripts/ui/elements/maxFPSSelect.gd" id="11_r6kji"]
 [ext_resource type="Script" uid="uid://dpu6pibbjwhkb" path="res://scripts/ui/elements/UiToggleVisualAssistIcons.gd" id="12_f5pmu"]
 [ext_resource type="Texture2D" uid="uid://be0aihjd72rmo" path="res://assets/ui/RightClickIcon.png" id="12_p4a6x"]
-[ext_resource type="Texture2D" uid="uid://7jymvxafq8q8" path="res://assets/ui/SliderKnob.png" id="13_detn7"]
+[ext_resource type="Texture2D" uid="uid://3j2v4hrfw8gy" path="res://assets/ui/sliderGrabber.png" id="13_hqhqw"]
 [ext_resource type="Script" uid="uid://d3y8yowftkquo" path="res://scripts/ui/elements/audioSliders.gd" id="13_pxw3j"]
-[ext_resource type="Texture2D" uid="uid://bfwx1jbh3l0i" path="res://assets/ui/SliderKnobHighlighted.png" id="14_7cmet"]
+[ext_resource type="Texture2D" uid="uid://bry2ungdeas4m" path="res://assets/ui/sliderGrabberHighlighted.png" id="14_12fy5"]
 
 [sub_resource type="FontVariation" id="FontVariation_r6kji"]
 base_font = ExtResource("1_2sggb")
@@ -73,6 +73,33 @@ corner_radius_top_right = 50
 corner_radius_bottom_right = 50
 corner_radius_bottom_left = 50
 
+[sub_resource type="QuadMesh" id="QuadMesh_12fy5"]
+size = Vector2(26, 26)
+center_offset = Vector3(13, 13, 0)
+
+[sub_resource type="MeshTexture" id="MeshTexture_blvip"]
+mesh = SubResource("QuadMesh_12fy5")
+base_texture = ExtResource("13_hqhqw")
+image_size = Vector2(26, 26)
+
+[sub_resource type="QuadMesh" id="QuadMesh_blvip"]
+size = Vector2(26, 26)
+center_offset = Vector3(13, 13, 0)
+
+[sub_resource type="MeshTexture" id="MeshTexture_pox78"]
+mesh = SubResource("QuadMesh_blvip")
+base_texture = ExtResource("14_12fy5")
+image_size = Vector2(26, 26)
+
+[sub_resource type="QuadMesh" id="QuadMesh_ncmqf"]
+size = Vector2(26, 26)
+center_offset = Vector3(13, 13, 0)
+
+[sub_resource type="MeshTexture" id="MeshTexture_7ddg3"]
+mesh = SubResource("QuadMesh_ncmqf")
+base_texture = ExtResource("13_hqhqw")
+image_size = Vector2(13, 13)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hqhqw"]
 bg_color = Color(0.17254902, 0.17254902, 0.17254902, 1)
 corner_radius_top_left = 50
@@ -81,6 +108,87 @@ corner_radius_bottom_right = 50
 corner_radius_bottom_left = 50
 expand_margin_top = 6.0
 expand_margin_bottom = 6.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_pxw3j"]
+size = Vector2(26, 26)
+center_offset = Vector3(13, 13, 0)
+
+[sub_resource type="MeshTexture" id="MeshTexture_hqhqw"]
+mesh = SubResource("QuadMesh_pxw3j")
+base_texture = ExtResource("13_hqhqw")
+image_size = Vector2(26, 26)
+
+[sub_resource type="QuadMesh" id="QuadMesh_pox78"]
+size = Vector2(26, 26)
+center_offset = Vector3(13, 13, 0)
+
+[sub_resource type="MeshTexture" id="MeshTexture_ncmqf"]
+mesh = SubResource("QuadMesh_pox78")
+base_texture = ExtResource("14_12fy5")
+image_size = Vector2(26, 26)
+
+[sub_resource type="QuadMesh" id="QuadMesh_7ddg3"]
+size = Vector2(26, 26)
+center_offset = Vector3(13, 13, 0)
+
+[sub_resource type="MeshTexture" id="MeshTexture_w58cl"]
+mesh = SubResource("QuadMesh_7ddg3")
+base_texture = ExtResource("13_hqhqw")
+image_size = Vector2(26, 26)
+
+[sub_resource type="QuadMesh" id="QuadMesh_nch5k"]
+size = Vector2(26, 26)
+center_offset = Vector3(13, 13, 0)
+
+[sub_resource type="MeshTexture" id="MeshTexture_44iyo"]
+mesh = SubResource("QuadMesh_nch5k")
+base_texture = ExtResource("13_hqhqw")
+image_size = Vector2(26, 26)
+
+[sub_resource type="QuadMesh" id="QuadMesh_fkqej"]
+size = Vector2(26, 26)
+center_offset = Vector3(13, 13, 0)
+
+[sub_resource type="MeshTexture" id="MeshTexture_yohex"]
+mesh = SubResource("QuadMesh_fkqej")
+base_texture = ExtResource("14_12fy5")
+image_size = Vector2(26, 26)
+
+[sub_resource type="QuadMesh" id="QuadMesh_h6ar1"]
+size = Vector2(26, 26)
+center_offset = Vector3(13, 13, 0)
+
+[sub_resource type="MeshTexture" id="MeshTexture_ij1mq"]
+mesh = SubResource("QuadMesh_h6ar1")
+base_texture = ExtResource("13_hqhqw")
+image_size = Vector2(26, 26)
+
+[sub_resource type="QuadMesh" id="QuadMesh_ubbwe"]
+size = Vector2(26, 26)
+center_offset = Vector3(13, 13, 0)
+
+[sub_resource type="MeshTexture" id="MeshTexture_nfh4n"]
+mesh = SubResource("QuadMesh_ubbwe")
+base_texture = ExtResource("13_hqhqw")
+image_size = Vector2(26, 26)
+
+[sub_resource type="QuadMesh" id="QuadMesh_v0oyy"]
+size = Vector2(26, 26)
+center_offset = Vector3(13, 13, 0)
+
+[sub_resource type="MeshTexture" id="MeshTexture_cvskv"]
+mesh = SubResource("QuadMesh_v0oyy")
+base_texture = ExtResource("14_12fy5")
+image_size = Vector2(26, 26)
+
+[sub_resource type="QuadMesh" id="QuadMesh_y51sr"]
+size = Vector2(26, 26)
+center_offset = Vector3(13, 13, 0)
+
+[sub_resource type="MeshTexture" id="MeshTexture_ad1vh"]
+mesh = SubResource("QuadMesh_y51sr")
+base_texture = ExtResource("13_hqhqw")
+image_size = Vector2(26, 26)
 
 [sub_resource type="FontVariation" id="FontVariation_7ddg3"]
 base_font = ExtResource("1_2sggb")
@@ -166,6 +274,12 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_hqhqw")
 theme_override_styles/focus = SubResource("StyleBoxFlat_12fy5")
 text = "DISPLAY"
 alignment = 0
+
+[node name="DisplayLock" type="Sprite2D" parent="container/mainContainer"]
+modulate = Color(0.29803923, 0.29803923, 0.29803923, 1)
+position = Vector2(280, 155)
+scale = Vector2(0.06, 0.06)
+texture = ExtResource("2_k3ncn")
 
 [node name="AudioButton" type="Button" parent="container/mainContainer"]
 z_index = 201
@@ -708,9 +822,9 @@ offset_left = 980.0
 offset_top = 384.0
 offset_right = 1140.0
 offset_bottom = 410.0
-theme_override_icons/grabber = ExtResource("13_detn7")
-theme_override_icons/grabber_highlight = ExtResource("14_7cmet")
-theme_override_icons/grabber_disabled = ExtResource("13_detn7")
+theme_override_icons/grabber = SubResource("MeshTexture_blvip")
+theme_override_icons/grabber_highlight = SubResource("MeshTexture_pox78")
+theme_override_icons/grabber_disabled = SubResource("MeshTexture_7ddg3")
 theme_override_styles/slider = SubResource("StyleBoxFlat_hqhqw")
 value = 100.0
 
@@ -748,9 +862,9 @@ offset_left = 980.0
 offset_top = 434.0
 offset_right = 1140.0
 offset_bottom = 460.0
-theme_override_icons/grabber = ExtResource("13_detn7")
-theme_override_icons/grabber_highlight = ExtResource("14_7cmet")
-theme_override_icons/grabber_disabled = ExtResource("13_detn7")
+theme_override_icons/grabber = SubResource("MeshTexture_hqhqw")
+theme_override_icons/grabber_highlight = SubResource("MeshTexture_ncmqf")
+theme_override_icons/grabber_disabled = SubResource("MeshTexture_w58cl")
 theme_override_styles/slider = SubResource("StyleBoxFlat_hqhqw")
 value = 100.0
 
@@ -788,9 +902,9 @@ offset_left = 980.0
 offset_top = 484.0
 offset_right = 1140.0
 offset_bottom = 510.0
-theme_override_icons/grabber = ExtResource("13_detn7")
-theme_override_icons/grabber_highlight = ExtResource("14_7cmet")
-theme_override_icons/grabber_disabled = ExtResource("13_detn7")
+theme_override_icons/grabber = SubResource("MeshTexture_44iyo")
+theme_override_icons/grabber_highlight = SubResource("MeshTexture_yohex")
+theme_override_icons/grabber_disabled = SubResource("MeshTexture_ij1mq")
 theme_override_styles/slider = SubResource("StyleBoxFlat_hqhqw")
 value = 100.0
 
@@ -829,9 +943,9 @@ offset_left = 980.0
 offset_top = 534.0
 offset_right = 1140.0
 offset_bottom = 560.0
-theme_override_icons/grabber = ExtResource("13_detn7")
-theme_override_icons/grabber_highlight = ExtResource("14_7cmet")
-theme_override_icons/grabber_disabled = ExtResource("13_detn7")
+theme_override_icons/grabber = SubResource("MeshTexture_nfh4n")
+theme_override_icons/grabber_highlight = SubResource("MeshTexture_cvskv")
+theme_override_icons/grabber_disabled = SubResource("MeshTexture_ad1vh")
 theme_override_styles/slider = SubResource("StyleBoxFlat_hqhqw")
 value = 100.0
 

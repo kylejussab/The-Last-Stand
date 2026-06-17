@@ -45,10 +45,8 @@ func _apply_audio_volume(sliderValue: float) -> void:
 	var linearValue: float
 	
 	if sliderValue <= defaultSliderPercentage:
-		# SMOOTH LOW END: Normal linear math from 0 to 70
 		linearValue = sliderValue / defaultSliderPercentage
 	else:
-		# PUNCHY HIGH END: Exponential boost from 70 to 100
 		var baseLinear = sliderValue / defaultSliderPercentage
 		linearValue = pow(baseLinear, 3.0)
 	
@@ -58,5 +56,4 @@ func _apply_audio_volume(sliderValue: float) -> void:
 	AudioServer.set_bus_mute(busIndex, sliderValue == 0)
 
 func _update_label(sliderValue: float) -> void:
-	# Cast to int to permanently strip the decimal before turning to text
 	label.text = str(int(sliderValue))

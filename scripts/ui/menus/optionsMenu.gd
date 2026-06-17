@@ -19,6 +19,12 @@ var previewCard: Node2D = null
 func _ready() -> void:
 	setup_button_sounds.call_deferred(mainContainer)
 	
+	# Display options are not for web builds
+	if OS.has_feature("web"):
+		$container/mainContainer/DisplayLock.show()
+	else:
+		$container/mainContainer/DisplayLock.hide()
+	
 	if accessibilitySubMainContainer:
 		setup_button_sounds.call_deferred(accessibilitySubMainContainer)
 	
@@ -111,13 +117,16 @@ func setup_button_sounds(container: Node):
 
 # --- SIGNALS ---
 func _on_display_button_pressed() -> void:
-	currentNavigation = "Display"
-	
-	mainContainer.hide()
-	mainContainer.process_mode = Node.PROCESS_MODE_DISABLED
-	
-	displayMenuContainer.show()
-	displayMenuContainer.process_mode = Node.PROCESS_MODE_INHERIT
+	if OS.has_feature("web"):
+		_play_denied_animation($container/mainContainer/DisplayButton)
+	else:
+		currentNavigation = "Display"
+		
+		mainContainer.hide()
+		mainContainer.process_mode = Node.PROCESS_MODE_DISABLED
+		
+		displayMenuContainer.show()
+		displayMenuContainer.process_mode = Node.PROCESS_MODE_INHERIT
 
 func _on_audio_button_pressed() -> void:
 	currentNavigation = "Audio"
