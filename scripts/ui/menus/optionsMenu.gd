@@ -5,6 +5,8 @@ signal options_exited
 signal card_accessibility_closed
 
 @onready var mainContainer = $container/mainContainer
+@onready var displayMenuContainer = $container/displayMenuContainer
+@onready var audioMenuContainer = $container/audioMenuContainer
 @onready var accessibilityMenuContainer = $container/accessibilityMenuContainer
 @onready var accessibilitySubMainContainer = $container/accessibilityMenuContainer/mainContainer
 @onready var accessibilityCardsContainer = $container/accessibilityMenuContainer/cardsContainer
@@ -51,7 +53,26 @@ func _input(event: InputEvent) -> void:
 			AudioManager.play_button_back()
 			hide_all()
 			AccessibilityData.save_to_file()
+			SettingsData.save_to_file()
 			options_exited.emit()
+			
+		elif currentNavigation == "Display":
+			AudioManager.play_button_back()
+			currentNavigation = "Options"
+			displayMenuContainer.hide()
+			displayMenuContainer.process_mode = Node.PROCESS_MODE_DISABLED
+			
+			mainContainer.show()
+			mainContainer.process_mode = Node.PROCESS_MODE_INHERIT
+			
+		elif currentNavigation == "Audio":
+			AudioManager.play_button_back()
+			currentNavigation = "Options"
+			audioMenuContainer.hide()
+			audioMenuContainer.process_mode = Node.PROCESS_MODE_DISABLED
+			
+			mainContainer.show()
+			mainContainer.process_mode = Node.PROCESS_MODE_INHERIT
 			
 		elif currentNavigation == "Accessibility":
 			AudioManager.play_button_back()
@@ -90,10 +111,22 @@ func setup_button_sounds(container: Node):
 
 # --- SIGNALS ---
 func _on_display_button_pressed() -> void:
-	_play_denied_animation(mainContainer.get_node("DisplayButton"))
+	currentNavigation = "Display"
+	
+	mainContainer.hide()
+	mainContainer.process_mode = Node.PROCESS_MODE_DISABLED
+	
+	displayMenuContainer.show()
+	displayMenuContainer.process_mode = Node.PROCESS_MODE_INHERIT
 
 func _on_audio_button_pressed() -> void:
-	_play_denied_animation(mainContainer.get_node("AudioButton"))
+	currentNavigation = "Audio"
+	
+	mainContainer.hide()
+	mainContainer.process_mode = Node.PROCESS_MODE_DISABLED
+	
+	audioMenuContainer.show()
+	audioMenuContainer.process_mode = Node.PROCESS_MODE_INHERIT
 
 func _on_accessibility_button_pressed() -> void:
 	currentNavigation = "Accessibility"

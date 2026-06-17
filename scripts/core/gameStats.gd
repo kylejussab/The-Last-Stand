@@ -137,7 +137,10 @@ func get_save_dict() -> Dictionary:
 	}
 
 func save_game():
-	SaveManager.save_main_state(get_save_dict())
+	var saveData = SaveManager.load_main_state()
+	saveData.merge(get_save_dict(), true) 
+	
+	SaveManager.save_main_state(saveData)
 
 func record_modifier_selection(modName: String) -> void:
 	holdoutModifierUses[modName] = holdoutModifierUses.get(modName, 0) + 1

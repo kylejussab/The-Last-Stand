@@ -28,12 +28,15 @@ Database="*res://scripts/core/database.gd"
 AccessibilityData="*res://scripts/core/accessibilityData.gd"
 AudioManager="*res://scenes/audioManager.tscn"
 SaveManager="*res://scripts/core/saveManager.gd"
+SettingsData="*res://scripts/core/settingsData.gd"
 
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
-window/size/mode=3
+window/size/resizable=false
+window/size/window_width_override=1280
+window/size/window_height_override=720
 window/stretch/mode="canvas_items"
 
 [rendering]

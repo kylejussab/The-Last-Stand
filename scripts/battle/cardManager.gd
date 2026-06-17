@@ -8,23 +8,20 @@ const COLLISION_MASK_CARD_SLOT = 2
 const DEFAULT_CARD_MOVE_SPEED = 0.1
 
 var draggedCard: Node2D
-var screenSize: Vector2
 var hoveredCard: Node2D = null
 var playerHandReference: Node
 
 @onready var battleManager = %battleManager
 
 func _ready() -> void:
-	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
-	screenSize = get_viewport().get_visible_rect().size
-
 	playerHandReference = $"../playerHand"
 	$"../inputManager".connect("leftMouseButtonReleased", on_left_click_released)
 
 func _process(_delta: float) -> void:
 	if draggedCard:
 		var mousePosition = get_global_mouse_position()
-		draggedCard.position = Vector2(clamp(mousePosition.x, 0, screenSize.x), clamp(mousePosition.y, 0, screenSize.y))
+		var currentScreenSize = get_viewport().get_visible_rect().size
+		draggedCard.position = Vector2(clamp(mousePosition.x, 0, currentScreenSize.x), clamp(mousePosition.y, 0, currentScreenSize.y))
 
 func start_drag(card):
 	if not "cardSlot" in card:
