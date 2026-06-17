@@ -56,17 +56,17 @@ func finish_drag():
 				cardSlot.occupied = true
 				draggedCard.cardSlot = cardSlot
 				
-				# Update player turn variable
-				if draggedCard.type == "Character":
-					emit_signal("characterPlayed", draggedCard)
-				else:
-					emit_signal("supportPlayed", draggedCard)
-				
 				# Ensure its not highlighted
 				draggedCard.scale = Vector2(1, 1)
 				draggedCard.get_node("AnimationPlayer").play_backwards("showPerkDescription")
 				var endTime = draggedCard.get_node("AnimationPlayer").current_animation_length
 				draggedCard.get_node("AnimationPlayer").seek(endTime, true)
+				
+				# Update player turn variable
+				if draggedCard.type == "Character":
+					emit_signal("characterPlayed", draggedCard)
+				else:
+					emit_signal("supportPlayed", draggedCard)
 				
 				draggedCard = null
 				return
@@ -108,9 +108,6 @@ func on_card_hover_enter(card):
 	
 	var isCardDisabled: bool = false
 	
-	#if "type" in card and card.type == "Character" and card.canBePlayed == false:
-		#isCardDisabled = true
-		
 	if battleManager.get("isTutorialActive") == true:
 		if "canBePlayed" in card and card.canBePlayed == false:
 			isCardDisabled = true
@@ -229,17 +226,17 @@ func move_card_on_double_click(card, cardSlot):
 		
 		draggedCard = card
 		
-		# Update player turn variable
-		if draggedCard.type == "Character":
-			emit_signal("characterPlayed", draggedCard)
-		else:
-			emit_signal("supportPlayed", draggedCard)
-		
 		# Ensure its not highlighted
 		draggedCard.scale = Vector2(1, 1)
 		var anim = draggedCard.get_node("AnimationPlayer")
 		anim.play_backwards("showPerkDescription")
 		anim.seek(0, true)
+		
+		# Update player turn variable
+		if draggedCard.type == "Character":
+			emit_signal("characterPlayed", draggedCard)
+		else:
+			emit_signal("supportPlayed", draggedCard)
 		
 		draggedCard = null
 
