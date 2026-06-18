@@ -26,6 +26,7 @@ const CHARACTERS = { # Value, Type, Faction, Class, Card Name Text, Perk Text
 	"Riley": [3, "Character", "Firefly", "Stealthy", "RILEY", "+3 if Ellie in hand and +2 if no Stealthy in hand"],
 	
 	# Infected
+	"Bloater": [6, "Character", "Infected", "Aggressive/Defensive", "BLOATER", "?"],
 	"Runner": [2, "Character", "Infected", "Aggressive", "RUNNER", "Gain the value of all runners in hand, and discard them"],
 	"Stalker": [3, "Character", "Infected", "Stealthy", "STALKER", "+2 for each Infected in hand"],
 	"Clicker": [5, "Character", "Infected", "Aggressive", "CLICKER", "On Resolution Win: -2 to opponent health"],
@@ -583,6 +584,49 @@ const tutorialSupportDeck = [
 	"Rage",
 	"TrapMine", "TrapMine",
 ]
+
+const CARD_VIEWER_DESCRIPTIONS = {
+	"Abby": "The WLF's top soldier. She excels in fights with brute force, and has spent years turning herself into a weapon in the pursuit of vengeance.\n\nRivalries: Ellie, Emily, Joel, Rat King.",
+	"AbbyFirefly": "Just a kid growing up in the Salt Lake City base. She idolizes her dad and genuinely believes the Fireflies are going to save the world.",
+	"Alice": "A highly trained WLF guard dog. To her handlers, she's a loyal companion. To trespassers, she's a relentless tracker with a vicious bite.",
+	"Bill": "A paranoid survivalist who turned an entire town into his personal fortress. He trusts his tripwires and shotgun traps a whole lot more than he trusts people.",
+	"Bloater": "A massive Infected covered in thick, armor-like fungal plates. It's slow and completely blind, but makes up for it by throwing toxic spore bombs and being incredibly hard to kill.",
+	"Clicker": "Completely blind, these Infected hunt purely by echolocation. If you make a sound, they will find you, and they will kill you.",
+	"Dina": "A quick-witted and highly capable scout from Jackson. She brings a little warmth to the apocalypse, but will fight tooth and nail for the people she cares about.",
+	"Ellie": "Resourceful, quick, and immune to the Cordyceps infection. She survived the outbreak, only to let a brutal need for revenge turn her into a ruthless killer.\n\nRivalries: Abby, Nora.",
+	"Emily": "A high-ranking Seraphite zealot. She enforces the Prophet's laws with a heavy hand and shows absolutely zero mercy to trespassers or apostates.",
+	"Eugene": "An old-school Firefly who traded in the war for a quiet life running patrols and growing weed in a hidden basement.",
+	"FireflySoldier": "A militant survivor fighting to restore society. Driven by the hope of a cure, they rely on guerrilla tactics and sheer desperation to stay in the fight.",
+	"Hunter": "Brutal, opportunistic scavengers who control their territory through fear and violence. They survive by ambushing anyone unlucky enough to cross their path.",
+	"Isaac": "The ruthless, uncompromising leader of the WLF. He runs his massive militia with absolute authority and is willing to burn a city to the ground to wipe out his enemies.\n\nRivalries: Lev, The Prophet, Yara.",
+	"Jerry": "The lead surgeon for the Fireflies and Abby's father. He carries the weight of the world on his shoulders, genuinely believing the sacrifice of one life is worth saving humanity.",
+	"Jessie": "A fiercely loyal patrol leader from Jackson. He's the kind of guy who will drop everything and walk straight into a warzone just to make sure his friends make it home.",
+	"Joel": "A hardened survivor who finally found a quiet life in Jackson. He'd do absolutely anything to protect the people he loves, no matter the cost or the consequences.\n\nRivalries: Abby, Marlene.",
+	"JoelSmuggler": "A deeply entrenched Boston smuggler with no reason to ever soften. His brutal, pessimistic worldview has only sharpened into something far more dangerous.",
+	"Lev": "A young Seraphite outcast who rejected the Prophet's traditions. He's deadly with a bow, fiercely protective of his sister, and just trying to survive a war he didn't start.\n\nRivalries: Isaac.",
+	"Li": "An unpredictable and highly mysterious survivor currently operating as a WLF intelligence asset. They seem to know everyone's secrets, including dark rumors out of Los Angeles, yet fiercely guard their own past. They are incredibly valuable, but you never truly know their endgame.",
+	"Malik": "The ruthless leader of a Hunter stronghold in Los Angeles. While others feared the Infected, Malik studied their primal instincts until he learned to command them like twisted attack dogs. He planned to conquer the city with his grotesque army, until a fateful run-in with Tess.",
+	"Manny": "A veteran WLF soldier and one of Abby's closest friends. He's loud, fiercely loyal to his crew, and absolutely ruthless when it comes to clearing out Seraphites.",
+	"Maria": "The pragmatic, no-nonsense leader of Jackson. She organizes the patrols, manages the town's defenses, and makes the hard calls to keep her people safe.",
+	"Marlene": "The leader of the Fireflies. She's fighting a losing war, but her absolute commitment to finding a vaccine means she'll sacrifice anything, and anyone, to see it through.\n\nRivalries: Joel.",
+	"Mel": "One of the WLF's top medics, originally trained by the Fireflies. She saves lives on the front lines, but is quietly losing her stomach for the endless brutality of the war.",
+	"Nora": "A WLF medic stationed at the Seattle hospital. She's smart, deeply loyal to her old Firefly crew, and more than capable of handling herself when things go south.\n\nRivalries: Ellie.",
+	"Owen": "A WLF soldier who is completely burnt out on the endless killing. He's an idealist at heart, desperately looking for a way out of Seattle and a reason to hope again.",
+	"RatKing": "A massive amalgamation of the earliest Infected, fused together over decades in the Seattle hospital basement. It is a terrifying, nearly unstoppable wall of fungus and raw brute strength.",
+	"Riley": "A rebellious teenager and Ellie's closest friend from the Boston quarantine zone. She joined the Fireflies looking for a real purpose and a way to fight back against the military.",
+	"Runner": "The earliest stage of the Cordyceps infection. They still have their vision and attack with terrifying speed, often swarming their targets in overwhelming numbers.",
+	"SeraphiteBrute": "A towering, heavily scarred enforcer for the Seraphites. They shrug off bullets and use massive two-handed melee weapons to simply crush anyone in their path.",
+	"SeraphiteInitiate": "A deeply devoted warrior of the Seraphite cult. They use stealth, primitive weapons, and a chilling system of whistles to silently hunt trespassers in the overgrown ruins.",
+	"Shambler": "A grotesque Infected mutation adapted to Seattle's constant rain. They aggressively charge their targets before erupting, violently expelling thick clouds of corrosive, burning acid.",
+	"Shimmer": "Ellie's loyal and well-trained patrol horse from Jackson. Built for speed and endurance, she carries her riders safely across miles of treacherous, overgrown terrain.\n\nRivalries: WLF Soldier.",
+	"Stalker": "The cunning second stage of the Cordyceps infection. Instead of rushing head-on, they silently skulk in the dark, flanking their prey and waiting for the perfect moment to strike.",
+	"Tess": "A tough, highly respected smuggler running the black market in the Boston quarantine zone. She's ruthless, fiercely practical, and doesn't hesitate to do whatever it takes to survive.",
+	"TheProphet": "The martyred founder of the Seraphites. Her teachings of rejecting old-world technology and returning to nature inspired a fanatical movement that completely changed the landscape of Seattle.",
+	"Tommy": "A master sniper and one of Jackson's founding pillars. When his family is torn apart, he leaves the quiet life behind, unleashing a relentless, one-man war against those responsible.\n\nRivalries: Abby.",
+	"TommyFirefly": "A survivor haunted by the brutal things he had to do to stay alive in the early years of the outbreak. Desperate for a cause he can actually believe in, he joined the Fireflies hoping to build a better world.",
+	"WLFSoldier": "A heavily armed and highly trained member of the Washington Liberation Front. Backed by military-grade gear and sheer numbers, they fight a grueling, endless turf war for control of Seattle.",
+	"Yara": "A former Seraphite warrior who sacrificed everything to protect her younger brother. Even after suffering a brutal amputation, she remains fiercely determined to keep him safe at any cost.\n\nRivalries: Isaac."
+}
 
 const REMNANT_CHARACTERS = {
 	#Jackson

@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=3 uid="uid://btdd4ppvwtnvy"]
+[gd_scene load_steps=50 format=3 uid="uid://btdd4ppvwtnvy"]
 
 [ext_resource type="Script" uid="uid://bmorqef62jko2" path="res://scripts/ui/menus/mainMenu.gd" id="1_l7wge"]
 [ext_resource type="Texture2D" uid="uid://bmewebekh15ca" path="res://assets/mainMenu/main.png" id="1_qkhwq"]
@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://bwcypn38gtv" path="res://assets/holdout/accolade/Brawler.png" id="9_6aseq"]
 [ext_resource type="Script" uid="uid://b6tvg1kiq1u2l" path="res://scripts/ui/elements/holdButton.gd" id="9_25e00"]
 [ext_resource type="Texture2D" uid="uid://cw3snkugbg01q" path="res://assets/ui/Lock.png" id="9_jfr2g"]
+[ext_resource type="PackedScene" uid="uid://dgqpd2uxre07j" path="res://scenes/cardViewer.tscn" id="10_808lr"]
 [ext_resource type="Texture2D" uid="uid://3bjo3ij5b8q8" path="res://assets/ui/HoldRing.png" id="10_jfr2g"]
 [ext_resource type="Texture2D" uid="uid://ci7jg7kd2yune" path="res://assets/holdout/accolade/Executioner.png" id="10_tlicg"]
 [ext_resource type="Texture2D" uid="uid://diy54yoxw6egc" path="res://assets/holdout/accolade/Giant Slayer.png" id="11_808lr"]
@@ -128,7 +129,6 @@ scale = Vector2(0.24, 0.24)
 texture = ExtResource("1_qkhwq")
 
 [node name="pressAnywhere" type="Control" parent="."]
-visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -213,13 +213,33 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_ldpc3")
 text = "REMNANTS"
 alignment = 0
 
-[node name="OptionsButton" type="Button" parent="mainButtonContainer"]
+[node name="CardViewerButton" type="Button" parent="mainButtonContainer"]
 z_index = 201
 layout_mode = 0
 offset_left = 120.0
 offset_top = 550.0
 offset_right = 235.0
 offset_bottom = 605.0
+theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = SubResource("FontVariation_epn8x")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_48ign")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_l7wge")
+theme_override_styles/hover = SubResource("StyleBoxFlat_7nrmo")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_clbkb")
+theme_override_styles/focus = SubResource("StyleBoxFlat_ldpc3")
+text = "CARD VIEWER"
+alignment = 0
+
+[node name="OptionsButton" type="Button" parent="mainButtonContainer"]
+z_index = 201
+layout_mode = 0
+offset_left = 120.0
+offset_top = 600.0
+offset_right = 235.0
+offset_bottom = 655.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
@@ -237,9 +257,9 @@ alignment = 0
 z_index = 201
 layout_mode = 0
 offset_left = 120.0
-offset_top = 600.0
+offset_top = 650.0
 offset_right = 182.0
-offset_bottom = 655.0
+offset_bottom = 705.0
 theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
@@ -494,6 +514,9 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_clbkb")
 theme_override_styles/focus = SubResource("StyleBoxFlat_ldpc3")
 text = "STATISTICS"
 alignment = 0
+
+[node name="cardViewerMenu" parent="." instance=ExtResource("10_808lr")]
+visible = false
 
 [node name="StatisticsMenu" type="Control" parent="."]
 visible = false
@@ -1444,6 +1467,7 @@ offset_right = 570.0
 offset_bottom = 950.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_fonts/normal_font = SubResource("FontVariation_uwljm")
 theme_override_font_sizes/normal_font_size = 24
@@ -1462,6 +1486,7 @@ offset_right = 570.0
 offset_bottom = 1030.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme_override_colors/default_color = Color(0.17254902, 0.17254902, 0.17254902, 1)
 theme_override_fonts/normal_font = SubResource("FontVariation_uwljm")
 theme_override_font_sizes/normal_font_size = 18
@@ -1537,6 +1562,7 @@ vertical_alignment = 1
 [connection signal="mouse_entered" from="mainButtonContainer/RemnantsButton" to="." method="_on_remnants_button_mouse_entered"]
 [connection signal="mouse_exited" from="mainButtonContainer/RemnantsButton" to="." method="_on_remnants_button_mouse_exited"]
 [connection signal="pressed" from="mainButtonContainer/RemnantsButton" to="." method="_on_remnants_button_pressed"]
+[connection signal="pressed" from="mainButtonContainer/CardViewerButton" to="." method="_on_card_viewer_button_pressed"]
 [connection signal="pressed" from="mainButtonContainer/OptionsButton" to="." method="_on_options_button_pressed"]
 [connection signal="pressed" from="mainButtonContainer/QuitButton" to="." method="_on_quit_button_pressed"]
 [connection signal="mouse_entered" from="storyButtonContainer/JuneButton" to="." method="_on_june_button_mouse_entered"]
