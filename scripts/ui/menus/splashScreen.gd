@@ -3,9 +3,7 @@ extends Node2D
 func _ready() -> void:
 	# Start loading scene changes
 	ResourceLoader.load_threaded_request("res://scenes/mainMenu.tscn")
-	
-	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
-	
+		
 	GameStats.gameMode = GameStats.Mode.SPLASH_SCREEN
 	
 	# Disclaimer

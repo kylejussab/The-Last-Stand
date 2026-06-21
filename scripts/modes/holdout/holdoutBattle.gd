@@ -199,6 +199,8 @@ func _on_player_character_played(card: Node2D) -> void:
 	
 	battleEngine.log_action("Player. You played " + card.nameText + ".")
 	
+	_play_dust_effect(playerCharacterCard)
+	
 	if opponentCharacterCard != null:
 		await _apply_mid_round_perks()
 		_transition_to_support_phase()
@@ -270,6 +272,8 @@ func _on_player_support_played(card: Node2D) -> void:
 	
 	HoldoutStats.record_played_card("Support", playerSupportCard.cardKey, playerSupportCard.value)
 	battleEngine.log_action("Player. You played " + card.nameText + ".")
+	
+	_play_dust_effect(playerSupportCard)
 	
 	await _apply_player_support(playerSupportCard, opponentCharacterCard, playerCharacterCard)
 	
@@ -543,6 +547,10 @@ func _animate_opponent_playing_card(opponentCard: Node2D, opponentCardSlot: Node
 	var tween = get_tree().create_tween()
 	tween.finished.connect(AudioManager.play_random_card_draw)
 	tween.tween_property(opponentCard, "position", opponentCardSlot.position, cardMoveSpeed)
+	
+	await opponentCard.get_node("AnimationPlayer").animation_finished
+	
+	_play_dust_effect(opponentCard, true)
 	
 	$"../opponentHand".remove_card_from_hand(opponentCard)
 
@@ -1026,6 +1034,26 @@ func _check_old_wounds_accolade() -> void:
 		var rivals = HoldoutStats.RIVALRIES[playerCharacterCard.cardKey]
 		if opponentCharacterCard.cardKey in rivals:
 			HoldoutStats.achievedOldWounds = true
+
+func _play_dust_effect(card: Node2D, isOpponent: bool = false) -> void:
+	var dust = card.get_node("dust") 
+	
+	dust.visible = true
+	dust.scale = Vector2(0.2, 0.2)
+	dust.self_modulate.a = 0.075
+	
+	if !isOpponent:
+		await get_tree().create_timer(.1).timeout
+	
+	var dustTween = get_tree().create_tween().set_parallel(true)
+	
+	dustTween.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	
+	dustTween.tween_property(dust, "scale", Vector2(0.35, 0.35), 0.25)
+	dustTween.tween_property(dust, "self_modulate:a", 0.0, 0.25)
+	
+	await dustTween.finished
+	dust.visible = false
 
 # --- PERK HELPERS ---
 func _execute_player_mid_perk() -> void:

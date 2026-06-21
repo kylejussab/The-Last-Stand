@@ -1,6 +1,7 @@
-[gd_scene load_steps=26 format=3 uid="uid://b1ue0o8lsverh"]
+[gd_scene load_steps=27 format=3 uid="uid://b1ue0o8lsverh"]
 
 [ext_resource type="Script" uid="uid://ucr1vk8xoov" path="res://scripts/cards/card.gd" id="1_6u4wf"]
+[ext_resource type="Texture2D" uid="uid://8huw5jf2orc0" path="res://assets/cards/CardDust.png" id="2_42b55"]
 [ext_resource type="Texture2D" uid="uid://cbgv0l1d6fl7k" path="res://assets/cards/CardBackBlank.png" id="2_kg30u"]
 [ext_resource type="Texture2D" uid="uid://xm6j3gsou8ve" path="res://assets/cards/ExampleCard.png" id="3_sy11y"]
 [ext_resource type="Texture2D" uid="uid://bnfh81d7cqsxc" path="res://assets/ui/Lock Top.png" id="4_4wvaf"]
@@ -278,6 +279,18 @@ tracks/20/path = NodePath("blackGradient:self_modulate")
 tracks/20/interp = 1
 tracks/20/loop_wrap = true
 tracks/20/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/21/type = "value"
+tracks/21/imported = false
+tracks/21/enabled = true
+tracks/21/path = NodePath("dust:self_modulate")
+tracks/21/interp = 1
+tracks/21/loop_wrap = true
+tracks/21/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
@@ -605,6 +618,11 @@ base_font = ExtResource("10_we8pq")
 
 [node name="card" type="Node2D"]
 script = ExtResource("1_6u4wf")
+
+[node name="dust" type="Sprite2D" parent="."]
+self_modulate = Color(1, 1, 1, 0)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("2_42b55")
 
 [node name="imageBack" type="Sprite2D" parent="."]
 scale = Vector2(0.2, 0.2)

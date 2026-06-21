@@ -22,7 +22,8 @@ const KEYWORD_ICONS = {
 	"WLF": "res://assets/cardIcons/color/WLF.png",
 	"Firefly": "res://assets/cardIcons/color/Firefly.png",
 	"Jackson": "res://assets/cardIcons/color/Jackson.png",
-	"Infected": "res://assets/cardIcons/color/Infected.png"
+	"Infected": "res://assets/cardIcons/color/Infected.png",
+	"Smuggler": "res://assets/cardIcons/color/Smuggler.png"
 }
 
 var cardSlot

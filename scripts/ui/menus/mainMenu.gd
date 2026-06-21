@@ -7,6 +7,7 @@ extends Node2D
 @onready var storyButtonContainer = $storyButtonContainer
 @onready var holdoutButtonContainer = $holdoutButtonContainer
 @onready var holdoutStatsContainer = $StatisticsMenu
+@onready var cardViewerContainer = $cardViewerMenu
 
 # Background sprites
 @onready var holdoutBg = $holdoutButtonContainer/Background
@@ -131,6 +132,17 @@ func _input(event: InputEvent) -> void:
 			
 			holdoutButtonContainer.show()
 			holdoutButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
+			Curtain.fade_out(0.25)
+		elif currentNavigation == "Card Viewer":
+			$pauseIcon.hide()
+			currentNavigation = "Main"
+			await Curtain.fade_in(0.25)
+			
+			cardViewerContainer.hide()
+			cardViewerContainer.process_mode = Node.PROCESS_MODE_DISABLED
+			
+			mainButtonContainer.show()
+			mainButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
 			Curtain.fade_out(0.25)
 
 func setup_button_sounds(container: Node):
@@ -266,6 +278,20 @@ func _on_remnants_button_mouse_exited() -> void:
 
 func _on_remnants_button_pressed() -> void:
 	_play_denied_animation($mainButtonContainer/RemnantsButton)
+
+func _on_card_viewer_button_pressed() -> void:
+	$pauseIcon.show()
+	currentNavigation = "Card Viewer"
+	
+	await Curtain.fade_in(0.25)
+	
+	mainButtonContainer.hide()
+	mainButtonContainer.process_mode = Node.PROCESS_MODE_DISABLED
+	
+	cardViewerContainer.show()
+	cardViewerContainer.process_mode = Node.PROCESS_MODE_INHERIT
+	
+	Curtain.fade_out(0.25)
 
 func _on_options_button_pressed() -> void:
 	$pauseIcon.show()
