@@ -1,4 +1,4 @@
-**Current Version:** `v0.4.2` (Core Systems Integration)
+**Current Version:** `v0.4.3` (Core Systems Integration)
 
 <img width="5335" alt="Last Stand Banner" src="https://github.com/user-attachments/assets/07732bec-68d5-4e32-acb5-a529d0c1e090" />
 
