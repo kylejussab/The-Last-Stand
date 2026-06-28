@@ -1,18 +1,8 @@
-extends PerkBase
+extends MidRoundPerk
 
-func _init() -> void:
-	timing = "midRound"
-
-func apply_mid_perk(thisCard, thisHand, _otherCard) -> int:
-	var fireflyTotal = 0
-	
+func calculate_perk_value(_thisCard, thisHand, _otherCard) -> int:
 	for firefly in thisHand:
 		if firefly.type == "Character" && firefly.faction == "Firefly":
-			fireflyTotal += 1
-			break
-	
-	if fireflyTotal == 0:
-		thisCard.modify_value(3)
-		return 3
-	
-	return 0
+			return 0
+			
+	return 3

@@ -1,5 +1,8 @@
 extends OpponentAI
-class_name OpponentAIHighestValue
+class_name OpponentAIAggressive
+
+func _init():
+	playstyleName = "Aggressive"
 
 func play_character_card(opponent_hand, _player_hand):
 	var characters: Array = []

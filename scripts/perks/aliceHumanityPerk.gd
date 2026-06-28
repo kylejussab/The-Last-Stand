@@ -1,30 +1,14 @@
-extends PerkBase
+extends MidRoundPerk
 
-func _init() -> void:
-	timing = "midRound"
-
-func apply_mid_perk(thisCard, thisHand, otherCard) -> int:
-	var perkAmount: int = 0
+func calculate_perk_value(_thisCard, thisHand, otherCard) -> int:
+	var toAdd = 0
 	
-	if otherCard.role.contains("Stealthy"):
-		perkAmount += 3
+	if otherCard != null:
+		if otherCard.role.contains("Stealthy"):
+			toAdd += 3
 		
 	for ally in thisHand:
 		if ally.faction == "WLF":
-			perkAmount += 1
+			toAdd += 1
 			
-	if perkAmount > 0:
-		thisCard.modify_value(perkAmount)
-	
-	return perkAmount
-
-# Function used for forsaken honor check
-func would_perk_trigger(_thisCard, thisHand, otherCard) -> bool:
-	if otherCard.role.contains("Stealthy"):
-		return true
-	
-	for ally in thisHand:
-		if ally.faction == "WLF":
-			return true
-			
-	return false
+	return toAdd

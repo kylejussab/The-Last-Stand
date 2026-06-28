@@ -1,6 +1,8 @@
 extends Node
 class_name OpponentAI
 
+var playstyleName: String = "Base"
+
 func play_character_card(_opponent_hand, _player_hand):
 	# Override in subclass
 	return null

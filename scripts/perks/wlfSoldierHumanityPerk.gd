@@ -1,7 +1,11 @@
-extends PerkBase
+extends MidRoundPerk
 
-func _init() -> void:
-	timing = "midRound"
+func calculate_perk_value(_thisCard, _thisHand, otherCard) -> int:
+	if otherCard != null:
+		if otherCard.faction == "Firefly" or otherCard.faction == "Seraphite":
+			return 2
+			
+	return 0
 
 func apply_mid_perk(_thisCard, _thisHand, otherCard):
 	if otherCard.faction == "Firefly" or otherCard.faction == "Seraphite":
@@ -9,10 +13,3 @@ func apply_mid_perk(_thisCard, _thisHand, otherCard):
 		return [-2, "opponent"]
 	
 	return 0
-
-# Function used for forsaken honor check
-func would_perk_trigger(_thisCard, _thisHand, otherCard) -> bool:
-	if otherCard.faction == "Firefly" or otherCard.faction == "Seraphite":
-		return true
-	else:
-		return false

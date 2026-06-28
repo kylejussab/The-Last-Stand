@@ -1,9 +1,13 @@
-extends PerkBase
+extends AfterCalculationPerk
 
-func _init() -> void:
-	timing = "calculationRound"
+func calculate_after_calculation_perk_value(_thisCard, thisHand, thisTotal, otherTotal) -> int:
+	if otherTotal > thisTotal:
+		for card in thisHand:
+			if card.type == "Character":
+				return 1
+	return 0
 
-func apply_after_calculation_perk(_thisCard, thisHand, thisTotal, otherTotal):
+func apply_after_calculation_perk(_thisCard, thisHand, thisTotal, otherTotal) -> Variant:
 	if otherTotal > thisTotal:
 		var characters = []
 		
@@ -17,6 +21,3 @@ func apply_after_calculation_perk(_thisCard, thisHand, thisTotal, otherTotal):
 			return [1, "a random in-hand card"]
 	
 	return 0
-
-func would_perk_trigger(_thisCard, _thisHand, thisTotal, otherTotal) -> bool:
-	return otherTotal > thisTotal

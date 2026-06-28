@@ -1,18 +1,8 @@
-extends PerkBase
+extends MidRoundPerk
 
-func _init() -> void:
-	timing = "midRound"
-
-func apply_mid_perk(thisCard, _thisHand, otherCard) -> int:
-	if otherCard.role.contains("Aggressive") or otherCard.role.contains("Defensive") or otherCard.role.contains("Survivor"):
-		thisCard.modify_value(2)
-		return 2
-	
+func calculate_perk_value(_thisCard, _thisHand, otherCard) -> int:	
+	if otherCard != null:
+		if otherCard.role.contains("Aggressive") or otherCard.role.contains("Defensive") or otherCard.role.contains("Survivor"):
+			return 2
+			
 	return 0
-
-# Function used for forsaken honor check
-func would_perk_trigger(_thisCard, _thisHand, otherCard) -> bool:
-	if otherCard.role.contains("Aggressive") or otherCard.role.contains("Defensive") or otherCard.role.contains("Survivor"):
-		return true
-	else:
-		return false

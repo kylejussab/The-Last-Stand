@@ -1,11 +1,7 @@
-extends PerkBase
+extends EndRoundPerk
 
-func _init() -> void:
-	timing = "endRound"
-
-func apply_end_perk(thisCharacterCard, thisSupportCard, _otherCharacterCard, _otherSupportCard, _thisHand) -> int:
+func calculate_end_perk_value(_thisCharacterCard, thisSupportCard, _otherCharacterCard, _otherSupportCard, _thisHand) -> int:
 	if thisSupportCard and (thisSupportCard.cardKey == "Brick" or thisSupportCard.cardKey == "Bottle"):
-		thisCharacterCard.modify_value(4)
 		return 4
-	
+			
 	return 0

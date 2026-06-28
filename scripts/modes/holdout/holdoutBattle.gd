@@ -15,7 +15,7 @@ extends Node
 
 # --- DEBUG ---
 @export_category("Debug")
-@export var showOpponentsCards: bool = false
+@export var showOpponentsCards: bool = true
 
 # --- SCENE REFERENCES ---
 @onready var ui: Node2D = %arena
@@ -171,25 +171,25 @@ func _initialize_opponent(player: Actor.Avatar, opponent: Actor.Avatar) -> void:
 			opponentAI = OpponentAITutorialDummy.new()
 		Actor.Avatar.ETHAN:
 			ui.setup_avatar(opponent, Actor.Type.OPPONENT)
-			opponentAI = OpponentAIHighestValue.new()
+			opponentAI = OpponentAICalculator.new()
 		Actor.Avatar.RHEA:
 			ui.setup_avatar(opponent, Actor.Type.OPPONENT)
-			opponentAI = OpponentAIHighestValue.new()
+			opponentAI = OpponentAICalculator.new()
 		Actor.Avatar.UCKMANN:
 			ui.setup_avatar(opponent, Actor.Type.OPPONENT)
-			opponentAI = OpponentAIHighestValue.new()
+			opponentAI = OpponentAICalculator.new()
 		Actor.Avatar.ALLEY:
 			ui.setup_avatar(opponent, Actor.Type.OPPONENT)
-			opponentAI = OpponentAIHighestValue.new()
+			opponentAI = OpponentAICalculator.new()
 		Actor.Avatar.SILAS:
 			ui.setup_avatar(opponent, Actor.Type.OPPONENT)
-			opponentAI = OpponentAIHighestValue.new()
+			opponentAI = OpponentAICalculator.new()
 		Actor.Avatar.MIRA:
 			ui.setup_avatar(opponent, Actor.Type.OPPONENT)
-			opponentAI = OpponentAIHighestValue.new()
+			opponentAI = OpponentAICalculator.new()
 		Actor.Avatar.KAEL:
 			ui.setup_avatar(opponent, Actor.Type.OPPONENT)
-			opponentAI = OpponentAIHighestValue.new()
+			opponentAI = OpponentAICalculator.new()
 
 func _on_player_character_played(card: Node2D) -> void:
 	playerCharacterCard = card

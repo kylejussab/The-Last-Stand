@@ -1,18 +1,8 @@
-extends PerkBase
+extends MidRoundPerk
 
-func _init() -> void:
-	timing = "midRound"
-
-func apply_mid_perk(thisCard, thisHand, _otherCard) -> int:
-	var isMarleneHere = false
-	
+func calculate_perk_value(_thisCard, thisHand, _otherCard) -> int:
 	for marlene in thisHand:
 		if marlene.cardKey == "Marlene":
-			isMarleneHere = true
-			break
-	
-	if isMarleneHere:
-		thisCard.modify_value(6)
-		return 6
-	
+			return 6
+			
 	return 0

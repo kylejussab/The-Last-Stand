@@ -1,10 +1,7 @@
-extends PerkBase
+extends AfterCalculationPerk
 
-func _init() -> void:
-	timing = "calculationRound"
-
-func apply_after_calculation_perk(thisCard, _thisHand, thisTotal, otherTotal):
+func calculate_after_calculation_perk_value(_thisCard, _thisHand, thisTotal, otherTotal) -> int:
 	if thisTotal > otherTotal:
-		thisCard.perkValueAtRoundEnd = 4
-	
+		return 4
+		
 	return 0
