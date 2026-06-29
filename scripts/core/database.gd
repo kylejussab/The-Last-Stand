@@ -200,6 +200,21 @@ var AVATARS = {
 	}
 }
 
+const OPPONENT_HEALTH_AMOUNTS: Array[int] = [
+	13, # Round 1
+	15, # Round 2
+	17, # Round 3
+	19, # Round 4
+	20, # Round 5
+	22, # Round 6
+	24, # Round 7
+	26, # Round 8
+	28, # Round 9
+	30, # Round 10
+	33, # Round 11
+	36  # Round 12 and beyond
+]
+
 var avatarHeadTextures = {}
 
 func get_avatar_head_texture(path: String) -> Texture2D:

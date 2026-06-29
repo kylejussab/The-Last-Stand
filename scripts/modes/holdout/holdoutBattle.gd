@@ -93,6 +93,12 @@ func prepare_opponent() -> void:
 		HoldoutStats.currentOpponent = _pick_next_opponent()
 	
 	_initialize_opponent(HoldoutStats.currentPlayer, HoldoutStats.currentOpponent)
+	
+	var maxIndex = Database.OPPONENT_HEALTH_AMOUNTS.size() - 1
+	var roundIndex = mini(HoldoutStats.numberOfWins, maxIndex)
+	
+	ui.update_health(Actor.Type.OPPONENT, Database.OPPONENT_HEALTH_AMOUNTS[roundIndex], true)
+	
 
 func initialize_game() -> void:
 	if HoldoutStats.replayedRound:

@@ -60,7 +60,6 @@ func setup_avatar(avatar: Actor.Avatar, type: Actor.Type) -> void:
 	
 	avatarParent.get_node("name").text = data.name
 	avatarParent.get_node("description").text = data.description
-	avatarParent.get_node("value").text = "%02d" % int(data.health)
 	
 	var basePath: String = "%s%s" % [data.headPath, data.name.get_slice(" ", 0)]
 	
