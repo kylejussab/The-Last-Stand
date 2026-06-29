@@ -2,7 +2,6 @@ extends Node2D
 
 @onready var optionsMenu = $OptionsMenu
 
-@onready var backgroundImage = $image
 @onready var mainButtonContainer = $mainButtonContainer
 @onready var storyButtonContainer = $storyButtonContainer
 @onready var holdoutButtonContainer = $holdoutButtonContainer
@@ -25,11 +24,6 @@ const HOVER_DELAY: float = 0.1 # Delay before tweening to prevent jitter
 @onready var supplementText = $supplementText
 
 var currentNavigation: String = "Main"
-
-const BACKGROUNDS = {
-	"Main": preload("res://assets/mainMenu/main.png"),
-	"June": preload("res://assets/mainMenu/june.png"),
-}
 
 const SUPPLEMENTTEXT = {
 	"Story": "What is the cost of doing what you believe is right?",
@@ -74,7 +68,7 @@ func pulse_text():
 	var pulse = create_tween().set_loops()
 	
 	pulse.tween_property($pressAnywhere/text, "modulate:a", 0.3, 2.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	pulse.tween_property($pressAnywhere/text, "modulate:a", 1.0, 2.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	pulse.tween_property($pressAnywhere/text, "modulate:a", 0.9, 2.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 
 func _input(event: InputEvent) -> void:
 	if !GameStats.invitationAccepted and (event is InputEventMouseButton and event.pressed):
@@ -108,8 +102,6 @@ func _input(event: InputEvent) -> void:
 			storyButtonContainer.hide()
 			storyButtonContainer.process_mode = Node.PROCESS_MODE_DISABLED
 			
-			backgroundImage.texture = BACKGROUNDS["Main"]
-			
 			mainButtonContainer.show()
 			mainButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
 		elif currentNavigation == "Holdout":
@@ -118,8 +110,6 @@ func _input(event: InputEvent) -> void:
 			currentNavigation = "Main"
 			holdoutButtonContainer.hide()
 			holdoutButtonContainer.process_mode = Node.PROCESS_MODE_DISABLED
-			
-			backgroundImage.texture = BACKGROUNDS["Main"]
 			
 			mainButtonContainer.show()
 			mainButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
@@ -172,11 +162,9 @@ func _on_story_button_pressed() -> void:
 	#storyButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
 
 func _on_june_button_mouse_entered() -> void:
-	backgroundImage.texture = BACKGROUNDS["June"]
 	supplementText.text = SUPPLEMENTTEXT["June"]
 
 func _on_june_button_mouse_exited() -> void:
-	backgroundImage.texture = BACKGROUNDS["Main"]
 	supplementText.text = ""
 
 func _on_june_button_pressed() -> void:
@@ -296,7 +284,6 @@ func _on_card_viewer_button_pressed() -> void:
 func _on_options_button_pressed() -> void:
 	$pauseIcon.show()
 	currentNavigation = "Options"
-	backgroundImage.texture = null
 	
 	mainButtonContainer.hide()
 	mainButtonContainer.process_mode = Node.PROCESS_MODE_DISABLED
@@ -306,7 +293,6 @@ func _on_options_button_pressed() -> void:
 func _on_options_menu_exited() -> void:
 	$pauseIcon.hide()
 	currentNavigation = "Main"
-	backgroundImage.texture = BACKGROUNDS["Main"]
 	
 	_show_continue_button()
 	_show_tutorial_button()
