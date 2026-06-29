@@ -4,7 +4,7 @@ class_name OpponentAICalculator
 func _init():
 	playstyleName = "Calculator"
 
-func play_character_card(opponentHand, _playerHand):
+func play_character_card(opponentHand, _playerHand, _playerPlayedCard = null):
 	var characters: Array = []
 	var supports: Array = []
 	
@@ -43,7 +43,7 @@ func play_character_card(opponentHand, _playerHand):
 			maxCalculatedValue = potentialValue
 			bestCharacter = character
 			
-	if randf() < 1.1:
+	if randf() < 0.85:
 		return bestCharacter
 		
 	var others = characters.filter(func(c): return c != bestCharacter)

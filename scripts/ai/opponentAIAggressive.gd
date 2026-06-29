@@ -4,11 +4,11 @@ class_name OpponentAIAggressive
 func _init():
 	playstyleName = "Aggressive"
 
-func play_character_card(opponent_hand, _player_hand):
+func play_character_card(opponentHand, _playerHand, _playerPlayedCard = null, _playerHealth = 99, _opponentHealth = 99):
 	var characters: Array = []
 	
 	# Collect character cards only
-	for card in opponent_hand:
+	for card in opponentHand:
 		if card.type == "Character":
 			characters.append(card)
 	

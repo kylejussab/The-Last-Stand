@@ -15,7 +15,7 @@ extends Node
 
 # --- DEBUG ---
 @export_category("Debug")
-@export var showOpponentsCards: bool = true
+@export var showOpponentsCards: bool = false
 
 # --- SCENE REFERENCES ---
 @onready var ui: Node2D = %arena
@@ -114,6 +114,9 @@ func initialize_game() -> void:
 		$"../characterDeck".deck = Database.standardCharacterDeck.duplicate()
 		$"../supportDeck".deck = Database.standardSupportDeck.duplicate()
 	
+	if opponentAI.has_method("initialize_deck"):
+		opponentAI.initialize_deck($"../characterDeck".deck)
+	
 	$"../characterDeck".deck.shuffle()
 	$"../supportDeck".deck.shuffle()
 	
@@ -171,25 +174,25 @@ func _initialize_opponent(player: Actor.Avatar, opponent: Actor.Avatar) -> void:
 			opponentAI = OpponentAITutorialDummy.new()
 		Actor.Avatar.ETHAN:
 			ui.setup_avatar(opponent, Actor.Type.OPPONENT)
-			opponentAI = OpponentAICalculator.new()
+			opponentAI = OpponentAIAggressive.new()
 		Actor.Avatar.RHEA:
 			ui.setup_avatar(opponent, Actor.Type.OPPONENT)
-			opponentAI = OpponentAICalculator.new()
+			opponentAI = OpponentAIAttrition.new()
 		Actor.Avatar.UCKMANN:
 			ui.setup_avatar(opponent, Actor.Type.OPPONENT)
-			opponentAI = OpponentAICalculator.new()
+			opponentAI = OpponentAIBalanced.new()
 		Actor.Avatar.ALLEY:
 			ui.setup_avatar(opponent, Actor.Type.OPPONENT)
 			opponentAI = OpponentAICalculator.new()
 		Actor.Avatar.SILAS:
 			ui.setup_avatar(opponent, Actor.Type.OPPONENT)
-			opponentAI = OpponentAICalculator.new()
+			opponentAI = OpponentAICounter.new()
 		Actor.Avatar.MIRA:
 			ui.setup_avatar(opponent, Actor.Type.OPPONENT)
-			opponentAI = OpponentAICalculator.new()
+			opponentAI = OpponentAIMomentum.new()
 		Actor.Avatar.KAEL:
 			ui.setup_avatar(opponent, Actor.Type.OPPONENT)
-			opponentAI = OpponentAICalculator.new()
+			opponentAI = OpponentAIPredictive.new()
 
 func _on_player_character_played(card: Node2D) -> void:
 	playerCharacterCard = card
@@ -216,11 +219,14 @@ func _execute_opponent_character_play() -> void:
 	lockPlayerInput = true
 	await get_tree().create_timer(opponentThinkingTime).timeout
 	
-	var card = opponentAI.play_character_card(opponentHand, playerHand)
+	var card = opponentAI.play_character_card(opponentHand, playerHand, playerCharacterCard)
 	card.cardSlot = opponentCharacterCardSlot
 	
 	_animate_opponent_playing_card(card, opponentCharacterCardSlot)
 	opponentCharacterCard = card
+	
+	if opponentAI.has_method("record_opponent_play"):
+		opponentAI.record_opponent_play(card)
 	
 	var opponentName: String = Actor.Avatar.keys()[HoldoutStats.currentOpponent].capitalize()
 	battleEngine.log_action("Opponent. " + opponentName + " played " + card.nameText + ".")
@@ -630,6 +636,9 @@ func _calculate_damage() -> void:
 	
 	var report = battleEngine.process_combat_stats(playerTotal, opponentTotal, playerCharacterCard.cardKey, opponentCharacterCard.cardKey)
 	
+	if opponentAI.has_method("record_round_result"):
+		opponentAI.record_round_result(report.winner == battleEngine.Winner.OPPONENT)
+	
 	var opponentName: String = Actor.Avatar.keys()[HoldoutStats.currentOpponent].capitalize()
 	if report.winner == battleEngine.Winner.PLAYER:
 		battleEngine.log_action("Player. You dealt " + str(report.damage) + " damage to " + opponentName + ".")
@@ -836,6 +845,9 @@ func _repopulate_decks(endGame: bool = false) -> void:
 		for card in discardedCharactersReversed:
 			discardedCards.erase(card)
 		
+		if opponentAI.has_method("reset_elimination"):
+			opponentAI.reset_elimination()
+		
 		return
 	
 	if $"../supportDeck".deck.size() < battleEngine.minCardsForReshuffle:
@@ -859,6 +871,9 @@ func _repopulate_decks(endGame: bool = false) -> void:
 		$"../characterDeck".reshuffle_from_discards(discardedCharactersReversed)
 		for card in discardedCharactersReversed:
 			discardedCards.erase(card)
+		
+		if opponentAI.has_method("reset_elimination"):
+			opponentAI.reset_elimination()
 		
 		return
 

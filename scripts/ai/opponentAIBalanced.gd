@@ -4,7 +4,7 @@ class_name OpponentAIBalanced
 func _init():
 	playstyleName = "Balanced"
 
-func play_character_card(opponentHand, _playerHand):
+func play_character_card(opponentHand, _playerHand, _playerPlayedCard = null):
 	var characters: Array = []
 	var supports: Array = []
 	
@@ -32,11 +32,9 @@ func play_character_card(opponentHand, _playerHand):
 			maxComboValue = currentComboValue
 			bestCharacter = character
 	
-	# 85% chance: play the character that sets up the best combo
 	if randf() < 0.85:
 		return bestCharacter
 		
-	# 30% chance: choose a random non-optimal character
 	var others = characters.filter(func(c): return c != bestCharacter)
 	
 	if others.size() == 0:
@@ -44,17 +42,16 @@ func play_character_card(opponentHand, _playerHand):
 		
 	return others[randi() % others.size()]
 
-func choose_support_card(opponentHand, opponentCharacter, _playerCharacter):
+func choose_support_card(opponentHand, _opponentCharacter, _playerCharacter):
 	var bestSupport = null
 	var highestValue = -1
 	
 	for support in opponentHand:
 		if support.type == "Support" and support.canBePlayed:
-			if _is_matching_type(support, opponentCharacter):
-				if support.value > highestValue:
-					highestValue = support.value
-					bestSupport = support
-				
+			if support.value > highestValue:
+				highestValue = support.value
+				bestSupport = support
+			
 	return bestSupport
 
 func _is_matching_type(supportCard, characterCard) -> bool:

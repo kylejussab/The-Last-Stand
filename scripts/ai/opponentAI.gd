@@ -3,10 +3,10 @@ class_name OpponentAI
 
 var playstyleName: String = "Base"
 
-func play_character_card(_opponent_hand, _player_hand):
+func play_character_card(_opponentHand, _playerHand, _playerPlayedCard = null):
 	# Override in subclass
 	return null
 
-func choose_support_card(_opponent_hand, _opponent_character, _player_character):
+func choose_support_card(_opponentHand, _opponentCharacter, _playerCharacter):
 	# Override in subclass
 	return null

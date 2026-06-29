@@ -4,14 +4,14 @@ class_name OpponentAITutorialDummy
 var forcedCharacterKey: String = ""
 var forcedSupportKey: String = ""
 
-func play_character_card(opponent_hand: Array, _player_hand: Array):
+func play_character_card(opponentHand: Array, _playerHand: Array, _playerPlayedCard = null):
 	if forcedCharacterKey != "":
-		for card in opponent_hand:
+		for card in opponentHand:
 			if card.type == "Character" and card.cardKey == forcedCharacterKey:
 				return card
 				
 	# Failsafe
-	for card in opponent_hand:
+	for card in opponentHand:
 		if card.type == "Character":
 			return card
 			
