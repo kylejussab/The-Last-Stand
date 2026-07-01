@@ -4,6 +4,8 @@ extends Node
 @onready var buttonHover = $UI/ButtonHover
 @onready var buttonBack = $UI/ButtonBack
 @onready var whoosh = $UI/Whoosh
+@onready var pop = $UI/Pop
+@onready var move = $UI/Move
 @onready var slotSpin = $UI/SlotSpin
 @onready var slotStop = $UI/SlotStop
 @onready var clickerCry = $UI/ClickerCry
@@ -96,10 +98,20 @@ func play_whoosh(alternate: bool = false) -> void:
 	
 	whoosh.play()
 
+func play_move() -> void:
+	move.pitch_scale = randf_range(0.95, 1.05)
+	move.play()
+
+func play_pop() -> void:
+	pop.pitch_scale = randf_range(0.9, 1.1)
+	pop.play()
+
 func play_slot_spin() -> void:
+	slotSpin.pitch_scale = randf_range(0.9, 1.1)
 	slotSpin.play()
 
 func play_slot_stop() -> void:
+	slotStop.pitch_scale = randf_range(0.9, 1.1)
 	slotStop.play()
 
 func play_clicker_cry() -> void:

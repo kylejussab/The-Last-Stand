@@ -154,49 +154,56 @@ var AVATARS = {
 		"description": "Patrol Leader",
 		"health": "%02d" % 20,
 		"headPath": "res://assets/arenaHeads/",
-		"arenaPath": "res://assets/arenas/"
+		"arenaPath": "res://assets/arenas/",
+		"playstyle": "Aggressive"
 	},
 	Actor.Avatar.RHEA: {
 		"name": "Rhea",
 		"description": "Matriarch",
 		"health": "%02d" % 20,
 		"headPath": "res://assets/arenaHeads/",
-		"arenaPath": "res://assets/arenas/"
+		"arenaPath": "res://assets/arenas/",
+		"playstyle": "Attrition"
 	},
 	Actor.Avatar.UCKMANN: {
 		"name": "Dr Uckmann",
 		"description": "Dog Director",
 		"health": "%02d" % 20,
 		"headPath": "res://assets/arenaHeads/",
-		"arenaPath": "res://assets/arenas/"
+		"arenaPath": "res://assets/arenas/",
+		"playstyle": "Balanced"
 	},
 	Actor.Avatar.ALLEY: {
 		"name": "Alley Ross",
 		"description": "Scriptweaver",
 		"health": "%02d" % 20,
 		"headPath": "res://assets/arenaHeads/",
-		"arenaPath": "res://assets/arenas/"
+		"arenaPath": "res://assets/arenas/",
+		"playstyle": "Calculator"
 	},
 	Actor.Avatar.SILAS: {
 		"name": "Silas Vane",
 		"description": "Scavenger King",
 		"health": "%02d" % 20,
 		"headPath": "res://assets/arenaHeads/",
-		"arenaPath": "res://assets/arenas/"
+		"arenaPath": "res://assets/arenas/",
+		"playstyle": "Counter"
 	},
 	Actor.Avatar.MIRA: {
 		"name": "Mira Thorne",
 		"description": "Ex-Medic",
 		"health": "%02d" % 20, 
 		"headPath": "res://assets/arenaHeads/",
-		"arenaPath": "res://assets/arenas/"
+		"arenaPath": "res://assets/arenas/",
+		"playstyle": "Momentum"
 	},
 	Actor.Avatar.KAEL: {
 		"name": "Kaelen Voss",
 		"description": "Shield Brother",
 		"health": "%02d" % 20,
 		"headPath": "res://assets/arenaHeads/",
-		"arenaPath": "res://assets/arenas/"
+		"arenaPath": "res://assets/arenas/",
+		"playstyle": "Predictive"
 	}
 }
 

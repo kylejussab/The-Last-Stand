@@ -10,7 +10,7 @@ extends Node2D
 
 @onready var battleManager: Node = %battleManager
 @onready var holdoutEndScreenAnimator: Node = %holdoutEndScreenAnimator
-@onready var modifierUI: Node2D = %modifier
+@onready var holdoutHub: Control = %HoldoutHub
 
 func _ready() -> void:
 	for button in %holdoutEndStats.get_children():
@@ -218,11 +218,7 @@ func _fade_with_round_reset() -> void:
 	await get_tree().create_timer(1.0).timeout
 	Curtain.fade_out()
 	
-	if HoldoutStats.numberOfWins % 2 == 1 and not HoldoutStats.replayedRound:
-		GameStats.gameMode = GameStats.Mode.MODIFIER_SELECTION
-		modifierUI.show_modifier_menu()
-	else:
-		battleManager.initialize_game()
+	holdoutHub.show_hub()
 
 func _reset_holdout_stats_ui() -> void:
 	%holdoutEndStats.visible = false

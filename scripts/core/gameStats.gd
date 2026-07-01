@@ -6,7 +6,7 @@ var invitationAccepted: bool = false
 var gameMode: Mode = Mode.MAIN_MENU
 
 var totalInGameTimePlayed: float = 0.0
-var showHoldoutTutorial: bool = true
+var showHoldoutTutorial: bool = true 
 var rations: int = 0
 
 func _ready() -> void:

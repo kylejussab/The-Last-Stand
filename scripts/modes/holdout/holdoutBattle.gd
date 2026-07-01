@@ -98,7 +98,6 @@ func prepare_opponent() -> void:
 	var roundIndex = mini(HoldoutStats.numberOfWins, maxIndex)
 	
 	ui.update_health(Actor.Type.OPPONENT, Database.OPPONENT_HEALTH_AMOUNTS[roundIndex], true)
-	
 
 func initialize_game() -> void:
 	if HoldoutStats.replayedRound:
@@ -1184,7 +1183,7 @@ func _log_perk_result(card: Node2D, result: Variant, isPlayer: bool) -> void:
 		# Contextually translate the target so it reads correctly for both sides
 		if target == "opponent":
 			target = opponentCharacterCard.nameText if isPlayer else playerCharacterCard.nameText
-
+		
 		if target == "self":
 			if amount > 0:
 				battleEngine.log_action("System. " + ownerName + " " + card.nameText + " gained " + str(amount) + " from their perk.")
