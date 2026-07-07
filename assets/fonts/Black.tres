@@ -1,7 +1,0 @@
-[gd_resource type="FontVariation" load_steps=2 format=3 uid="uid://bi2pnr1a7o7iq"]
-
-[ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://assets/fonts/SF-Pro-Display-Black.otf" id="1_sfyny"]
-
-[resource]
-base_font = ExtResource("1_sfyny")
-spacing_glyph = 1

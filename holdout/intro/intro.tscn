@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://chb4j7220yip1"]
+
+[ext_resource type="Script" uid="uid://71sqnaai55pn" path="res://holdout/intro/intro.gd" id="1_j41m5"]
+
+[node name="HoldoutIntro" type="Node2D"]
+z_index = 900
+script = ExtResource("1_j41m5")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="InfinityContainer" type="Node2D" parent="."]
+position = Vector2(960, 540)

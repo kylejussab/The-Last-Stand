@@ -1,0 +1,749 @@
+[gd_scene load_steps=93 format=3 uid="uid://dgqpd2uxre07j"]
+
+[ext_resource type="Script" uid="uid://jqxt7vsb5xli" path="res://core/menus/cardViewer/cardViewerMenu.gd" id="1_bchnx"]
+[ext_resource type="Texture2D" uid="uid://dv2sdi42yaidj" path="res://core/menus/cardViewer/assets/AbbyUnselected.png" id="1_iamys"]
+[ext_resource type="Texture2D" uid="uid://rxnvtdfl8jvg" path="res://core/menus/cardViewer/assets/AbbySelected.png" id="2_bchnx"]
+[ext_resource type="Script" uid="uid://d7ehpu7c6eyf" path="res://core/menus/cardViewer/cardViewerButton.gd" id="3_c5s0b"]
+[ext_resource type="Texture2D" uid="uid://xqkawlrr332s" path="res://core/menus/cardViewer/assets/AbbyFireflyUnselected.png" id="4_uh0tp"]
+[ext_resource type="Texture2D" uid="uid://clo7wek888x2b" path="res://core/menus/cardViewer/assets/AbbyFireflySelected.png" id="5_2bwow"]
+[ext_resource type="Texture2D" uid="uid://dy85b2rpn310x" path="res://core/menus/cardViewer/assets/AliceUnselected.png" id="6_vy480"]
+[ext_resource type="Texture2D" uid="uid://cthwk81n2fcjf" path="res://core/menus/cardViewer/assets/AliceSelected.png" id="7_qgp4g"]
+[ext_resource type="Texture2D" uid="uid://bsq6f58ug3k74" path="res://core/menus/cardViewer/assets/BillUnselected.png" id="8_rnl0n"]
+[ext_resource type="Texture2D" uid="uid://cd5w7vwkf5vy0" path="res://core/menus/cardViewer/assets/BillSelected.png" id="9_fp4bn"]
+[ext_resource type="Texture2D" uid="uid://dy56r4e7a7htp" path="res://core/menus/cardViewer/assets/BloaterUnselected.png" id="10_lbbfm"]
+[ext_resource type="Texture2D" uid="uid://bxj3dgu687xv" path="res://core/menus/cardViewer/assets/BloaterSelected.png" id="11_pkfbt"]
+[ext_resource type="Texture2D" uid="uid://cejfr4040vae7" path="res://core/menus/cardViewer/assets/ClickerUnselected.png" id="12_r7rg6"]
+[ext_resource type="Texture2D" uid="uid://co6ltnj0f7ga8" path="res://core/menus/cardViewer/assets/ClickerSelected.png" id="13_5x23l"]
+[ext_resource type="Texture2D" uid="uid://o01rcmavb34y" path="res://core/menus/cardViewer/assets/DinaUnselected.png" id="14_rkkqd"]
+[ext_resource type="Texture2D" uid="uid://crdqbwo57nnnq" path="res://core/menus/cardViewer/assets/DinaSelected.png" id="15_vhxe0"]
+[ext_resource type="Texture2D" uid="uid://dtf0plcor8nnk" path="res://core/menus/cardViewer/assets/EllieUnselected.png" id="16_1klj3"]
+[ext_resource type="Texture2D" uid="uid://bks81nk67hlb3" path="res://core/menus/cardViewer/assets/EllieSelected.png" id="17_yobi5"]
+[ext_resource type="Texture2D" uid="uid://ewel6wk2r8rl" path="res://core/menus/cardViewer/assets/EmilyUnselected.png" id="18_iqoi5"]
+[ext_resource type="Texture2D" uid="uid://yiixl8c2wr56" path="res://core/menus/cardViewer/assets/EmilySelected.png" id="19_kat82"]
+[ext_resource type="Texture2D" uid="uid://btdhb0priv8nr" path="res://core/menus/cardViewer/assets/EugeneUnselected.png" id="20_wc7tc"]
+[ext_resource type="Texture2D" uid="uid://2iuvc5wpwrkv" path="res://core/menus/cardViewer/assets/EugeneSelected.png" id="21_ypw7k"]
+[ext_resource type="Texture2D" uid="uid://btsvrwkncyyay" path="res://core/menus/cardViewer/assets/FireflySoldierUnselected.png" id="22_nwojj"]
+[ext_resource type="Texture2D" uid="uid://dlda7aiuvytn8" path="res://core/menus/cardViewer/assets/FireflySoldierSelected.png" id="23_3mdhm"]
+[ext_resource type="Texture2D" uid="uid://d22126dj5ohon" path="res://core/menus/cardViewer/assets/HunterUnselected.png" id="24_ek0dv"]
+[ext_resource type="Texture2D" uid="uid://btvyev1lg5q8c" path="res://core/menus/cardViewer/assets/HunterSelected.png" id="25_qefde"]
+[ext_resource type="Texture2D" uid="uid://byun8n7qx7que" path="res://core/menus/cardViewer/assets/IsaacUnselected.png" id="26_huv01"]
+[ext_resource type="Texture2D" uid="uid://iyt4vbo440xq" path="res://core/menus/cardViewer/assets/IsaacSelected.png" id="27_m8lux"]
+[ext_resource type="Texture2D" uid="uid://liiv7emiij7q" path="res://core/menus/cardViewer/assets/JerryUnselected.png" id="28_1s1bq"]
+[ext_resource type="Texture2D" uid="uid://benq7jajw6iw" path="res://core/menus/cardViewer/assets/JerrySelected.png" id="29_vm13m"]
+[ext_resource type="Texture2D" uid="uid://e3sqinql11ae" path="res://core/menus/cardViewer/assets/JessieUnselected.png" id="30_qcpi1"]
+[ext_resource type="Texture2D" uid="uid://c6nop7oca53ll" path="res://core/menus/cardViewer/assets/JessieSelected.png" id="31_7vm21"]
+[ext_resource type="Texture2D" uid="uid://c77q3r47dk6mg" path="res://core/menus/cardViewer/assets/JoelUnselected.png" id="32_7l2hn"]
+[ext_resource type="Texture2D" uid="uid://dekfyg54nacxt" path="res://core/menus/cardViewer/assets/JoelSelected.png" id="33_5hm16"]
+[ext_resource type="Texture2D" uid="uid://cl7reyeaqvmpc" path="res://core/menus/cardViewer/assets/JoelSmugglerUnselected.png" id="34_44r2v"]
+[ext_resource type="Texture2D" uid="uid://b7k5ma50ch3ql" path="res://core/menus/cardViewer/assets/JoelSmugglerSelected.png" id="35_5qpxp"]
+[ext_resource type="Texture2D" uid="uid://dymkcm5y7gqqr" path="res://core/menus/cardViewer/assets/LevUnselected.png" id="36_7geli"]
+[ext_resource type="Texture2D" uid="uid://cdxquf2xet16a" path="res://core/menus/cardViewer/assets/LevSelected.png" id="37_hasps"]
+[ext_resource type="Texture2D" uid="uid://dauq7qpw8rlqc" path="res://core/menus/cardViewer/assets/LiUnselected.png" id="38_e7aq5"]
+[ext_resource type="Texture2D" uid="uid://bjwoqnnpfehfv" path="res://core/menus/cardViewer/assets/LiSelected.png" id="39_e4jvm"]
+[ext_resource type="Texture2D" uid="uid://bkwtc42uhf44u" path="res://core/menus/cardViewer/assets/MalikUnselected.png" id="40_2vyeb"]
+[ext_resource type="Texture2D" uid="uid://41fjcva5xdcd" path="res://core/menus/cardViewer/assets/MalikSelected.png" id="41_hc81w"]
+[ext_resource type="Texture2D" uid="uid://dhyrc2emdw2ik" path="res://core/menus/cardViewer/assets/MannyUnselected.png" id="42_mm0l3"]
+[ext_resource type="Texture2D" uid="uid://iqh8n636wo0u" path="res://core/menus/cardViewer/assets/MannySelected.png" id="43_o6oaj"]
+[ext_resource type="Texture2D" uid="uid://58bfuwnnb6la" path="res://core/menus/cardViewer/assets/MariaUnselected.png" id="44_mp2b3"]
+[ext_resource type="Texture2D" uid="uid://dy7igegls1bc1" path="res://core/menus/cardViewer/assets/MariaSelected.png" id="45_0wcw4"]
+[ext_resource type="Texture2D" uid="uid://bnov8cj6rcymm" path="res://core/menus/cardViewer/assets/MarleneUnselected.png" id="46_ytqe1"]
+[ext_resource type="Texture2D" uid="uid://gvjya44w0rpp" path="res://core/menus/cardViewer/assets/MarleneSelected.png" id="47_281ft"]
+[ext_resource type="Texture2D" uid="uid://t3bgruteq7mf" path="res://core/menus/cardViewer/assets/MelUnselected.png" id="48_1u4bw"]
+[ext_resource type="Texture2D" uid="uid://30k0rus0pn6t" path="res://core/menus/cardViewer/assets/MelSelected.png" id="49_4l7tq"]
+[ext_resource type="Texture2D" uid="uid://r0skcl6eky4n" path="res://core/menus/cardViewer/assets/NoraUnselected.png" id="50_gj5v1"]
+[ext_resource type="Texture2D" uid="uid://picw5u2tf5da" path="res://core/menus/cardViewer/assets/NoraSelected.png" id="51_6t2ds"]
+[ext_resource type="Texture2D" uid="uid://d0c0odp5x2ubs" path="res://core/menus/cardViewer/assets/OwenUnselected.png" id="52_8qrr7"]
+[ext_resource type="Texture2D" uid="uid://bau72wfrrwhpa" path="res://core/menus/cardViewer/assets/OwenSelected.png" id="53_3dsqq"]
+[ext_resource type="Texture2D" uid="uid://bu47h3nyvg408" path="res://core/menus/cardViewer/assets/RatKingUnselected.png" id="54_s1fjq"]
+[ext_resource type="Texture2D" uid="uid://bu8oqfo72obls" path="res://core/menus/cardViewer/assets/RatKingSelected.png" id="55_kj3fo"]
+[ext_resource type="Texture2D" uid="uid://d0tij4aok2f0c" path="res://core/menus/cardViewer/assets/RileyUnselected.png" id="56_boac5"]
+[ext_resource type="Texture2D" uid="uid://be5054w5h26m3" path="res://core/menus/cardViewer/assets/RileySelected.png" id="57_t16mt"]
+[ext_resource type="Texture2D" uid="uid://dnclxb1vjc87i" path="res://core/menus/cardViewer/assets/RunnerUnselected.png" id="58_n48sx"]
+[ext_resource type="Texture2D" uid="uid://b3hgco2t76ws6" path="res://core/menus/cardViewer/assets/RunnerSelected.png" id="59_ie6nq"]
+[ext_resource type="Texture2D" uid="uid://cchsfepsx0veg" path="res://core/menus/cardViewer/assets/SeraphiteBruteUnselected.png" id="60_s02he"]
+[ext_resource type="Texture2D" uid="uid://dlh8vhi21y2em" path="res://core/menus/cardViewer/assets/SeraphiteBruteSelected.png" id="61_udpxt"]
+[ext_resource type="Texture2D" uid="uid://ckp6tr46t3svw" path="res://core/menus/cardViewer/assets/SeraphiteInitiateUnselected.png" id="62_mwhnc"]
+[ext_resource type="Texture2D" uid="uid://yr2d334p8q1l" path="res://core/menus/cardViewer/assets/SeraphiteInitiateSelected.png" id="63_lf3ys"]
+[ext_resource type="Texture2D" uid="uid://cx5uktx135sop" path="res://core/menus/cardViewer/assets/ShamblerUnselected.png" id="64_47beq"]
+[ext_resource type="Texture2D" uid="uid://b3s5mfunwslut" path="res://core/menus/cardViewer/assets/ShamblerSelected.png" id="65_tw2wc"]
+[ext_resource type="Texture2D" uid="uid://bt7ydh0bqoswj" path="res://core/menus/cardViewer/assets/ShimmerUnselected.png" id="66_hbjhl"]
+[ext_resource type="Texture2D" uid="uid://coaom38df0fcg" path="res://core/menus/cardViewer/assets/ShimmerSelected.png" id="67_ilrty"]
+[ext_resource type="Texture2D" uid="uid://cyhdcyev4ogqj" path="res://core/menus/cardViewer/assets/StalkerUnselected.png" id="68_02tbq"]
+[ext_resource type="Texture2D" uid="uid://vtprsmnou5tv" path="res://core/menus/cardViewer/assets/StalkerSelected.png" id="69_pvqpr"]
+[ext_resource type="Texture2D" uid="uid://dwmi03qs4qwae" path="res://core/menus/cardViewer/assets/TessUnselected.png" id="70_lf4r4"]
+[ext_resource type="Texture2D" uid="uid://dw0d2ybns06yw" path="res://core/menus/cardViewer/assets/TessSelected.png" id="71_ia77l"]
+[ext_resource type="Texture2D" uid="uid://216cqjhbiqi3" path="res://core/menus/cardViewer/assets/TheProphetUnselected.png" id="72_mhmqh"]
+[ext_resource type="Texture2D" uid="uid://okralp210t7k" path="res://core/menus/cardViewer/assets/TheProphetSelected.png" id="73_q2jke"]
+[ext_resource type="Texture2D" uid="uid://c5bohv7afria5" path="res://core/menus/cardViewer/assets/TommyUnselected.png" id="74_vo06k"]
+[ext_resource type="Texture2D" uid="uid://dkdd2yyq571j1" path="res://core/menus/cardViewer/assets/TommySelected.png" id="75_plptt"]
+[ext_resource type="Texture2D" uid="uid://cfo1ljxk152a0" path="res://core/menus/cardViewer/assets/TommyFireflyUnselected.png" id="76_vmtok"]
+[ext_resource type="Texture2D" uid="uid://ccg7mh5hwnmcp" path="res://core/menus/cardViewer/assets/TommyFireflySelected.png" id="77_wl2uy"]
+[ext_resource type="Texture2D" uid="uid://ba3cwkklx1dwu" path="res://core/menus/cardViewer/assets/WLFSoldierUnselected.png" id="78_t6dof"]
+[ext_resource type="Texture2D" uid="uid://dnan1fof7blow" path="res://core/menus/cardViewer/assets/WLFSoldierSelected.png" id="79_c7gv5"]
+[ext_resource type="Texture2D" uid="uid://mnyij02p2muy" path="res://core/menus/cardViewer/assets/YaraUnselected.png" id="80_n4kg6"]
+[ext_resource type="Texture2D" uid="uid://do4cjvuqbrhyb" path="res://core/menus/cardViewer/assets/YaraSelected.png" id="81_gvkmw"]
+[ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://core/fonts/SF-Pro-Display-Black.otf" id="82_jxxt3"]
+[ext_resource type="FontFile" uid="uid://di1dchl37cfhu" path="res://core/fonts/SF-Pro-Display-Semibold.otf" id="83_6jauu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tlicg"]
+bg_color = Color(0.17254902, 0.17254902, 0.17254902, 1)
+border_color = Color(0.8, 0.8, 0.8, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_808lr"]
+bg_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+border_color = Color(0.8, 0.8, 0.8, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uwljm"]
+bg_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+border_color = Color(0.8, 0.8, 0.8, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1anpv"]
+content_margin_left = 10.0
+content_margin_top = 175.0
+content_margin_bottom = 125.0
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="Theme" id="Theme_3wx87"]
+VScrollBar/icons/decrement = null
+VScrollBar/icons/decrement_highlight = null
+VScrollBar/icons/decrement_pressed = null
+VScrollBar/icons/increment = null
+VScrollBar/icons/increment_highlight = null
+VScrollBar/icons/increment_pressed = null
+VScrollBar/styles/grabber = SubResource("StyleBoxFlat_tlicg")
+VScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_808lr")
+VScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_uwljm")
+VScrollBar/styles/scroll = SubResource("StyleBoxFlat_1anpv")
+VScrollBar/styles/scroll_focus = SubResource("StyleBoxFlat_1anpv")
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_tlicg"]
+
+[sub_resource type="FontVariation" id="FontVariation_71cpp"]
+base_font = ExtResource("83_6jauu")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_5i7h7"]
+base_font = ExtResource("82_jxxt3")
+spacing_glyph = 1
+
+[node name="cardViewerMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_bchnx")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = SubResource("Theme_3wx87")
+horizontal_scroll_mode = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 150
+theme_override_constants/margin_top = 175
+theme_override_constants/margin_bottom = 130
+
+[node name="GridContainer" type="GridContainer" parent="HBoxContainer/ScrollContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 25
+theme_override_constants/v_separation = 25
+columns = 3
+
+[node name="TextureButton" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("1_iamys")
+texture_pressed = ExtResource("2_bchnx")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "Abby"
+
+[node name="TextureButton2" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("4_uh0tp")
+texture_pressed = ExtResource("5_2bwow")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "AbbyFirefly"
+
+[node name="TextureButton3" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("6_vy480")
+texture_pressed = ExtResource("7_qgp4g")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "Alice"
+
+[node name="TextureButton4" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("8_rnl0n")
+texture_pressed = ExtResource("9_fp4bn")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "Bill"
+
+[node name="TextureButton5" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("10_lbbfm")
+texture_pressed = ExtResource("11_pkfbt")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "Bloater"
+
+[node name="TextureButton6" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("12_r7rg6")
+texture_pressed = ExtResource("13_5x23l")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "Clicker"
+
+[node name="TextureButton7" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("14_rkkqd")
+texture_pressed = ExtResource("15_vhxe0")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "Dina"
+
+[node name="TextureButton8" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("16_1klj3")
+texture_pressed = ExtResource("17_yobi5")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "Ellie"
+
+[node name="TextureButton9" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("18_iqoi5")
+texture_pressed = ExtResource("19_kat82")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "Emily"
+
+[node name="TextureButton10" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("20_wc7tc")
+texture_pressed = ExtResource("21_ypw7k")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "Eugene"
+
+[node name="TextureButton11" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("22_nwojj")
+texture_pressed = ExtResource("23_3mdhm")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "FireflySoldier"
+
+[node name="TextureButton12" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("24_ek0dv")
+texture_pressed = ExtResource("25_qefde")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "Hunter"
+
+[node name="TextureButton13" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("26_huv01")
+texture_pressed = ExtResource("27_m8lux")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "Isaac"
+
+[node name="TextureButton14" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("28_1s1bq")
+texture_pressed = ExtResource("29_vm13m")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "Jerry"
+
+[node name="TextureButton15" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("30_qcpi1")
+texture_pressed = ExtResource("31_7vm21")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "Jessie"
+
+[node name="TextureButton16" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("32_7l2hn")
+texture_pressed = ExtResource("33_5hm16")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "Joel"
+
+[node name="TextureButton17" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("34_44r2v")
+texture_pressed = ExtResource("35_5qpxp")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "JoelSmuggler"
+
+[node name="TextureButton18" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("36_7geli")
+texture_pressed = ExtResource("37_hasps")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "Lev"
+
+[node name="TextureButton19" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("38_e7aq5")
+texture_pressed = ExtResource("39_e4jvm")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "Li"
+
+[node name="TextureButton20" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("40_2vyeb")
+texture_pressed = ExtResource("41_hc81w")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "Malik"
+
+[node name="TextureButton21" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("42_mm0l3")
+texture_pressed = ExtResource("43_o6oaj")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "Manny"
+
+[node name="TextureButton22" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("44_mp2b3")
+texture_pressed = ExtResource("45_0wcw4")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "Maria"
+
+[node name="TextureButton23" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("46_ytqe1")
+texture_pressed = ExtResource("47_281ft")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "Marlene"
+
+[node name="TextureButton24" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("48_1u4bw")
+texture_pressed = ExtResource("49_4l7tq")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "Mel"
+
+[node name="TextureButton25" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("50_gj5v1")
+texture_pressed = ExtResource("51_6t2ds")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "Nora"
+
+[node name="TextureButton26" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("52_8qrr7")
+texture_pressed = ExtResource("53_3dsqq")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "Owen"
+
+[node name="TextureButton27" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("54_s1fjq")
+texture_pressed = ExtResource("55_kj3fo")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "RatKing"
+
+[node name="TextureButton28" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("56_boac5")
+texture_pressed = ExtResource("57_t16mt")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "Riley"
+
+[node name="TextureButton29" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("58_n48sx")
+texture_pressed = ExtResource("59_ie6nq")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "Runner"
+
+[node name="TextureButton30" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("60_s02he")
+texture_pressed = ExtResource("61_udpxt")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "SeraphiteBrute"
+
+[node name="TextureButton31" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("62_mwhnc")
+texture_pressed = ExtResource("63_lf3ys")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "SeraphiteInitiate"
+
+[node name="TextureButton32" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("64_47beq")
+texture_pressed = ExtResource("65_tw2wc")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "Shambler"
+
+[node name="TextureButton33" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("66_hbjhl")
+texture_pressed = ExtResource("67_ilrty")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "Shimmer"
+
+[node name="TextureButton34" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("68_02tbq")
+texture_pressed = ExtResource("69_pvqpr")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "Stalker"
+
+[node name="TextureButton35" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("70_lf4r4")
+texture_pressed = ExtResource("71_ia77l")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "Tess"
+
+[node name="TextureButton36" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("72_mhmqh")
+texture_pressed = ExtResource("73_q2jke")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "TheProphet"
+
+[node name="TextureButton37" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("74_vo06k")
+texture_pressed = ExtResource("75_plptt")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "Tommy"
+
+[node name="TextureButton38" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("76_vmtok")
+texture_pressed = ExtResource("77_wl2uy")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "TommyFirefly"
+
+[node name="TextureButton39" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("78_t6dof")
+texture_pressed = ExtResource("79_c7gv5")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "WLFSoldier"
+
+[node name="TextureButton40" type="TextureButton" parent="HBoxContainer/ScrollContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(175, 150)
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_tlicg")
+texture_normal = ExtResource("80_n4kg6")
+texture_pressed = ExtResource("81_gvkmw")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("3_c5s0b")
+cardKey = "Yara"
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.4
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 150
+theme_override_constants/margin_right = 125
+theme_override_constants/margin_bottom = 150
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="CardPlaceholder" type="Control" parent="HBoxContainer/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(500, 500)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="DescLabel" type="RichTextLabel" parent="HBoxContainer/MarginContainer/HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(350, 200)
+layout_mode = 2
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_71cpp")
+theme_override_font_sizes/normal_font_size = 24
+bbcode_enabled = true
+text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+vertical_alignment = 1
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 800.0
+offset_bottom = 175.0
+color = Color(0, 0, 0, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+layout_mode = 0
+offset_top = 955.0
+offset_right = 800.0
+offset_bottom = 1080.0
+color = Color(0, 0, 0, 1)
+
+[node name="Heading" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = 130.0
+offset_top = 100.0
+offset_right = 330.0
+offset_bottom = 155.0
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_5i7h7")
+theme_override_font_sizes/normal_font_size = 24
+text = "CARD VIEWER"
+vertical_alignment = 1
+
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton" method="_on_toggled"]
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton2" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton2" method="_on_toggled"]
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton3" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton3" method="_on_toggled"]
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton4" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton4" method="_on_toggled"]
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton5" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton5" method="_on_toggled"]
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton6" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton6" method="_on_toggled"]
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton7" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton7" method="_on_toggled"]
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton8" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton8" method="_on_toggled"]
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton9" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton9" method="_on_toggled"]
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton10" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton10" method="_on_toggled"]
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton11" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton11" method="_on_toggled"]
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton12" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton12" method="_on_toggled"]
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton13" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton13" method="_on_toggled"]
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton14" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton14" method="_on_toggled"]
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton15" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton15" method="_on_toggled"]
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton16" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton16" method="_on_toggled"]
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton17" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton17" method="_on_toggled"]
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton18" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton18" method="_on_toggled"]
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton19" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton19" method="_on_toggled"]
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton20" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton20" method="_on_toggled"]
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton21" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton21" method="_on_toggled"]
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton22" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton22" method="_on_toggled"]
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton23" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton23" method="_on_toggled"]
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton24" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton24" method="_on_toggled"]
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton25" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton25" method="_on_toggled"]
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton26" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton26" method="_on_toggled"]
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton27" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton27" method="_on_toggled"]
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton28" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton28" method="_on_toggled"]
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton29" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton29" method="_on_toggled"]
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton30" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton30" method="_on_toggled"]
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton31" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton31" method="_on_toggled"]
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton32" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton32" method="_on_toggled"]
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton33" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton33" method="_on_toggled"]
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton34" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton34" method="_on_toggled"]
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton35" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton35" method="_on_toggled"]
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton36" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton36" method="_on_toggled"]
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton37" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton37" method="_on_toggled"]
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton38" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton38" method="_on_toggled"]
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton39" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton39" method="_on_toggled"]
+[connection signal="toggled" from="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton40" to="HBoxContainer/ScrollContainer/MarginContainer/GridContainer/TextureButton40" method="_on_toggled"]

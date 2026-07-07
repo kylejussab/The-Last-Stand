@@ -1,0 +1,571 @@
+[gd_scene load_steps=24 format=3 uid="uid://cc635drs7575"]
+
+[ext_resource type="Script" uid="uid://chxc2dlqsh4hl" path="res://holdout/hub/holdoutHub.gd" id="1_qh75h"]
+[ext_resource type="Texture2D" uid="uid://bridhs2vdvnms" path="res://core/ai/heads/AlleyNeutral.png" id="2_c5ial"]
+[ext_resource type="Script" uid="uid://cips7jy6yjg6s" path="res://holdout/hub/slotReel.gd" id="3_7u3tw"]
+[ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://core/fonts/SF-Pro-Display-Black.otf" id="5_4i1nc"]
+[ext_resource type="FontFile" uid="uid://di1dchl37cfhu" path="res://core/fonts/SF-Pro-Display-Semibold.otf" id="6_5ny4g"]
+[ext_resource type="FontVariation" uid="uid://bi2pnr1a7o7iq" path="res://core/fonts/Semibold.tres" id="6_qoiux"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c5ial"]
+bg_color = Color(0.08235294, 0.08235294, 0.08235294, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="FontVariation" id="FontVariation_p38e8"]
+base_font = ExtResource("5_4i1nc")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_7u3tw"]
+base_font = ExtResource("6_qoiux")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_qoiux"]
+base_font = ExtResource("6_5ny4g")
+spacing_glyph = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qoiux"]
+bg_color = Color(0.08235294, 0.08235294, 0.08235294, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="FontVariation" id="FontVariation_4i1nc"]
+base_font = ExtResource("5_4i1nc")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_5ny4g"]
+base_font = ExtResource("5_4i1nc")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_ghdy6"]
+base_font = ExtResource("6_5ny4g")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_rpca4"]
+base_font = ExtResource("6_5ny4g")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_ltfms"]
+base_font = ExtResource("5_4i1nc")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_lqpu0"]
+base_font = ExtResource("6_5ny4g")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_jq1at"]
+base_font = ExtResource("5_4i1nc")
+spacing_glyph = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_56yhv"]
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rnvvh"]
+bg_color = Color(0, 0, 0, 0)
+border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ddcm7"]
+bg_color = Color(0.08627451, 0.08627451, 0.08627451, 0)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kuc03"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_oeskt"]
+
+[node name="HoldoutHub" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_qh75h")
+
+[node name="Overlay" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0, 0, 0, 1)
+
+[node name="OpponentBox" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 150.0
+offset_top = 375.0
+offset_right = 580.0
+offset_bottom = 725.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_c5ial")
+
+[node name="OpponentHead" type="Sprite2D" parent="OpponentBox"]
+position = Vector2(215, 80)
+scale = Vector2(0.06, 0.06)
+texture = ExtResource("2_c5ial")
+
+[node name="Line" type="ColorRect" parent="OpponentBox"]
+layout_mode = 0
+offset_left = 130.0
+offset_top = 200.0
+offset_right = 131.0
+offset_bottom = 285.0
+mouse_filter = 2
+
+[node name="Modifier" type="Control" parent="OpponentBox"]
+clip_contents = true
+custom_minimum_size = Vector2(100, 100)
+anchors_preset = 0
+offset_left = 20.0
+offset_top = 190.0
+offset_right = 120.0
+offset_bottom = 290.0
+pivot_offset = Vector2(50, 50)
+mouse_filter = 2
+script = ExtResource("3_7u3tw")
+
+[node name="IconStrip" type="VBoxContainer" parent="OpponentBox/Modifier"]
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="OpponentName" type="RichTextLabel" parent="OpponentBox"]
+layout_mode = 0
+offset_top = 215.0
+offset_right = 375.0
+offset_bottom = 240.0
+theme_override_fonts/normal_font = SubResource("FontVariation_p38e8")
+theme_override_font_sizes/normal_font_size = 20
+text = "Opponent Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="OpponentPlayStyle" type="RichTextLabel" parent="OpponentBox"]
+layout_mode = 0
+offset_left = 27.5
+offset_top = 140.0
+offset_right = 402.5
+offset_bottom = 180.0
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = ExtResource("6_qoiux")
+theme_override_font_sizes/normal_font_size = 20
+text = "PlayStyle"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ModifierName" type="RichTextLabel" parent="OpponentBox"]
+layout_mode = 0
+offset_left = 375.0
+offset_top = 160.0
+offset_right = 750.0
+offset_bottom = 200.0
+theme_override_fonts/normal_font = SubResource("FontVariation_7u3tw")
+theme_override_font_sizes/normal_font_size = 20
+text = "Modifier Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ModifierDescription" type="RichTextLabel" parent="OpponentBox"]
+layout_mode = 0
+offset_left = 150.0
+offset_top = 190.0
+offset_right = 410.0
+offset_bottom = 300.0
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_qoiux")
+theme_override_font_sizes/normal_font_size = 20
+text = "Modifier Description
+Modifier Description
+Modifier Description
+Modifier Description"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ModifierContainer" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2
+
+[node name="Modifier 1" type="Panel" parent="ModifierContainer"]
+layout_mode = 0
+offset_left = 650.0
+offset_top = 330.0
+offset_right = 990.0
+offset_bottom = 750.0
+pivot_offset = Vector2(170, 210)
+theme_override_styles/panel = SubResource("StyleBoxFlat_qoiux")
+
+[node name="Slot" type="Control" parent="ModifierContainer/Modifier 1"]
+clip_contents = true
+custom_minimum_size = Vector2(100, 100)
+anchors_preset = 0
+offset_left = 120.0
+offset_top = 40.0
+offset_right = 220.0
+offset_bottom = 140.0
+pivot_offset = Vector2(50, 50)
+mouse_filter = 2
+script = ExtResource("3_7u3tw")
+
+[node name="IconStrip" type="VBoxContainer" parent="ModifierContainer/Modifier 1/Slot"]
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Name" type="RichTextLabel" parent="ModifierContainer/Modifier 1"]
+layout_mode = 0
+offset_top = 150.0
+offset_right = 340.0
+offset_bottom = 190.0
+mouse_filter = 2
+theme_override_fonts/normal_font = SubResource("FontVariation_4i1nc")
+theme_override_font_sizes/normal_font_size = 20
+text = "Modifier Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Description" type="RichTextLabel" parent="ModifierContainer/Modifier 1"]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 200.0
+offset_right = 310.0
+offset_bottom = 300.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_qoiux")
+theme_override_font_sizes/normal_font_size = 20
+text = "Modifier Description
+Modifier Description
+Modifier Description"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Multiplier" type="RichTextLabel" parent="ModifierContainer/Modifier 1"]
+layout_mode = 0
+offset_left = 85.0
+offset_top = 330.0
+offset_right = 255.0
+offset_bottom = 370.0
+mouse_filter = 2
+theme_override_fonts/normal_font = SubResource("FontVariation_5ny4g")
+theme_override_font_sizes/normal_font_size = 20
+text = "+9.9x"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Line" type="ColorRect" parent="ModifierContainer/Modifier 1"]
+layout_mode = 0
+offset_left = 170.0
+offset_top = 330.0
+offset_right = 171.0
+offset_bottom = 370.0
+pivot_offset = Vector2(0, 20)
+mouse_filter = 2
+
+[node name="Duration" type="RichTextLabel" parent="ModifierContainer/Modifier 1"]
+layout_mode = 0
+offset_left = 85.0
+offset_top = 330.0
+offset_right = 255.0
+offset_bottom = 370.0
+mouse_filter = 2
+theme_override_fonts/normal_font = SubResource("FontVariation_5ny4g")
+theme_override_font_sizes/normal_font_size = 20
+text = "9 Games"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Selected" type="RichTextLabel" parent="ModifierContainer/Modifier 1"]
+visible = false
+layout_mode = 0
+offset_top = 390.0
+offset_right = 340.0
+offset_bottom = 410.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_ghdy6")
+theme_override_font_sizes/normal_font_size = 14
+text = "SELECTED"
+horizontal_alignment = 1
+
+[node name="Modifier 2" type="Panel" parent="ModifierContainer"]
+layout_mode = 0
+offset_left = 1050.0
+offset_top = 330.0
+offset_right = 1390.0
+offset_bottom = 750.0
+pivot_offset = Vector2(170, 210)
+theme_override_styles/panel = SubResource("StyleBoxFlat_qoiux")
+
+[node name="Slot" type="Control" parent="ModifierContainer/Modifier 2"]
+clip_contents = true
+custom_minimum_size = Vector2(100, 100)
+anchors_preset = 0
+offset_left = 120.0
+offset_top = 40.0
+offset_right = 220.0
+offset_bottom = 140.0
+pivot_offset = Vector2(50, 50)
+mouse_filter = 2
+script = ExtResource("3_7u3tw")
+
+[node name="IconStrip" type="VBoxContainer" parent="ModifierContainer/Modifier 2/Slot"]
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Name" type="RichTextLabel" parent="ModifierContainer/Modifier 2"]
+layout_mode = 0
+offset_top = 150.0
+offset_right = 340.0
+offset_bottom = 190.0
+mouse_filter = 2
+theme_override_fonts/normal_font = SubResource("FontVariation_4i1nc")
+theme_override_font_sizes/normal_font_size = 20
+text = "Modifier Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Description" type="RichTextLabel" parent="ModifierContainer/Modifier 2"]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 200.0
+offset_right = 310.0
+offset_bottom = 300.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_qoiux")
+theme_override_font_sizes/normal_font_size = 20
+text = "Modifier Description
+Modifier Description
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Multiplier" type="RichTextLabel" parent="ModifierContainer/Modifier 2"]
+layout_mode = 0
+offset_left = 85.0
+offset_top = 330.0
+offset_right = 255.0
+offset_bottom = 370.0
+mouse_filter = 2
+theme_override_fonts/normal_font = SubResource("FontVariation_5ny4g")
+theme_override_font_sizes/normal_font_size = 20
+text = "+9.9x"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Line" type="ColorRect" parent="ModifierContainer/Modifier 2"]
+layout_mode = 0
+offset_left = 170.0
+offset_top = 330.0
+offset_right = 171.0
+offset_bottom = 370.0
+pivot_offset = Vector2(0, 20)
+mouse_filter = 2
+
+[node name="Duration" type="RichTextLabel" parent="ModifierContainer/Modifier 2"]
+layout_mode = 0
+offset_left = 85.0
+offset_top = 330.0
+offset_right = 255.0
+offset_bottom = 370.0
+mouse_filter = 2
+theme_override_fonts/normal_font = SubResource("FontVariation_5ny4g")
+theme_override_font_sizes/normal_font_size = 20
+text = "9 Games"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Selected" type="RichTextLabel" parent="ModifierContainer/Modifier 2"]
+visible = false
+layout_mode = 0
+offset_top = 390.0
+offset_right = 340.0
+offset_bottom = 410.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_ghdy6")
+theme_override_font_sizes/normal_font_size = 14
+text = "SELECTED"
+horizontal_alignment = 1
+
+[node name="Modifier 3" type="Panel" parent="ModifierContainer"]
+layout_mode = 0
+offset_left = 1450.0
+offset_top = 330.0
+offset_right = 1790.0
+offset_bottom = 750.0
+pivot_offset = Vector2(170, 210)
+theme_override_styles/panel = SubResource("StyleBoxFlat_qoiux")
+
+[node name="Slot" type="Control" parent="ModifierContainer/Modifier 3"]
+clip_contents = true
+custom_minimum_size = Vector2(100, 100)
+anchors_preset = 0
+offset_left = 120.0
+offset_top = 40.0
+offset_right = 220.0
+offset_bottom = 140.0
+pivot_offset = Vector2(50, 50)
+mouse_filter = 2
+script = ExtResource("3_7u3tw")
+
+[node name="IconStrip" type="VBoxContainer" parent="ModifierContainer/Modifier 3/Slot"]
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Name" type="RichTextLabel" parent="ModifierContainer/Modifier 3"]
+layout_mode = 0
+offset_top = 150.0
+offset_right = 340.0
+offset_bottom = 190.0
+mouse_filter = 2
+theme_override_fonts/normal_font = SubResource("FontVariation_4i1nc")
+theme_override_font_sizes/normal_font_size = 20
+text = "Modifier Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Description" type="RichTextLabel" parent="ModifierContainer/Modifier 3"]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 200.0
+offset_right = 310.0
+offset_bottom = 300.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_qoiux")
+theme_override_font_sizes/normal_font_size = 20
+text = "Modifier Description
+Modifier Description
+Modifier Description
+Modifier Description"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Multiplier" type="RichTextLabel" parent="ModifierContainer/Modifier 3"]
+layout_mode = 0
+offset_left = 85.0
+offset_top = 330.0
+offset_right = 255.0
+offset_bottom = 370.0
+mouse_filter = 2
+theme_override_fonts/normal_font = SubResource("FontVariation_5ny4g")
+theme_override_font_sizes/normal_font_size = 20
+text = "+9.9x"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Line" type="ColorRect" parent="ModifierContainer/Modifier 3"]
+layout_mode = 0
+offset_left = 170.0
+offset_top = 330.0
+offset_right = 171.0
+offset_bottom = 370.0
+pivot_offset = Vector2(0, 20)
+mouse_filter = 2
+
+[node name="Duration" type="RichTextLabel" parent="ModifierContainer/Modifier 3"]
+layout_mode = 0
+offset_left = 85.0
+offset_top = 330.0
+offset_right = 255.0
+offset_bottom = 370.0
+mouse_filter = 2
+theme_override_fonts/normal_font = SubResource("FontVariation_5ny4g")
+theme_override_font_sizes/normal_font_size = 20
+text = "9 Games"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Selected" type="RichTextLabel" parent="ModifierContainer/Modifier 3"]
+visible = false
+layout_mode = 0
+offset_top = 390.0
+offset_right = 340.0
+offset_bottom = 410.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_ghdy6")
+theme_override_font_sizes/normal_font_size = 14
+text = "SELECTED"
+horizontal_alignment = 1
+
+[node name="NumberSelected" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = 1590.0
+offset_top = 780.0
+offset_right = 1790.0
+offset_bottom = 820.0
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_rpca4")
+theme_override_font_sizes/normal_font_size = 18
+text = "0/3 Selected"
+horizontal_alignment = 2
+
+[node name="Heading" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_top = 120.0
+offset_right = 1920.0
+offset_bottom = 170.0
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_ltfms")
+theme_override_font_sizes/normal_font_size = 34
+text = "PICK A MODIFIER"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Subheading" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_top = 170.0
+offset_right = 1920.0
+offset_bottom = 220.0
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_lqpu0")
+theme_override_font_sizes/normal_font_size = 26
+text = "Choose at least one. Multiple selections allowed."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ConfirmButton" type="Button" parent="."]
+z_index = 201
+layout_mode = 0
+offset_left = 913.0
+offset_top = 850.0
+offset_right = 1013.0
+offset_bottom = 880.0
+theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = SubResource("FontVariation_jq1at")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_56yhv")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_rnvvh")
+theme_override_styles/hover = SubResource("StyleBoxFlat_ddcm7")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_kuc03")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_oeskt")
+text = "CONFIRM"
+alignment = 0
+
+[connection signal="gui_input" from="ModifierContainer/Modifier 1" to="." method="_on_modifier_1_gui_input"]
+[connection signal="mouse_entered" from="ModifierContainer/Modifier 1" to="." method="_on_modifier_1_mouse_entered"]
+[connection signal="mouse_exited" from="ModifierContainer/Modifier 1" to="." method="_on_modifier_1_mouse_exited"]
+[connection signal="gui_input" from="ModifierContainer/Modifier 2" to="." method="_on_modifier_2_gui_input"]
+[connection signal="mouse_entered" from="ModifierContainer/Modifier 2" to="." method="_on_modifier_2_mouse_entered"]
+[connection signal="mouse_exited" from="ModifierContainer/Modifier 2" to="." method="_on_modifier_2_mouse_exited"]
+[connection signal="gui_input" from="ModifierContainer/Modifier 3" to="." method="_on_modifier_3_gui_input"]
+[connection signal="mouse_entered" from="ModifierContainer/Modifier 3" to="." method="_on_modifier_3_mouse_entered"]
+[connection signal="mouse_exited" from="ModifierContainer/Modifier 3" to="." method="_on_modifier_3_mouse_exited"]
+[connection signal="mouse_entered" from="ConfirmButton" to="." method="_on_confirm_button_mouse_entered"]
+[connection signal="pressed" from="ConfirmButton" to="." method="_on_confirm_button_pressed"]
