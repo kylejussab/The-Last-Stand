@@ -4,7 +4,9 @@ extends Node2D
 
 var currentNavigation: String = "Main"
 
-@onready var ui = %arena
+#@onready var ui = %arena
+@onready var outro = %outro
+
 @onready var battleManager = %battleManager
 
 func _ready():
@@ -95,7 +97,7 @@ func _on_restart_button_hold_complete() -> void:
 		return
 		
 	get_tree().paused = false
-	ui._on_replay_button_hold_complete()
+	outro._on_replay_button_hold_complete()
 	hide()
 
 func _on_main_menu_button_mouse_entered() -> void:
@@ -106,11 +108,11 @@ func _on_main_menu_button_mouse_exited() -> void:
 
 func _on_main_menu_button_hold_complete() -> void:
 	get_tree().paused = false 
-	ui._on_main_menu_button_hold_complete()
+	outro._on_main_menu_button_hold_complete()
 	hide()
 
 func _on_corrupt_main_menu_button_pressed() -> void:
-	ui._on_main_menu_button_hold_complete()
+	outro._on_main_menu_button_hold_complete()
 	%saveFileCorrupt.visible = false
 
 # Helpers

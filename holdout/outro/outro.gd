@@ -1,7 +1,9 @@
 extends Node
 
-@onready var screen = %holdoutEndStats
 @onready var animationPlayer = %AnimationPlayer
+@onready var arena = %arena
+@onready var battleManager = %battleManager
+@onready var holdoutHub = %HoldoutHub
 
 var baseRoundWinValue: int = 4
 var winStreaks: int = 0
@@ -9,6 +11,12 @@ var efficiency: int = 0
 var distanceToNewRank: int = 0
 var accolade: Dictionary
 var currentMvpData: Dictionary
+
+func _ready() -> void:
+	for button in get_children():
+		if button is Button:
+			button.mouse_entered.connect(AudioManager.play_button_hover)
+			button.pressed.connect(AudioManager.play_button_click)
 
 func play_holdout_end_sequence(playerWon: bool):
 	_calculate_holdout_stats(playerWon)
@@ -33,12 +41,12 @@ func play_holdout_end_sequence(playerWon: bool):
 	await get_tree().create_timer(0.8).timeout
 	
 	AudioManager.play_random_rations_collected()
-	await animate_rations_tick(screen.get_node("total/totalStatContainer/totalValue"), HoldoutStats.totalRunRations, HoldoutStats.currentRunRations)
+	await animate_rations_tick($"../../arena/outro/total/totalStatContainer/totalValue", HoldoutStats.totalRunRations, HoldoutStats.currentRunRations)
 	await get_tree().create_timer(0.3).timeout
 	
 	animationPlayer.play("showBadges", -1.0, 0.75)
 	
-	for child in %holdoutEndStats.get_children():
+	for child in get_children():
 		if child is Button:
 			child.disabled = false
 	
@@ -59,8 +67,8 @@ func play_holdout_tutorial_end_sequence():
 	%ContinueButton.hide()
 	$"../../arena/holdoutEndStats/ReplayButton".hide()
 	
-	screen.get_node("overview/overviewStatContainer/roundsPlayedValue").text = str(HoldoutStats.roundsPlayed)
-	screen.get_node("overview/overviewStatContainer/timeElapsedValue").text = format_time(HoldoutStats.currentRoundDuration)
+	$"../../arena/outro/overview/overviewStatContainer/roundsPlayedValue".text = str(HoldoutStats.roundsPlayed)
+	$"../../arena/outro/overview/overviewStatContainer/timeElapsedValue".text = format_time(HoldoutStats.currentRoundDuration)
 	
 	await get_tree().create_timer(0.3).timeout
 	
@@ -74,13 +82,13 @@ func play_holdout_tutorial_end_sequence():
 	
 	AudioManager.change_volume_background() # Back to default
 
-# Helpers
+# Animation Helpers
 func _title_slam_and_slide(playerWon: bool, fromTutorial: bool = false):
-	screen.visible = true
-	screen.get_node("overlay").visible = true
-	screen.get_node("title").visible = true
+	%outro.visible = true
+	$"../../arena/outro/overlay".visible = true
+	$"../../arena/outro/title".visible = true
 	
-	var resultLabel = screen.get_node("title")
+	var resultLabel = $"../../arena/outro/title"
 	if !fromTutorial:
 		resultLabel.text = "SURVIVED" if playerWon else "DEFEATED"
 	else:
@@ -166,44 +174,44 @@ func _calculate_holdout_stats(playerWon: bool) -> void:
 		GameStats.rations += HoldoutStats.totalRunRations + totalRationsToAdd
 
 func _assign_values_to_labels() -> void:
-	screen.get_node("wins").text = "%02d" % HoldoutStats.numberOfWins
+	$"../../arena/outro/wins".text = "%02d" % HoldoutStats.numberOfWins
 	
 	# Overview
-	screen.get_node("overview/overviewStatContainer/roundsPlayedValue").text = str(HoldoutStats.roundsPlayed)
-	screen.get_node("overview/overviewStatContainer/timeElapsedValue").text = format_time(HoldoutStats.currentRoundDuration)
+	$"../../arena/outro/overview/overviewStatContainer/roundsPlayedValue".text = str(HoldoutStats.roundsPlayed)
+	$"../../arena/outro/overview/overviewStatContainer/timeElapsedValue".text = format_time(HoldoutStats.currentRoundDuration)
 	
 	# Performance
-	screen.get_node("performance/performanceStatContainer/roundWinValue").text = str(baseRoundWinValue)
-	screen.get_node("performance/performanceStatContainer/dominanceValue").text = str(HoldoutStats.highestDominance)
-	screen.get_node("performance/performanceStatContainer/streakValue").text = str(winStreaks)
-	screen.get_node("performance/performanceStatContainer/efficiencyValue").text = str(efficiency)
-	screen.get_node("performance/performanceStatContainer/underdogMasteryValue").text = str(HoldoutStats.underdogWins)
-	screen.get_node("performance/performanceStatContainer/modifierMultiplierValue").text = str(HoldoutStats.multiplierTotal) + "x"
+	$"../../arena/outro/performance/performanceStatContainer/roundWinValue".text = str(baseRoundWinValue)
+	$"../../arena/outro/performance/performanceStatContainer/dominanceValue".text = str(HoldoutStats.highestDominance)
+	$"../../arena/outro/performance/performanceStatContainer/streakValue".text = str(winStreaks)
+	$"../../arena/outro/performance/performanceStatContainer/efficiencyValue".text = str(efficiency)
+	$"../../arena/outro/performance/performanceStatContainer/underdogMasteryValue".text = str(HoldoutStats.underdogWins)
+	$"../../arena/outro/performance/performanceStatContainer/modifierMultiplierValue".text = str(HoldoutStats.multiplierTotal) + "x"
 	
-	screen.get_node("total/totalStatContainer/totalValue").text = str(HoldoutStats.totalRunRations)
+	$"../../arena/outro/total/totalStatContainer/totalValue".text = str(HoldoutStats.totalRunRations)
 	
-	screen.get_node("total/rankIcon").texture = load("res://holdout/outro/icons/rank/" + HoldoutStats.get_current_rank_string() + ".png")
+	$"../../arena/outro/total/rankIcon".texture = load("res://holdout/outro/icons/rank/" + HoldoutStats.get_current_rank_string() + ".png")
 	
 	var premiumAssetPath = "res://holdout/outro/icons/mvp/" + currentMvpData["cardKey"] + ".png"
 	
 	if ResourceLoader.exists(premiumAssetPath):
-		screen.get_node("total/mvpIcon").texture = load(premiumAssetPath)
+		$"../../arena/outro/total/mvpIcon".texture = load(premiumAssetPath)
 	else:
-		screen.get_node("total/mvpIcon").texture = load("res://holdout/outro/icons/" + currentMvpData["faction"] + ".png")
+		$"../../arena/outro/total/mvpIcon".texture = load("res://holdout/outro/icons/" + currentMvpData["faction"] + ".png")
 	
-	screen.get_node("total/badgeOutlineMvp").modulate = HoldoutStats.FACTION_COLORS[currentMvpData["faction"]]
+	$"../../arena/outro/total/badgeOutlineMvp".modulate = HoldoutStats.FACTION_COLORS[currentMvpData["faction"]]
 	
 	if HoldoutStats.get_next_rank_string() == "":
-		screen.get_node("total/badgeTextContainer/rankText").text = "Max Rank"
+		$"../../arena/outro/total/badgeTextContainer/rankText".text = "Max Rank"
 	else:
-		screen.get_node("total/badgeTextContainer/rankText").text = str(distanceToNewRank) + " [img width=10]res://core/menus/ui/RationsIconSlim.png[/img] to Rank " + HoldoutStats.get_next_rank_string()
+		$"../../arena/outro/total/badgeTextContainer/rankText".text = str(distanceToNewRank) + " [img width=10]res://core/menus/ui/RationsIconSlim.png[/img] to Rank " + HoldoutStats.get_next_rank_string()
 	
-	screen.get_node("total/rankIcon").modulate = HoldoutStats.RANK_COLORS[HoldoutStats.currentRank]
-	screen.get_node("total/badgeOutlineRank").modulate = HoldoutStats.RANK_COLORS[HoldoutStats.currentRank]
+	$"../../arena/outro/total/rankIcon".modulate = HoldoutStats.RANK_COLORS[HoldoutStats.currentRank]
+	$"../../arena/outro/total/badgeOutlineRank".modulate = HoldoutStats.RANK_COLORS[HoldoutStats.currentRank]
 	
-	screen.get_node("total/badgeTextContainer/accoladeText").text = accolade.title
+	$"../../arena/outro/total/badgeTextContainer/accoladeText".text = accolade.title
 	
-	screen.get_node("total/accoladeIcon").texture = load("res://holdout/outro/icons/accolade/" + accolade.title + ".png")
+	$"../../arena/outro/total/accoladeIcon".texture = load("res://holdout/outro/icons/accolade/" + accolade.title + ".png")
 
 func format_time(time: float) -> String:
 	var minutes = int(time / 60)
@@ -371,3 +379,118 @@ func _on_underdog_mastery_text_mouse_entered() -> void:
 
 func _on_underdog_mastery_text_mouse_exited() -> void:
 	%tooltip.visible = false
+
+
+# Privates
+func _on_continue_button_pressed() -> void:
+	AudioManager.change_volume_background() # Audio back to default always
+	
+	HoldoutStats.replayedRound = false
+	HoldoutStats.totalRunRations = HoldoutStats.currentRunRations
+	
+	if GameStats.gameMode == GameStats.Mode.HOLDOUT_ROUND_COMPLETED:
+		HoldoutStats.playerHealthValue = int(arena.playerHealthLabel.text)
+		GameStats.gameMode = GameStats.Mode.HOLDOUT
+	
+	handle_modifier_durations()
+	
+	_fade_with_round_reset()
+
+func _on_replay_button_mouse_entered() -> void:
+	%holdIcon.get_node("image").position.x = 1800
+	%holdIcon.get_node("text").position.x = 1821
+	%holdIcon.show()
+
+func _on_replay_button_mouse_exited() -> void:
+	%holdIcon.hide()
+	%holdIcon.get_node("image").position.x = 1675
+	%holdIcon.get_node("text").position.x = 1700
+
+func _on_replay_button_hold_complete() -> void:
+	AudioManager.change_volume_background() # Audio back to default always
+	
+	HoldoutStats.replayedRound = true
+	
+	if GameStats.gameMode == GameStats.Mode.HOLDOUT_ROUND_COMPLETED:
+		GameStats.gameMode = GameStats.Mode.HOLDOUT
+	
+	_fade_with_round_reset()
+
+func _on_new_run_button_mouse_entered() -> void:
+	%holdIcon.get_node("image").position.x = 1800
+	%holdIcon.get_node("text").position.x = 1821
+	%holdIcon.show()
+
+func _on_new_run_button_mouse_exited() -> void:
+	%holdIcon.hide()
+	%holdIcon.get_node("image").position.x = 1675
+	%holdIcon.get_node("text").position.x = 1700
+
+func _on_new_run_button_hold_complete() -> void:
+	AudioManager.change_volume_background() # Audio back to default always
+	
+	GameStats.gameMode = GameStats.Mode.HOLDOUT
+	HoldoutStats.reset_for_new_run()
+	
+	Curtain.change_scene("res://holdout/battle/holdoutBattle.tscn")
+
+func _on_main_menu_button_hold_complete() -> void:
+	Database.clear_avatar_cache()
+	GameStats.gameMode = GameStats.Mode.MAIN_MENU
+	Curtain.change_scene("res://core/menus/mainMenu.tscn", 1.0, 0.75) # wait .75 seconds while the screen is black for scene load
+	
+	AudioManager.stop_background()
+	AudioManager.play_beyondTheThreshold(-20, -80, 4)
+
+func _on_main_menu_button_mouse_entered() -> void:
+	%holdIcon.get_node("image").position.x = 1800
+	%holdIcon.get_node("text").position.x = 1821
+	%holdIcon.show()
+
+func _on_main_menu_button_mouse_exited() -> void:
+	%holdIcon.hide()
+	%holdIcon.get_node("image").position.x = 1675
+	%holdIcon.get_node("text").position.x = 1700
+
+func _fade_with_round_reset() -> void:
+	await Curtain.fade_in()
+	
+	Database.clear_avatar_cache()
+	%bubbleContainer.clear_modifiers()
+	%pauseIcon/text.text = "PAUSE"
+	arena.change_mood(Actor.Type.PLAYER, Actor.Mood.NEUTRAL)
+	arena.change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
+	arena.set_indicator(Actor.Type.NONE)
+	_reset_holdout_stats_ui()
+	_reset_board_state()
+	
+	arena.update_health(Actor.Type.PLAYER, HoldoutStats.playerHealthValue, true)
+	
+	battleManager.prepare_opponent()
+	
+	await get_tree().create_timer(1.0).timeout
+	Curtain.fade_out()
+	
+	holdoutHub.show_hub()
+
+func _reset_holdout_stats_ui() -> void:
+	%outro.visible = false
+	
+	%AnimationPlayer.play("RESET")
+	
+	for child in get_children():
+		if child is Button:
+			child.disabled = true
+
+func _reset_board_state() -> void:
+	battleManager.lockPlayerInput = true
+	arena.show_end_turn_button(false)
+	HoldoutStats.reset_for_new_battle()
+	%playerHand.playerHand.clear()
+	%opponentHand.opponentHand.clear()
+	
+	%cardSlotSupport.occupied = false
+	%cardSlotCharacter.occupied = false
+	# Clean up older scene children
+	for card in %cardManager.get_children():
+		card.queue_free()

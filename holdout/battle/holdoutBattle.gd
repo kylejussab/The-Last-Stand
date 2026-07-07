@@ -55,7 +55,7 @@ func _ready() -> void:
 	battleEngine = HoldoutBattleEngine.new()
 	add_child(battleEngine)
 	
-	$"../arena/HoldoutIntro".show()
+	$"../arena/intro".show()
 	HoldoutStats.replayedRound = false
 	%phaseTracker.modulate.a = 0.0
 	

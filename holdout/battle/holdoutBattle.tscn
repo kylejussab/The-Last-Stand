@@ -1,4 +1,4 @@
-[gd_scene load_steps=114 format=3 uid="uid://dgb52shq4jcyg"]
+[gd_scene load_steps=113 format=3 uid="uid://dgb52shq4jcyg"]
 
 [ext_resource type="Script" uid="uid://dfohy7ltt78s3" path="res://core/save/gameStats.gd" id="1_v4gi3"]
 [ext_resource type="Script" uid="uid://c3p2rmoacsirj" path="res://core/inputManager.gd" id="2_m3a1y"]
@@ -20,7 +20,7 @@
 [ext_resource type="Script" uid="uid://che0dt2kvp0wy" path="res://holdout/battle/supportDeck.gd" id="18_g3jdd"]
 [ext_resource type="Texture2D" uid="uid://bp72tjgvjowxr" path="res://core/cards/art/DeckSupportText.png" id="19_ts8fe"]
 [ext_resource type="Script" uid="uid://cwakiodvp7ji5" path="res://holdout/battle/viewDeck.gd" id="20_c2xar"]
-[ext_resource type="Script" uid="uid://buunfomhxxyfm" path="res://holdout/arenaUI.gd" id="21_qdcb1"]
+[ext_resource type="Script" uid="uid://buunfomhxxyfm" path="res://holdout/arena/arena.gd" id="21_qdcb1"]
 [ext_resource type="Texture2D" uid="uid://cc4u4mqtyb8xx" path="res://core/ai/backgrounds/Ethan.png" id="22_80v0b"]
 [ext_resource type="Texture2D" uid="uid://bbnk86v0eu3u3" path="res://holdout/arena/ui/DiscardCardSlot.png" id="23_sa3a2"]
 [ext_resource type="Texture2D" uid="uid://bhqmjvh2qnbys" path="res://holdout/arena/ui/BlankCardSlot.png" id="24_ntwkt"]
@@ -40,7 +40,6 @@
 [ext_resource type="Texture2D" uid="uid://dgqjpfbqq0f4p" path="res://holdout/arena/ui/ActiveIndicator.png" id="38_1yrbr"]
 [ext_resource type="Script" uid="uid://cut6aandi16ab" path="res://holdout/modifiers/modifierBubbleManager.gd" id="39_mhed7"]
 [ext_resource type="PackedScene" uid="uid://chb4j7220yip1" path="res://holdout/intro/intro.tscn" id="40_3u4c0"]
-[ext_resource type="Texture2D" uid="uid://dxbmvsoua68c4" path="res://holdout/arena/GameOverOverlay.png" id="41_poemy"]
 [ext_resource type="Texture2D" uid="uid://d1kqrakc80shv" path="res://core/menus/ui/RationsIcon.png" id="42_tbatq"]
 [ext_resource type="Texture2D" uid="uid://bnpmhfal8dvvl" path="res://holdout/outro/icons/Jackson.png" id="43_6y8bd"]
 [ext_resource type="Texture2D" uid="uid://bg2k5b4lwvhxc" path="res://holdout/outro/icons/rank/F.png" id="44_l3q7n"]
@@ -1932,21 +1931,21 @@ unique_name_in_owner = true
 z_index = 10
 script = ExtResource("39_mhed7")
 
-[node name="HoldoutIntro" parent="arena" instance=ExtResource("40_3u4c0")]
+[node name="intro" parent="arena" instance=ExtResource("40_3u4c0")]
 visible = false
 
-[node name="holdoutEndStats" type="Node2D" parent="arena"]
+[node name="outro" type="Node2D" parent="arena"]
 unique_name_in_owner = true
 visible = false
 z_index = 500
 script = ExtResource("5_eqfih")
 
-[node name="overlay" type="Sprite2D" parent="arena/holdoutEndStats"]
-scale = Vector2(0.24, 0.24)
-texture = ExtResource("41_poemy")
-centered = false
+[node name="overlay" type="ColorRect" parent="arena/outro"]
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0, 0, 0, 0.8)
 
-[node name="title" type="RichTextLabel" parent="arena/holdoutEndStats"]
+[node name="title" type="RichTextLabel" parent="arena/outro"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -1964,7 +1963,7 @@ theme_override_font_sizes/normal_font_size = 32
 text = "SURVIVED"
 horizontal_alignment = 1
 
-[node name="wins" type="RichTextLabel" parent="arena/holdoutEndStats"]
+[node name="wins" type="RichTextLabel" parent="arena/outro"]
 self_modulate = Color(1, 1, 1, 0)
 anchors_preset = 8
 anchor_left = 0.5
@@ -1982,16 +1981,16 @@ theme_override_font_sizes/normal_font_size = 32
 text = "99"
 horizontal_alignment = 2
 
-[node name="line" type="ColorRect" parent="arena/holdoutEndStats"]
+[node name="line" type="ColorRect" parent="arena/outro"]
 offset_left = 212.0
 offset_top = 179.0
 offset_right = 662.0
 offset_bottom = 181.0
 scale = Vector2(1e-05, 1)
 
-[node name="overview" type="Node2D" parent="arena/holdoutEndStats"]
+[node name="overview" type="Node2D" parent="arena/outro"]
 
-[node name="heading" type="RichTextLabel" parent="arena/holdoutEndStats/overview"]
+[node name="heading" type="RichTextLabel" parent="arena/outro/overview"]
 self_modulate = Color(1, 1, 1, 0)
 anchors_preset = 8
 anchor_left = 0.5
@@ -2009,7 +2008,7 @@ theme_override_fonts/normal_font = SubResource("FontVariation_ty1g6")
 theme_override_font_sizes/normal_font_size = 20
 text = "OVERVIEW"
 
-[node name="line" type="ColorRect" parent="arena/holdoutEndStats/overview"]
+[node name="line" type="ColorRect" parent="arena/outro/overview"]
 offset_left = 212.0
 offset_top = 239.0
 offset_right = 662.0
@@ -2017,10 +2016,10 @@ offset_bottom = 240.0
 scale = Vector2(1e-05, 1)
 color = Color(1, 1, 1, 0.35686275)
 
-[node name="overviewStatContainer" type="Node2D" parent="arena/holdoutEndStats/overview"]
+[node name="overviewStatContainer" type="Node2D" parent="arena/outro/overview"]
 modulate = Color(1, 1, 1, 0)
 
-[node name="roundsPlayedText" type="RichTextLabel" parent="arena/holdoutEndStats/overview/overviewStatContainer"]
+[node name="roundsPlayedText" type="RichTextLabel" parent="arena/outro/overview/overviewStatContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -2038,7 +2037,7 @@ theme_override_font_sizes/normal_font_size = 20
 text = "Rounds Played"
 vertical_alignment = 1
 
-[node name="roundsPlayedValue" type="RichTextLabel" parent="arena/holdoutEndStats/overview/overviewStatContainer"]
+[node name="roundsPlayedValue" type="RichTextLabel" parent="arena/outro/overview/overviewStatContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -2057,7 +2056,7 @@ text = "99"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="timeElapsedText" type="RichTextLabel" parent="arena/holdoutEndStats/overview/overviewStatContainer"]
+[node name="timeElapsedText" type="RichTextLabel" parent="arena/outro/overview/overviewStatContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -2075,7 +2074,7 @@ theme_override_font_sizes/normal_font_size = 20
 text = "Time Elapsed"
 vertical_alignment = 1
 
-[node name="timeElapsedValue" type="RichTextLabel" parent="arena/holdoutEndStats/overview/overviewStatContainer"]
+[node name="timeElapsedValue" type="RichTextLabel" parent="arena/outro/overview/overviewStatContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -2094,9 +2093,9 @@ text = "99"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="performance" type="Node2D" parent="arena/holdoutEndStats"]
+[node name="performance" type="Node2D" parent="arena/outro"]
 
-[node name="heading" type="RichTextLabel" parent="arena/holdoutEndStats/performance"]
+[node name="heading" type="RichTextLabel" parent="arena/outro/performance"]
 self_modulate = Color(1, 1, 1, 0)
 anchors_preset = 8
 anchor_left = 0.5
@@ -2114,7 +2113,7 @@ theme_override_fonts/normal_font = SubResource("FontVariation_ty1g6")
 theme_override_font_sizes/normal_font_size = 20
 text = "PERFORMANCE"
 
-[node name="line" type="ColorRect" parent="arena/holdoutEndStats/performance"]
+[node name="line" type="ColorRect" parent="arena/outro/performance"]
 offset_left = 212.0
 offset_top = 413.0
 offset_right = 662.0
@@ -2122,10 +2121,10 @@ offset_bottom = 414.0
 scale = Vector2(1e-05, 1)
 color = Color(1, 1, 1, 0.35686275)
 
-[node name="performanceStatContainer" type="Node2D" parent="arena/holdoutEndStats/performance"]
+[node name="performanceStatContainer" type="Node2D" parent="arena/outro/performance"]
 modulate = Color(1, 1, 1, 0)
 
-[node name="roundWinText" type="RichTextLabel" parent="arena/holdoutEndStats/performance/performanceStatContainer"]
+[node name="roundWinText" type="RichTextLabel" parent="arena/outro/performance/performanceStatContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -2142,7 +2141,7 @@ theme_override_font_sizes/normal_font_size = 20
 text = "Round Win"
 vertical_alignment = 1
 
-[node name="roundWinValue" type="RichTextLabel" parent="arena/holdoutEndStats/performance/performanceStatContainer"]
+[node name="roundWinValue" type="RichTextLabel" parent="arena/outro/performance/performanceStatContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -2161,7 +2160,7 @@ text = "99"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="dominanceText" type="RichTextLabel" parent="arena/holdoutEndStats/performance/performanceStatContainer"]
+[node name="dominanceText" type="RichTextLabel" parent="arena/outro/performance/performanceStatContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -2179,7 +2178,7 @@ bbcode_enabled = true
 text = "Dominance [img=20]res://core/menus/ui/info.png[/img]"
 vertical_alignment = 1
 
-[node name="dominanceValue" type="RichTextLabel" parent="arena/holdoutEndStats/performance/performanceStatContainer"]
+[node name="dominanceValue" type="RichTextLabel" parent="arena/outro/performance/performanceStatContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -2198,7 +2197,7 @@ text = "99"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="streakText" type="RichTextLabel" parent="arena/holdoutEndStats/performance/performanceStatContainer"]
+[node name="streakText" type="RichTextLabel" parent="arena/outro/performance/performanceStatContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -2216,7 +2215,7 @@ bbcode_enabled = true
 text = "Streak [img=20]res://core/menus/ui/info.png[/img]"
 vertical_alignment = 1
 
-[node name="streakValue" type="RichTextLabel" parent="arena/holdoutEndStats/performance/performanceStatContainer"]
+[node name="streakValue" type="RichTextLabel" parent="arena/outro/performance/performanceStatContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -2235,7 +2234,7 @@ text = "99"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="efficiencyText" type="RichTextLabel" parent="arena/holdoutEndStats/performance/performanceStatContainer"]
+[node name="efficiencyText" type="RichTextLabel" parent="arena/outro/performance/performanceStatContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -2253,7 +2252,7 @@ bbcode_enabled = true
 text = "Efficiency [img=20]res://core/menus/ui/info.png[/img]"
 vertical_alignment = 1
 
-[node name="efficiencyValue" type="RichTextLabel" parent="arena/holdoutEndStats/performance/performanceStatContainer"]
+[node name="efficiencyValue" type="RichTextLabel" parent="arena/outro/performance/performanceStatContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -2272,7 +2271,7 @@ text = "99"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="underdogMasteryText" type="RichTextLabel" parent="arena/holdoutEndStats/performance/performanceStatContainer"]
+[node name="underdogMasteryText" type="RichTextLabel" parent="arena/outro/performance/performanceStatContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -2290,7 +2289,7 @@ bbcode_enabled = true
 text = "Underdog Mastery [img=20]res://core/menus/ui/info.png[/img]"
 vertical_alignment = 1
 
-[node name="underdogMasteryValue" type="RichTextLabel" parent="arena/holdoutEndStats/performance/performanceStatContainer"]
+[node name="underdogMasteryValue" type="RichTextLabel" parent="arena/outro/performance/performanceStatContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -2309,7 +2308,7 @@ text = "99"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="modifierMultiplierText" type="RichTextLabel" parent="arena/holdoutEndStats/performance/performanceStatContainer"]
+[node name="modifierMultiplierText" type="RichTextLabel" parent="arena/outro/performance/performanceStatContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -2327,7 +2326,7 @@ theme_override_font_sizes/normal_font_size = 20
 text = "Modifier Multiplier"
 vertical_alignment = 1
 
-[node name="modifierMultiplierValue" type="RichTextLabel" parent="arena/holdoutEndStats/performance/performanceStatContainer"]
+[node name="modifierMultiplierValue" type="RichTextLabel" parent="arena/outro/performance/performanceStatContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -2346,50 +2345,50 @@ text = "x9.9"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="rationsIcon" type="Sprite2D" parent="arena/holdoutEndStats/performance/performanceStatContainer"]
+[node name="rationsIcon" type="Sprite2D" parent="arena/outro/performance/performanceStatContainer"]
 position = Vector2(656, 449)
 scale = Vector2(0.072, 0.072)
 texture = ExtResource("42_tbatq")
 
-[node name="rationsIcon2" type="Sprite2D" parent="arena/holdoutEndStats/performance/performanceStatContainer"]
+[node name="rationsIcon2" type="Sprite2D" parent="arena/outro/performance/performanceStatContainer"]
 position = Vector2(656, 489)
 scale = Vector2(0.072, 0.072)
 texture = ExtResource("42_tbatq")
 
-[node name="rationsIcon3" type="Sprite2D" parent="arena/holdoutEndStats/performance/performanceStatContainer"]
+[node name="rationsIcon3" type="Sprite2D" parent="arena/outro/performance/performanceStatContainer"]
 position = Vector2(656, 529)
 scale = Vector2(0.072, 0.072)
 texture = ExtResource("42_tbatq")
 
-[node name="rationsIcon4" type="Sprite2D" parent="arena/holdoutEndStats/performance/performanceStatContainer"]
+[node name="rationsIcon4" type="Sprite2D" parent="arena/outro/performance/performanceStatContainer"]
 position = Vector2(656, 569)
 scale = Vector2(0.072, 0.072)
 texture = ExtResource("42_tbatq")
 
-[node name="rationsIcon5" type="Sprite2D" parent="arena/holdoutEndStats/performance/performanceStatContainer"]
+[node name="rationsIcon5" type="Sprite2D" parent="arena/outro/performance/performanceStatContainer"]
 position = Vector2(656, 609)
 scale = Vector2(0.072, 0.072)
 texture = ExtResource("42_tbatq")
 
-[node name="tooltip" type="Node2D" parent="arena/holdoutEndStats/performance"]
+[node name="tooltip" type="Node2D" parent="arena/outro/performance"]
 unique_name_in_owner = true
 visible = false
 
-[node name="background" type="ColorRect" parent="arena/holdoutEndStats/performance/tooltip"]
+[node name="background" type="ColorRect" parent="arena/outro/performance/tooltip"]
 offset_left = 450.0
 offset_top = 425.0
 offset_right = 690.0
 offset_bottom = 675.0
 color = Color(0, 0, 0, 0.9607843)
 
-[node name="divider" type="ColorRect" parent="arena/holdoutEndStats/performance/tooltip"]
+[node name="divider" type="ColorRect" parent="arena/outro/performance/tooltip"]
 offset_left = 450.0
 offset_top = 430.0
 offset_right = 451.0
 offset_bottom = 670.0
 color = Color(1, 1, 1, 0.35686275)
 
-[node name="tooltipText" type="RichTextLabel" parent="arena/holdoutEndStats/performance/tooltip"]
+[node name="tooltipText" type="RichTextLabel" parent="arena/outro/performance/tooltip"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -2408,26 +2407,26 @@ bbcode_enabled = true
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="indicator" type="ColorRect" parent="arena/holdoutEndStats/performance/tooltip"]
+[node name="indicator" type="ColorRect" parent="arena/outro/performance/tooltip"]
 offset_left = 435.0
 offset_top = 489.5
 offset_right = 450.0
 offset_bottom = 490.5
 color = Color(1, 1, 1, 0.35686275)
 
-[node name="total" type="Node2D" parent="arena/holdoutEndStats"]
+[node name="total" type="Node2D" parent="arena/outro"]
 
-[node name="totalStatContainer" type="Node2D" parent="arena/holdoutEndStats/total"]
+[node name="totalStatContainer" type="Node2D" parent="arena/outro/total"]
 modulate = Color(1, 1, 1, 0)
 
-[node name="line" type="ColorRect" parent="arena/holdoutEndStats/total/totalStatContainer"]
+[node name="line" type="ColorRect" parent="arena/outro/total/totalStatContainer"]
 offset_left = 212.0
 offset_top = 712.0
 offset_right = 662.0
 offset_bottom = 713.0
 color = Color(1, 1, 1, 0.35686275)
 
-[node name="totalText" type="RichTextLabel" parent="arena/holdoutEndStats/total/totalStatContainer"]
+[node name="totalText" type="RichTextLabel" parent="arena/outro/total/totalStatContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -2445,7 +2444,7 @@ theme_override_font_sizes/normal_font_size = 20
 text = "Total"
 vertical_alignment = 1
 
-[node name="totalValue" type="RichTextLabel" parent="arena/holdoutEndStats/total/totalStatContainer"]
+[node name="totalValue" type="RichTextLabel" parent="arena/outro/total/totalStatContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -2464,36 +2463,36 @@ text = "0"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="rationsIcon" type="Sprite2D" parent="arena/holdoutEndStats/total/totalStatContainer"]
+[node name="rationsIcon" type="Sprite2D" parent="arena/outro/total/totalStatContainer"]
 position = Vector2(656, 748)
 scale = Vector2(0.072, 0.072)
 texture = ExtResource("42_tbatq")
 
-[node name="mvpIcon" type="Sprite2D" parent="arena/holdoutEndStats/total"]
+[node name="mvpIcon" type="Sprite2D" parent="arena/outro/total"]
 self_modulate = Color(1, 1, 1, 0)
 position = Vector2(536, 794)
 scale = Vector2(0.086, 0.086)
 texture = ExtResource("43_6y8bd")
 offset = Vector2(729.5, 729.5)
 
-[node name="rankIcon" type="Sprite2D" parent="arena/holdoutEndStats/total"]
+[node name="rankIcon" type="Sprite2D" parent="arena/outro/total"]
 self_modulate = Color(1, 1, 1, 0)
 position = Vector2(536, 794)
 scale = Vector2(0.086, 0.086)
 texture = ExtResource("44_l3q7n")
 offset = Vector2(729.5, 729.5)
 
-[node name="accoladeIcon" type="Sprite2D" parent="arena/holdoutEndStats/total"]
+[node name="accoladeIcon" type="Sprite2D" parent="arena/outro/total"]
 self_modulate = Color(1, 1, 1, 0)
 position = Vector2(536, 794)
 scale = Vector2(0.086, 0.086)
 texture = ExtResource("44_l3q7n")
 offset = Vector2(729.5, 729.5)
 
-[node name="badgeTextContainer" type="Node2D" parent="arena/holdoutEndStats/total"]
+[node name="badgeTextContainer" type="Node2D" parent="arena/outro/total"]
 modulate = Color(1, 1, 1, 0)
 
-[node name="mvpText" type="RichTextLabel" parent="arena/holdoutEndStats/total/badgeTextContainer"]
+[node name="mvpText" type="RichTextLabel" parent="arena/outro/total/badgeTextContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -2512,7 +2511,7 @@ text = "Most Valuable"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="rankText" type="RichTextLabel" parent="arena/holdoutEndStats/total/badgeTextContainer"]
+[node name="rankText" type="RichTextLabel" parent="arena/outro/total/badgeTextContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -2532,7 +2531,7 @@ text = "99 [img width=10]res://core/menus/ui/RationsIconSlim.png[/img] to Rank S
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="accoladeText" type="RichTextLabel" parent="arena/holdoutEndStats/total/badgeTextContainer"]
+[node name="accoladeText" type="RichTextLabel" parent="arena/outro/total/badgeTextContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -2550,25 +2549,25 @@ text = "Analysis Paralysis"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="badgeOutlineMvp" type="Sprite2D" parent="arena/holdoutEndStats/total"]
+[node name="badgeOutlineMvp" type="Sprite2D" parent="arena/outro/total"]
 self_modulate = Color(1, 1, 1, 0)
 position = Vector2(598.5, 857)
 scale = Vector2(0.086, 0.086)
 texture = ExtResource("45_rbxor")
 
-[node name="badgeOutlineRank" type="Sprite2D" parent="arena/holdoutEndStats/total"]
+[node name="badgeOutlineRank" type="Sprite2D" parent="arena/outro/total"]
 self_modulate = Color(1, 1, 1, 0)
 position = Vector2(598.5, 857)
 scale = Vector2(0.086, 0.086)
 texture = ExtResource("45_rbxor")
 
-[node name="badgeOutlineAccolade" type="Sprite2D" parent="arena/holdoutEndStats/total"]
+[node name="badgeOutlineAccolade" type="Sprite2D" parent="arena/outro/total"]
 self_modulate = Color(1, 1, 1, 0)
 position = Vector2(598.5, 857)
 scale = Vector2(0.086, 0.086)
 texture = ExtResource("45_rbxor")
 
-[node name="ContinueButton" type="Button" parent="arena/holdoutEndStats"]
+[node name="ContinueButton" type="Button" parent="arena/outro"]
 unique_name_in_owner = true
 self_modulate = Color(1, 1, 1, 0)
 z_index = 201
@@ -2589,7 +2588,7 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_jkv2x")
 text = "CONTINUE"
 alignment = 0
 
-[node name="ReplayButton" type="Button" parent="arena/holdoutEndStats"]
+[node name="ReplayButton" type="Button" parent="arena/outro"]
 self_modulate = Color(1, 1, 1, 0)
 z_index = 201
 offset_left = 770.0
@@ -2610,7 +2609,7 @@ text = "RESTART ENCOUNTER"
 alignment = 0
 script = ExtResource("46_030e1")
 
-[node name="HoldProgress" type="TextureProgressBar" parent="arena/holdoutEndStats/ReplayButton"]
+[node name="HoldProgress" type="TextureProgressBar" parent="arena/outro/ReplayButton"]
 visible = false
 layout_mode = 0
 offset_left = 264.0
@@ -2623,7 +2622,7 @@ step = 0.01
 fill_mode = 4
 texture_progress = ExtResource("47_1qa5t")
 
-[node name="NewRunButton" type="Button" parent="arena/holdoutEndStats"]
+[node name="NewRunButton" type="Button" parent="arena/outro"]
 self_modulate = Color(1, 1, 1, 0)
 z_index = 201
 offset_left = 770.0
@@ -2644,7 +2643,7 @@ text = "NEW RUN"
 alignment = 0
 script = ExtResource("46_030e1")
 
-[node name="HoldProgress" type="TextureProgressBar" parent="arena/holdoutEndStats/NewRunButton"]
+[node name="HoldProgress" type="TextureProgressBar" parent="arena/outro/NewRunButton"]
 visible = false
 layout_mode = 0
 offset_left = 130.0
@@ -2657,7 +2656,7 @@ step = 0.01
 fill_mode = 4
 texture_progress = ExtResource("47_1qa5t")
 
-[node name="MainMenuButton" type="Button" parent="arena/holdoutEndStats"]
+[node name="MainMenuButton" type="Button" parent="arena/outro"]
 self_modulate = Color(1, 1, 1, 0)
 z_index = 201
 offset_left = 770.0
@@ -2678,7 +2677,7 @@ text = "MAIN MENU"
 alignment = 0
 script = ExtResource("46_030e1")
 
-[node name="HoldProgress" type="TextureProgressBar" parent="arena/holdoutEndStats/MainMenuButton"]
+[node name="HoldProgress" type="TextureProgressBar" parent="arena/outro/MainMenuButton"]
 visible = false
 layout_mode = 0
 offset_left = 154.0
@@ -2691,7 +2690,7 @@ step = 0.01
 fill_mode = 4
 texture_progress = ExtResource("47_1qa5t")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="arena/holdoutEndStats"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="arena/outro"]
 unique_name_in_owner = true
 libraries = {
 &"": SubResource("AnimationLibrary_vc5cj")
@@ -3134,24 +3133,24 @@ text = "END TURN"
 [connection signal="input_event" from="supportDeck/Area2D" to="supportDeck" method="_on_mouse_pressed"]
 [connection signal="mouse_entered" from="supportDeck/Area2D" to="supportDeck" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="supportDeck/Area2D" to="supportDeck" method="_on_mouse_exited"]
-[connection signal="mouse_entered" from="arena/holdoutEndStats/performance/performanceStatContainer/dominanceText" to="arena/holdoutEndStats" method="_on_dominance_text_mouse_entered"]
-[connection signal="mouse_exited" from="arena/holdoutEndStats/performance/performanceStatContainer/dominanceText" to="arena/holdoutEndStats" method="_on_dominance_text_mouse_exited"]
-[connection signal="mouse_entered" from="arena/holdoutEndStats/performance/performanceStatContainer/streakText" to="arena/holdoutEndStats" method="_on_streak_text_mouse_entered"]
-[connection signal="mouse_exited" from="arena/holdoutEndStats/performance/performanceStatContainer/streakText" to="arena/holdoutEndStats" method="_on_streak_text_mouse_exited"]
-[connection signal="mouse_entered" from="arena/holdoutEndStats/performance/performanceStatContainer/efficiencyText" to="arena/holdoutEndStats" method="_on_efficiency_text_mouse_entered"]
-[connection signal="mouse_exited" from="arena/holdoutEndStats/performance/performanceStatContainer/efficiencyText" to="arena/holdoutEndStats" method="_on_efficiency_text_mouse_exited"]
-[connection signal="mouse_entered" from="arena/holdoutEndStats/performance/performanceStatContainer/underdogMasteryText" to="arena/holdoutEndStats" method="_on_underdog_mastery_text_mouse_entered"]
-[connection signal="mouse_exited" from="arena/holdoutEndStats/performance/performanceStatContainer/underdogMasteryText" to="arena/holdoutEndStats" method="_on_underdog_mastery_text_mouse_exited"]
-[connection signal="pressed" from="arena/holdoutEndStats/ContinueButton" to="arena" method="_on_continue_button_pressed"]
-[connection signal="hold_complete" from="arena/holdoutEndStats/ReplayButton" to="arena" method="_on_replay_button_hold_complete"]
-[connection signal="mouse_entered" from="arena/holdoutEndStats/ReplayButton" to="arena" method="_on_replay_button_mouse_entered"]
-[connection signal="mouse_exited" from="arena/holdoutEndStats/ReplayButton" to="arena" method="_on_replay_button_mouse_exited"]
-[connection signal="hold_complete" from="arena/holdoutEndStats/NewRunButton" to="arena" method="_on_new_run_button_hold_complete"]
-[connection signal="mouse_entered" from="arena/holdoutEndStats/NewRunButton" to="arena" method="_on_new_run_button_mouse_entered"]
-[connection signal="mouse_exited" from="arena/holdoutEndStats/NewRunButton" to="arena" method="_on_new_run_button_mouse_exited"]
-[connection signal="hold_complete" from="arena/holdoutEndStats/MainMenuButton" to="arena" method="_on_main_menu_button_hold_complete"]
-[connection signal="mouse_entered" from="arena/holdoutEndStats/MainMenuButton" to="arena" method="_on_main_menu_button_mouse_entered"]
-[connection signal="mouse_exited" from="arena/holdoutEndStats/MainMenuButton" to="arena" method="_on_main_menu_button_mouse_exited"]
+[connection signal="mouse_entered" from="arena/outro/performance/performanceStatContainer/dominanceText" to="arena/outro" method="_on_dominance_text_mouse_entered"]
+[connection signal="mouse_exited" from="arena/outro/performance/performanceStatContainer/dominanceText" to="arena/outro" method="_on_dominance_text_mouse_exited"]
+[connection signal="mouse_entered" from="arena/outro/performance/performanceStatContainer/streakText" to="arena/outro" method="_on_streak_text_mouse_entered"]
+[connection signal="mouse_exited" from="arena/outro/performance/performanceStatContainer/streakText" to="arena/outro" method="_on_streak_text_mouse_exited"]
+[connection signal="mouse_entered" from="arena/outro/performance/performanceStatContainer/efficiencyText" to="arena/outro" method="_on_efficiency_text_mouse_entered"]
+[connection signal="mouse_exited" from="arena/outro/performance/performanceStatContainer/efficiencyText" to="arena/outro" method="_on_efficiency_text_mouse_exited"]
+[connection signal="mouse_entered" from="arena/outro/performance/performanceStatContainer/underdogMasteryText" to="arena/outro" method="_on_underdog_mastery_text_mouse_entered"]
+[connection signal="mouse_exited" from="arena/outro/performance/performanceStatContainer/underdogMasteryText" to="arena/outro" method="_on_underdog_mastery_text_mouse_exited"]
+[connection signal="pressed" from="arena/outro/ContinueButton" to="arena/outro" method="_on_continue_button_pressed"]
+[connection signal="hold_complete" from="arena/outro/ReplayButton" to="arena/outro" method="_on_replay_button_hold_complete"]
+[connection signal="mouse_entered" from="arena/outro/ReplayButton" to="arena/outro" method="_on_replay_button_mouse_entered"]
+[connection signal="mouse_exited" from="arena/outro/ReplayButton" to="arena/outro" method="_on_replay_button_mouse_exited"]
+[connection signal="hold_complete" from="arena/outro/NewRunButton" to="arena/outro" method="_on_new_run_button_hold_complete"]
+[connection signal="mouse_entered" from="arena/outro/NewRunButton" to="arena/outro" method="_on_new_run_button_mouse_entered"]
+[connection signal="mouse_exited" from="arena/outro/NewRunButton" to="arena/outro" method="_on_new_run_button_mouse_exited"]
+[connection signal="hold_complete" from="arena/outro/MainMenuButton" to="arena/outro" method="_on_main_menu_button_hold_complete"]
+[connection signal="mouse_entered" from="arena/outro/MainMenuButton" to="arena/outro" method="_on_main_menu_button_mouse_entered"]
+[connection signal="mouse_exited" from="arena/outro/MainMenuButton" to="arena/outro" method="_on_main_menu_button_mouse_exited"]
 [connection signal="pressed" from="arena/pause/mainButtonContainer/OptionsButton" to="arena/pause" method="_on_options_button_pressed"]
 [connection signal="pressed" from="arena/pause/mainButtonContainer/TutorialButton" to="arena/pause" method="_on_tutorial_button_pressed"]
 [connection signal="hold_complete" from="arena/pause/mainButtonContainer/RestartButton" to="arena/pause" method="_on_restart_button_hold_complete"]
