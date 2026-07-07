@@ -54,13 +54,15 @@ func _setup_hub() -> void:
 	self.show()
 
 func _setup_round_flags() -> void:
-	if HoldoutStats.replayedRound:
-		return
-		
 	if (HoldoutStats.numberOfWins + 1) % 2 == 0: # Even round
 		isModifierRound = true
 
 func show_hub() -> void:
+	if HoldoutStats.replayedRound:
+		GameStats.gameMode = GameStats.Mode.HOLDOUT
+		%battleManager.initialize_game()
+		return
+		
 	_setup_hub()
 	
 	# Temporary delay at start

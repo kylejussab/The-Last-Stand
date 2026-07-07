@@ -102,6 +102,7 @@ func prepare_opponent() -> void:
 func initialize_game() -> void:
 	if HoldoutStats.replayedRound:
 		seed(HoldoutStats.currentBattleSeed)
+		battleEngine.clear_history() # remove the combat history
 	else:
 		randomize() 
 		HoldoutStats.currentBattleSeed = randi()
@@ -340,13 +341,13 @@ func _transition_to_resolution_phase() -> void:
 	battleEngine.set_phase(battleEngine.RoundStage.END_CALCULATION)
 	
 	if battleEngine.has_modifier(Database.Modifier.DESPERATE_MEASURES) and !_is_player_support_matched():
-		playerCharacterCard.get_node("ModifierIndicator").texture = load("res://assets/modifiers/Desperate Measures.png")
+		playerCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Desperate Measures.png")
 		playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
 		battleEngine.log_action("System. Desperate Measures modifier activated. Support mismatched, you took 3 damage.")
 		await _deal_damage(Actor.Type.PLAYER, 3)
 	
 	if battleEngine.has_modifier(Database.Modifier.STACKED_ODDS):
-		opponentCharacterCard.get_node("ModifierIndicator").texture = load("res://assets/modifiers/Stacked Odds.png")
+		opponentCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Stacked Odds.png")
 		opponentCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
 		var opponentName: String = Actor.Avatar.keys()[HoldoutStats.currentOpponent].capitalize()
 		battleEngine.log_action("System. Stacked Odds modifier activated. " + opponentName + " gained +1 value.")
@@ -572,7 +573,7 @@ func _apply_mid_round_perks() -> void:
 	if battleEngine.has_modifier(Database.Modifier.FRIENDLY_FIRE) and (playerCharacterCard.faction == opponentCharacterCard.faction):
 		await get_tree().create_timer(0.3).timeout
 		battleEngine.log_action("System. Friendly Fire modifier activated. Your character's value was halved.")
-		playerCharacterCard.get_node("ModifierIndicator").texture = load("res://assets/modifiers/Friendly Fire.png")
+		playerCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Friendly Fire.png")
 		playerCharacterCard.get_node("AnimationPlayer").queue("modifierIndicator")
 		playerCharacterCard.modify_value(-int(ceil(playerCharacterCard.value / 2.0)))
 		await playerCharacterCard.get_node("AnimationPlayer").animation_finished
@@ -585,7 +586,7 @@ func _apply_mid_round_perks() -> void:
 		await _execute_player_mid_perk()
 	
 	if battleEngine.has_modifier(Database.Modifier.HEAVY_HITTER) && playerCharacterCard.value >= 5:
-		playerCharacterCard.get_node("ModifierIndicator").texture = load("res://assets/modifiers/Heavy Hitter.png")
+		playerCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Heavy Hitter.png")
 		playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
 		battleEngine.log_action("System. Heavy Hitter modifier activated. You took 1 damage.")
 		await _deal_damage(Actor.Type.PLAYER, 1)
@@ -654,7 +655,7 @@ func _calculate_damage() -> void:
 	
 	if report.triggerOverExertion:
 		battleEngine.log_action("System. Over-Exertion modifier activated. You took 1 damage, " + opponentName + " took 2.")
-		playerCharacterCard.get_node("ModifierIndicator").texture = load("res://assets/modifiers/Over Exertion.png")
+		playerCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Over Exertion.png")
 		playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
 		_deal_damage(Actor.Type.PLAYER, 1)
 		await _deal_damage(Actor.Type.OPPONENT, 2)
@@ -672,7 +673,7 @@ func _calculate_damage() -> void:
 	if battleEngine.has_modifier(Database.Modifier.CARD_ROT) and HoldoutStats.roundsPlayed % 3 == 0:
 		battleEngine.log_action("System. Card Rot modifier activated. Cards in your hand lost 1 value.")
 		for card in playerHand:
-			card.get_node("ModifierIndicator").texture = load("res://assets/modifiers/Card Rot.png")
+			card.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Card Rot.png")
 			card.get_node("AnimationPlayer").queue("modifierIndicator")
 			card.modify_value(-1)
 
@@ -939,7 +940,7 @@ func _handle_player_win(damage: int, triggerCalculatedRisk: bool) -> void:
 		await _deal_damage(Actor.Type.OPPONENT, playerCharacterCard.perkValueAtRoundEnd)
 	
 	if triggerCalculatedRisk:
-		playerCharacterCard.get_node("ModifierIndicator").texture = load("res://assets/modifiers/Calculated Risk.png")
+		playerCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Calculated Risk.png")
 		playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
 		battleEngine.log_action("System. Calculated Risk modifier activated. " + opponentName + " took 3 additional damage.")
 		await _deal_damage(Actor.Type.OPPONENT, 3)
@@ -961,7 +962,7 @@ func _handle_opponent_win(damage: int, triggerDeepWounds: bool) -> void:
 		await _deal_damage(Actor.Type.PLAYER, opponentCharacterCard.perkValueAtRoundEnd)
 	
 	if triggerDeepWounds:
-		playerCharacterCard.get_node("ModifierIndicator").texture = load("res://assets/modifiers/Deep Wounds.png")
+		playerCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Deep Wounds.png")
 		playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
 		battleEngine.log_action("System. Deep Wounds modifier activated. You took 2 additional damage.")
 		await _deal_damage(Actor.Type.PLAYER, 2)
@@ -1090,7 +1091,7 @@ func _execute_opponent_mid_perk() -> void:
 		
 		if battleEngine.has_modifier(Database.Modifier.FORSAKEN_HONOR):
 			if opponentCharacterCard.perk.has_method("would_perk_trigger") and opponentCharacterCard.perk.would_perk_trigger(opponentCharacterCard, opponentHand, playerCharacterCard):
-				playerCharacterCard.get_node("ModifierIndicator").texture = load("res://assets/modifiers/Forsaken Honor.png")
+				playerCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Forsaken Honor.png")
 				playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
 				await playerCharacterCard.get_node("AnimationPlayer").animation_finished
 			
@@ -1119,7 +1120,7 @@ func _execute_opponent_char_end_perk() -> void:
 		
 		if battleEngine.has_modifier(Database.Modifier.FORSAKEN_HONOR):
 			if opponentCharacterCard.perk.has_method("would_perk_trigger") and opponentCharacterCard.perk.would_perk_trigger(opponentCharacterCard, opponentSupportCard, playerCharacterCard, playerSupportCard, opponentHand):
-				playerCharacterCard.get_node("ModifierIndicator").texture = load("res://assets/modifiers/Forsaken Honor.png")
+				playerCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Forsaken Honor.png")
 				playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
 				await playerCharacterCard.get_node("AnimationPlayer").animation_finished
 			

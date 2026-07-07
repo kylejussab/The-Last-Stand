@@ -31,7 +31,7 @@ builds/
 exports/
 
 # Ignore full card assets
-cards/art/premium/
+core/cards/art/premium/
 
 # Ignore holdout MVPs
 holdout/outro/icons/mvp/

@@ -208,7 +208,7 @@ var AVATARS = {
 }
 
 const OPPONENT_HEALTH_AMOUNTS: Array[int] = [
-	1, # Round 1
+	13, # Round 1
 	15, # Round 2
 	17, # Round 3
 	19, # Round 4
