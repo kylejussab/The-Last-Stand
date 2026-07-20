@@ -4,7 +4,7 @@ class_name OpponentAICalculator
 func _init():
 	playstyleName = "Calculator"
 
-func play_character_card(opponentHand, _playerHand, _playerPlayedCard = null):
+func play_character_card(opponentHand, _playerHand, _playerPlayedCard = null, _playerHealth = 99, _opponentHealth = 99):
 	var characters: Array = []
 	var supports: Array = []
 	
@@ -53,14 +53,40 @@ func play_character_card(opponentHand, _playerHand, _playerPlayedCard = null):
 		
 	return others[randi() % others.size()]
 
-func choose_support_card(opponentHand, _opponentCharacter, _playerCharacter):
-	var bestSupport = null
-	var highestValue = -1
-	
-	for support in opponentHand:
+func choose_support_card(opponent_hand, opponent_character, _player_character, _opponent_health = 99, _player_health = 99):
+	var eligible = []
+	for support in opponent_hand:
 		if support.type == "Support" and support.canBePlayed:
-			if support.value > highestValue:
-				highestValue = support.value
-				bestSupport = support
-			
+			eligible.append(support)
+	
+	if eligible.is_empty():
+		return null
+	
+	var bestSupport = null
+	var bestTheoreticalValue = -1
+	
+	for support in eligible:
+		var theoreticalValue = _calculate_max_support_value(support, opponent_character)
+		
+		if theoreticalValue > bestTheoreticalValue:
+			bestTheoreticalValue = theoreticalValue
+			bestSupport = support
+	
 	return bestSupport
+
+func _calculate_max_support_value(support, character) -> float:
+	match support.cardKey:
+		"Silencer":
+			var bonus = 2 if character.role.contains("Crafty") or character.role.contains("Defensive") else 0
+			return support.value + bonus
+		
+		"Retreat":
+			# Theoretical ceiling here is "all damage taken this round," which
+			# Calculator can't actually know in advance — treat as a flat, generous assumption
+			return 6
+		
+		"Resilience":
+			return support.value + 3 # assumes it'll matter on a meaningful loss
+		
+		_:
+			return support.value

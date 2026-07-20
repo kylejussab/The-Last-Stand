@@ -17,7 +17,7 @@ func play_character_card(opponentHand: Array, _playerHand: Array, _playerPlayedC
 			
 	return null
 
-func choose_support_card(opponent_hand: Array, _opponent_character: Node2D, _player_character: Node2D):
+func choose_support_card(opponent_hand, _opponent_character, _player_character, _opponent_health = 99, _player_health = 99):
 	if forcedSupportKey != "":
 		for card in opponent_hand:
 			if card.type == "Support" and card.cardKey == forcedSupportKey:

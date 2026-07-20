@@ -2,6 +2,8 @@ extends OpponentAI
 class_name OpponentAIMomentum
 
 const MEMORY_LENGTH = 3
+const RISKY_CARDS = ["Molotov", "TrapMine", "ShotgunShells", "SmokeBomb", "Brick", "Bottle"]
+const DEFENSIVE_CARDS = ["Retreat", "Resilience"]
 
 var recentResults: Array = []
 
@@ -13,7 +15,7 @@ func record_round_result(won: bool) -> void:
 	if recentResults.size() > MEMORY_LENGTH:
 		recentResults.pop_front()
 
-func play_character_card(opponentHand, _playerHand, _playerPlayedCard = null):
+func play_character_card(opponentHand, _playerHand, _playerPlayedCard = null, _playerHealth = 99, _opponentHealth = 99):
 	var characters: Array = []
 	var supports: Array = []
 	
@@ -32,13 +34,10 @@ func play_character_card(opponentHand, _playerHand, _playerPlayedCard = null):
 	var bestCharacter: Node2D
 	
 	if winStreak:
-		# On a roll — play aggressively to press the advantage
 		bestCharacter = _play_aggressive(characters)
 	elif loseStreak:
-		# Struggling — play for the best combo to stabilise
 		bestCharacter = _play_calculated(characters, supports, opponentHand)
 	else:
-		# Neutral — balanced is the safe default
 		bestCharacter = _play_balanced(characters, supports)
 	
 	if randf() < 0.85:
@@ -61,12 +60,15 @@ func _play_balanced(characters: Array, supports: Array) -> Node2D:
 	var maxComboValue = -1
 	
 	for character in characters:
-		var comboValue = character.value
-		var bestSupportValue = 0
+		var bestSupportScore = 0.0
 		for support in supports:
-			if _is_matching_type(support, character) and support.value > bestSupportValue:
-				bestSupportValue = support.value
-		comboValue += bestSupportValue
+			var score = float(support.value)
+			if support.cardKey in RISKY_CARDS:
+				score *= 0.6
+			if score > bestSupportScore:
+				bestSupportScore = score
+		
+		var comboValue = character.value + bestSupportScore
 		if comboValue > maxComboValue:
 			maxComboValue = comboValue
 			bestCharacter = character
@@ -74,8 +76,6 @@ func _play_balanced(characters: Array, supports: Array) -> Node2D:
 	return bestCharacter
 
 func _play_calculated(characters: Array, supports: Array, opponentHand: Array) -> Node2D:
-	# On a lose streak, factor in perks as well as support combos
-	# to find the highest possible theoretical value
 	var bestCharacter = characters[0]
 	var maxPotentialValue = -1
 
@@ -84,7 +84,7 @@ func _play_calculated(characters: Array, supports: Array, opponentHand: Array) -
 		
 		var bestSupportValue = 0
 		for support in supports:
-			if _is_matching_type(support, character) and support.value > bestSupportValue:
+			if support.value > bestSupportValue:
 				bestSupportValue = support.value
 		potentialValue += bestSupportValue
 		
@@ -108,21 +108,110 @@ func _play_calculated(characters: Array, supports: Array, opponentHand: Array) -
 	
 	return bestCharacter
 
-func _is_matching_type(supportCard, characterCard) -> bool:
-	var supportRoles = supportCard.role.split("/")
-	var characterRoles = characterCard.role.split("/")
-	for supportRole in supportRoles:
-		for characterRole in characterRoles:
-			if supportRole != "" and supportRole == characterRole:
-				return true
-	return false
-
-func choose_support_card(opponentHand, _opponentCharacter, _playerCharacter):
-	var bestSupport = null
-	var highestValue = -1
-	for support in opponentHand:
+func choose_support_card(opponent_hand, opponent_character, player_character, opponent_health = 99, _player_health = 99):
+	var currentDiff = opponent_character.value - player_character.value
+	
+	var eligible = []
+	for support in opponent_hand:
 		if support.type == "Support" and support.canBePlayed:
-			if support.value > highestValue:
-				highestValue = support.value
-				bestSupport = support
-	return bestSupport
+			eligible.append(support)
+	
+	if eligible.is_empty():
+		return null
+	
+	var winStreak = recentResults.size() == MEMORY_LENGTH and recentResults.all(func(r): return r == true)
+	var loseStreak = recentResults.size() == MEMORY_LENGTH and recentResults.all(func(r): return r == false)
+	
+	if winStreak:
+		return _choose_support_aggressive(eligible, currentDiff, opponent_health)
+	elif loseStreak:
+		return _choose_support_defensive(eligible, currentDiff, opponent_health)
+	else:
+		return _choose_support_balanced(eligible, currentDiff, opponent_health)
+
+func _choose_support_aggressive(eligible: Array, currentDiff: int, opponent_health: int) -> Node2D:
+	# On a hot streak: chase the biggest number, barely holds back
+	if currentDiff >= 4:
+		return null
+	
+	if currentDiff <= -4 and opponent_health <= 25:
+		for support in eligible:
+			if support.cardKey in DEFENSIVE_CARDS:
+				return support
+	
+	var best = null
+	var bestScore = -INF
+	for support in eligible:
+		if support.cardKey in DEFENSIVE_CARDS:
+			continue
+		var score = float(support.value)
+		if support.cardKey in RISKY_CARDS:
+			score *= 0.6
+		if score > bestScore:
+			bestScore = score
+			best = support
+	
+	if best != null and bestScore >= 1.5 and randf() < 0.85:
+		return best
+	
+	return null
+
+func _choose_support_balanced(eligible: Array, currentDiff: int, opponent_health: int) -> Node2D:
+	# Neutral state: steady, dependable pick, same restraint as Balanced
+	if currentDiff >= 4:
+		return null
+	
+	if currentDiff <= -4 and opponent_health <= 25:
+		for support in eligible:
+			if support.cardKey in DEFENSIVE_CARDS:
+				return support
+	
+	var scored = []
+	for support in eligible:
+		if support.cardKey in DEFENSIVE_CARDS:
+			continue
+		var score = float(support.value)
+		if support.cardKey in RISKY_CARDS:
+			score *= 0.6
+		scored.append({"support": support, "score": score})
+	
+	if scored.is_empty():
+		return null
+	
+	scored.sort_custom(func(a, b): return a.score > b.score)
+	var best = scored[0]
+	
+	if best.score < 1.5:
+		return null
+	
+	return best.support
+
+func _choose_support_defensive(eligible: Array, currentDiff: int, _opponent_health: int) -> Node2D:
+	# On a cold streak: prioritise stabilising, reaches for defensive cards more
+	if currentDiff > 0:
+		return null
+	
+	var candidates = []
+	for support in eligible:
+		if support.cardKey in DEFENSIVE_CARDS:
+			continue
+		var score = float(support.value)
+		if support.cardKey in RISKY_CARDS:
+			score *= 0.6
+		var resultingMargin = currentDiff + score
+		if resultingMargin > 0:
+			candidates.append({"support": support, "margin": resultingMargin})
+	
+	if not candidates.is_empty():
+		candidates.sort_custom(func(a, b): return a.margin < b.margin)
+		return candidates[0].support
+	
+	for support in eligible:
+		if support.cardKey == "Retreat":
+			return support
+	
+	for support in eligible:
+		if support.cardKey == "Resilience":
+			return support
+	
+	return null

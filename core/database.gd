@@ -22,12 +22,12 @@ const CHARACTERS = { # Value, Type, Faction, Class, Card Name Text, Perk Text
 	"Marlene": [5, "Character", "Firefly", "Crafty", "MARLENE", "+1 if opposing card is Survivor or Stealthy"],
 	"FireflySoldier": [2, "Character", "Firefly", "Defensive", "SOLDIER", "+6 if Marlene in hand"],
 	"TommyFirefly": [4, "Character", "Firefly", "Survivor", "TOMMY", "+3 if no Firefly in hand"],
-	"Eugene": [3, "Character", "Firefly", "Crafty/Survivor", "EUGENE", "On Resolution: +1 for each Crafty in hand and +3 if support card is Survivor"],
+	"Eugene": [3, "Character", "Firefly", "Crafty/Survivor", "EUGENE", "On Resolution: +1 for each Crafty in hand and +3 if any Support card is played"],
 	"Riley": [3, "Character", "Firefly", "Stealthy", "RILEY", "+3 if Ellie in hand and +2 if no Stealthy in hand"],
 	
 	# Infected
 	"Bloater": [6, "Character", "Infected", "Aggressive/Defensive", "BLOATER", "?"],
-	"Runner": [2, "Character", "Infected", "Aggressive", "RUNNER", "Gain the value of all runners in hand, and discard them"],
+	"Runner": [2, "Character", "Infected", "Aggressive", "RUNNER", "Gains the value of all runners in hand, and discard them"],
 	"Stalker": [3, "Character", "Infected", "Stealthy", "STALKER", "+2 for each Infected in hand"],
 	"Clicker": [5, "Character", "Infected", "Aggressive", "CLICKER", "On Resolution Win: -2 to opponent health"],
 	"Shambler": [4, "Character", "Infected", "Defensive", "SHAMBLER", "On Resolution Loss (2 or more): -4 to opponent health"],
@@ -39,7 +39,7 @@ const CHARACTERS = { # Value, Type, Faction, Class, Card Name Text, Perk Text
 	"Ellie": [5, "Character", "Jackson", "Crafty/Stealthy", "ELLIE", "-2 if opposing card is Stealthy and +1 for each non-matching type in hand"],
 	"Dina": [3, "Character", "Jackson", "Stealthy", "DINA", "+4 if opposing card is Defensive and +2 if Jessie or Ellie in hand"],
 	"Tommy": [5, "Character", "Jackson", "Aggressive", "TOMMY", "+1 for each Jackson in hand"],
-	"Bill": [4, "Character", "Jackson", "Crafty", "BILL", "+4 if played support card is Trap Mine"],
+	"Bill": [4, "Character", "Jackson", "Crafty", "BILL", "+4 if the played support card has a backfire chance"],
 	"Jessie": [5, "Character", "Jackson", "Defensive", "JESSIE", "-1 to opponent, if opposing card is Aggressive"],
 	"Shimmer": [2, "Character", "Jackson", "Defensive", "SHIMMER", "+3 if Ellie or Dina in hand"],
 	
@@ -61,26 +61,108 @@ const CHARACTERS = { # Value, Type, Faction, Class, Card Name Text, Perk Text
 	"WLFSoldierHumanity": [3, "Character", "WLF", "Survivor", "SOLDIER", "-2 to opponent if opposing card is Firefly or Seraphite"],
 	"IsaacHumanity": [6, "Character", "WLF", "Aggressive/Defensive", "ISAAC", "+2 if opposing card is Firefly"],
 	"TommyFireflyHumanity": [4, "Character", "Firefly", "Survivor", "TOMMY", "+1 for each Firefly in hand"],
-	"RileyHumanity": [3, "Character", "Firefly", "Stealthy", "RILEY", "+4 if played support card is Bottle or Brick"],
+	"RileyHumanity": [3, "Character", "Firefly", "Stealthy", "RILEY", "+3 if the played support card has a backfire chance"],
 }
 
-const SUPPORTS = { # Value, Type, Class, Positive/Negative, Card Name Text, Perk Text
-	"Molotov": [5, "Support", "Aggressive", "Negative", "MOLOTOV"],
-	"ReinforcedMelee": [2, "Support", "Aggressive/Survivor", "Positive", "REINFORCED MELEE"],
-	"Rage": [6, "Support", "Aggressive", "Positive", "RAGE"],
-	"Silencer": [4, "Support", "Defensive/Stealthy", "Positive", "SILENCER"],
-	"SmokeBomb": [4, "Support", "Crafty/Stealthy", "Negative", "SMOKE BOMB"],
-	"TrapMine": [5, "Support", "Crafty", "Negative", "TRAP MINE"],
-	"ScavengedParts": [2, "Support", "Survivor", "Positive", "SCAVENGED PARTS"],
-	"MedKit": [2, "Support", "Crafty/Defensive", "Positive", "MEDKIT"],
-	"Resilience": [5, "Support", "Survivor", "Positive", "RESILIENCE"],
-	"Retreat": [4, "Support", "Defensive", "Positive", "RETREAT"],
-	"Bottle": [2, "Support", "Stealthy", "Negative", "BOTTLE"],
-	"Brick": [2, "Support", "Stealthy", "Negative", "BRICK"],
-	"TrainingManual": [2, "Support", "Crafty", "Positive", "TRAINING MANUAL"],
-	"ShotgunShells": [3, "Support", "Survivor", "Positive", "SHOTGUN SHELLS"],
-	"Supplements": [2, "Support", "Aggressive/Crafty/Defensive/Stealthy/Survivor", "Positive", "SUPPLEMENTS"],
-	"SupplyCache": [0, "Support", "Aggressive/Crafty/Defensive/Stealthy/Survivor", "Positive", "SUPPLY CACHE", "On Resolution: +2 to random card in hand"],
+const SUPPORTS = {
+	"Molotov": {
+		"Value": 5,
+		"Type": "Support",
+		"Parity": "Negative",
+		"CardText": "MOLOTOV",
+		"PerkText": "Backfire chance: 33% (10% if your character is Aggressive)"
+	},
+	"ReinforcedMelee": {
+		"Value": 2,
+		"Type": "Support",
+		"Parity": "Positive",
+		"CardText": "REINFORCED MELEE",
+		"PerkText": "On Resolution Win: Draw 1 support card"
+	},
+	"Rage": {
+		"Value": 3,
+		"Type": "Support",
+		"Parity": "Positive",
+		"CardText": "RAGE",
+		"PerkText": "While in Hand: Gains an additional +1 after every round you win"
+	},
+	"Silencer": {
+		"Value": 3,
+		"Type": "Support",
+		"Parity": "Positive",
+		"CardText": "SILENCER",
+		"PerkText": "Gains an additional +2 if played with a character card that is Crafty or Defensive"
+	},
+	"SmokeBomb": {
+		"Value": 4,
+		"Type": "Support",
+		"Parity": "Negative",
+		"CardText": "SMOKE BOMB",
+		"PerkText": "Nullifies opponent's perk. Backfire chance: 33%"
+	},
+	"TrapMine": {
+		"Value": 6,
+		"Type": "Support",
+		"Parity": "Negative",
+		"CardText": "TRAP MINE",
+		"PerkText": "Backfire chance: 50% (0% if your character's value is 8 or higher)"
+	},
+	"ScavengedParts": {
+		"Value": 2,
+		"Type": "Support",
+		"Parity": "Positive",
+		"CardText": "SCAVENGED PARTS",
+		"PerkText": "+2 to a random support card in hand"
+	},
+	"Resilience": {
+		"Value": 1,
+		"Type": "Support",
+		"Parity": "Positive",
+		"CardText": "RESILIENCE",
+		"PerkText": "On Resolution Loss: Halves damage taken (rounded down)"
+	},
+	"Retreat": {
+		"Value": 0,
+		"Type": "Support",
+		"Parity": "Positive",
+		"CardText": "RETREAT",
+		"PerkText": "On Resolution: Negates all damage dealt this round"
+	},
+	"Bottle": {
+		"Value": 2,
+		"Type": "Support",
+		"Parity": "Negative",
+		"CardText": "BOTTLE",
+		"PerkText": "Prevents opponent from playing a support this round. Backfire chance: 20%"
+	},
+	"Brick": {
+		"Value": 2,
+		"Type": "Support",
+		"Parity": "Negative",
+		"CardText": "BRICK",
+		"PerkText": "Prevents opponent from playing a support this round. Backfire chance: 20%"
+	},
+	"ShotgunShells": {
+		"Value": 4,
+		"Type": "Support",
+		"Parity": "Negative",
+		"CardText": "SHOTGUN SHELLS",
+		"PerkText": "-2 to opponent health. Backfire chance: 25%"
+	},
+	"Supplements": {
+		"Value": 0,
+		"Type": "Support",
+		"Parity": "Positive",
+		"CardText": "SUPPLEMENTS",
+		"PerkText": "+3 to a random character card in hand"
+	},
+	"SupplyCache": {
+		"Value": -2,
+		"Type": "Support",
+		"Parity": "Positive",
+		"CardText": "SUPPLY CACHE",
+		"PerkText": "While in Hand: Gains an additional +1 every round"
+	}
 }
 
 const HOLDOUT_PERKS = {
@@ -108,7 +190,6 @@ const HOLDOUT_PERKS = {
 	"Emily": "res://holdout/perks/emilyPerk.gd",
 	"TommyFirefly": "res://holdout/perks/tommyFireflyPerk.gd",
 	"Alice": "res://holdout/perks/alicePerk.gd",
-	"SupplyCache": "res://holdout/perks/supplyCachePerk.gd",
 	"Riley": "res://holdout/perks/rileyPerk.gd",
 	"Eugene": "res://holdout/perks/eugenePerk.gd",
 	"Tommy": "res://holdout/perks/tommyPerk.gd",
@@ -133,6 +214,21 @@ const HOLDOUT_PERKS = {
 	"RileyHumanity": "res://holdout/perks/rileyHumanityPerk.gd",
 	"TommyFireflyHumanity": "res://holdout/perks/tommyFireflyHumanityPerk.gd",
 	"AbbyFirefly": "res://holdout/perks/abbyFireflyPerk.gd",
+	
+	"Bottle": "res://holdout/perks/brickBottlePerk.gd",
+	"Brick": "res://holdout/perks/brickBottlePerk.gd",
+	"Molotov": "res://holdout/perks/molotovPerk.gd",
+	"Rage": "res://holdout/perks/ragePerk.gd",
+	"ReinforcedMelee": "res://holdout/perks/reinforcedMeleePerk.gd",
+	"Resilience": "res://holdout/perks/resiliencePerk.gd",
+	"Retreat": "res://holdout/perks/retreatPerk.gd",
+	"ScavengedParts": "res://holdout/perks/scavengedPartsPerk.gd",
+	"ShotgunShells": "res://holdout/perks/shotgunShellsPerk.gd",
+	"Silencer": "res://holdout/perks/silencerPerk.gd",
+	"SmokeBomb": "res://holdout/perks/smokeBombPerk.gd",
+	"Supplements": "res://holdout/perks/supplementsPerk.gd",
+	"SupplyCache": "res://holdout/perks/supplyCachePerk.gd",
+	"TrapMine": "res://holdout/perks/trapMinePerk.gd",
 }
 
 var AVATARS = {
@@ -235,13 +331,13 @@ func clear_avatar_cache():
 
 const JUNE_OPPONENTS = [Actor.Avatar.ETHAN, Actor.Avatar.UCKMANN, Actor.Avatar.ALLEY, Actor.Avatar.MIRA, Actor.Avatar.RHEA]
 
-enum Modifier { REDUCED_HAND, VOLATILE_HAND, CALCULATED_RISK, DEEP_WOUNDS, HEAVY_HITTER, GUERRILLA_TACTICS, SLOW_BLEED, NO_DEFENSE, LOUD_NOISE, OVER_EXERTION, INFECTED_DECK, HUMANITY_RESTORED, ALWAYS_FIRST, FORSAKEN_HONOR, STACKED_ODDS, LONE_WOLF, SUPPLY_LINE, DESPERATE_MEASURES, CARD_ROT, FRIENDLY_FIRE }
+enum Modifier { REDUCED_HAND, VOLATILE_HAND, CALCULATED_RISK, DEEP_WOUNDS, HEAVY_HITTER, GUERRILLA_TACTICS, BLACK_MARKET, SLOW_BLEED, NO_DEFENSE, LOUD_NOISE, DESPERATE_MEASURES, OVER_EXERTION, INFECTED_DECK, HUMANITY_RESTORED, ALWAYS_FIRST, FORSAKEN_HONOR, STACKED_ODDS, LONE_WOLF, PSYCHO_MANIA, SUPPLY_LINE, CARD_ROT, FRIENDLY_FIRE }
 
 const MODIFIERS = {
 	Modifier.VOLATILE_HAND: {
 		"id": Modifier.VOLATILE_HAND,
 		"name": "Volatile Hand",
-		"description": "Every 2 rounds, your entire hand is discarded and redrawn.",
+		"description": "Every 2 rounds, all your character cards are discarded and redrawn.",
 		"icon": "res://holdout/modifiers/icons/Volatile Hand.png",
 		"tier": 1,
 		"multiplier": 0.05,
@@ -255,15 +351,6 @@ const MODIFIERS = {
 		"tier": 1,
 		"multiplier": 0.05,
 		"duration": 4,
-	},
-	Modifier.DESPERATE_MEASURES: {
-		"id": Modifier.DESPERATE_MEASURES,
-		"name": "Desperate Measures",
-		"description": "Support cards ignore type requirements, but take +3 damage if it’s a mismatch.",
-		"icon": "res://holdout/modifiers/icons/Desperate Measures.png",
-		"tier": 1,
-		"multiplier": 0.1,
-		"duration": 2,
 	},
 	Modifier.DEEP_WOUNDS: {
 		"id": Modifier.DEEP_WOUNDS,
@@ -292,6 +379,15 @@ const MODIFIERS = {
 		"multiplier": 0.10,
 		"duration": 3,
 	},
+	Modifier.BLACK_MARKET: {
+		"id": Modifier.BLACK_MARKET,
+		"name": "Black Market",
+		"description": "You start the game with 4 support cards.",
+		"icon": "res://holdout/modifiers/icons/Black Market.png",
+		"tier": 1,
+		"multiplier": 0.10,
+		"duration": 1,
+	},
 	Modifier.SLOW_BLEED: {
 		"id": Modifier.SLOW_BLEED,
 		"name": "Slow Bleed",
@@ -319,6 +415,15 @@ const MODIFIERS = {
 		"tier": 2,
 		"multiplier": 0.20,
 		"duration": 2,
+	},
+	Modifier.DESPERATE_MEASURES: {
+		"id": Modifier.DESPERATE_MEASURES,
+		"name": "Desperate Measures",
+		"description": "Support cards never backfire. Take +1 damage whenever you play one.",
+		"icon": "res://holdout/modifiers/icons/Desperate Measures.png",
+		"tier": 2,
+		"multiplier": 0.25,
+		"duration": 1,
 	},
 	Modifier.OVER_EXERTION: {
 		"id": Modifier.OVER_EXERTION,
@@ -371,6 +476,15 @@ const MODIFIERS = {
 		"name": "Stacked Odds",
 		"description": "The opponent gains +1 to their card value at the end of every round.",
 		"icon": "res://holdout/modifiers/icons/Stacked Odds.png",
+		"tier": 3,
+		"multiplier": 0.35,
+		"duration": 2,
+	},
+	Modifier.PSYCHO_MANIA: {
+		"id": Modifier.PSYCHO_MANIA,
+		"name": "Psycho-mania",
+		"description": "Whenever a backfire triggers, a random card in your hand gains +2 value.",
+		"icon": "res://holdout/modifiers/icons/Psycho Mania.png",
 		"tier": 3,
 		"multiplier": 0.35,
 		"duration": 2,
@@ -453,11 +567,9 @@ const standardSupportDeck = [
 	"Supplements", "Supplements",
 	"SupplyCache", "SupplyCache",
 	
-	"MedKit", "MedKit",
 	"SmokeBomb", "SmokeBomb",
 	"Silencer", "Silencer",
 	"ReinforcedMelee", "ReinforcedMelee",
-	"TrainingManual",
 	"Retreat",
 	"Resilience",
 	"ShotgunShells",
@@ -512,7 +624,6 @@ const infectedHeavySupportDeck = [
 	"Resilience",
 	"ShotgunShells",
 	
-	"MedKit", "MedKit",
 	"SmokeBomb", "SmokeBomb",
 	"Silencer", 
 	"TrapMine",
@@ -548,8 +659,7 @@ const humanityRestoredSupportDeck = [
 	"SmokeBomb", "Silencer",
 	
 	"TrapMine", "TrapMine", 
-	"MedKit", "MedKit", 
-	"TrainingManual", "Retreat",
+	"Retreat",
 	
 	"ReinforcedMelee", "ReinforcedMelee", 
 	"Molotov", "Rage",

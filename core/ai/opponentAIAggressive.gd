@@ -1,48 +1,76 @@
 extends OpponentAI
 class_name OpponentAIAggressive
 
+const RISKY_CARDS = ["Molotov", "TrapMine", "ShotgunShells", "SmokeBomb", "Brick", "Bottle"]
+const DEFENSIVE_CARDS = ["Retreat", "Resilience"]
+
 func _init():
 	playstyleName = "Aggressive"
 
 func play_character_card(opponentHand, _playerHand, _playerPlayedCard = null, _playerHealth = 99, _opponentHealth = 99):
 	var characters: Array = []
 	
-	# Collect character cards only
 	for card in opponentHand:
 		if card.type == "Character":
 			characters.append(card)
 	
-	# Find highest-value card
 	var highest = characters[0]
 	for card in characters:
 		if card.value > highest.value:
 			highest = card
 	
-	# 70% chance: choose highest
 	if randf() < 0.7:
 		return highest
 	
-	# 30% chance: choose a random non-highest card
 	var others = characters.filter(func(c): return c != highest)
 	
 	if others.size() == 0:
-		# Only one character, must pick it
 		return highest
 	
 	return others[randi() % others.size()]
 
-func choose_support_card(opponent_hand, opponent_character, player_character):
-	var best = null
-	var opponent_total = opponent_character.value
+func choose_support_card(opponent_hand, opponent_character, player_character, opponent_health = 99, _player_health = 99):
+	var currentDiff = opponent_character.value - player_character.value
 	
+	var eligible = []
 	for support in opponent_hand:
-		if support.type == "Support" && support.canBePlayed:
-			var new_total = opponent_total + support.value
-			
-			if new_total > player_character.value:
-				return support   # win immediately
-			
-			if new_total == player_character.value and best == null:
-				best = support   # tie fallback
+		if support.type == "Support" and support.canBePlayed:
+			eligible.append(support)
 	
-	return best
+	if eligible.is_empty():
+		return null
+	
+	# This is a flat gut-instinct threshold, not tied to anyone's health.
+	if currentDiff >= 4:
+		return null
+	
+	# Badly behind on the matchup, and running low on health? Consider a panic button.
+	if currentDiff <= -4 and opponent_health <= 25:
+		for support in eligible:
+			if support.cardKey in DEFENSIVE_CARDS:
+				return support
+	
+	var scored = []
+	for support in eligible:
+		if support.cardKey in DEFENSIVE_CARDS:
+			continue
+		
+		var score = float(support.value)
+		if support.cardKey in RISKY_CARDS:
+			score *= 0.6
+		
+		scored.append({"support": support, "score": score})
+	
+	if scored.is_empty():
+		return null
+	
+	scored.sort_custom(func(a, b): return a.score > b.score)
+	var best = scored[0]
+	
+	if best.score < 1.5:
+		return null
+	
+	if randf() < 0.7:
+		return best.support
+	
+	return null

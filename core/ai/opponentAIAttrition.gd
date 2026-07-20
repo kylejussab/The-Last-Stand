@@ -3,6 +3,8 @@ class_name OpponentAIAttrition
 
 const MEMORY_LENGTH = 4
 const DEFAULT_TARGET = 4
+const RISKY_CARDS = ["Molotov", "TrapMine", "ShotgunShells", "SmokeBomb", "Brick", "Bottle"]
+const DEFENSIVE_CARDS = ["Retreat", "Resilience"]
 
 var playerValueHistory: Array = []
 
@@ -14,7 +16,7 @@ func record_player_play(card) -> void:
 	if playerValueHistory.size() > MEMORY_LENGTH:
 		playerValueHistory.pop_front()
 
-func play_character_card(opponentHand, _playerHand, playerPlayedCard = null):
+func play_character_card(opponentHand, _playerHand, playerPlayedCard = null, _playerHealth = 99, _opponentHealth = 99):
 	var characters: Array = []
 	var supports: Array = []
 	
@@ -34,7 +36,6 @@ func play_character_card(opponentHand, _playerHand, playerPlayedCard = null):
 		targetValue = _estimate_player_value()
 	
 	var bestCharacter = _find_minimum_winning_card(characters, supports, targetValue)
-
 	if randf() < 0.85:
 		return bestCharacter
 	
@@ -56,49 +57,67 @@ func _find_minimum_winning_card(characters: Array, supports: Array, targetValue:
 	var bestMargin = INF
 	var bestFallbackCharacter = characters[0]
 	var bestFallbackValue = -1
-
+	
 	for character in characters:
-		# Find the best support combo available for this character
 		var bestComboValue = character.value
 		for support in supports:
-			if _is_matching_type(support, character):
-				var comboValue = character.value + support.value
-				if comboValue > bestComboValue:
-					bestComboValue = comboValue
+			var comboValue = character.value + support.value
+			if comboValue > bestComboValue:
+				bestComboValue = comboValue
 		
 		var margin = bestComboValue - targetValue
 		
 		if margin > 0 and margin < bestMargin:
-			# Wins by less than current best — this is preferred
 			bestMargin = margin
 			bestCharacter = character
 		elif margin <= 0 and bestComboValue > bestFallbackValue:
-			# Can't win — track highest value as fallback
 			bestFallbackValue = bestComboValue
 			bestFallbackCharacter = character
 	
-	# If nothing beats the target, play the highest available rather than
-	# wasting a minimum-margin card on a losing round
 	if bestMargin == INF:
 		return bestFallbackCharacter
 	
 	return bestCharacter
 
-func _is_matching_type(supportCard, characterCard) -> bool:
-	var supportRoles = supportCard.role.split("/")
-	var characterRoles = characterCard.role.split("/")
-	for supportRole in supportRoles:
-		for characterRole in characterRoles:
-			if supportRole != "" and supportRole == characterRole:
-				return true
-	return false
-
-func choose_support_card(opponentHand, _opponentCharacter, _playerCharacter):
-	var bestSupport = null
-	var highestValue = -1
-	for support in opponentHand:
+func choose_support_card(opponent_hand, opponent_character, player_character, _opponent_health = 99, _player_health = 99):
+	var currentDiff = opponent_character.value - player_character.value
+	
+	var eligible = []
+	for support in opponent_hand:
 		if support.type == "Support" and support.canBePlayed:
-			if support.value > highestValue:
-				highestValue = support.value
-				bestSupport = support
-	return bestSupport
+			eligible.append(support)
+	
+	if eligible.is_empty():
+		return null
+	
+	if currentDiff > 0:
+		return null
+	
+	# Losing or tied: look for the smallest support that flips the round into a win, rather than the biggest one available.
+	var candidates = []
+	for support in eligible:
+		if support.cardKey in DEFENSIVE_CARDS:
+			continue
+		
+		var score = float(support.value)
+		if support.cardKey in RISKY_CARDS:
+			score *= 0.6 # crude guesswork discount
+		
+		var resultingMargin = currentDiff + score
+		if resultingMargin > 0:
+			candidates.append({"support": support, "margin": resultingMargin})
+	
+	if not candidates.is_empty():
+		candidates.sort_custom(func(a, b): return a.margin < b.margin)
+		return candidates[0].support
+	
+	# Can't flip it to a win: Attrition cares a lot about not taking damage
+	for support in eligible:
+		if support.cardKey == "Retreat":
+			return support
+	
+	for support in eligible:
+		if support.cardKey == "Resilience":
+			return support
+	
+	return null

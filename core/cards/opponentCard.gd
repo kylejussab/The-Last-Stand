@@ -37,6 +37,8 @@ var perk
 var perkValueAtRoundEnd
 var canBePlayed: bool
 var perkDescription: String
+var perkValueAppliedMidRound: int = 0
+var parity: String
 
 func _ready() -> void:
 	if get_parent().has_method("connect_card_signals"):
@@ -216,6 +218,9 @@ func _on_area_2d_mouse_exited() -> void:
 	emit_signal("hoverExited", self)
 
 func modify_value(amount: int) -> void:
+	if amount == 0:
+		return
+	
 	value += amount
 	
 	if not get_node("AnimationPlayer").animation_started.is_connected(_when_animation_starts):

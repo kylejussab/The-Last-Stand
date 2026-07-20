@@ -76,7 +76,7 @@ func move_card_back_to_deck(card):
 	await tween.finished
 
 # Privates
-func _create_card_instance(cardKey: String, scenePath: String, isPlayer: bool = false) -> Node2D:
+func _create_card_instance(cardKey: String, scenePath: String, _isPlayer: bool = false) -> Node2D:
 	var cardScene = load(scenePath)
 	var newCard = cardScene.instantiate()
 	
@@ -86,29 +86,12 @@ func _create_card_instance(cardKey: String, scenePath: String, isPlayer: bool = 
 	newCard.canBePlayed = false
 
 	var data = cardDatabaseReference.SUPPORTS[cardKey]
-	newCard.value = data[0]
-	newCard.type = data[1]
-	newCard.role = data[2]
-	newCard.nameText = data[4]
+	newCard.value = data.Value
+	newCard.type = data.Type
+	newCard.parity = data.Parity
+	newCard.nameText = data.CardText
+	newCard.perkDescription = data.PerkText
 	newCard.faction = "Support"
-	
-	# Pass raw perk text if available
-	if data.size() > 5:
-		newCard.perkDescription = data[5]
-	
-	if %battleManager.battleEngine.has_modifier(Database.Modifier.LOUD_NOISE) and "Stealthy" in newCard.role and isPlayer:
-		var roles = Array(newCard.role.split("/"))
-		
-		if roles.size() != 5:
-			roles.erase("Stealthy")
-			
-			if not roles.has("Aggressive"):
-				roles.append("Aggressive")
-			
-			roles.sort()
-			newCard.role = "/".join(roles)
-	if %battleManager.battleEngine.has_modifier(Database.Modifier.LOUD_NOISE) and "Aggressive" in newCard.role and isPlayer and newCard.role.split("/").size() != 5:
-		newCard.value -= 1
 	
 	newCard.get_node("value").text = str(newCard.value)
 	newCard.get_node("name").text = newCard.nameText
@@ -120,22 +103,9 @@ func _create_card_instance(cardKey: String, scenePath: String, isPlayer: bool = 
 	var iconsNode = newCard.get_node("icons")
 	iconsNode.get_node("faction").visible = false
 	
-	var perkList = newCard.role.split("/") if newCard.role else []
-	var activePerks = []
-	for perk in perkList:
-		if perk != "": activePerks.append(perk)
-	
+	# Hide all the type icons
 	var perkSprites = [iconsNode.get_node("perk1"), iconsNode.get_node("perk2")]
-	
-	if activePerks.is_empty() or activePerks.size() == 5:
-		for sprite in perkSprites: sprite.visible = false
-	else:
-		for i in range(perkSprites.size()):
-			if i < activePerks.size():
-				perkSprites[i].visible = true
-				perkSprites[i].texture = load("res://core/cards/icons/" + activePerks[i] + ".png")
-			else:
-				perkSprites[i].visible = false
+	for sprite in perkSprites: sprite.visible = false
 	
 	newCard.update_visuals()
 	

@@ -11,9 +11,11 @@ var whoStartedRound: int
 var roundStage: RoundStage
 var isRoundActive: bool = false
 var opponentMaxCards: int = 4
+var opponentStartingSupportCards: int = 2
 var previousRoundFaction: String = ""
 var previousRoundRoles: Array = []
 enum Winner { TIE, PLAYER, OPPONENT }
+var lastRoundWinner: int = Winner.TIE
 var isPlayerThinking: bool = false
 var currentThinkTime: float = 0.0
 
@@ -40,17 +42,23 @@ func end_round_cleanup(faction: String, roles: String) -> void:
 # --- GAME RULES ---
 var maxCharacterCards: int = 4
 var maxSupportCards: int = 4
+var startingSupportCards: int = 2
 var minCardsForReshuffle: int = 5
+var roundsTillSupportDraw: int = 3
 
 func _recalculate_limits() -> void:
 	maxCharacterCards = 4
+	startingSupportCards = 2
 	maxSupportCards = 4
 	minCardsForReshuffle = 5
+	startingSupportCards = 2
+	roundsTillSupportDraw = 3
 	
 	var hasReducedHand = has_modifier(Database.Modifier.REDUCED_HAND)
 	var hasVolatileHand = has_modifier(Database.Modifier.VOLATILE_HAND)
 	var hasLoneWolf = has_modifier(Database.Modifier.LONE_WOLF)
 	var hasSupplyLine = has_modifier(Database.Modifier.SUPPLY_LINE)
+	var hasBlackMarket = has_modifier(Database.Modifier.BLACK_MARKET)
 	
 	if hasVolatileHand:
 		minCardsForReshuffle = 6
@@ -63,11 +71,28 @@ func _recalculate_limits() -> void:
 		if hasVolatileHand: minCardsForReshuffle = 10
 		maxCharacterCards = 6 if hasReducedHand else 8
 		maxSupportCards = 0
-		
+	
+	if hasBlackMarket:
+		startingSupportCards = 4
+	
 	if hasSupplyLine:
 		if hasVolatileHand: minCardsForReshuffle = 10
 		maxSupportCards = 6 if hasReducedHand else 8
 		maxCharacterCards = 0
+		startingSupportCards = 6
+		roundsTillSupportDraw = 2
+
+# --- SUPPORT BLOCKING ---
+var _blockedSupportSide: int = Actor.Type.NONE
+
+func block_support(who: int) -> void:
+	_blockedSupportSide = who
+
+func is_support_blocked(who: int) -> bool:
+	return _blockedSupportSide == who
+
+func clear_support_block() -> void:
+	_blockedSupportSide = Actor.Type.NONE
 
 # --- MODIFIER SYSTEM ---
 var activeModifierIds: Array[int] = []
@@ -87,16 +112,6 @@ func remove_modifier(modifierId: int) -> void:
 	modifier_toggled.emit(modifierId, false)
 
 # --- VALIDATION MATH ---
-func check_support_match(characterRoles: String, supportRoles: String) -> bool:
-	var cRoles = characterRoles.split("/")
-	var sRoles = supportRoles.split("/")
-	
-	for role in cRoles:
-		if role in sRoles:
-			return true
-			
-	return false
-
 func check_guerrilla_restriction(cardFaction: String, cardRoles: String) -> bool:
 	if not has_modifier(Database.Modifier.GUERRILLA_TACTICS) or previousRoundFaction == "":
 		return false
@@ -170,6 +185,8 @@ func clear_history() -> void:
 
 # --- STATE MACHINE CONTROLS ---
 func start_new_round(isAlwaysFirst: bool, roundsPlayed: int) -> void:
+	clear_support_block()
+	
 	if roundsPlayed % 2 == 0 and not isAlwaysFirst:
 		whoStartedRound = Actor.Type.OPPONENT
 		set_phase(RoundStage.OPPONENT_CHARACTER)

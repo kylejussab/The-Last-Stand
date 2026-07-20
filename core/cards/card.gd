@@ -37,6 +37,8 @@ var perk
 var perkValueAtRoundEnd
 var canBePlayed: bool
 var perkDescription: String
+var perkValueAppliedMidRound: int = 0
+var parity: String
 
 var handPosition: Vector2
 
@@ -227,6 +229,9 @@ func disable_interaction() -> void:
 		$AnimationPlayer.seek(0, true)
 
 func modify_value(amount: int) -> void:
+	if amount == 0:
+		return
+	
 	value += amount
 	
 	if not get_node("AnimationPlayer").animation_started.is_connected(_when_animation_starts):

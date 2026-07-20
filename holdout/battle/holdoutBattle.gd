@@ -41,6 +41,8 @@ var opponentSupportCard: Node2D
 var discardedCards: Array = []
 var discardedCardZIndex: int = 1
 
+const BACKFIRE_CAPABLE = ["Molotov", "TrapMine", "ShotgunShells", "SmokeBomb", "Brick", "Bottle"]
+
 # --- UI SEQUENCE FLAGS ---
 var opponentPlayedSupport: bool = false
 var lockPlayerInput: bool = true:
@@ -287,7 +289,34 @@ func _on_player_support_played(card: Node2D) -> void:
 	
 	_play_dust_effect(playerSupportCard)
 	
-	await _apply_player_support(playerSupportCard, opponentCharacterCard, playerCharacterCard)
+	var forceNoBackfire = battleEngine.has_modifier(Database.Modifier.DESPERATE_MEASURES)
+	var handled = false
+	
+	if playerSupportCard.perk and playerSupportCard.perk.timing == "onPlay":
+		await get_tree().create_timer(opponentThinkingTime).timeout
+		var result = await playerSupportCard.perk.apply_on_play_perk(playerCharacterCard, playerSupportCard, opponentCharacterCard, opponentSupportCard, playerHand, forceNoBackfire)
+		_log_perk_result(playerSupportCard, result.get("log", 0), true)
+		handled = result.get("handled", false)
+		
+		if result.get("blockOpponentSupport", false):
+			battleEngine.block_support(Actor.Type.OPPONENT)
+		
+		if result.has("directDamageAmount"):
+			var target = Actor.Type.PLAYER if result.get("directDamageSelf", false) else Actor.Type.OPPONENT
+			await _deal_damage(target, result["directDamageAmount"])
+		
+		if result.get("backfired", false) and battleEngine.has_modifier(Database.Modifier.PSYCHO_MANIA):
+			_apply_psycho_mania_bonus(playerHand)
+	
+	if forceNoBackfire and playerSupportCard.cardKey in BACKFIRE_CAPABLE:
+		battleEngine.log_action("System. Desperate Measures modifier activated. You took 3 damage.")
+		playerSupportCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Desperate Measures.png")
+		playerSupportCard.get_node("AnimationPlayer").play("modifierIndicator")
+		await playerSupportCard.get_node("AnimationPlayer").animation_finished
+		await _deal_damage(Actor.Type.PLAYER, 1)
+	
+	if not handled:
+		await _apply_player_support(playerSupportCard, opponentCharacterCard, playerCharacterCard)
 	
 	battleEngine.player_played_support()
 	
@@ -296,9 +325,9 @@ func _on_player_support_played(card: Node2D) -> void:
 	else:
 		lockPlayerInput = true
 		ui.set_indicator(Actor.Type.NONE)
-		ui.change_mood(Actor.Type.PLAYER, Actor.Mood.NEUTRAL)
 		await _apply_end_round_perks()
 		_transition_to_resolution_phase()
+
 
 func _execute_opponent_support_play() -> void:
 	ui.set_indicator(Actor.Type.OPPONENT)
@@ -308,18 +337,41 @@ func _execute_opponent_support_play() -> void:
 	
 	await get_tree().create_timer(opponentThinkingTime).timeout
 	
-	var card = opponentAI.choose_support_card(opponentHand, opponentCharacterCard, playerCharacterCard)
-	
-	if card != null:
-		card.cardSlot = opponentSupportCardSlot
-		_animate_opponent_playing_card(card, opponentSupportCardSlot)
-		opponentSupportCard = card
+	if battleEngine.is_support_blocked(Actor.Type.OPPONENT):
+		battleEngine.log_action("System. The opponent's support was blocked this round.")
+	else:
+		var card = opponentAI.choose_support_card(opponentHand, opponentCharacterCard, playerCharacterCard, ui.get_health(Actor.Type.OPPONENT), ui.get_health(Actor.Type.PLAYER))
 		
-		HoldoutStats.record_played_card("Support", opponentSupportCard.cardKey, opponentSupportCard.value, true)
-		var opponentName: String = Actor.Avatar.keys()[HoldoutStats.currentOpponent].capitalize()
-		battleEngine.log_action("Opponent. " + opponentName + " played " + card.nameText + ".")
-		
-		await _apply_opponent_support(opponentSupportCard, playerCharacterCard, opponentCharacterCard)
+		if card != null:
+			card.cardSlot = opponentSupportCardSlot
+			_animate_opponent_playing_card(card, opponentSupportCardSlot)
+			opponentSupportCard = card
+			
+			HoldoutStats.record_played_card("Support", opponentSupportCard.cardKey, opponentSupportCard.value, true)
+			var opponentName: String = Actor.Avatar.keys()[HoldoutStats.currentOpponent].capitalize()
+			battleEngine.log_action("Opponent. " + opponentName + " played " + card.nameText + ".")
+			
+			var handled = false
+			
+			if opponentSupportCard.perk and opponentSupportCard.perk.timing == "onPlay":
+				await get_tree().create_timer(opponentThinkingTime).timeout
+				var result = await opponentSupportCard.perk.apply_on_play_perk(opponentCharacterCard, opponentSupportCard, playerCharacterCard, playerSupportCard, opponentHand)
+				_log_perk_result(opponentSupportCard, result.get("log", 0), false)
+				handled = result.get("handled", false)
+				
+				if result.get("blockOpponentSupport", false):
+					battleEngine.block_support(Actor.Type.PLAYER)
+				
+				if result.has("directDamageAmount"):
+					var target = Actor.Type.OPPONENT if result.get("directDamageSelf", false) else Actor.Type.PLAYER
+					await _deal_damage(target, result["directDamageAmount"])
+				
+				if result.get("backfired", false) and battleEngine.has_modifier(Database.Modifier.PSYCHO_MANIA):
+					_apply_psycho_mania_bonus(opponentHand)
+			
+			
+			if not handled:
+				await _apply_opponent_support(opponentSupportCard, playerCharacterCard, opponentCharacterCard)
 	
 	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
 	
@@ -334,17 +386,12 @@ func _execute_opponent_support_play() -> void:
 		ui.set_indicator(Actor.Type.PLAYER)
 		ui.change_mood(Actor.Type.PLAYER, Actor.Mood.THINKING)
 		ui.show_end_turn_button()
+		_update_playable_support_cards()
 
 	opponentPlayedSupport = true
 
 func _transition_to_resolution_phase() -> void:
 	battleEngine.set_phase(battleEngine.RoundStage.END_CALCULATION)
-	
-	if battleEngine.has_modifier(Database.Modifier.DESPERATE_MEASURES) and !_is_player_support_matched():
-		playerCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Desperate Measures.png")
-		playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
-		battleEngine.log_action("System. Desperate Measures modifier activated. Support mismatched, you took 3 damage.")
-		await _deal_damage(Actor.Type.PLAYER, 3)
 	
 	if battleEngine.has_modifier(Database.Modifier.STACKED_ODDS):
 		opponentCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Stacked Odds.png")
@@ -365,6 +412,9 @@ func _transition_to_resolution_phase() -> void:
 		else:
 			await _conclude_match()
 		return
+	
+	_apply_in_hand_growth(playerHand, battleEngine.lastRoundWinner == battleEngine.Winner.PLAYER, true)
+	_apply_in_hand_growth(opponentHand, battleEngine.lastRoundWinner == battleEngine.Winner.OPPONENT, false)
 	
 	var cardsToDiscard = []
 	if playerSupportCard: cardsToDiscard.append(playerSupportCard)
@@ -435,20 +485,21 @@ func _start_new_round() -> void:
 	playerSupportCard = null
 	opponentCharacterCard = null
 	opponentSupportCard = null
-	
+
 	opponentPlayedSupport = false
 	ui.show_end_turn_button(false)
 	
 	await _repopulate_decks()
 	_apply_guerrilla_tactics_restrictions()
 	
+	battleEngine.start_new_round(battleEngine.has_modifier(Database.Modifier.ALWAYS_FIRST), HoldoutStats.roundsPlayed)
+	_update_playable_support_cards()
+	
 	if isTutorialActive:
 		advance_tutorial("round_started")
 	else:
 		var tween = get_tree().create_tween()
 		tween.tween_property(%phaseTracker, "modulate:a", 1.0, perkCalculationTime)
-	
-	battleEngine.start_new_round(battleEngine.has_modifier(Database.Modifier.ALWAYS_FIRST), HoldoutStats.roundsPlayed)
 	
 	if battleEngine.whoStartedRound == Actor.Type.OPPONENT:
 		ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.THINKING)
@@ -514,11 +565,11 @@ func _draw_cards_at_start(firstStart: bool = true) -> void:
 	var supportDrawLoop = max(battleEngine.maxSupportCards, battleEngine.opponentMaxCards)
 
 	for i in range(supportDrawLoop):
-		if i < battleEngine.maxSupportCards:
+		if i < battleEngine.startingSupportCards:
 			await get_tree().create_timer(cardMoveFastSpeed).timeout
 			$"../supportDeck".draw_card()
 			
-		if i < battleEngine.opponentMaxCards:
+		if i < battleEngine.opponentStartingSupportCards:
 			await get_tree().create_timer(cardMoveFastSpeed).timeout
 			$"../supportDeck".draw_opponent_card()
 	
@@ -594,16 +645,21 @@ func _apply_mid_round_perks() -> void:
 	_handle_runner_perk()
 
 func _update_playable_support_cards() -> void:
+	var playerBlocked = battleEngine.is_support_blocked(Actor.Type.PLAYER)
+	
 	for card in playerHand:
 		if is_instance_valid(card) and card.type == "Support":
-			if battleEngine.has_modifier(Database.Modifier.DESPERATE_MEASURES):
-				card.canBePlayed = true
+			if playerBlocked:
+				card.canBePlayed = false
+				_animate_card_lock(card)
 			else:
-				card.canBePlayed = battleEngine.check_support_match(playerCharacterCard.role, card.role)
+				card.canBePlayed = true
+				_animate_card_unlock(card)
 	
+	var opponentBlocked = battleEngine.is_support_blocked(Actor.Type.OPPONENT)
 	for card in opponentHand:
 		if is_instance_valid(card) and card.type == "Support":
-			card.canBePlayed = battleEngine.check_support_match(opponentCharacterCard.role, card.role)
+			card.canBePlayed = not opponentBlocked
 
 func _apply_end_round_perks() -> void:
 	if isTutorialActive and not arePerksActiveInTutorial:
@@ -614,8 +670,8 @@ func _apply_end_round_perks() -> void:
 		await _execute_player_char_end_perk()
 		await _execute_opponent_char_end_perk()
 		# Support Phase
-		await _execute_player_supp_end_perk()
-		await _execute_opponent_supp_end_perk()
+		#await _execute_player_supp_end_perk()
+		#await _execute_opponent_supp_end_perk()
 		# Late Phase
 		await _execute_player_late_end_perk()
 		await _execute_opponent_late_end_perk()
@@ -623,13 +679,20 @@ func _apply_end_round_perks() -> void:
 		await _execute_opponent_char_end_perk()
 		await _execute_player_char_end_perk()
 		
-		await _execute_opponent_supp_end_perk()
-		await _execute_player_supp_end_perk()
+		#await _execute_opponent_supp_end_perk()
+		#await _execute_player_supp_end_perk()
 		
 		await _execute_opponent_late_end_perk()
 		await _execute_player_late_end_perk()
 
 	await get_tree().create_timer(perkCalculationTime).timeout
+
+func _apply_in_hand_growth(hand: Array, wonRound: bool, isPlayer: bool) -> void:
+	for card in hand:
+		if is_instance_valid(card) and card.type == "Support" and card.perk and card.perk.timing == "inHand":
+			var gained = card.perk.apply_in_hand_perk(card, wonRound)
+			if gained != 0:
+				_log_perk_result(card, [[gained, "self"]], isPlayer)
 
 func _calculate_damage() -> void:
 	var playerTotal = playerCharacterCard.value
@@ -641,6 +704,7 @@ func _calculate_damage() -> void:
 	_apply_calculation_round_perks(playerTotal, opponentTotal)
 	
 	var report = battleEngine.process_combat_stats(playerTotal, opponentTotal, playerCharacterCard.cardKey, opponentCharacterCard.cardKey)
+	battleEngine.lastRoundWinner = report.winner
 	
 	if opponentAI.has_method("record_round_result"):
 		opponentAI.record_round_result(report.winner == battleEngine.Winner.OPPONENT)
@@ -680,11 +744,8 @@ func _calculate_damage() -> void:
 func _apply_player_support(support: Node2D, opponentCharacter: Node2D, playerCharacter: Node2D) -> void:
 	await get_tree().create_timer(1.0).timeout
 	
-	if support.cardKey == "SupplyCache": # 0 card, no need to change value by 0
-		return
-	
 	var opponentName: String = Actor.Avatar.keys()[HoldoutStats.currentOpponent].capitalize()
-	if Database.SUPPORTS[support.cardKey][3] == "Negative":
+	if Database.SUPPORTS[support.cardKey].Parity == "Negative":
 		battleEngine.log_action("Player. Your " + support.nameText + " weakened " + opponentName + "'s " + opponentCharacterCard.nameText + " by " + str(support.value) + ".")
 		var value = support.value
 		support.modify_value(-value)
@@ -698,11 +759,8 @@ func _apply_player_support(support: Node2D, opponentCharacter: Node2D, playerCha
 func _apply_opponent_support(support: Node2D, playerCharacter: Node2D, opponentCharacter: Node2D) -> void:
 	await get_tree().create_timer(1.0).timeout
 	
-	if support.cardKey == "SupplyCache": # 0 card, no need to change value by 0
-		return
-	
 	var opponentName: String = Actor.Avatar.keys()[HoldoutStats.currentOpponent].capitalize()
-	if Database.SUPPORTS[support.cardKey][3] == "Negative":
+	if Database.SUPPORTS[support.cardKey].Parity == "Negative":
 		battleEngine.log_action("Opponent. " + opponentName + "'s " + support.nameText + " weakened your " + playerCharacterCard.nameText + " by " + str(support.value) + ".")
 		var value = support.value
 		support.modify_value(-value)
@@ -758,14 +816,17 @@ func _move_cards_to_discard(cards: Array) -> void:
 	
 	if HoldoutStats.roundsPlayed % 2 == 0 and battleEngine.has_modifier(Database.Modifier.VOLATILE_HAND) and GameStats.gameMode == GameStats.Mode.HOLDOUT:
 		for card in playerHand.duplicate():
-			await _place_card_in_discard(card, %playerHand)
+			if card.type == "Character":
+				await _place_card_in_discard(card, %playerHand)
 
 func _reset_played_cards_perks() -> void:
 	if playerCharacterCard.perk:
 		playerCharacterCard.get_node("value").text = str(playerCharacterCard.value)
+		playerCharacterCard.perkValueAppliedMidRound = 0
 	
 	if opponentCharacterCard.perk:
 		opponentCharacterCard.get_node("value").text = str(opponentCharacterCard.value)
+		opponentCharacterCard.perkValueAppliedMidRound = 0
 
 func _reset_allowed_support_cards() -> void:
 	if playerSupportCard:
@@ -809,17 +870,18 @@ func _repopulate_hand(hand: Array, who: Actor.Type) -> void:
 			characterCount += 1
 			await get_tree().create_timer(cardMoveSpeed).timeout
 	
+	# Supports
+	var isSupportDrawRound: bool = HoldoutStats.roundsPlayed % battleEngine.roundsTillSupportDraw == 0
+	
 	if who == Actor.Type.PLAYER:
-		while supportCount < battleEngine.maxSupportCards:
+		if isSupportDrawRound and supportCount < battleEngine.maxSupportCards:
 			supportDeckReference.draw_card()
-			supportCount += 1
 			await get_tree().create_timer(cardMoveSpeed).timeout
 	else:
-		@warning_ignore("integer_division")
-		while supportCount < battleEngine.opponentMaxCards:
+		if isSupportDrawRound and supportCount < battleEngine.opponentMaxCards:
 			supportDeckReference.draw_opponent_card()
-			supportCount += 1
 			await get_tree().create_timer(cardMoveSpeed).timeout
+			
 	lockPlayerInput = false
 
 func _repopulate_decks(endGame: bool = false) -> void:
@@ -932,18 +994,38 @@ func _handle_player_win(damage: int, triggerCalculatedRisk: bool) -> void:
 		await get_tree().create_timer(perkCalculationTimeAfterRoundEnd).timeout
 		return
 	
-	await _deal_damage(Actor.Type.OPPONENT, damage, false)
-	await _handle_shambler_perk(Actor.Type.PLAYER)
+	# Resilience check — opponent is the one taking damage this round
+	var finalDamage = damage
+	if opponentSupportCard and opponentSupportCard.perk and opponentSupportCard.perk.timing == "onResolution":
+		var result = await opponentSupportCard.perk.apply_on_resolution_perk(opponentCharacterCard, opponentSupportCard, playerCharacterCard, playerSupportCard, false, damage)
+		if result.has("modifiedDamage"):
+			finalDamage = result["modifiedDamage"]
+			_log_perk_result(opponentSupportCard, result.get("log", 0), false)
 	
-	if playerCharacterCard.perkValueAtRoundEnd:
-		battleEngine.log_action("System. " + playerCharacterCard.nameText + "'s perk dealt " + str(playerCharacterCard.perkValueAtRoundEnd) + " additional damage to " + opponentName + ".")
-		await _deal_damage(Actor.Type.OPPONENT, playerCharacterCard.perkValueAtRoundEnd)
+	# Retreat check — either side could be holding it
+	if _resolution_has_retreat():
+		battleEngine.log_action("System. Retreat activated. No damage was dealt.")
+		await get_tree().create_timer(perkCalculationTimeAfterRoundEnd).timeout
+	else:
+		await _deal_damage(Actor.Type.OPPONENT, finalDamage, false)
+		await _handle_shambler_perk(Actor.Type.PLAYER)
+		
+		if playerCharacterCard.perkValueAtRoundEnd:
+			battleEngine.log_action("System. " + playerCharacterCard.nameText + "'s perk dealt " + str(playerCharacterCard.perkValueAtRoundEnd) + " additional damage to " + opponentName + ".")
+			await _deal_damage(Actor.Type.OPPONENT, playerCharacterCard.perkValueAtRoundEnd)
+		
+		if triggerCalculatedRisk:
+			playerCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Calculated Risk.png")
+			playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
+			battleEngine.log_action("System. Calculated Risk modifier activated. " + opponentName + " took 3 additional damage.")
+			await _deal_damage(Actor.Type.OPPONENT, 3)
 	
-	if triggerCalculatedRisk:
-		playerCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Calculated Risk.png")
-		playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
-		battleEngine.log_action("System. Calculated Risk modifier activated. " + opponentName + " took 3 additional damage.")
-		await _deal_damage(Actor.Type.OPPONENT, 3)
+	# Reinforced Melee check — player's own support, player won
+	if playerSupportCard and playerSupportCard.perk and playerSupportCard.perk.timing == "onResolution":
+		var result = await playerSupportCard.perk.apply_on_resolution_perk(playerCharacterCard, playerSupportCard, opponentCharacterCard, opponentSupportCard, true, damage)
+		if result.get("drawExtraSupport", false):
+			_draw_bonus_support(Actor.Type.PLAYER)
+
 
 func _handle_opponent_win(damage: int, triggerDeepWounds: bool) -> void:
 	ui.change_mood(Actor.Type.PLAYER, Actor.Mood.HURT)
@@ -954,18 +1036,77 @@ func _handle_opponent_win(damage: int, triggerDeepWounds: bool) -> void:
 		await get_tree().create_timer(perkCalculationTimeAfterRoundEnd).timeout
 		return
 	
-	await _deal_damage(Actor.Type.PLAYER, damage, false)
-	await _handle_shambler_perk(Actor.Type.OPPONENT)
+	# Resilience check — player is the one taking damage this round
+	var finalDamage = damage
+	if playerSupportCard and playerSupportCard.perk and playerSupportCard.perk.timing == "onResolution":
+		var result = await playerSupportCard.perk.apply_on_resolution_perk(playerCharacterCard, playerSupportCard, opponentCharacterCard, opponentSupportCard, false, damage)
+		if result.has("modifiedDamage"):
+			finalDamage = result["modifiedDamage"]
+			_log_perk_result(playerSupportCard, result.get("log", 0), true)
 	
-	if opponentCharacterCard.perkValueAtRoundEnd:
-		battleEngine.log_action("System. " + opponentCharacterCard.nameText + "'s perk dealt " + str(opponentCharacterCard.perkValueAtRoundEnd) + " additional damage to you.")
-		await _deal_damage(Actor.Type.PLAYER, opponentCharacterCard.perkValueAtRoundEnd)
+	if _resolution_has_retreat():
+		battleEngine.log_action("System. Retreat activated. No damage was dealt.")
+		await get_tree().create_timer(perkCalculationTimeAfterRoundEnd).timeout
+	else:
+		await _deal_damage(Actor.Type.PLAYER, finalDamage, false)
+		await _handle_shambler_perk(Actor.Type.OPPONENT)
+		
+		if opponentCharacterCard.perkValueAtRoundEnd:
+			battleEngine.log_action("System. " + opponentCharacterCard.nameText + "'s perk dealt " + str(opponentCharacterCard.perkValueAtRoundEnd) + " additional damage to you.")
+			await _deal_damage(Actor.Type.PLAYER, opponentCharacterCard.perkValueAtRoundEnd)
+		
+		if triggerDeepWounds:
+			playerCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Deep Wounds.png")
+			playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
+			battleEngine.log_action("System. Deep Wounds modifier activated. You took 2 additional damage.")
+			await _deal_damage(Actor.Type.PLAYER, 2)
 	
-	if triggerDeepWounds:
-		playerCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Deep Wounds.png")
-		playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
-		battleEngine.log_action("System. Deep Wounds modifier activated. You took 2 additional damage.")
-		await _deal_damage(Actor.Type.PLAYER, 2)
+	# Reinforced Melee check — opponent's own support, opponent won
+	if opponentSupportCard and opponentSupportCard.perk and opponentSupportCard.perk.timing == "onResolution":
+		var result = await opponentSupportCard.perk.apply_on_resolution_perk(opponentCharacterCard, opponentSupportCard, playerCharacterCard, playerSupportCard, true, damage)
+		if result.get("drawExtraSupport", false):
+			_draw_bonus_support(Actor.Type.OPPONENT)
+
+
+func _resolution_has_retreat() -> bool:
+	if playerSupportCard and playerSupportCard.cardKey == "Retreat":
+		return true
+	if opponentSupportCard and opponentSupportCard.cardKey == "Retreat":
+		return true
+	return false
+
+
+func _draw_bonus_support(who: Actor.Type) -> void:
+	var supportDeckReference = $"../supportDeck"
+	var hand = playerHand if who == Actor.Type.PLAYER else opponentHand
+	var cap = battleEngine.maxSupportCards if who == Actor.Type.PLAYER else battleEngine.opponentMaxCards
+	
+	var supportCount = 0
+	for card in hand:
+		if is_instance_valid(card) and card.type == "Support":
+			supportCount += 1
+	
+	if supportCount >= cap:
+		return
+	
+	if who == Actor.Type.PLAYER:
+		supportDeckReference.draw_card()
+	else:
+		supportDeckReference.draw_opponent_card()
+	
+	battleEngine.log_action("System. Reinforced Melee activated. An extra support card was drawn.")
+
+func _apply_psycho_mania_bonus(hand: Array) -> void:
+	var eligible = hand.filter(func(c): return is_instance_valid(c))
+	if eligible.is_empty():
+		return
+	
+	var target = eligible[randi() % eligible.size()]
+	target.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Psycho Mania.png")
+	target.get_node("AnimationPlayer").play("modifierIndicator")
+	await target.get_node("AnimationPlayer").animation_finished
+	target.modify_value(2)
+	battleEngine.log_action("System. Psycho-mania modifier activated. " + target.nameText + " gained +2.")
 
 func _handle_shambler_perk(winner: Actor.Type) -> void:
 	if winner == Actor.Type.PLAYER:
@@ -1035,20 +1176,16 @@ func _apply_guerrilla_tactics_restrictions() -> void:
 func _animate_card_lock(card):
 	if card.get_node("lockIcon/top").modulate.a < 0.9:
 		card.get_node("AnimationPlayer").play("lock")
+		card.get_node("Area2D/CollisionShape2D").disabled = true
 		await get_tree().create_timer(0.35).timeout
 		AudioManager.play_card_lock()
 
 func _animate_card_unlock(card):
 	if card.get_node("lockIcon/top").modulate.a > 0.1:
 		card.get_node("AnimationPlayer").play_backwards("lock")
+		card.get_node("Area2D/CollisionShape2D").disabled = false
 		await get_tree().create_timer(0.35).timeout
 		AudioManager.play_card_lock()
-
-func _is_player_support_matched() -> bool:
-	if playerSupportCard == null: 
-		return true
-		
-	return battleEngine.check_support_match(playerCharacterCard.role, playerSupportCard.role)
 
 func _check_old_wounds_accolade() -> void:
 	if HoldoutStats.RIVALRIES.has(playerCharacterCard.cardKey):
@@ -1082,6 +1219,7 @@ func _execute_player_mid_perk() -> void:
 		await get_tree().create_timer(perkCalculationTime).timeout
 		
 		var statChange = await playerCharacterCard.perk.apply_mid_perk(playerCharacterCard, playerHand, opponentCharacterCard)
+		playerCharacterCard.perkValueAppliedMidRound = statChange if typeof(statChange) == TYPE_INT else 0
 		_log_perk_result(playerCharacterCard, statChange, true)
 
 func _execute_opponent_mid_perk() -> void:
@@ -1101,6 +1239,7 @@ func _execute_opponent_mid_perk() -> void:
 		await get_tree().create_timer(perkCalculationTime).timeout
 		
 		var statChange = await opponentCharacterCard.perk.apply_mid_perk(opponentCharacterCard, opponentHand, playerCharacterCard)
+		opponentCharacterCard.perkValueAppliedMidRound = statChange if typeof(statChange) == TYPE_INT else 0
 		_log_perk_result(opponentCharacterCard, statChange, false)
 		
 		if battleEngine.has_modifier(Database.Modifier.FORSAKEN_HONOR):
@@ -1374,12 +1513,11 @@ func _spawn_single_card(cardData: Dictionary, isOpponent: bool = false) -> Node2
 		
 	elif Database.SUPPORTS.has(key):
 		var supportData = Database.SUPPORTS[key]
-		newCard.type = supportData[1]
+		newCard.type = supportData.Type
 		newCard.faction = "Support" 
-		newCard.role = supportData[2]
-		newCard.nameText = supportData[4]
-		if supportData.size() > 5:
-			newCard.perkDescription = supportData[5]
+		newCard.nameText = supportData.CardText
+		newCard.perkDescription = supportData.PerkText
+		newCard.parity = supportData.Parity
 		
 		newCard.canBePlayed = false
 		

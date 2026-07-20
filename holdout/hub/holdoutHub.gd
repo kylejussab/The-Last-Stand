@@ -302,7 +302,7 @@ func _animate_opponent_container_three() -> void:
 	tween.parallel().tween_property(opponentLine, "size:y", 85, 0.3)
 	tween.parallel().tween_property(opponentLine, "modulate", Color("#4c4c4c"), 0.5)
 	
-	tween.parallel().tween_property(opponentModifierDescriptionLabel, "position", Vector2(150, 190), 0.3)
+	tween.parallel().tween_property(opponentModifierDescriptionLabel, "position", Vector2(150, 205), 0.3)
 	tween.parallel().tween_property(opponentModifierDescriptionLabel, "size", Vector2(260, 110), 0.3)
 	
 	tween.parallel().tween_property(opponentModifierNameLabel, "modulate:a", 0, 0.3)

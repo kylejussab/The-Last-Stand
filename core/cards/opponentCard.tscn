@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://bn88i42vic2bw"]
+[gd_scene load_steps=27 format=3 uid="uid://bn88i42vic2bw"]
 
 [ext_resource type="Script" uid="uid://df6vntpyt6v25" path="res://core/cards/opponentCard.gd" id="1_6ngam"]
 [ext_resource type="Texture2D" uid="uid://cbgv0l1d6fl7k" path="res://core/cards/art/CardBackBlank.png" id="2_4jfu0"]
@@ -8,9 +8,13 @@
 [ext_resource type="Texture2D" uid="uid://ucjtxpq82kyw" path="res://holdout/modifiers/icons/Forsaken Honor.png" id="4_fgn7q"]
 [ext_resource type="Texture2D" uid="uid://d4kwo20uewt85" path="res://core/cards/art/BlackCard.png" id="4_uqoa2"]
 [ext_resource type="Texture2D" uid="uid://bvx2xo56idmcx" path="res://core/cards/icons/Crafty.png" id="5_6rjld"]
+[ext_resource type="Texture2D" uid="uid://bbax35agbq4ku" path="res://core/menus/ui/GunTrigger.png" id="5_ndf7d"]
 [ext_resource type="Texture2D" uid="uid://dgdk6y2h230rb" path="res://core/cards/icons/Defensive.png" id="6_fgn7q"]
+[ext_resource type="Texture2D" uid="uid://je1qiwc7rlit" path="res://core/menus/ui/GunBottom.png" id="6_n0hst"]
 [ext_resource type="Texture2D" uid="uid://ckyjgdo1fykjj" path="res://core/cards/icons/Jackson.png" id="7_eh2lv"]
+[ext_resource type="Texture2D" uid="uid://bssdu3ahjvkw8" path="res://core/menus/ui/GunTop.png" id="7_vrdlr"]
 [ext_resource type="FontFile" uid="uid://di1dchl37cfhu" path="res://core/fonts/SF-Pro-Display-Semibold.otf" id="10_fgn7q"]
+[ext_resource type="Animation" uid="uid://dem7f0dxaa6wf" path="res://core/menus/ui/backfire.res" id="13_0yvlp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6ngam"]
 size = Vector2(146, 204)
@@ -527,6 +531,7 @@ tracks/5/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_6ligt"]
 _data = {
 &"RESET": SubResource("Animation_sy11y"),
+&"backfire": ExtResource("13_0yvlp"),
 &"cardFlip": SubResource("Animation_kg30u"),
 &"modifierIndicator": SubResource("Animation_eh2lv"),
 &"showPerk": SubResource("Animation_4jfu0"),
@@ -551,6 +556,29 @@ texture = ExtResource("2_4jfu0")
 [node name="image" type="Sprite2D" parent="."]
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("3_3qk15")
+
+[node name="backfireIcon" type="Node2D" parent="."]
+modulate = Color(1, 1, 1, 0)
+position = Vector2(0, -10)
+scale = Vector2(0.1, 0.1)
+
+[node name="GunTrigger" type="Sprite2D" parent="backfireIcon"]
+scale = Vector2(0.99999994, 0.99999994)
+texture = ExtResource("5_ndf7d")
+
+[node name="GunBottom" type="Sprite2D" parent="backfireIcon"]
+texture = ExtResource("6_n0hst")
+
+[node name="GunTop" type="Sprite2D" parent="backfireIcon"]
+texture = ExtResource("7_vrdlr")
+
+[node name="Bullet" type="ColorRect" parent="backfireIcon"]
+offset_left = 350.0
+offset_top = -100.0
+offset_right = 399.9991
+offset_bottom = -85.0
+scale = Vector2(1e-05, 1)
+pivot_offset = Vector2(0, 7.5)
 
 [node name="ModifierIndicator" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0)

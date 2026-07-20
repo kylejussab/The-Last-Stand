@@ -12,11 +12,12 @@ var distanceToNewRank: int = 0
 var accolade: Dictionary
 var currentMvpData: Dictionary
 
-func _ready() -> void:
-	for button in get_children():
-		if button is Button:
-			button.mouse_entered.connect(AudioManager.play_button_hover)
-			button.pressed.connect(AudioManager.play_button_click)
+@onready var actionButtons = [
+	%ContinueButton,
+	%ReplayButton,
+	%NewRunButton,
+	%MainMenuButton
+]
 
 func play_holdout_end_sequence(playerWon: bool):
 	_calculate_holdout_stats(playerWon)
@@ -46,9 +47,8 @@ func play_holdout_end_sequence(playerWon: bool):
 	
 	animationPlayer.play("showBadges", -1.0, 0.75)
 	
-	for child in get_children():
-		if child is Button:
-			child.disabled = false
+	for button in actionButtons:
+		button.disabled = false
 	
 	if !playerWon:
 		%ContinueButton.visible = false
@@ -221,6 +221,7 @@ func format_time(time: float) -> String:
 func get_card_stats(playedCards):
 	var factionImpact = {}
 	var cardImpact = {}
+	var cardFactions = {}
 
 	for card in playedCards:
 		var faction = card.get("faction", "None")
@@ -230,8 +231,9 @@ func get_card_stats(playedCards):
 		if faction != "Support":
 			factionImpact[faction] = factionImpact.get(faction, 0) + value
 			cardImpact[key] = cardImpact.get(key, 0) + value
+			cardFactions[key] = faction # Map the card key directly to its faction
 		
-	# Find the Top Faction
+	# Find the Top Faction (Overall run stat, not necessarily the MVP's faction)
 	var topFaction = "None"
 	var highestFactionValue = -1
 	for faction in factionImpact:
@@ -246,6 +248,8 @@ func get_card_stats(playedCards):
 		if cardImpact[key] > highestCardValue:
 			highestCardValue = cardImpact[key]
 			mvpKey = key
+			
+	var mvpFaction = cardFactions.get(mvpKey, "None")
 	
 	# Format the Display Name
 	var cardName = ""
@@ -273,7 +277,12 @@ func get_card_stats(playedCards):
 				cardName += " "
 			cardName += letter
 	
-	return {"faction": topFaction, "card": cardName, "cardKey": mvpKey}
+	return {
+		"faction": mvpFaction, 
+		"topFaction": topFaction, 
+		"card": cardName, 
+		"cardKey": mvpKey
+	}
 
 func animate_rations_tick(label, start_score: int, end_score: int):
 	var duration = 0.0 if AccessibilityData.animationsDisabled else 2.0 
@@ -478,9 +487,8 @@ func _reset_holdout_stats_ui() -> void:
 	
 	%AnimationPlayer.play("RESET")
 	
-	for child in get_children():
-		if child is Button:
-			child.disabled = true
+	for button in actionButtons:
+		button.disabled = true
 
 func _reset_board_state() -> void:
 	battleManager.lockPlayerInput = true

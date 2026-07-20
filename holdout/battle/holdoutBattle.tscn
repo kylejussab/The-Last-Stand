@@ -2589,6 +2589,7 @@ text = "CONTINUE"
 alignment = 0
 
 [node name="ReplayButton" type="Button" parent="arena/outro"]
+unique_name_in_owner = true
 self_modulate = Color(1, 1, 1, 0)
 z_index = 201
 offset_left = 770.0
@@ -2623,6 +2624,7 @@ fill_mode = 4
 texture_progress = ExtResource("47_1qa5t")
 
 [node name="NewRunButton" type="Button" parent="arena/outro"]
+unique_name_in_owner = true
 self_modulate = Color(1, 1, 1, 0)
 z_index = 201
 offset_left = 770.0
@@ -2657,6 +2659,7 @@ fill_mode = 4
 texture_progress = ExtResource("47_1qa5t")
 
 [node name="MainMenuButton" type="Button" parent="arena/outro"]
+unique_name_in_owner = true
 self_modulate = Color(1, 1, 1, 0)
 z_index = 201
 offset_left = 770.0

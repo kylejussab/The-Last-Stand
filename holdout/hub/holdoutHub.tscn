@@ -170,18 +170,16 @@ vertical_alignment = 1
 [node name="ModifierDescription" type="RichTextLabel" parent="OpponentBox"]
 layout_mode = 0
 offset_left = 150.0
-offset_top = 190.0
+offset_top = 205.0
 offset_right = 410.0
-offset_bottom = 300.0
+offset_bottom = 315.0
 theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_fonts/normal_font = SubResource("FontVariation_qoiux")
 theme_override_font_sizes/normal_font_size = 20
 text = "Modifier Description
 Modifier Description
-Modifier Description
 Modifier Description"
 horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="ModifierContainer" type="Control" parent="."]
 anchors_preset = 0

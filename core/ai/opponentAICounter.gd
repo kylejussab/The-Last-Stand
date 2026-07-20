@@ -1,10 +1,13 @@
 extends OpponentAI
 class_name OpponentAICounter
 
+const RISKY_CARDS = ["Molotov", "TrapMine", "ShotgunShells", "SmokeBomb", "Brick", "Bottle"]
+const DEFENSIVE_CARDS = ["Retreat", "Resilience"]
+
 func _init():
 	playstyleName = "Counter"
 
-func play_character_card(opponentHand, _playerHand, playerPlayedCard = null):
+func play_character_card(opponentHand, _playerHand, playerPlayedCard = null, _playerHealth = 99, _opponentHealth = 99):
 	var characters: Array = []
 	var supports: Array = []
 	
@@ -23,7 +26,7 @@ func play_character_card(opponentHand, _playerHand, playerPlayedCard = null):
 	else:
 		bestCharacter = _play_diverse(characters)
 	
-	if randf() < 1.1:
+	if randf() < 0.85:
 		return bestCharacter
 	
 	var others = characters.filter(func(c): return c != bestCharacter)
@@ -59,8 +62,6 @@ func _play_counter(characters, supports, opponentHand, playerCard):
 	return bestCharacter
 
 func _play_diverse(characters):
-	# Play the most "replaceable" card — the one that shares the most
-	# faction/role coverage with remaining cards, preserving future counter options
 	var bestCharacter = characters[0]
 	var maxReplaceability = -1
 	
@@ -83,14 +84,66 @@ func _play_diverse(characters):
 	
 	return bestCharacter
 
-func choose_support_card(opponentHand, _opponentCharacter, _playerCharacter):
-	var bestSupport = null
-	var highestValue = -1
+func choose_support_card(opponent_hand, opponent_character, player_character, opponent_health = 99, _player_health = 99):
+	var currentDiff = opponent_character.value - player_character.value
 	
-	for support in opponentHand:
+	var eligible = []
+	for support in opponent_hand:
 		if support.type == "Support" and support.canBePlayed:
-			if support.value > highestValue:
-				highestValue = support.value
-				bestSupport = support
+			eligible.append(support)
+	
+	if eligible.is_empty():
+		return null
+	
+	# Aggressive-style read: comfortably ahead on the matchup, don't bother.
+	if currentDiff >= 4:
+		return null
+	
+	# Aggressive-style read: badly behind and hurting, consider a panic button.
+	if currentDiff <= -4 and opponent_health <= 25:
+		for support in eligible:
+			if support.cardKey in DEFENSIVE_CARDS:
+				return support
+	
+	var bestSupport = null
+	var bestBlendedScore = -INF
+	
+	for support in eligible:
+		if support.cardKey in DEFENSIVE_CARDS:
+			continue
+		
+		# Calculator-style read: theoretical ceiling, no risk discount
+		var ceiling = _calculate_max_support_value(support, opponent_character)
+		
+		# Aggressive-style read: crude risk discount
+		var discounted = float(support.value)
+		if support.cardKey in RISKY_CARDS:
+			discounted *= 0.6
+		
+		# Balanced-style read: how much this closes the gap in the specific matchup on board
+		var matchupWeight = 1.0
+		if currentDiff < 0:
+			matchupWeight = 1.2 # behind: value closing the gap more highly
+		
+		var blended = ((ceiling + discounted) / 2.0) * matchupWeight
+		
+		if blended > bestBlendedScore:
+			bestBlendedScore = blended
+			bestSupport = support
+	
+	if bestSupport == null or bestBlendedScore < 1.5:
+		return null
 	
 	return bestSupport
+
+func _calculate_max_support_value(support, character) -> float:
+	match support.cardKey:
+		"Silencer":
+			var bonus = 2 if character.role.contains("Crafty") or character.role.contains("Defensive") else 0
+			return support.value + bonus
+		"Retreat":
+			return 6
+		"Resilience":
+			return support.value + 3
+		_:
+			return support.value
