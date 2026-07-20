@@ -49,7 +49,11 @@ func setup_avatar(avatar: Actor.Avatar, type: Actor.Type) -> void:
 	var avatarParent: Node2D = get_node("player") if isPlayer else get_node("opponent")
 	
 	avatarParent.get_node("name").text = data.name
-	avatarParent.get_node("description").text = data.description
+	
+	if type == Actor.Type.OPPONENT: # Add playstyle to the opponents description
+		avatarParent.get_node("description").text = data.description + "  |  " + data.playstyle
+	else:
+		avatarParent.get_node("description").text = data.description
 	
 	var basePath: String = "%s%s" % [data.headPath, data.name.get_slice(" ", 0)]
 	
