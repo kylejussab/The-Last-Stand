@@ -212,6 +212,14 @@ func _get_card_icon_path(iconName: String) -> String:
 	return _apply_va_suffix(basePath)
 
 func _on_area_2d_mouse_entered() -> void:
+	# If the front image is hidden, the card is face-down!
+	var isFaceDown = true
+	if has_node("image") and get_node("image").visible:
+		isFaceDown = false
+		
+	if isFaceDown:
+		return
+		
 	emit_signal("hoverEntered", self)
 
 func _on_area_2d_mouse_exited() -> void:
@@ -223,6 +231,17 @@ func modify_value(amount: int) -> void:
 	
 	value += amount
 	
+	# If the front image is hidden, the card is face-down!
+	var isFaceDown = true
+	if has_node("image") and get_node("image").visible:
+		isFaceDown = false
+		
+	if isFaceDown:
+		if has_node("value"):
+			get_node("value").text = str(value)
+		return
+	
+	# ... rest of your modify_value code ...
 	if not get_node("AnimationPlayer").animation_started.is_connected(_when_animation_starts):
 		get_node("AnimationPlayer").animation_started.connect(_when_animation_starts)
 	

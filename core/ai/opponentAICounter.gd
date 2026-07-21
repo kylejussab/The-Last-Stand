@@ -36,7 +36,7 @@ func play_character_card(opponentHand, _playerHand, playerPlayedCard = null, _pl
 
 func _play_counter(characters, supports, opponentHand, playerCard):
 	var bestCharacter = characters[0]
-	var maxCounterScore = -1
+	var maxCounterScore = _worst_score()
 	
 	for character in characters:
 		var counterScore = character.value
@@ -47,15 +47,16 @@ func _play_counter(characters, supports, opponentHand, playerCard):
 					counterScore += character.perk.calculate_perk_value(character, opponentHand, playerCard)
 				"endRound", "lateEndRound":
 					var bestEndBonus = character.perk.calculate_end_perk_value(character, null, playerCard, null, opponentHand)
-					for support in supports:
-						var bonus = character.perk.calculate_end_perk_value(character, support, playerCard, null, opponentHand)
-						if bonus > bestEndBonus:
-							bestEndBonus = bonus
+					if not isFlipScriptActive:
+						for support in supports:
+							var bonus = character.perk.calculate_end_perk_value(character, support, playerCard, null, opponentHand)
+							if bonus > bestEndBonus:
+								bestEndBonus = bonus
 					counterScore += bestEndBonus
 				"calculationRound":
 					counterScore += character.perk.calculate_after_calculation_perk_value(character, opponentHand, 0, 1)
 		
-		if counterScore > maxCounterScore:
+		if _is_better_score(counterScore, maxCounterScore):
 			maxCounterScore = counterScore
 			bestCharacter = character
 	
@@ -95,15 +96,18 @@ func choose_support_card(opponent_hand, opponent_character, player_character, op
 	if eligible.is_empty():
 		return null
 	
-	# Aggressive-style read: comfortably ahead on the matchup, don't bother.
-	if currentDiff >= 4:
+	var effectiveDiff = _effective_diff(currentDiff)
+	
+	if effectiveDiff >= 4:
 		return null
 	
-	# Aggressive-style read: badly behind and hurting, consider a panic button.
-	if currentDiff <= -4 and opponent_health <= 25:
+	if effectiveDiff <= -4 and opponent_health <= 25:
 		for support in eligible:
 			if support.cardKey in DEFENSIVE_CARDS:
 				return support
+	
+	if isFlipScriptActive:
+		return null  # ceiling/discount/matchup-weight all only reward raising the AI's own value
 	
 	var bestSupport = null
 	var bestBlendedScore = -INF
@@ -112,18 +116,15 @@ func choose_support_card(opponent_hand, opponent_character, player_character, op
 		if support.cardKey in DEFENSIVE_CARDS:
 			continue
 		
-		# Calculator-style read: theoretical ceiling, no risk discount
 		var ceiling = _calculate_max_support_value(support, opponent_character)
 		
-		# Aggressive-style read: crude risk discount
 		var discounted = float(support.value)
 		if support.cardKey in RISKY_CARDS:
 			discounted *= 0.6
 		
-		# Balanced-style read: how much this closes the gap in the specific matchup on board
 		var matchupWeight = 1.0
 		if currentDiff < 0:
-			matchupWeight = 1.2 # behind: value closing the gap more highly
+			matchupWeight = 1.2
 		
 		var blended = ((ceiling + discounted) / 2.0) * matchupWeight
 		

@@ -10,6 +10,7 @@ static var opponentList: Array = []
 static var playerHealthValue: int
 static var activeModifiers: Array = []
 static var lastOfferedModifierIds: Array = [] # Used for weighted randomness with modifier selection
+static var lastOfferedOpponentModifierIds: Array = []
 enum Rank { S, A, B, C, D, F }
 const RankRequirements = {Rank.S: 440, Rank.A: 300, Rank.B: 220, Rank.C: 160, Rank.D: 80, Rank.F: 0}
 static var currentRank: Rank = Rank.F

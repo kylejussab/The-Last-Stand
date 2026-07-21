@@ -90,6 +90,7 @@ func _ready() -> void:
 		ui.update_health(Actor.Type.PLAYER, HoldoutStats.playerHealthValue, true)
 		GameStats.gameMode = GameStats.Mode.HOLDOUT
 
+
 func prepare_opponent() -> void:
 	if not HoldoutStats.replayedRound:
 		HoldoutStats.currentOpponent = _pick_next_opponent()
@@ -151,11 +152,15 @@ func initialize_game() -> void:
 	
 	_save_round_checkpoint()
 
-func add_modifier(modifier: Database.Modifier) -> void:
+func add_modifier(modifier: Database.Modifier, addToFront: bool = false) -> void:
 	var instance = Database.MODIFIERS[modifier].duplicate(true)
 	instance["currentDuration"] = 0
 	
-	HoldoutStats.activeModifiers.append(instance)
+	if addToFront:
+		HoldoutStats.activeModifiers.insert(0, instance)
+	else:
+		HoldoutStats.activeModifiers.append(instance)
+	
 	HoldoutStats.multiplierTotal += instance["multiplier"]
 	
 	battleEngine.add_modifier(modifier)
@@ -227,6 +232,8 @@ func _execute_opponent_character_play() -> void:
 	lockPlayerInput = true
 	await get_tree().create_timer(opponentThinkingTime).timeout
 	
+	opponentAI.set_flip_script_active(battleEngine.has_modifier(Database.Modifier.FLIP_SCRIPT))
+	
 	var card = opponentAI.play_character_card(opponentHand, playerHand, playerCharacterCard)
 	card.cardSlot = opponentCharacterCardSlot
 	
@@ -238,6 +245,16 @@ func _execute_opponent_character_play() -> void:
 	
 	var opponentName: String = Actor.Avatar.keys()[HoldoutStats.currentOpponent].capitalize()
 	battleEngine.log_action("Opponent. " + opponentName + " played " + card.nameText + ".")
+	
+	if battleEngine.has_modifier(Database.Modifier.GAMBLER) and randf() <= battleEngine.gamblerChance:
+		await get_tree().create_timer(opponentThinkingTime).timeout
+		opponentCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Gambler.png")
+		opponentCharacterCard.get_node("AnimationPlayer").queue("modifierIndicator")
+		await opponentCharacterCard.get_node("AnimationPlayer").animation_finished
+		
+		opponentCharacterCard.modify_value(int(opponentCharacterCard.value / 2.0))
+		
+		battleEngine.log_action("System. Gambler modifier activated. " + opponentName + "'s " + opponentCharacterCard.nameText + " gained +" + str(int(opponentCharacterCard.value / 2.0)) + " value.")
 	
 	ui.set_indicator(Actor.Type.PLAYER)
 	
@@ -340,6 +357,7 @@ func _execute_opponent_support_play() -> void:
 	if battleEngine.is_support_blocked(Actor.Type.OPPONENT):
 		battleEngine.log_action("System. The opponent's support was blocked this round.")
 	else:
+		opponentAI.set_flip_script_active(battleEngine.has_modifier(Database.Modifier.FLIP_SCRIPT))
 		var card = opponentAI.choose_support_card(opponentHand, opponentCharacterCard, playerCharacterCard, ui.get_health(Actor.Type.OPPONENT), ui.get_health(Actor.Type.PLAYER))
 		
 		if card != null:
@@ -350,6 +368,16 @@ func _execute_opponent_support_play() -> void:
 			HoldoutStats.record_played_card("Support", opponentSupportCard.cardKey, opponentSupportCard.value, true)
 			var opponentName: String = Actor.Avatar.keys()[HoldoutStats.currentOpponent].capitalize()
 			battleEngine.log_action("Opponent. " + opponentName + " played " + card.nameText + ".")
+			
+			if battleEngine.has_modifier(Database.Modifier.GAMBLER) and randf() <= battleEngine.gamblerChance:
+				await get_tree().create_timer(opponentThinkingTime).timeout
+				opponentSupportCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Gambler.png")
+				opponentSupportCard.get_node("AnimationPlayer").queue("modifierIndicator")
+				await opponentSupportCard.get_node("AnimationPlayer").animation_finished
+				
+				opponentSupportCard.modify_value(int(opponentCharacterCard.value / 2.0))
+				
+				battleEngine.log_action("System. Gambler modifier activated. " + opponentName + "'s " + opponentSupportCard.nameText + " gained +" + str(int(opponentCharacterCard.value / 2.0)) + " value.")
 			
 			var handled = false
 			
@@ -393,6 +421,19 @@ func _execute_opponent_support_play() -> void:
 func _transition_to_resolution_phase() -> void:
 	battleEngine.set_phase(battleEngine.RoundStage.END_CALCULATION)
 	
+	if battleEngine.isBlindEyeActiveThisRound:
+		var waitTime: float = 0.0
+		
+		if opponentCharacterCard:
+			opponentCharacterCard.get_node("AnimationPlayer").play("cardFlip")
+			waitTime = opponentCharacterCard.get_node("AnimationPlayer").current_animation_length
+			
+		if opponentSupportCard:
+			opponentSupportCard.get_node("AnimationPlayer").play("cardFlip")
+			
+		if waitTime > 0:
+			await get_tree().create_timer(waitTime + 0.5).timeout
+	
 	if battleEngine.has_modifier(Database.Modifier.STACKED_ODDS):
 		opponentCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Stacked Odds.png")
 		opponentCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
@@ -406,7 +447,9 @@ func _transition_to_resolution_phase() -> void:
 	var playerHealth = ui.get_health(Actor.Type.PLAYER)
 	var opponentHealth = ui.get_health(Actor.Type.OPPONENT)
 	
-	if playerHealth <= 0 or opponentHealth <= 0:
+	var opponentDefeated = opponentHealth <= 0 and not battleEngine.has_modifier(Database.Modifier.ENDURE)
+	
+	if playerHealth <= 0 or opponentDefeated:
 		if isTutorialRun:
 			await _conclude_tutorial_match()
 		else:
@@ -416,13 +459,21 @@ func _transition_to_resolution_phase() -> void:
 	_apply_in_hand_growth(playerHand, battleEngine.lastRoundWinner == battleEngine.Winner.PLAYER, true)
 	_apply_in_hand_growth(opponentHand, battleEngine.lastRoundWinner == battleEngine.Winner.OPPONENT, false)
 	
+	var deadWeightSavesPlayerCard = battleEngine.has_modifier(Database.Modifier.DEAD_WEIGHT) and battleEngine.lastRoundWinner == battleEngine.Winner.OPPONENT
+	
 	var cardsToDiscard = []
 	if playerSupportCard: cardsToDiscard.append(playerSupportCard)
-	cardsToDiscard.append(playerCharacterCard)
+	if not deadWeightSavesPlayerCard:
+		cardsToDiscard.append(playerCharacterCard)
 	cardsToDiscard.append(opponentCharacterCard)
 	if opponentSupportCard: cardsToDiscard.append(opponentSupportCard)
 	
 	await _move_cards_to_discard(cardsToDiscard)
+	
+	if deadWeightSavesPlayerCard:
+		battleEngine.log_action("System. Dead Weight modifier activated. " + playerCharacterCard.nameText + " was returned to your hand.")
+		await _return_character_to_hand(playerCharacterCard)
+	
 	ui.show_end_turn_button(false)
 	
 	await _repopulate_hand(playerHand, Actor.Type.PLAYER)
@@ -450,8 +501,8 @@ func _conclude_match() -> void:
 	var cardsToDiscard = []
 	
 	if playerSupportCard: cardsToDiscard.append(playerSupportCard)
-	cardsToDiscard.append(playerCharacterCard)
-	cardsToDiscard.append(opponentCharacterCard)
+	if playerCharacterCard: cardsToDiscard.append(playerCharacterCard)
+	if opponentCharacterCard: cardsToDiscard.append(opponentCharacterCard)
 	if opponentSupportCard: cardsToDiscard.append(opponentSupportCard)
 	
 	cardsToDiscard.append_array(playerHand)
@@ -489,7 +540,13 @@ func _start_new_round() -> void:
 	opponentPlayedSupport = false
 	ui.show_end_turn_button(false)
 	
-	await _repopulate_decks()
+	var deckRanOut = await _repopulate_decks()
+	
+	if deckRanOut and battleEngine.has_modifier(Database.Modifier.ENDURE):
+		battleEngine.log_action("System. Endure modifier activated. A deck ran out — you win.")
+		await _conclude_match()
+		return
+	
 	_apply_guerrilla_tactics_restrictions()
 	
 	battleEngine.start_new_round(battleEngine.has_modifier(Database.Modifier.ALWAYS_FIRST), HoldoutStats.roundsPlayed)
@@ -605,13 +662,15 @@ func _animate_opponent_playing_card(opponentCard: Node2D, opponentCardSlot: Node
 	AudioManager.play_random_card_draw()
 	opponentCard.get_node("Area2D/CollisionShape2D").disabled = false
 	
-	opponentCard.get_node("AnimationPlayer").play("cardFlip")
+	if !battleEngine.isBlindEyeActiveThisRound:
+		opponentCard.get_node("AnimationPlayer").play("cardFlip")
 	
 	var tween = get_tree().create_tween()
 	tween.finished.connect(AudioManager.play_random_card_draw)
 	tween.tween_property(opponentCard, "position", opponentCardSlot.position, cardMoveSpeed)
 	
-	await opponentCard.get_node("AnimationPlayer").animation_finished
+	if !battleEngine.isBlindEyeActiveThisRound:
+		await opponentCard.get_node("AnimationPlayer").animation_finished
 	
 	_play_dust_effect(opponentCard, true)
 	
@@ -820,11 +879,11 @@ func _move_cards_to_discard(cards: Array) -> void:
 				await _place_card_in_discard(card, %playerHand)
 
 func _reset_played_cards_perks() -> void:
-	if playerCharacterCard.perk:
+	if playerCharacterCard and playerCharacterCard.perk:
 		playerCharacterCard.get_node("value").text = str(playerCharacterCard.value)
 		playerCharacterCard.perkValueAppliedMidRound = 0
 	
-	if opponentCharacterCard.perk:
+	if opponentCharacterCard and opponentCharacterCard.perk:
 		opponentCharacterCard.get_node("value").text = str(opponentCharacterCard.value)
 		opponentCharacterCard.perkValueAppliedMidRound = 0
 
@@ -874,7 +933,7 @@ func _repopulate_hand(hand: Array, who: Actor.Type) -> void:
 	var isSupportDrawRound: bool = HoldoutStats.roundsPlayed % battleEngine.roundsTillSupportDraw == 0
 	
 	if who == Actor.Type.PLAYER:
-		if isSupportDrawRound and supportCount < battleEngine.maxSupportCards:
+		if isSupportDrawRound and supportCount < battleEngine.maxSupportCards and !battleEngine.has_modifier(Database.Modifier.SEVERED_SUPPLY):
 			supportDeckReference.draw_card()
 			await get_tree().create_timer(cardMoveSpeed).timeout
 	else:
@@ -884,7 +943,8 @@ func _repopulate_hand(hand: Array, who: Actor.Type) -> void:
 			
 	lockPlayerInput = false
 
-func _repopulate_decks(endGame: bool = false) -> void:
+
+func _repopulate_decks(endGame: bool = false) -> bool:
 	var discardedCharacters := []
 	var discardedSupports := []
 	
@@ -916,7 +976,7 @@ func _repopulate_decks(endGame: bool = false) -> void:
 		if opponentAI.has_method("reset_elimination"):
 			opponentAI.reset_elimination()
 		
-		return
+		return false
 	
 	if $"../supportDeck".deck.size() < battleEngine.minCardsForReshuffle:
 		discardedCards = discardedCharactersReversed + discardedSupportsReversed
@@ -928,7 +988,7 @@ func _repopulate_decks(endGame: bool = false) -> void:
 		for card in discardedSupportsReversed:
 			discardedCards.erase(card)
 		
-		return
+		return true
 	
 	if $"../characterDeck".deck.size() < battleEngine.minCardsForReshuffle:
 		discardedCards = discardedSupportsReversed + discardedCharactersReversed
@@ -943,7 +1003,10 @@ func _repopulate_decks(endGame: bool = false) -> void:
 		if opponentAI.has_method("reset_elimination"):
 			opponentAI.reset_elimination()
 		
-		return
+		return true
+	
+	return false
+
 
 func _place_card_in_discard(card: Node2D, hand: Node2D) -> void:
 	discardedCards.append(card)
@@ -960,6 +1023,20 @@ func _place_card_in_discard(card: Node2D, hand: Node2D) -> void:
 	await tween.finished
 	
 	hand.remove_card_from_hand(card)
+
+func _return_character_to_hand(card: Node2D) -> void:
+	AudioManager.play_random_card_draw()
+	card.scale = Vector2(1, 1)
+	
+	var baseValue = Database.CHARACTERS[card.cardKey][0]
+	card.value = baseValue
+	card.get_node("value").text = str(baseValue)
+	
+	var tween = %playerHand.add_card_to_hand(card, cardMoveSpeed)
+	if tween:
+		await tween.finished
+		AudioManager.play_random_card_draw()
+
 
 func _handle_runner_perk() -> void:
 	if playerCharacterCard.cardKey == "Runner" or opponentCharacterCard.cardKey == "Runner":
@@ -1060,6 +1137,15 @@ func _handle_opponent_win(damage: int, triggerDeepWounds: bool) -> void:
 			playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
 			battleEngine.log_action("System. Deep Wounds modifier activated. You took 2 additional damage.")
 			await _deal_damage(Actor.Type.PLAYER, 2)
+		
+		if battleEngine.has_modifier(Database.Modifier.VAMPIRIC) and damage >= 3:
+			var opponentName: String = Actor.Avatar.keys()[HoldoutStats.currentOpponent].capitalize()
+			battleEngine.log_action("System. Vampiric modifier activated. " + opponentName + " healed for 3.")
+			
+			opponentCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Vampiric.png")
+			opponentCharacterCard.get_node("AnimationPlayer").queue("modifierIndicator")
+			await opponentCharacterCard.get_node("AnimationPlayer").animation_finished
+			await _deal_damage(Actor.Type.OPPONENT, -3)
 	
 	# Reinforced Melee check — opponent's own support, opponent won
 	if opponentSupportCard and opponentSupportCard.perk and opponentSupportCard.perk.timing == "onResolution":

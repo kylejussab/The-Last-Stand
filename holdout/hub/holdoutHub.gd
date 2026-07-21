@@ -130,7 +130,10 @@ func hide_hub() -> void:
 	await hideTween.finished
 
 func _set_arena_data() -> void:
-	# This will add all the modifiers to the save file and what not
+	# Opponent's modifier always goes in first
+	%battleManager.add_modifier(selectedOpponentModifier.id, true)
+	GameStats.record_modifier_selection(selectedOpponentModifier.name)
+	
 	if isModifierRound:
 		if modifierSlotsActive[0] == 1:
 			%battleManager.add_modifier(tierOneModifier.id)
@@ -317,15 +320,37 @@ func _select_opponent_modifier() -> void:
 		activeModifierIds.append(active["id"])
 	
 	for modifier in Database.MODIFIERS.values():
-		if modifier["tier"] == 1 and not modifier["id"] in activeModifierIds: # This will change to selecting tier 8s, but for now it'll be 1s
+		var isEligibleTier = modifier["tier"] == 9 or (modifier["tier"] == 8 and HoldoutStats.numberOfWins >= 3)
+		if isEligibleTier and not modifier["id"] in activeModifierIds:
 			availableModifiers.append(modifier)
 	
-	selectedOpponentModifier = availableModifiers.pick_random() 
+	selectedOpponentModifier = _pick_weighted_opponent_modifier(availableModifiers)
+	
+	HoldoutStats.lastOfferedOpponentModifierIds.append(selectedOpponentModifier.id)
+	
+	if HoldoutStats.lastOfferedOpponentModifierIds.size() >= 4:
+		HoldoutStats.lastOfferedOpponentModifierIds.clear()
+		HoldoutStats.lastOfferedOpponentModifierIds.append(selectedOpponentModifier.id)
 	
 	opponentModifierNameLabel.text = selectedOpponentModifier.name
 	opponentModifierDescriptionLabel.text = selectedOpponentModifier.description
 	
 	opponentModifierSlot.setup_reel(availableModifiers)
+
+func _pick_weighted_opponent_modifier(pool: Array) -> Dictionary:
+	if pool.is_empty():
+		return {}
+	
+	if randf() < 0.8:
+		var freshPool = []
+		for modifier in pool:
+			if not modifier.id in HoldoutStats.lastOfferedOpponentModifierIds:
+				freshPool.append(modifier)
+		
+		if not freshPool.is_empty():
+			return freshPool.pick_random()
+	
+	return pool.pick_random()
 
 func _change_opponent_avatar_expression(expression: String) -> void:
 	$OpponentBox/OpponentHead.texture = load("res://core/ai/heads/" + Database.AVATARS[HoldoutStats.currentOpponent]["name"].get_slice(" ", 0) + expression + ".png")

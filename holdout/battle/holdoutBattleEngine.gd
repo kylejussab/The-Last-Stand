@@ -59,6 +59,7 @@ func _recalculate_limits() -> void:
 	var hasLoneWolf = has_modifier(Database.Modifier.LONE_WOLF)
 	var hasSupplyLine = has_modifier(Database.Modifier.SUPPLY_LINE)
 	var hasBlackMarket = has_modifier(Database.Modifier.BLACK_MARKET)
+	var hasSeveredSupply = has_modifier(Database.Modifier.SEVERED_SUPPLY)
 	
 	if hasVolatileHand:
 		minCardsForReshuffle = 6
@@ -66,14 +67,18 @@ func _recalculate_limits() -> void:
 	if hasReducedHand:
 		maxCharacterCards = 3
 		maxSupportCards = 3
-		
+	
+	if hasBlackMarket:
+		startingSupportCards = 4
+	
+	if hasSeveredSupply:
+		startingSupportCards = 4
+	
 	if hasLoneWolf:
 		if hasVolatileHand: minCardsForReshuffle = 10
 		maxCharacterCards = 6 if hasReducedHand else 8
 		maxSupportCards = 0
-	
-	if hasBlackMarket:
-		startingSupportCards = 4
+		startingSupportCards = 0
 	
 	if hasSupplyLine:
 		if hasVolatileHand: minCardsForReshuffle = 10
@@ -96,6 +101,9 @@ func clear_support_block() -> void:
 
 # --- MODIFIER SYSTEM ---
 var activeModifierIds: Array[int] = []
+var blindEyeChance: float = 0.40
+var isBlindEyeActiveThisRound: bool = false
+var gamblerChance: float = 0.30
 
 func has_modifier(modifierId: int) -> bool:
 	return activeModifierIds.has(modifierId)
@@ -130,13 +138,17 @@ func check_guerrilla_restriction(cardFaction: String, cardRoles: String) -> bool
 func process_combat_stats(playerTotal: int, opponentTotal: int, playerKey: String, opponentKey: String) -> Dictionary:
 	var damage = abs(playerTotal - opponentTotal)
 	var combatWinner = Winner.TIE
+	var isFlipScript = has_modifier(Database.Modifier.FLIP_SCRIPT)
 	
 	# Update Dominance
 	if (playerTotal - opponentTotal) > HoldoutStats.highestDominance:
 		HoldoutStats.highestDominance = (playerTotal - opponentTotal)
 		
 	# Determine Winner & Update Streaks
-	if playerTotal > opponentTotal:
+	var playerWins = playerTotal < opponentTotal if isFlipScript else playerTotal > opponentTotal
+	var opponentWins = opponentTotal < playerTotal if isFlipScript else opponentTotal > playerTotal
+	
+	if playerWins:
 		combatWinner = Winner.PLAYER
 		HoldoutStats.currentStreak += 1
 		if HoldoutStats.longestStreak < HoldoutStats.currentStreak:
@@ -148,7 +160,7 @@ func process_combat_stats(playerTotal: int, opponentTotal: int, playerKey: Strin
 		if playerBase <= 3 or playerBase < opponentBase:
 			HoldoutStats.underdogWins += 1
 			
-	elif opponentTotal > playerTotal:
+	elif opponentWins:
 		combatWinner = Winner.OPPONENT
 		HoldoutStats.currentStreak = 0
 	else:
@@ -186,6 +198,11 @@ func clear_history() -> void:
 # --- STATE MACHINE CONTROLS ---
 func start_new_round(isAlwaysFirst: bool, roundsPlayed: int) -> void:
 	clear_support_block()
+	
+	if has_modifier(Database.Modifier.BLIND_EYE):
+		isBlindEyeActiveThisRound = randf() <= blindEyeChance
+	else:
+		isBlindEyeActiveThisRound = false
 	
 	if roundsPlayed % 2 == 0 and not isAlwaysFirst:
 		whoStartedRound = Actor.Type.OPPONENT

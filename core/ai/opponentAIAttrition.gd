@@ -56,21 +56,23 @@ func _find_minimum_winning_card(characters: Array, supports: Array, targetValue:
 	var bestCharacter = characters[0]
 	var bestMargin = INF
 	var bestFallbackCharacter = characters[0]
-	var bestFallbackValue = -1
+	var bestFallbackValue = _worst_score()
 	
 	for character in characters:
 		var bestComboValue = character.value
-		for support in supports:
-			var comboValue = character.value + support.value
-			if comboValue > bestComboValue:
-				bestComboValue = comboValue
+		if not isFlipScriptActive:
+			for support in supports:
+				var comboValue = character.value + support.value
+				if comboValue > bestComboValue:
+					bestComboValue = comboValue
 		
-		var margin = bestComboValue - targetValue
+		# Normally: how far above target we land. Under Flip: how far below.
+		var margin = (targetValue - bestComboValue) if isFlipScriptActive else (bestComboValue - targetValue)
 		
 		if margin > 0 and margin < bestMargin:
 			bestMargin = margin
 			bestCharacter = character
-		elif margin <= 0 and bestComboValue > bestFallbackValue:
+		elif margin <= 0 and _is_better_score(bestComboValue, bestFallbackValue):
 			bestFallbackValue = bestComboValue
 			bestFallbackCharacter = character
 	
@@ -81,6 +83,7 @@ func _find_minimum_winning_card(characters: Array, supports: Array, targetValue:
 
 func choose_support_card(opponent_hand, opponent_character, player_character, _opponent_health = 99, _player_health = 99):
 	var currentDiff = opponent_character.value - player_character.value
+	var effectiveDiff = _effective_diff(currentDiff)
 	
 	var eligible = []
 	for support in opponent_hand:
@@ -90,32 +93,28 @@ func choose_support_card(opponent_hand, opponent_character, player_character, _o
 	if eligible.is_empty():
 		return null
 	
-	if currentDiff > 0:
+	if effectiveDiff > 0:
 		return null
 	
-	# Losing or tied: look for the smallest support that flips the round into a win, rather than the biggest one available.
-	var candidates = []
-	for support in eligible:
-		if support.cardKey in DEFENSIVE_CARDS:
-			continue
+	if not isFlipScriptActive:
+		var candidates = []
+		for support in eligible:
+			if support.cardKey in DEFENSIVE_CARDS:
+				continue
+			var score = float(support.value)
+			if support.cardKey in RISKY_CARDS:
+				score *= 0.6
+			var resultingMargin = currentDiff + score
+			if resultingMargin > 0:
+				candidates.append({"support": support, "margin": resultingMargin})
 		
-		var score = float(support.value)
-		if support.cardKey in RISKY_CARDS:
-			score *= 0.6 # crude guesswork discount
-		
-		var resultingMargin = currentDiff + score
-		if resultingMargin > 0:
-			candidates.append({"support": support, "margin": resultingMargin})
+		if not candidates.is_empty():
+			candidates.sort_custom(func(a, b): return a.margin < b.margin)
+			return candidates[0].support
 	
-	if not candidates.is_empty():
-		candidates.sort_custom(func(a, b): return a.margin < b.margin)
-		return candidates[0].support
-	
-	# Can't flip it to a win: Attrition cares a lot about not taking damage
 	for support in eligible:
 		if support.cardKey == "Retreat":
 			return support
-	
 	for support in eligible:
 		if support.cardKey == "Resilience":
 			return support

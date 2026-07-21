@@ -110,9 +110,13 @@ func play_damage_effect(who: Actor.Type, value: int) -> Signal:
 			animationPlayer = $opponent/AnimationPlayer
 			damageLabel = $opponent/damage
 	
+	if value < 0:
+		damageLabel.text = "+" + str(abs(value))
+	else:
+		damageLabel.text = "-" + str(value)
+		
 	AudioManager.play_take_damage()
 	
-	damageLabel.text = "-" + str(value)
 	animationPlayer.queue("showDamage")
 	
 	return animationPlayer.animation_finished

@@ -331,7 +331,7 @@ func clear_avatar_cache():
 
 const JUNE_OPPONENTS = [Actor.Avatar.ETHAN, Actor.Avatar.UCKMANN, Actor.Avatar.ALLEY, Actor.Avatar.MIRA, Actor.Avatar.RHEA]
 
-enum Modifier { REDUCED_HAND, VOLATILE_HAND, CALCULATED_RISK, DEEP_WOUNDS, HEAVY_HITTER, GUERRILLA_TACTICS, BLACK_MARKET, SLOW_BLEED, NO_DEFENSE, LOUD_NOISE, DESPERATE_MEASURES, OVER_EXERTION, INFECTED_DECK, HUMANITY_RESTORED, ALWAYS_FIRST, FORSAKEN_HONOR, STACKED_ODDS, LONE_WOLF, PSYCHO_MANIA, SUPPLY_LINE, CARD_ROT, FRIENDLY_FIRE }
+enum Modifier { REDUCED_HAND, VOLATILE_HAND, CALCULATED_RISK, DEEP_WOUNDS, HEAVY_HITTER, GUERRILLA_TACTICS, BLACK_MARKET, SLOW_BLEED, NO_DEFENSE, LOUD_NOISE, DESPERATE_MEASURES, OVER_EXERTION, INFECTED_DECK, HUMANITY_RESTORED, ALWAYS_FIRST, FORSAKEN_HONOR, STACKED_ODDS, LONE_WOLF, PSYCHO_MANIA, SUPPLY_LINE, CARD_ROT, FRIENDLY_FIRE, BLIND_EYE, SEVERED_SUPPLY, GAMBLER, VAMPIRIC, DO_NOTHING, DEAD_WEIGHT, FLIP_SCRIPT, ENDURE }
 
 const MODIFIERS = {
 	Modifier.VOLATILE_HAND: {
@@ -398,20 +398,20 @@ const MODIFIERS = {
 		"duration": 4,
 		"amount": 1,
 	},
+	Modifier.LOUD_NOISE: {
+		"id": Modifier.LOUD_NOISE,
+		"name": "Loud Noise",
+		"description": "All your stealth cards become aggressive. All your aggressive cards gain +2 value.",
+		"icon": "res://holdout/modifiers/icons/Loud Noise.png",
+		"tier": 1,
+		"multiplier": 0.15,
+		"duration": 2,
+	},
 	Modifier.NO_DEFENSE: {
 		"id": Modifier.NO_DEFENSE,
 		"name": "No Defense",
 		"description": "Your defensive character cards have 0 value. Their perks still activate.",
 		"icon": "res://holdout/modifiers/icons/No Defense.png",
-		"tier": 2,
-		"multiplier": 0.20,
-		"duration": 2,
-	},
-	Modifier.LOUD_NOISE: {
-		"id": Modifier.LOUD_NOISE,
-		"name": "Loud Noise",
-		"description": "All your stealth cards become aggressive. All your aggressive cards lose -1 value.",
-		"icon": "res://holdout/modifiers/icons/Loud Noise.png",
 		"tier": 2,
 		"multiplier": 0.20,
 		"duration": 2,
@@ -507,15 +507,6 @@ const MODIFIERS = {
 		"multiplier": 0.45,
 		"duration": 1,
 	},
-	Modifier.CARD_ROT: {
-		"id": Modifier.CARD_ROT,
-		"name": "Card Rot",
-		"description": "Every 3 rounds, all cards in your hand lose -1 value.",
-		"icon": "res://holdout/modifiers/icons/Card Rot.png",
-		"tier": 3,
-		"multiplier": 0.50,
-		"duration": 1,
-	},
 	Modifier.FRIENDLY_FIRE: {
 		"id": Modifier.FRIENDLY_FIRE,
 		"name": "Friendly Fire",
@@ -533,6 +524,89 @@ const MODIFIERS = {
 		"tier": 3,
 		"multiplier": 0.55,
 		"duration": 2,
+	},
+	Modifier.CARD_ROT: {
+		"id": Modifier.CARD_ROT,
+		"name": "Card Rot",
+		"description": "Every 3 rounds, all cards in your hand lose -1 value.",
+		"icon": "res://holdout/modifiers/icons/Card Rot.png",
+		"tier": 3,
+		"multiplier": 0.60,
+		"duration": 1,
+	},
+	
+	# Opponent Modifiers
+	Modifier.SEVERED_SUPPLY: {
+		"id": Modifier.SEVERED_SUPPLY,
+		"name": "Severed Supply",
+		"description": "Your support hand cannot be replenished, and you start with 4 supports.",
+		"icon": "res://holdout/modifiers/icons/Severed Supply.png",
+		"tier": 9,
+		"multiplier": 0.0,
+		"duration": 1,
+	},
+	Modifier.GAMBLER: {
+		"id": Modifier.GAMBLER,
+		"name": "Gambler",
+		"description": "Every opponent card has a 30% chance to gain half its card value when played.",
+		"icon": "res://holdout/modifiers/icons/Gambler.png",
+		"tier": 9,
+		"multiplier": 0.0,
+		"duration": 1,
+	},
+	Modifier.VAMPIRIC: {
+		"id": Modifier.VAMPIRIC,
+		"name": "Vampiric",
+		"description": "Whenever the opponent wins a round by 3 or more, they heal by 3.",
+		"icon": "res://holdout/modifiers/icons/Vampiric.png",
+		"tier": 9,
+		"multiplier": 0.0,
+		"duration": 1,
+	},
+	Modifier.DO_NOTHING: {
+		"id": Modifier.DO_NOTHING,
+		"name": "Do Nothing",
+		"description": "This modifier has no effect.",
+		"icon": "res://holdout/modifiers/icons/Do Nothing.png",
+		"tier": 9,
+		"multiplier": 0.0,
+		"duration": 1,
+	},
+	Modifier.BLIND_EYE: {
+		"id": Modifier.BLIND_EYE,
+		"name": "Blind Eye",
+		"description": "Every opponent card played has a 40% chance to be played face-down.",
+		"icon": "res://holdout/modifiers/icons/Blind Eye.png",
+		"tier": 8,
+		"multiplier": 0.0,
+		"duration": 1,
+	},
+	Modifier.FLIP_SCRIPT: {
+		"id": Modifier.FLIP_SCRIPT,
+		"name": "Flip the Script",
+		"description": "The player with the LOWEST final card value wins the round.",
+		"icon": "res://holdout/modifiers/icons/Flip the Script.png",
+		"tier": 8,
+		"multiplier": 0.0,
+		"duration": 1,
+	},
+	Modifier.DEAD_WEIGHT: {
+		"id": Modifier.DEAD_WEIGHT,
+		"name": "Dead Weight",
+		"description": "Losing character cards are returned to hand and not discarded.",
+		"icon": "res://holdout/modifiers/icons/Dead Weight.png",
+		"tier": 8,
+		"multiplier": 0.0,
+		"duration": 1,
+	},
+	Modifier.ENDURE: {
+		"id": Modifier.ENDURE,
+		"name": "Endure",
+		"description": "The opponent will not be defeated by damage. You win on the first instance of deck out.",
+		"icon": "res://holdout/modifiers/icons/Endure.png",
+		"tier": 8,
+		"multiplier": 0.0,
+		"duration": 1,
 	},
 }
 

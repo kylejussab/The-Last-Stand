@@ -15,7 +15,7 @@ func play_character_card(opponentHand, _playerHand, _playerPlayedCard = null, _p
 			supports.append(card)
 			
 	var bestCharacter = characters[0] if characters.size() > 0 else null
-	var maxCalculatedValue = -1
+	var maxCalculatedValue = _worst_score()
 	
 	for character in characters:
 		var potentialValue = character.value
@@ -24,22 +24,18 @@ func play_character_card(opponentHand, _playerHand, _playerPlayedCard = null, _p
 			match character.perk.timing:
 				"midRound":
 					potentialValue += character.perk.calculate_perk_value(character, opponentHand, null)
-					
 				"endRound", "lateEndRound":
-					var bestEndBonus = 0
-					var noSupportBonus = character.perk.calculate_end_perk_value(character, null, null, null, opponentHand)
-					if noSupportBonus > bestEndBonus:
-						bestEndBonus = noSupportBonus
-					for support in supports:
-						var bonus = character.perk.calculate_end_perk_value(character, support, null, null, opponentHand)
-						if bonus > bestEndBonus:
-							bestEndBonus = bonus
+					var bestEndBonus = character.perk.calculate_end_perk_value(character, null, null, null, opponentHand)
+					if not isFlipScriptActive:
+						for support in supports:
+							var bonus = character.perk.calculate_end_perk_value(character, support, null, null, opponentHand)
+							if bonus > bestEndBonus:
+								bestEndBonus = bonus
 					potentialValue += bestEndBonus
-					
 				"calculationRound":
 					potentialValue += character.perk.calculate_after_calculation_perk_value(character, opponentHand, 0, 1)
-					
-		if potentialValue > maxCalculatedValue:
+		
+		if _is_better_score(potentialValue, maxCalculatedValue):
 			maxCalculatedValue = potentialValue
 			bestCharacter = character
 			
