@@ -119,11 +119,10 @@ func _create_card_instance(cardKey: String, scenePath: String, isPlayer: bool = 
 		
 		roles.sort()
 		newCard.role = "/".join(roles)
-	if %battleManager.battleEngine.has_modifier(Database.Modifier.LOUD_NOISE) and "Aggressive" in newCard.role and isPlayer:
 		newCard.value += 2
 	
-	if %battleManager.battleEngine.has_modifier(Database.Modifier.NO_DEFENSE) and "Defensive" in newCard.role and isPlayer:
-		newCard.value = 0
+	if %battleManager.battleEngine.has_modifier(Database.Modifier.BAITED_DEFENSE) and "Defensive" in newCard.role and isPlayer:
+		newCard.value = 4
 	if%battleManager.battleEngine.has_modifier(Database.Modifier.LONE_WOLF) and isPlayer:
 		newCard.value *= 1.5
 	

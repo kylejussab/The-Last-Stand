@@ -231,7 +231,6 @@ func modify_value(amount: int) -> void:
 	
 	value += amount
 	
-	# If the front image is hidden, the card is face-down!
 	var isFaceDown = true
 	if has_node("image") and get_node("image").visible:
 		isFaceDown = false
@@ -241,14 +240,20 @@ func modify_value(amount: int) -> void:
 			get_node("value").text = str(value)
 		return
 	
-	# ... rest of your modify_value code ...
-	if not get_node("AnimationPlayer").animation_started.is_connected(_when_animation_starts):
-		get_node("AnimationPlayer").animation_started.connect(_when_animation_starts)
+	var animationPlayer = get_node("AnimationPlayer")
+	
+	if not animationPlayer.animation_started.is_connected(_when_animation_starts):
+		animationPlayer.animation_started.connect(_when_animation_starts)
 	
 	var stringSign = "+" if amount >= 0 else "" 
 	
 	get_node("perk").text = stringSign + str(amount)
-	get_node("AnimationPlayer").queue("showPerk")
+	
+	if animationPlayer.is_playing():
+		animationPlayer.queue("showPerk")
+	else:
+		animationPlayer.play("showPerk")
+
 
 func _when_animation_starts(animationName: String):
 	if animationName == "showPerk":

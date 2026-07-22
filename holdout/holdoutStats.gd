@@ -64,7 +64,7 @@ const ACCOLADES = {
 	"Brawler": {
 		"id": "Brawler",
 		"title": "Brawler", 
-		"description": "Win a battle without playing a Support card."
+		"description": "Win a battle playing a maximum of 1 support card."
 	},
 	"AnalysisParalysis": {
 		"id": "AnalysisParalysis",

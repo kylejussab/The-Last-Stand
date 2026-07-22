@@ -314,6 +314,9 @@ static func get_final_accolade() -> Dictionary:
 	if HoldoutStats.multiplierTotal >= 1.8:
 		return HoldoutStats.ACCOLADES["ThrillSeeker"]
 	
+	if HoldoutStats.currentRoundDuration < 60.0 and HoldoutStats.numberOfWins > 0:
+		return HoldoutStats.ACCOLADES["SpeedDemon"]
+	
 	var earned: Array = []
 	
 	if HoldoutStats.playerHealthValue == HoldoutStats.playerHealthAtRoundStart: 
@@ -334,19 +337,15 @@ static func get_final_accolade() -> Dictionary:
 	if HoldoutStats.multiplierTotal == 1.0:
 		earned.append(HoldoutStats.ACCOLADES["Purist"])
 	
-	if HoldoutStats.currentRoundDuration < 60.0 and HoldoutStats.numberOfWins > 0:
-		earned.append(HoldoutStats.ACCOLADES["SpeedDemon"])
-	
 	if HoldoutStats.longestThinkTime >= 30.0 and HoldoutStats.numberOfWins > 0:
 		earned.append(HoldoutStats.ACCOLADES["AnalysisParalysis"])
 		
-	var playedSupport: bool = false
+	var supportCount: int = 0
 	for card in HoldoutStats.allPlayedCards:
 		if card.get("faction", "") == "Support":
-			playedSupport = true
-			break
+			supportCount += 1
 			
-	if not playedSupport and HoldoutStats.numberOfWins > 0:
+	if supportCount <= 1 and HoldoutStats.numberOfWins > 0:
 		earned.append(HoldoutStats.ACCOLADES["Brawler"])
 	
 	if not earned.is_empty():

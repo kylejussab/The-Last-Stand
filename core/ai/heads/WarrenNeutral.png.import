@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://jg1avlia11lu"
-path="res://.godot/imported/SilasNeutral.png-4c8515ad300d384e19e449863236781f.ctex"
+path="res://.godot/imported/WarrenNeutral.png-f3e3cf6112de8f43e84dd26f2e08cb60.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://core/ai/heads/SilasNeutral.png"
-dest_files=["res://.godot/imported/SilasNeutral.png-4c8515ad300d384e19e449863236781f.ctex"]
+source_file="res://core/ai/heads/WarrenNeutral.png"
+dest_files=["res://.godot/imported/WarrenNeutral.png-f3e3cf6112de8f43e84dd26f2e08cb60.ctex"]
 
 [params]
 

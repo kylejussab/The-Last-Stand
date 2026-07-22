@@ -277,9 +277,9 @@ var AVATARS = {
 		"backgroundPath": "res://core/ai/backgrounds/",
 		"playstyle": "Calculator"
 	},
-	Actor.Avatar.SILAS: {
-		"name": "Silas Vane",
-		"description": "Scavenger King",
+	Actor.Avatar.WARREN: {
+		"name": "Warren Adler",
+		"description": "Ridge Leader",
 		"health": "%02d" % 20,
 		"headPath": "res://core/ai/heads/",
 		"backgroundPath": "res://core/ai/backgrounds/",
@@ -331,7 +331,7 @@ func clear_avatar_cache():
 
 const JUNE_OPPONENTS = [Actor.Avatar.ETHAN, Actor.Avatar.UCKMANN, Actor.Avatar.ALLEY, Actor.Avatar.MIRA, Actor.Avatar.RHEA]
 
-enum Modifier { REDUCED_HAND, VOLATILE_HAND, CALCULATED_RISK, DEEP_WOUNDS, HEAVY_HITTER, GUERRILLA_TACTICS, BLACK_MARKET, SLOW_BLEED, NO_DEFENSE, LOUD_NOISE, DESPERATE_MEASURES, OVER_EXERTION, INFECTED_DECK, HUMANITY_RESTORED, ALWAYS_FIRST, FORSAKEN_HONOR, STACKED_ODDS, LONE_WOLF, PSYCHO_MANIA, SUPPLY_LINE, CARD_ROT, FRIENDLY_FIRE, BLIND_EYE, SEVERED_SUPPLY, GAMBLER, VAMPIRIC, DO_NOTHING, DEAD_WEIGHT, FLIP_SCRIPT, ENDURE }
+enum Modifier { REDUCED_HAND, VOLATILE_HAND, CALCULATED_RISK, DEEP_WOUNDS, HEAVY_HITTER, GUERRILLA_TACTICS, BLACK_MARKET, SLOW_BLEED, BAITED_DEFENSE, LOUD_NOISE, DESPERATE_MEASURES, OVER_EXERTION, INFECTED_DECK, HUMANITY_RESTORED, FRONT_RUNNER, FORSAKEN_HONOR, STACKED_ODDS, LONE_WOLF, PSYCHO_MANIA, SUPPLY_LINE, CARD_ROT, FRIENDLY_FIRE, BLIND_EYE, SEVERED_SUPPLY, GAMBLER, VAMPIRIC, DO_NOTHING, DEAD_WEIGHT, FLIP_SCRIPT, ENDURE }
 
 const MODIFIERS = {
 	Modifier.VOLATILE_HAND: {
@@ -343,19 +343,10 @@ const MODIFIERS = {
 		"multiplier": 0.05,
 		"duration": 3,
 	},
-	Modifier.CALCULATED_RISK: {
-		"id": Modifier.CALCULATED_RISK,
-		"name": "Calculated Risk",
-		"description": "Winning a round by a margin of exactly 1 deals +3 damage to the opponent's health.",
-		"icon": "res://holdout/modifiers/icons/Calculated Risk.png",
-		"tier": 1,
-		"multiplier": 0.05,
-		"duration": 4,
-	},
 	Modifier.DEEP_WOUNDS: {
 		"id": Modifier.DEEP_WOUNDS,
 		"name": "Deep Wounds",
-		"description": "Take +2 damage if you lose a round by 5 or more.",
+		"description": "Losing by 5+ deals +2 damage, but your next played character gains +3.",
 		"icon": "res://holdout/modifiers/icons/Deep Wounds.png",
 		"tier": 1,
 		"multiplier": 0.10,
@@ -364,25 +355,16 @@ const MODIFIERS = {
 	Modifier.HEAVY_HITTER: {
 		"id": Modifier.HEAVY_HITTER,
 		"name": "Heavy Hitter",
-		"description": "Take +1 damage if you play a character with a base value of 5 or more.",
+		"description": "Playing a 5+ base value character deals +2 damage on win, but you take +1 on loss.",
 		"icon": "res://holdout/modifiers/icons/Heavy Hitter.png",
 		"tier": 1,
 		"multiplier": 0.10, 
 		"duration": 3,
 	},
-	Modifier.GUERRILLA_TACTICS: {
-		"id": Modifier.GUERRILLA_TACTICS,
-		"name": "Guerrilla Tactics",
-		"description": "Consecutive character cards cannot be the same faction or type.",
-		"icon": "res://holdout/modifiers/icons/Guerrilla Tactics.png",
-		"tier": 1,
-		"multiplier": 0.10,
-		"duration": 3,
-	},
 	Modifier.BLACK_MARKET: {
 		"id": Modifier.BLACK_MARKET,
 		"name": "Black Market",
-		"description": "You start the game with 4 support cards.",
+		"description": "You start with 4 supports, but supports replenish every 4th round.",
 		"icon": "res://holdout/modifiers/icons/Black Market.png",
 		"tier": 1,
 		"multiplier": 0.10,
@@ -391,27 +373,36 @@ const MODIFIERS = {
 	Modifier.SLOW_BLEED: {
 		"id": Modifier.SLOW_BLEED,
 		"name": "Slow Bleed",
-		"description": "Take 1 damage at the end of every other round.",
+		"description": "Every other round, lose 1 health, but gain +1 to a random character card in hand.",
 		"icon": "res://holdout/modifiers/icons/Slow Bleed.png",
 		"tier": 1,
 		"multiplier": 0.15,
-		"duration": 4,
+		"duration": 3,
 		"amount": 1,
 	},
 	Modifier.LOUD_NOISE: {
 		"id": Modifier.LOUD_NOISE,
 		"name": "Loud Noise",
-		"description": "All your stealth cards become aggressive. All your aggressive cards gain +2 value.",
+		"description": "All your stealth cards become aggressive and all converted cards gain +2 value.",
 		"icon": "res://holdout/modifiers/icons/Loud Noise.png",
 		"tier": 1,
 		"multiplier": 0.15,
 		"duration": 2,
 	},
-	Modifier.NO_DEFENSE: {
-		"id": Modifier.NO_DEFENSE,
-		"name": "No Defense",
-		"description": "Your defensive character cards have 0 value. Their perks still activate.",
-		"icon": "res://holdout/modifiers/icons/No Defense.png",
+	Modifier.CALCULATED_RISK: {
+		"id": Modifier.CALCULATED_RISK,
+		"name": "Calculated Risk",
+		"description": "If the difference margin is exactly 1, the winner deals +3 damage.",
+		"icon": "res://holdout/modifiers/icons/Calculated Risk.png",
+		"tier": 2,
+		"multiplier": 0.20,
+		"duration": 4,
+	},
+	Modifier.BAITED_DEFENSE: {
+		"id": Modifier.BAITED_DEFENSE,
+		"name": "Baited Defense",
+		"description": "Defensive cards become 4 value. Losing with one steals the opponent's card.",
+		"icon": "res://holdout/modifiers/icons/Baited Defense.png",
 		"tier": 2,
 		"multiplier": 0.20,
 		"duration": 2,
@@ -428,7 +419,7 @@ const MODIFIERS = {
 	Modifier.OVER_EXERTION: {
 		"id": Modifier.OVER_EXERTION,
 		"name": "Over-Exertion",
-		"description": "Deal +2 damage if your final value is 10 or higher, but take +1 damage.",
+		"description": "Deal +1 bonus damage for each point your characters final value exceeds 10.",
 		"icon": "res://holdout/modifiers/icons/Over Exertion.png",
 		"tier": 2,
 		"multiplier": 0.25,
@@ -452,11 +443,11 @@ const MODIFIERS = {
 		"multiplier": 0.25,
 		"duration": 2,
 	},
-	Modifier.ALWAYS_FIRST: {
-		"id": Modifier.ALWAYS_FIRST,
-		"name": "Always First",
-		"description": "You must play first every round.",
-		"icon": "res://holdout/modifiers/icons/Always First.png",
+	Modifier.FRONT_RUNNER: {
+		"id": Modifier.FRONT_RUNNER,
+		"name": "Front Runner",
+		"description": "You start every character phase, but go second every support phase.",
+		"icon": "res://holdout/modifiers/icons/Front Runner.png",
 		"tier": 2,
 		"multiplier": 0.30,
 		"duration": 2,
@@ -464,17 +455,17 @@ const MODIFIERS = {
 	Modifier.FORSAKEN_HONOR: {
 		"id": Modifier.FORSAKEN_HONOR,
 		"name": "Forsaken Honor",
-		"description": "Lose 20 health. Your card’s faction and type are hidden from the opponent.",
+		"description": "Lose 10 health. Your card’s faction and type are hidden from the opponent.",
 		"icon": "res://holdout/modifiers/icons/Forsaken Honor.png",
 		"tier": 3,
 		"multiplier": 0.35,
 		"duration": 2,
-		"healthCost": 20,
+		"healthCost": 10,
 	},
 	Modifier.STACKED_ODDS: {
 		"id": Modifier.STACKED_ODDS,
 		"name": "Stacked Odds",
-		"description": "The opponent gains +1 to their card value at the end of every round.",
+		"description": "Opponent win streaks gain escalating value. Break a 3+ streak to deal the streak as bonus damage.",
 		"icon": "res://holdout/modifiers/icons/Stacked Odds.png",
 		"tier": 3,
 		"multiplier": 0.35,
@@ -510,7 +501,7 @@ const MODIFIERS = {
 	Modifier.FRIENDLY_FIRE: {
 		"id": Modifier.FRIENDLY_FIRE,
 		"name": "Friendly Fire",
-		"description": "Your card's value is halved if your faction matches the opponent’s.",
+		"description": "Your card's value is halved if factions match, but gains +2 if your hand has all different factions.",
 		"icon": "res://holdout/modifiers/icons/Friendly Fire.png",
 		"tier": 3,
 		"multiplier": 0.50,
@@ -528,7 +519,7 @@ const MODIFIERS = {
 	Modifier.CARD_ROT: {
 		"id": Modifier.CARD_ROT,
 		"name": "Card Rot",
-		"description": "Every 3 rounds, all cards in your hand lose -1 value.",
+		"description": "Characters lose 1 value per round held past round 3. Rotted value is dealt as bonus damage on win.",
 		"icon": "res://holdout/modifiers/icons/Card Rot.png",
 		"tier": 3,
 		"multiplier": 0.60,
@@ -536,20 +527,20 @@ const MODIFIERS = {
 	},
 	
 	# Opponent Modifiers
+	Modifier.GUERRILLA_TACTICS: {
+		"id": Modifier.GUERRILLA_TACTICS,
+		"name": "Guerrilla Tactics",
+		"description": "Consecutive character cards cannot be the same faction or type.",
+		"icon": "res://holdout/modifiers/icons/Guerrilla Tactics.png",
+		"tier": 9,
+		"multiplier": 0.0,
+		"duration": 1,
+	},
 	Modifier.SEVERED_SUPPLY: {
 		"id": Modifier.SEVERED_SUPPLY,
 		"name": "Severed Supply",
 		"description": "Your support hand cannot be replenished, and you start with 4 supports.",
 		"icon": "res://holdout/modifiers/icons/Severed Supply.png",
-		"tier": 9,
-		"multiplier": 0.0,
-		"duration": 1,
-	},
-	Modifier.GAMBLER: {
-		"id": Modifier.GAMBLER,
-		"name": "Gambler",
-		"description": "Every opponent card has a 30% chance to gain half its card value when played.",
-		"icon": "res://holdout/modifiers/icons/Gambler.png",
 		"tier": 9,
 		"multiplier": 0.0,
 		"duration": 1,
@@ -569,6 +560,15 @@ const MODIFIERS = {
 		"description": "This modifier has no effect.",
 		"icon": "res://holdout/modifiers/icons/Do Nothing.png",
 		"tier": 9,
+		"multiplier": 0.0,
+		"duration": 1,
+	},
+	Modifier.GAMBLER: {
+		"id": Modifier.GAMBLER,
+		"name": "Gambler",
+		"description": "Every opponent card has a 30% chance to gain half its value when played.",
+		"icon": "res://holdout/modifiers/icons/Gambler.png",
+		"tier": 8,
 		"multiplier": 0.0,
 		"duration": 1,
 	},

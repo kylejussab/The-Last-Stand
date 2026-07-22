@@ -45,6 +45,7 @@ var maxSupportCards: int = 4
 var startingSupportCards: int = 2
 var minCardsForReshuffle: int = 5
 var roundsTillSupportDraw: int = 3
+var roundsTillSupportDrawOpponent: int = 3
 
 func _recalculate_limits() -> void:
 	maxCharacterCards = 4
@@ -53,6 +54,7 @@ func _recalculate_limits() -> void:
 	minCardsForReshuffle = 5
 	startingSupportCards = 2
 	roundsTillSupportDraw = 3
+	roundsTillSupportDrawOpponent = 3
 	
 	var hasReducedHand = has_modifier(Database.Modifier.REDUCED_HAND)
 	var hasVolatileHand = has_modifier(Database.Modifier.VOLATILE_HAND)
@@ -70,6 +72,7 @@ func _recalculate_limits() -> void:
 	
 	if hasBlackMarket:
 		startingSupportCards = 4
+		roundsTillSupportDraw = 4
 	
 	if hasSeveredSupply:
 		startingSupportCards = 4
@@ -86,6 +89,10 @@ func _recalculate_limits() -> void:
 		maxCharacterCards = 0
 		startingSupportCards = 6
 		roundsTillSupportDraw = 2
+	
+	# Black Market's slower replenish takes priority over Supply Line's faster one
+	if hasBlackMarket and hasSupplyLine:
+		roundsTillSupportDraw = 4
 
 # --- SUPPORT BLOCKING ---
 var _blockedSupportSide: int = Actor.Type.NONE
@@ -104,6 +111,7 @@ var activeModifierIds: Array[int] = []
 var blindEyeChance: float = 0.40
 var isBlindEyeActiveThisRound: bool = false
 var gamblerChance: float = 0.30
+var stackedOddsStreak: int = 0
 
 func has_modifier(modifierId: int) -> bool:
 	return activeModifierIds.has(modifierId)
@@ -118,6 +126,34 @@ func remove_modifier(modifierId: int) -> void:
 	activeModifierIds.erase(modifierId)
 	_recalculate_limits()
 	modifier_toggled.emit(modifierId, false)
+
+func get_support_starter() -> int:
+	if has_modifier(Database.Modifier.FRONT_RUNNER):
+		return Actor.Type.OPPONENT
+	return whoStartedRound
+
+func get_stacked_odds_bonus() -> int:
+	if not has_modifier(Database.Modifier.STACKED_ODDS):
+		return 0
+	return stackedOddsStreak
+
+
+func update_stacked_odds(winner: int) -> int:
+	if not has_modifier(Database.Modifier.STACKED_ODDS):
+		return 0
+	
+	if winner == Winner.OPPONENT:
+		stackedOddsStreak += 1
+		return 0
+		
+	elif winner == Winner.PLAYER:
+		var brokenStreak = stackedOddsStreak
+		
+		stackedOddsStreak = 0
+		
+		return brokenStreak if brokenStreak >= 3 else 0
+	
+	return 0
 
 # --- VALIDATION MATH ---
 func check_guerrilla_restriction(cardFaction: String, cardRoles: String) -> bool:
@@ -175,15 +211,20 @@ func process_combat_stats(playerTotal: int, opponentTotal: int, playerKey: Strin
 
 	# Check Complex Modifiers
 	var triggerCalculatedRisk = (has_modifier(Database.Modifier.CALCULATED_RISK) and combatWinner == Winner.PLAYER and damage == 1)
+	var triggerCalculatedRiskLoss = (has_modifier(Database.Modifier.CALCULATED_RISK) and combatWinner == Winner.OPPONENT and damage == 1)
 	var triggerDeepWounds = (has_modifier(Database.Modifier.DEEP_WOUNDS) and combatWinner == Winner.OPPONENT and damage >= 5)
-	var triggerOverExertion = (has_modifier(Database.Modifier.OVER_EXERTION) and playerTotal >= 10)
+	
+	var overExertionBonus = 0
+	if has_modifier(Database.Modifier.OVER_EXERTION) and playerTotal > 10:
+		overExertionBonus = playerTotal - 10
 	
 	return {
 		"winner": combatWinner,
 		"damage": damage,
 		"triggerCalculatedRisk": triggerCalculatedRisk,
+		"triggerCalculatedRiskLoss": triggerCalculatedRiskLoss,
 		"triggerDeepWounds": triggerDeepWounds,
-		"triggerOverExertion": triggerOverExertion
+		"overExertionBonus": overExertionBonus
 	}
 
 # --- ACTION HISTORY ---
@@ -226,16 +267,18 @@ func opponent_played_character() -> void:
 		set_phase(RoundStage.PLAYER_SUPPORT)
 
 func player_played_support() -> void:
-	if whoStartedRound == Actor.Type.PLAYER:
+	if get_support_starter() == Actor.Type.PLAYER:
 		set_phase(RoundStage.OPPONENT_SUPPORT)
 	else:
 		set_phase(RoundStage.END_CALCULATION)
 
+
 func opponent_played_support() -> void:
-	if whoStartedRound == Actor.Type.OPPONENT:
+	if get_support_starter() == Actor.Type.OPPONENT:
 		set_phase(RoundStage.PLAYER_SUPPORT)
 	else:
 		set_phase(RoundStage.END_CALCULATION)
+
 
 func set_phase(newPhase: RoundStage) -> void:
 	roundStage = newPhase
@@ -247,13 +290,15 @@ func get_engine_save_dict() -> Dictionary:
 		"whoStartedRound": whoStartedRound,
 		"roundStage": roundStage,
 		"activeModifierIds": activeModifierIds.duplicate(),
-		"actionHistory": actionHistory.duplicate()
+		"actionHistory": actionHistory.duplicate(),
+		"stackedOddsStreak": stackedOddsStreak,
 	}
 
 func load_engine_save_dict(data: Dictionary) -> void:
 	whoStartedRound = int(data.get("whoStartedRound", 0))
 	roundStage = int(data.get("roundStage", 0)) as RoundStage
 	actionHistory.assign(data.get("actionHistory", []))
+	stackedOddsStreak = int(data.get("stackedOddsStreak", 0))
 	
 	activeModifierIds.clear()
 	var saved_mods = data.get("activeModifierIds", [])

@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://wxpfmhill25v" path="res://holdout/modifiers/icons/bubbleBackground.png" id="1_8pitj"]
 [ext_resource type="Script" uid="uid://b3v0arxnlrrsl" path="res://holdout/modifiers/modifierBubble.gd" id="1_ic7ix"]
 [ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://core/fonts/SF-Pro-Display-Black.otf" id="1_u888h"]
-[ext_resource type="Texture2D" uid="uid://b8ecmr24a5gsl" path="res://holdout/modifiers/icons/Always First.png" id="2_u888h"]
+[ext_resource type="Texture2D" uid="uid://b8ecmr24a5gsl" path="res://holdout/modifiers/icons/Front Runner.png" id="2_u888h"]
 [ext_resource type="FontFile" uid="uid://di1dchl37cfhu" path="res://core/fonts/SF-Pro-Display-Semibold.otf" id="3_h4x4q"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u888h"]

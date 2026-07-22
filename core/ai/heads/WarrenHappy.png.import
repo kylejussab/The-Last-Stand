@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://1xnqsnfvdwsu"
-path="res://.godot/imported/SilasHappy.png-26f5ed5e0f9f9329d00ac0e02b24cde8.ctex"
+path="res://.godot/imported/WarrenHappy.png-bdf0974382ecd1fa6bd5653d8c0889e9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://core/ai/heads/SilasHappy.png"
-dest_files=["res://.godot/imported/SilasHappy.png-26f5ed5e0f9f9329d00ac0e02b24cde8.ctex"]
+source_file="res://core/ai/heads/WarrenHappy.png"
+dest_files=["res://.godot/imported/WarrenHappy.png-bdf0974382ecd1fa6bd5653d8c0889e9.ctex"]
 
 [params]
 
