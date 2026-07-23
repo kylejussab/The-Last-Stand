@@ -31,10 +31,10 @@ builds/
 exports/
 
 # Ignore full card assets
-assets/cards/premium/
+core/cards/art/premium/
 
 # Ignore holdout MVPs
-assets/holdout/mvp/
+holdout/outro/icons/mvp/
 
 # Ignore data logs
 game_balance_data.json
@@ -46,8 +46,8 @@ __pycache__/
 *$py.class
 
 # Ignore premium assets
-assets/sounds/music/The Perilous Path/
-assets/sounds/music/The Perilous Path/*.import
+core/audio/music/The Perilous Path/
+core/audio/music/The Perilous Path/*.import
 
 # Ignore working files
 docs/

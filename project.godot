@@ -17,18 +17,18 @@ run/max_fps=60
 boot_splash/bg_color=Color(0, 0, 0, 1)
 boot_splash/show_image=false
 config/icon="uid://bvd5oi0jkqtxj"
-config/macos_native_icon="res://assets/mainMenu/AppIconMac.icns"
-config/windows_native_icon="res://assets/mainMenu/AppIconWindows.ico"
+config/macos_native_icon="res://core/menus/AppIconMac.icns"
+config/windows_native_icon="res://core/menus/AppIconWindows.ico"
 
 [autoload]
 
-Curtain="*res://scenes/curtain.tscn"
-GameStats="*res://scripts/core/gameStats.gd"
-Database="*res://scripts/core/database.gd"
-AccessibilityData="*res://scripts/core/accessibilityData.gd"
-AudioManager="*res://scenes/audioManager.tscn"
-SaveManager="*res://scripts/core/saveManager.gd"
-SettingsData="*res://scripts/core/settingsData.gd"
+Curtain="*res://core/menus/curtain.tscn"
+GameStats="*res://core/save/gameStats.gd"
+Database="*res://core/database.gd"
+AccessibilityData="*res://core/save/accessibilityData.gd"
+AudioManager="*res://core/audio/audioManager.tscn"
+SaveManager="*res://core/save/saveManager.gd"
+SettingsData="*res://core/save/settingsData.gd"
 
 [display]
 
@@ -38,6 +38,25 @@ window/size/resizable=false
 window/size/window_width_override=1280
 window/size/window_height_override=720
 window/stretch/mode="canvas_items"
+
+[file_customization]
+
+folder_colors={
+"res://core/ai/backgrounds/": "green",
+"res://core/ai/heads/": "green",
+"res://core/audio/music/": "green",
+"res://core/audio/ui/": "green",
+"res://core/cards/art/": "green",
+"res://core/cards/audio/": "green",
+"res://core/cards/icons/": "green",
+"res://core/fonts/": "green",
+"res://core/menus/cardViewer/assets/": "green",
+"res://core/menus/explodedCard/": "green",
+"res://core/menus/ui/": "green",
+"res://holdout/arena/ui/": "green",
+"res://holdout/modifiers/icons/": "green",
+"res://holdout/outro/icons/": "green"
+}
 
 [rendering]
 
