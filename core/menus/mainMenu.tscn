@@ -1881,7 +1881,7 @@ theme_override_colors/default_color = Color(0.17254902, 0.17254902, 0.17254902, 
 theme_override_fonts/normal_font = SubResource("FontVariation_uwljm")
 theme_override_font_sizes/normal_font_size = 18
 bbcode_enabled = true
-text = "Pre-Alpha v0.5.0"
+text = "Pre-Alpha v0.5.1"
 
 [node name="pauseIcon" type="Node2D" parent="."]
 visible = false
