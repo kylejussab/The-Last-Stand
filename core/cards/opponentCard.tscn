@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://bn88i42vic2bw"]
+[gd_scene load_steps=37 format=3 uid="uid://bn88i42vic2bw"]
 
 [ext_resource type="Script" uid="uid://df6vntpyt6v25" path="res://core/cards/opponentCard.gd" id="1_6ngam"]
 [ext_resource type="Texture2D" uid="uid://cbgv0l1d6fl7k" path="res://core/cards/art/CardBackBlank.png" id="2_4jfu0"]
@@ -15,6 +15,9 @@
 [ext_resource type="Texture2D" uid="uid://bssdu3ahjvkw8" path="res://core/menus/ui/GunTop.png" id="7_vrdlr"]
 [ext_resource type="FontFile" uid="uid://di1dchl37cfhu" path="res://core/fonts/SF-Pro-Display-Semibold.otf" id="10_fgn7q"]
 [ext_resource type="Animation" uid="uid://dem7f0dxaa6wf" path="res://core/menus/ui/backfire.res" id="13_0yvlp"]
+[ext_resource type="Texture2D" uid="uid://dv5yo07fmt2kj" path="res://core/cards/icons/Aggressive.png" id="16_vrdlr"]
+[ext_resource type="Texture2D" uid="uid://dnmti070qcnfn" path="res://core/cards/icons/Firefly.png" id="17_0yvlp"]
+[ext_resource type="Texture2D" uid="uid://churihytq1wme" path="res://holdout/arena/ui/Backfire.png" id="19_m3iyu"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6ngam"]
 size = Vector2(146, 204)
@@ -261,6 +264,90 @@ tracks/18/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 0)]
 }
+tracks/19/type = "value"
+tracks/19/imported = false
+tracks/19/enabled = true
+tracks/19/path = NodePath("CharacterTooltip:scale")
+tracks/19/interp = 1
+tracks/19/loop_wrap = true
+tracks/19/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05)]
+}
+tracks/20/type = "value"
+tracks/20/imported = false
+tracks/20/enabled = true
+tracks/20/path = NodePath("CharacterTooltip/VBoxContainer:modulate")
+tracks/20/interp = 1
+tracks/20/loop_wrap = true
+tracks/20/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/21/type = "value"
+tracks/21/imported = false
+tracks/21/enabled = true
+tracks/21/path = NodePath("SupportTooltip/Heading:scale")
+tracks/21/interp = 1
+tracks/21/loop_wrap = true
+tracks/21/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05)]
+}
+tracks/22/type = "value"
+tracks/22/imported = false
+tracks/22/enabled = true
+tracks/22/path = NodePath("SupportTooltip/Description:scale")
+tracks/22/interp = 1
+tracks/22/loop_wrap = true
+tracks/22/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05)]
+}
+tracks/23/type = "value"
+tracks/23/imported = false
+tracks/23/enabled = true
+tracks/23/path = NodePath("SupportTooltip/Heading/RichTextLabel:modulate")
+tracks/23/interp = 1
+tracks/23/loop_wrap = true
+tracks/23/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/24/type = "value"
+tracks/24/imported = false
+tracks/24/enabled = true
+tracks/24/path = NodePath("SupportTooltip/Heading/TextureRect:modulate")
+tracks/24/interp = 1
+tracks/24/loop_wrap = true
+tracks/24/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/25/type = "value"
+tracks/25/imported = false
+tracks/25/enabled = true
+tracks/25/path = NodePath("SupportTooltip/Description/RichTextLabel:modulate")
+tracks/25/interp = 1
+tracks/25/loop_wrap = true
+tracks/25/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
 
 [sub_resource type="Animation" id="Animation_kg30u"]
 resource_name = "cardFlip"
@@ -387,6 +474,34 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_tkh5l"]
+resource_name = "showCharacterTooltip"
+length = 0.15
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CharacterTooltip:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CharacterTooltip/VBoxContainer:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.075, 0.15),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_4jfu0"]
@@ -528,17 +643,108 @@ tracks/5/keys = {
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0.8627451)]
 }
 
+[sub_resource type="Animation" id="Animation_pser6"]
+resource_name = "showSupportTooltip"
+length = 0.15
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SupportTooltip/Heading:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SupportTooltip/Description:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.15),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05), Vector2(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SupportTooltip/Heading/RichTextLabel:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.075, 0.15),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SupportTooltip/Heading/TextureRect:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.075, 0.15),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("SupportTooltip/Description/RichTextLabel:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.075, 0.15),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_6ligt"]
 _data = {
 &"RESET": SubResource("Animation_sy11y"),
 &"backfire": ExtResource("13_0yvlp"),
 &"cardFlip": SubResource("Animation_kg30u"),
 &"modifierIndicator": SubResource("Animation_eh2lv"),
+&"showCharacterTooltip": SubResource("Animation_tkh5l"),
 &"showPerk": SubResource("Animation_4jfu0"),
-&"showPerkDescription": SubResource("Animation_fgn7q")
+&"showPerkDescription": SubResource("Animation_fgn7q"),
+&"showSupportTooltip": SubResource("Animation_pser6")
 }
 
 [sub_resource type="FontVariation" id="FontVariation_eh2lv"]
+base_font = ExtResource("10_fgn7q")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m3iyu"]
+content_margin_top = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0, 0, 0, 0.8039216)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="FontVariation" id="FontVariation_pser6"]
+base_font = ExtResource("10_fgn7q")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sr4yt"]
+bg_color = Color(0, 0, 0, 0.8039216)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="FontVariation" id="FontVariation_0yvlp"]
+base_font = ExtResource("10_fgn7q")
+
+[sub_resource type="FontVariation" id="FontVariation_tkh5l"]
 base_font = ExtResource("10_fgn7q")
 
 [node name="card" type="Node2D"]
@@ -704,6 +910,192 @@ text = "+1 for each [img width=12]res://core/cards/icons/Infected.png[/img] in h
 fit_content = true
 horizontal_alignment = 1
 vertical_alignment = 2
+
+[node name="CharacterTooltip" type="PanelContainer" parent="."]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -75.0
+offset_top = -180.0
+offset_right = 75.0
+offset_bottom = -118.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(1e-05, 1e-05)
+pivot_offset = Vector2(75, 0)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_m3iyu")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CharacterTooltip"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="Type Grid Container" type="GridContainer" parent="CharacterTooltip/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/h_separation = 0
+columns = 2
+
+[node name="Type 1 Container" type="CenterContainer" parent="CharacterTooltip/VBoxContainer/Type Grid Container"]
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="CharacterTooltip/VBoxContainer/Type Grid Container/Type 1 Container"]
+custom_minimum_size = Vector2(14, 14)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("16_vrdlr")
+expand_mode = 1
+
+[node name="Type 1 Text" type="RichTextLabel" parent="CharacterTooltip/VBoxContainer/Type Grid Container"]
+custom_minimum_size = Vector2(65, 0)
+layout_mode = 2
+size_flags_vertical = 6
+mouse_filter = 2
+theme_override_fonts/normal_font = SubResource("FontVariation_pser6")
+theme_override_font_sizes/normal_font_size = 10
+bbcode_enabled = true
+text = "Aggressive"
+fit_content = true
+vertical_alignment = 1
+
+[node name="Type 2 Container" type="CenterContainer" parent="CharacterTooltip/VBoxContainer/Type Grid Container"]
+visible = false
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="CharacterTooltip/VBoxContainer/Type Grid Container/Type 2 Container"]
+custom_minimum_size = Vector2(14, 14)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("5_6rjld")
+expand_mode = 1
+
+[node name="Type 2 Text" type="RichTextLabel" parent="CharacterTooltip/VBoxContainer/Type Grid Container"]
+visible = false
+custom_minimum_size = Vector2(65, 16)
+layout_mode = 2
+size_flags_vertical = 6
+mouse_filter = 2
+theme_override_fonts/normal_font = SubResource("FontVariation_pser6")
+theme_override_font_sizes/normal_font_size = 10
+bbcode_enabled = true
+text = "Crafty"
+fit_content = true
+vertical_alignment = 1
+
+[node name="Divider Container" type="CenterContainer" parent="CharacterTooltip/VBoxContainer"]
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Divider" type="ColorRect" parent="CharacterTooltip/VBoxContainer/Divider Container"]
+custom_minimum_size = Vector2(120, 0.5)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Faction Grid Container" type="GridContainer" parent="CharacterTooltip/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/h_separation = 0
+columns = 2
+
+[node name="Faction Container" type="CenterContainer" parent="CharacterTooltip/VBoxContainer/Faction Grid Container"]
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="CharacterTooltip/VBoxContainer/Faction Grid Container/Faction Container"]
+custom_minimum_size = Vector2(14, 14)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("17_0yvlp")
+expand_mode = 1
+
+[node name="Faction Text" type="RichTextLabel" parent="CharacterTooltip/VBoxContainer/Faction Grid Container"]
+custom_minimum_size = Vector2(65, 16)
+layout_mode = 2
+size_flags_vertical = 6
+mouse_filter = 2
+theme_override_fonts/normal_font = SubResource("FontVariation_pser6")
+theme_override_font_sizes/normal_font_size = 10
+bbcode_enabled = true
+text = "Firefly"
+fit_content = true
+vertical_alignment = 1
+
+[node name="SupportTooltip" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+
+[node name="Heading" type="Panel" parent="SupportTooltip"]
+layout_mode = 0
+offset_left = -75.0
+offset_top = -180.0
+offset_right = -25.0
+offset_bottom = -118.0
+scale = Vector2(1e-05, 1e-05)
+pivot_offset = Vector2(25, 0)
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_sr4yt")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="SupportTooltip/Heading"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_top = 35.0
+offset_right = 50.0
+offset_bottom = 45.0
+mouse_filter = 2
+theme_override_fonts/normal_font = SubResource("FontVariation_0yvlp")
+theme_override_font_sizes/normal_font_size = 8
+text = "Backfire"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="SupportTooltip/Heading"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 17.0
+offset_top = 14.0
+offset_right = 33.0
+offset_bottom = 30.0
+mouse_filter = 2
+texture = ExtResource("19_m3iyu")
+expand_mode = 1
+
+[node name="Description" type="Panel" parent="SupportTooltip"]
+layout_mode = 0
+offset_left = -15.0
+offset_top = -180.0
+offset_right = 75.0
+offset_bottom = -118.0
+scale = Vector2(1e-05, 1e-05)
+pivot_offset = Vector2(45, 0)
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_sr4yt")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="SupportTooltip/Description"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 5.0
+offset_right = 85.0
+offset_bottom = 62.0
+mouse_filter = 2
+theme_override_fonts/normal_font = SubResource("FontVariation_tkh5l")
+theme_override_font_sizes/normal_font_size = 8
+text = "The value and perk is turned against the player who played it."
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]

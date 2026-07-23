@@ -158,26 +158,54 @@ func highlight_card(card, hovered: bool):
 		if battleManager.get("isTutorialActive") == true and battleManager.get("arePerksActiveInTutorial") == false:
 			canShowPerk = false
 	
+	var tooltipAnimation = ""
+	
+	if card.type == "Character":
+		tooltipAnimation = "showCharacterTooltip"
+	elif card.type == "Support" and card.parity == "Negative":
+		tooltipAnimation = "showSupportTooltip"
+		
+	var hasTooltip = AccessibilityData.showCardTooltips and tooltipAnimation != "" and animationPlayer.has_animation(tooltipAnimation)
+	var fastHideSpeed = 12.0
+	
 	if hovered:
 		if !AccessibilityData.animationsDisabled:
 			card.scale = Vector2(1.35, 1.35)
 		
 		if canShowPerk and !draggedCard:
-			card.get_node("AnimationPlayer").play("showPerkDescription")
+			animationPlayer.play("showPerkDescription")
 			
 			if AccessibilityData.animationsDisabled:
-				var endTime = card.get_node("AnimationPlayer").current_animation_length
-				card.get_node("AnimationPlayer").seek(endTime, true)
+				var endTime = animationPlayer.current_animation_length
+				animationPlayer.seek(endTime, true)
+			else:
+				await animationPlayer.animation_finished
+		
+		if hasTooltip and not draggedCard:
+			animationPlayer.play(tooltipAnimation)
+			
+			if AccessibilityData.animationsDisabled:
+				var endTime = animationPlayer.current_animation_length
+				animationPlayer.seek(endTime, true)
 	else:
+		if hasTooltip:
+			if AccessibilityData.animationsDisabled:
+				animationPlayer.play_backwards(tooltipAnimation)
+				animationPlayer.seek(0, true)
+			else:
+				animationPlayer.play(tooltipAnimation, -1, -fastHideSpeed, true)
+				await animationPlayer.animation_finished
+		
 		if !AccessibilityData.animationsDisabled:
 			card.scale = Vector2(1, 1)
 		
 		if canShowPerk:
-			card.get_node("AnimationPlayer").play_backwards("showPerkDescription")
+			animationPlayer.play_backwards("showPerkDescription")
 			
 			if AccessibilityData.animationsDisabled:
-				var endTime = card.get_node("AnimationPlayer").current_animation_length
-				card.get_node("AnimationPlayer").seek(endTime, true)
+				var endTime = animationPlayer.current_animation_length
+				animationPlayer.seek(endTime, true)
+
 
 func get_top_card(cards):
 	var topCard = cards[0].collider.get_parent()
@@ -279,11 +307,22 @@ func _reset_card_visuals(card: Node2D) -> void:
 	if !AccessibilityData.animationsDisabled:
 		card.scale = Vector2(1, 1)
 	
+	var anim = card.get_node("AnimationPlayer")
+	
+	var tooltipAnimation = ""
+	if card.type == "Character":
+		tooltipAnimation = "showCharacterTooltip"
+	elif card.type == "Support" and card.parity == "Negative":
+		tooltipAnimation = "showSupportTooltip"
+	
+	if AccessibilityData.showCardTooltips and tooltipAnimation != "" and anim.has_animation(tooltipAnimation):
+		anim.play(tooltipAnimation, -1, -12.0, true)
+		anim.seek(0, true)
+		anim.stop()
+	
 	if not "perk" in card or card.perk == null: 
 		return
 		
-	var anim = card.get_node("AnimationPlayer")
-	
 	if anim.current_animation == "showPerkDescription":
 		if AccessibilityData.animationsDisabled:
 			anim.play("showPerkDescription")

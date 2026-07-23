@@ -8,6 +8,7 @@ var currentCardStyle: CardStyle = CardStyle.DEFAULT
 var currentCardUISize: CardUISize = CardUISize.MEDIUM
 var useVisualAssistIcons: bool = false
 var animationsDisabled: bool = false
+var showCardTooltips: bool = true
 
 func _ready() -> void:
 	var saveData = SaveManager.load_main_state()
@@ -17,6 +18,7 @@ func _ready() -> void:
 		currentCardUISize = saveData["accessibility"].get("currentCardUISize", currentCardUISize)
 		useVisualAssistIcons = saveData["accessibility"].get("useVisualAssistIcons", useVisualAssistIcons)
 		animationsDisabled = saveData["accessibility"].get("animationsDisabled", animationsDisabled)
+		showCardTooltips = saveData["accessibility"].get("showCardTooltips", showCardTooltips)
 
 func save_to_file() -> void:
 	var saveData = SaveManager.load_main_state() 
@@ -25,6 +27,7 @@ func save_to_file() -> void:
 		"currentCardStyle": currentCardStyle,
 		"currentCardUISize": currentCardUISize,
 		"useVisualAssistIcons": useVisualAssistIcons,
-		"animationsDisabled": animationsDisabled
+		"animationsDisabled": animationsDisabled,
+		"showCardTooltips": showCardTooltips
 	}
 	SaveManager.save_main_state(saveData)

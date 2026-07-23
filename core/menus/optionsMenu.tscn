@@ -1,4 +1,4 @@
-[gd_scene load_steps=67 format=3 uid="uid://c0yhtjyqj8lpa"]
+[gd_scene load_steps=68 format=3 uid="uid://c0yhtjyqj8lpa"]
 
 [ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://core/fonts/SF-Pro-Display-Black.otf" id="1_2sggb"]
 [ext_resource type="Script" uid="uid://dujlyjrkvvdgr" path="res://core/menus/optionsMenu.gd" id="1_k3ncn"]
@@ -20,6 +20,7 @@
 [ext_resource type="Texture2D" uid="uid://3j2v4hrfw8gy" path="res://core/menus/subcomponents/sliderGrabber.png" id="13_hqhqw"]
 [ext_resource type="Script" uid="uid://d3y8yowftkquo" path="res://core/menus/subcomponents/audioSliders.gd" id="13_pxw3j"]
 [ext_resource type="Texture2D" uid="uid://bry2ungdeas4m" path="res://core/menus/subcomponents/sliderGrabberHighlighted.png" id="14_12fy5"]
+[ext_resource type="Script" uid="uid://y2efqi8vetil" path="res://core/menus/subcomponents/UiToggleTooltips.gd" id="18_gii00"]
 
 [sub_resource type="FontVariation" id="FontVariation_r6kji"]
 base_font = ExtResource("1_2sggb")
@@ -1078,7 +1079,7 @@ theme_override_font_sizes/normal_font_size = 24
 text = "Text and Icon Size"
 vertical_alignment = 1
 
-[node name="AnimationsLabel" type="RichTextLabel" parent="container/accessibilityMenuContainer/cardsContainer"]
+[node name="TooltipsLabel" type="RichTextLabel" parent="container/accessibilityMenuContainer/cardsContainer"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -1089,6 +1090,26 @@ offset_left = 120.0
 offset_top = 450.0
 offset_right = 320.0
 offset_bottom = 505.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_ij1mq")
+theme_override_font_sizes/normal_font_size = 24
+text = "Tooltips"
+vertical_alignment = 1
+
+[node name="AnimationsLabel" type="RichTextLabel" parent="container/accessibilityMenuContainer/cardsContainer"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 120.0
+offset_top = 500.0
+offset_right = 320.0
+offset_bottom = 555.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
@@ -1106,9 +1127,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = 120.0
-offset_top = 500.0
+offset_top = 550.0
 offset_right = 410.0
-offset_bottom = 555.0
+offset_bottom = 605.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
@@ -1221,12 +1242,12 @@ texture_hover = ExtResource("6_f5pmu")
 stretch_mode = 5
 flip_h = true
 
-[node name="CardAnimationToggle" type="Control" parent="container/accessibilityMenuContainer/cardsContainer"]
+[node name="TooltipToggle" type="Control" parent="container/accessibilityMenuContainer/cardsContainer"]
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="AnimationDescriptionLabel" type="RichTextLabel" parent="container/accessibilityMenuContainer/cardsContainer/CardAnimationToggle"]
+[node name="TooltipDescriptionLabel" type="RichTextLabel" parent="container/accessibilityMenuContainer/cardsContainer/TooltipToggle"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -1247,12 +1268,68 @@ text = "On"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Toggle" type="Button" parent="container/accessibilityMenuContainer/cardsContainer/CardAnimationToggle"]
+[node name="Toggle" type="Button" parent="container/accessibilityMenuContainer/cardsContainer/TooltipToggle"]
 layout_mode = 0
 offset_left = 980.0
 offset_top = 481.0
 offset_right = 1050.0
 offset_bottom = 513.0
+focus_mode = 0
+toggle_mode = true
+flat = true
+script = ExtResource("18_gii00")
+
+[node name="Track" type="Panel" parent="container/accessibilityMenuContainer/cardsContainer/TooltipToggle/Toggle"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ubbwe")
+
+[node name="Knob" type="Panel" parent="container/accessibilityMenuContainer/cardsContainer/TooltipToggle/Toggle"]
+layout_mode = 0
+offset_left = 41.0
+offset_top = 3.0
+offset_right = 67.0
+offset_bottom = 29.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_nfh4n")
+
+[node name="CardAnimationToggle" type="Control" parent="container/accessibilityMenuContainer/cardsContainer"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="AnimationDescriptionLabel" type="RichTextLabel" parent="container/accessibilityMenuContainer/cardsContainer/CardAnimationToggle"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 616.0
+offset_top = 500.0
+offset_right = 910.0
+offset_bottom = 555.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 25)
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_ij1mq")
+theme_override_font_sizes/normal_font_size = 24
+text = "On"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Toggle" type="Button" parent="container/accessibilityMenuContainer/cardsContainer/CardAnimationToggle"]
+layout_mode = 0
+offset_left = 980.0
+offset_top = 531.0
+offset_right = 1050.0
+offset_bottom = 563.0
 focus_mode = 0
 toggle_mode = true
 flat = true
@@ -1290,9 +1367,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = 616.0
-offset_top = 500.0
+offset_top = 550.0
 offset_right = 910.0
-offset_bottom = 555.0
+offset_bottom = 605.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(150, 25)
@@ -1306,9 +1383,9 @@ vertical_alignment = 1
 [node name="Toggle" type="Button" parent="container/accessibilityMenuContainer/cardsContainer/VisualAssistIconToggle"]
 layout_mode = 0
 offset_left = 980.0
-offset_top = 531.0
+offset_top = 581.0
 offset_right = 1050.0
-offset_bottom = 563.0
+offset_bottom = 613.0
 focus_mode = 0
 toggle_mode = true
 flat = true

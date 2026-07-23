@@ -99,6 +99,12 @@ func update_visuals():
 			else:
 				perkOne.visible = false
 				perkTwo.visible = false
+		else:
+			perkOne.visible = false
+			perkTwo.visible = false
+	
+	if type == "Character":
+		_populate_character_tooltip()
 	
 	if has_node("line"):
 		$line.size.y = PERK_LINE_Y_SIZE
@@ -264,3 +270,53 @@ func _updateCardValue():
 		value,
 		0.5
 	)
+
+# Tooltips
+func _populate_character_tooltip():
+	if not has_node("CharacterTooltip"):
+		return
+	
+	var tooltip = $CharacterTooltip
+	if not tooltip.has_node("VBoxContainer/Type Grid Container"):
+		return
+	
+	var typeGrid = tooltip.get_node("VBoxContainer/Type Grid Container")
+	var type1Container = typeGrid.get_node("Type 1 Container")
+	var type1Icon = type1Container.get_node("TextureRect")
+	var type1Text = typeGrid.get_node("Type 1 Text")
+	
+	var type2Container = typeGrid.get_node("Type 2 Container")
+	var type2Icon = type2Container.get_node("TextureRect")
+	var type2Text = typeGrid.get_node("Type 2 Text")
+	
+	var roles = []
+	if role != null and role != "":
+		roles = role.split("/")
+	
+	if roles.size() > 0 and roles[0] in KEYWORD_ICONS:
+		type1Icon.texture = load(_get_card_icon_path(roles[0]))
+		type1Text.text = roles[0]
+		type1Container.visible = true
+		type1Text.visible = true
+	else:
+		type1Container.visible = false
+		type1Text.visible = false
+	
+	if roles.size() > 1 and roles[1] in KEYWORD_ICONS:
+		type2Icon.texture = load(_get_card_icon_path(roles[1]))
+		type2Text.text = roles[1]
+		type2Container.visible = true
+		type2Text.visible = true
+	else:
+		type2Container.visible = false
+		type2Text.visible = false
+	
+	if tooltip.has_node("VBoxContainer/Faction Grid Container"):
+		var factionGrid = tooltip.get_node("VBoxContainer/Faction Grid Container")
+		var factionContainer = factionGrid.get_node("Faction Container")
+		var factionIcon = factionContainer.get_node("TextureRect")
+		var factionText = factionGrid.get_node("Faction Text")
+		
+		if faction != "" and faction in KEYWORD_ICONS:
+			factionIcon.texture = load(_get_card_icon_path(faction))
+			factionText.text = faction

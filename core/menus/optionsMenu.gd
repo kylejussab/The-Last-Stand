@@ -229,13 +229,24 @@ func _on_preview_hover_entered(card_node):
 		tween.tween_property(card_node, "scale", Vector2(2.35, 2.35), 0.1)
 	
 	if card_node.has_node("AnimationPlayer"):
-		if card_node.get_node("AnimationPlayer").has_animation("showPerkDescription"):
-			card_node.get_node("AnimationPlayer").play("showPerkDescription")
+		var animationPlayer = card_node.get_node("AnimationPlayer")
+		
+		if animationPlayer.has_animation("showPerkDescription"):
+			animationPlayer.play("showPerkDescription")
 			
 			if AccessibilityData.animationsDisabled:
-				var endTime = card_node.get_node("AnimationPlayer").current_animation_length
-				card_node.get_node("AnimationPlayer").seek(endTime, true)
+				var endTime = animationPlayer.current_animation_length
+				animationPlayer.seek(endTime, true)
+			else:
+				await animationPlayer.animation_finished
+		
+		if AccessibilityData.showCardTooltips and animationPlayer.has_animation("showCharacterTooltip"):
+			animationPlayer.play("showCharacterTooltip")
 			
+			if AccessibilityData.animationsDisabled:
+				var endTime = animationPlayer.current_animation_length
+				animationPlayer.seek(endTime, true)
+				
 	card_node.z_index = 10
 
 func _on_preview_hover_exited(card_node):
@@ -246,11 +257,22 @@ func _on_preview_hover_exited(card_node):
 		tween.tween_property(card_node, "scale", Vector2(2, 2), 0.1)
 	
 	if card_node.has_node("AnimationPlayer"):
-		if card_node.get_node("AnimationPlayer").has_animation("showPerkDescription"):
-			card_node.get_node("AnimationPlayer").play_backwards("showPerkDescription")
+		var animationPlayer = card_node.get_node("AnimationPlayer")
+		var fastHideSpeed = 12.0
+		
+		if AccessibilityData.showCardTooltips and animationPlayer.has_animation("showCharacterTooltip"):
+			if AccessibilityData.animationsDisabled:
+				animationPlayer.play_backwards("showCharacterTooltip")
+				animationPlayer.seek(0, true)
+			else:
+				animationPlayer.play("showCharacterTooltip", -1, -fastHideSpeed, true)
+				await animationPlayer.animation_finished
+		
+		if animationPlayer.has_animation("showPerkDescription"):
+			animationPlayer.play_backwards("showPerkDescription")
 			
 			if AccessibilityData.animationsDisabled:
-				card_node.get_node("AnimationPlayer").seek(0, true)
+				animationPlayer.seek(0, true)
 			
 	card_node.z_index = 0
 
