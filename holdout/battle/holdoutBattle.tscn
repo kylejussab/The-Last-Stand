@@ -1,4 +1,4 @@
-[gd_scene load_steps=113 format=3 uid="uid://dgb52shq4jcyg"]
+[gd_scene load_steps=123 format=3 uid="uid://dgb52shq4jcyg"]
 
 [ext_resource type="Script" uid="uid://dfohy7ltt78s3" path="res://core/save/gameStats.gd" id="1_v4gi3"]
 [ext_resource type="Script" uid="uid://c3p2rmoacsirj" path="res://core/inputManager.gd" id="2_m3a1y"]
@@ -26,9 +26,12 @@
 [ext_resource type="Texture2D" uid="uid://bhqmjvh2qnbys" path="res://holdout/arena/ui/BlankCardSlot.png" id="24_ntwkt"]
 [ext_resource type="Texture2D" uid="uid://8hw6od81twwb" path="res://holdout/arena/ui/SupportCardSlot.png" id="25_r4u3h"]
 [ext_resource type="Texture2D" uid="uid://c6lrinhn8btly" path="res://holdout/arena/ui/CharacterCardSlot.png" id="26_iub25"]
+[ext_resource type="Texture2D" uid="uid://dd57qjg2itlsi" path="res://holdout/allegiances/fungus/CA3.png" id="27_egwbx"]
 [ext_resource type="Texture2D" uid="uid://d4ge0yb1rledw" path="res://holdout/arena/ui/HeadCircle.png" id="27_yf0jv"]
+[ext_resource type="Texture2D" uid="uid://clln5f4kvkeeb" path="res://holdout/allegiances/fungus/CA2.png" id="28_dwb4o"]
 [ext_resource type="Texture2D" uid="uid://ct3dvs5fypuo1" path="res://holdout/arena/ui/HeartIcon.png" id="28_kvoyu"]
 [ext_resource type="Script" uid="uid://bsauufx1n4tot" path="res://core/menus/subcomponents/phaseTracker.gd" id="29_2g8kw"]
+[ext_resource type="Texture2D" uid="uid://3mcl7t37dv5s" path="res://holdout/modifiers/icons/Black Market.png" id="29_eqfih"]
 [ext_resource type="Texture2D" uid="uid://bp7ysicyaf3kj" path="res://holdout/arena/ui/currentPhaseIcon.png" id="30_kg8m3"]
 [ext_resource type="Texture2D" uid="uid://dbaqiv1wfmcf" path="res://holdout/arena/ui/otherPhaseIcon.png" id="31_u8y2r"]
 [ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://core/fonts/SF-Pro-Display-Black.otf" id="32_b4u0v"]
@@ -62,6 +65,153 @@ bg_color = Color(0, 0, 0, 1)
 bg_color = Color(0, 0, 0, 1)
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oyyju"]
+bg_color = Color(0, 0, 0, 0.9411765)
+corner_radius_top_left = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="FontVariation" id="FontVariation_bltor"]
+base_font = ExtResource("32_b4u0v")
+
+[sub_resource type="FontVariation" id="FontVariation_3nb2p"]
+base_font = ExtResource("33_ffrs8")
+
+[sub_resource type="FontVariation" id="FontVariation_egwbx"]
+base_font = ExtResource("32_b4u0v")
+
+[sub_resource type="Animation" id="Animation_dwb4o"]
+resource_name = "showAllegianceDescription"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("box:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.36, 0.4),
+"transitions": PackedFloat32Array(0.5, 1, 4.594793, 1),
+"update": 0,
+"values": [Vector2(263, 75), Vector2(263, 75), Vector2(263, 205), Vector2(263, 200)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Description:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Tier:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Name:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.15),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.15),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1837, 770), Vector2(1657, 770)]
+}
+
+[sub_resource type="Animation" id="Animation_eqfih"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("box:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(263, 75)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Description:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Tier:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Name:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1837, 770)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_oyyju"]
+_data = {
+&"RESET": SubResource("Animation_eqfih"),
+&"showAllegianceDescription": SubResource("Animation_dwb4o")
+}
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0bq0b"]
 bg_color = Color(0, 0, 0, 0.49803922)
@@ -1586,6 +1736,89 @@ texture = ExtResource("25_r4u3h")
 position = Vector2(825, 455)
 scale = Vector2(0.24000001, 0.24000001)
 texture = ExtResource("26_iub25")
+
+[node name="currentAllegiance" type="Control" parent="arena/background"]
+unique_name_in_owner = true
+anchors_preset = 0
+offset_left = 1837.0
+offset_top = 770.0
+offset_right = 2100.0
+offset_bottom = 845.0
+
+[node name="3" type="Sprite2D" parent="arena/background/currentAllegiance"]
+modulate = Color(0.20392157, 0.105882354, 0.101960786, 1)
+position = Vector2(175, 40)
+scale = Vector2(0.33, 0.33)
+texture = ExtResource("27_egwbx")
+
+[node name="2" type="Sprite2D" parent="arena/background/currentAllegiance"]
+modulate = Color(0.3764706, 0.14901961, 0.14901961, 1)
+position = Vector2(175, 40)
+scale = Vector2(0.33, 0.33)
+texture = ExtResource("28_dwb4o")
+
+[node name="box" type="Panel" parent="arena/background/currentAllegiance"]
+layout_mode = 0
+offset_right = 263.0
+offset_bottom = 75.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_oyyju")
+
+[node name="Icon" type="Sprite2D" parent="arena/background/currentAllegiance"]
+modulate = Color(0.29803923, 0.29803923, 0.29803923, 1)
+position = Vector2(45, 37.5)
+scale = Vector2(0.08, 0.08)
+texture = ExtResource("29_eqfih")
+
+[node name="Name" type="RichTextLabel" parent="arena/background/currentAllegiance"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 90.0
+offset_right = 243.0
+offset_bottom = 75.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_bltor")
+theme_override_font_sizes/normal_font_size = 14
+text = "Cordyceps Brain Infection"
+fit_content = true
+vertical_alignment = 1
+
+[node name="Description" type="RichTextLabel" parent="arena/background/currentAllegiance"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 30.0
+offset_top = 70.0
+offset_right = 233.0
+offset_bottom = 145.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_3nb2p")
+theme_override_font_sizes/normal_font_size = 14
+text = "Description
+Description
+Description"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Tier" type="RichTextLabel" parent="arena/background/currentAllegiance"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_top = 150.0
+offset_right = 263.0
+offset_bottom = 190.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_egwbx")
+theme_override_font_sizes/normal_font_size = 12
+text = "Faction Tier 9"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="arena/background/currentAllegiance"]
+libraries = {
+&"": SubResource("AnimationLibrary_oyyju")
+}
 
 [node name="headsOverlay" type="Panel" parent="arena/background"]
 layout_mode = 0
@@ -3136,6 +3369,8 @@ text = "END TURN"
 [connection signal="input_event" from="supportDeck/Area2D" to="supportDeck" method="_on_mouse_pressed"]
 [connection signal="mouse_entered" from="supportDeck/Area2D" to="supportDeck" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="supportDeck/Area2D" to="supportDeck" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="arena/background/currentAllegiance" to="arena" method="_on_current_allegiance_mouse_entered"]
+[connection signal="mouse_exited" from="arena/background/currentAllegiance" to="arena" method="_on_current_allegiance_mouse_exited"]
 [connection signal="mouse_entered" from="arena/outro/performance/performanceStatContainer/dominanceText" to="arena/outro" method="_on_dominance_text_mouse_entered"]
 [connection signal="mouse_exited" from="arena/outro/performance/performanceStatContainer/dominanceText" to="arena/outro" method="_on_dominance_text_mouse_exited"]
 [connection signal="mouse_entered" from="arena/outro/performance/performanceStatContainer/streakText" to="arena/outro" method="_on_streak_text_mouse_entered"]

@@ -1,11 +1,32 @@
-[gd_scene load_steps=24 format=3 uid="uid://cc635drs7575"]
+[gd_scene load_steps=31 format=3 uid="uid://cc635drs7575"]
 
 [ext_resource type="Script" uid="uid://chxc2dlqsh4hl" path="res://holdout/hub/holdoutHub.gd" id="1_qh75h"]
 [ext_resource type="Texture2D" uid="uid://bridhs2vdvnms" path="res://core/ai/heads/AlleyNeutral.png" id="2_c5ial"]
+[ext_resource type="Texture2D" uid="uid://dd57qjg2itlsi" path="res://holdout/allegiances/fungus/CA3.png" id="2_hqwga"]
 [ext_resource type="Script" uid="uid://cips7jy6yjg6s" path="res://holdout/hub/slotReel.gd" id="3_7u3tw"]
+[ext_resource type="Texture2D" uid="uid://clln5f4kvkeeb" path="res://holdout/allegiances/fungus/CA2.png" id="3_jy5nt"]
+[ext_resource type="Texture2D" uid="uid://3mcl7t37dv5s" path="res://holdout/modifiers/icons/Black Market.png" id="4_1r712"]
 [ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://core/fonts/SF-Pro-Display-Black.otf" id="5_4i1nc"]
 [ext_resource type="FontFile" uid="uid://di1dchl37cfhu" path="res://core/fonts/SF-Pro-Display-Semibold.otf" id="6_5ny4g"]
 [ext_resource type="FontVariation" uid="uid://bi2pnr1a7o7iq" path="res://core/fonts/Semibold.tres" id="6_qoiux"]
+[ext_resource type="Texture2D" uid="uid://b5jdkyq0krl5e" path="res://holdout/allegiances/fungus/3.png" id="7_cf31g"]
+[ext_resource type="Texture2D" uid="uid://ytw07p14cq6q" path="res://holdout/allegiances/fungus/2.png" id="8_5vobu"]
+[ext_resource type="Texture2D" uid="uid://c6yaxgghyv1ac" path="res://holdout/allegiances/fungus/1.png" id="9_56jyy"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g6hjp"]
+bg_color = Color(0.14509805, 0.14509805, 0.14509805, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="FontVariation" id="FontVariation_4i1nc"]
+base_font = ExtResource("5_4i1nc")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_qoiux"]
+base_font = ExtResource("6_5ny4g")
+spacing_glyph = 1
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c5ial"]
 bg_color = Color(0.08235294, 0.08235294, 0.08235294, 1)
@@ -22,20 +43,12 @@ spacing_glyph = 1
 base_font = ExtResource("6_qoiux")
 spacing_glyph = 1
 
-[sub_resource type="FontVariation" id="FontVariation_qoiux"]
-base_font = ExtResource("6_5ny4g")
-spacing_glyph = 1
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qoiux"]
 bg_color = Color(0.08235294, 0.08235294, 0.08235294, 1)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
-
-[sub_resource type="FontVariation" id="FontVariation_4i1nc"]
-base_font = ExtResource("5_4i1nc")
-spacing_glyph = 1
 
 [sub_resource type="FontVariation" id="FontVariation_5ny4g"]
 base_font = ExtResource("5_4i1nc")
@@ -90,12 +103,70 @@ offset_right = 1920.0
 offset_bottom = 1080.0
 color = Color(0, 0, 0, 1)
 
+[node name="CurrentAllegiance" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 150.0
+offset_top = 590.0
+offset_right = 585.0
+offset_bottom = 750.0
+mouse_filter = 2
+
+[node name="3" type="Sprite2D" parent="CurrentAllegiance"]
+modulate = Color(0.20392157, 0.105882354, 0.101960786, 1)
+position = Vector2(175, 80)
+scale = Vector2(0.33, 0.33)
+texture = ExtResource("2_hqwga")
+
+[node name="2" type="Sprite2D" parent="CurrentAllegiance"]
+modulate = Color(0.3764706, 0.14901961, 0.14901961, 1)
+position = Vector2(175, 80)
+scale = Vector2(0.33, 0.33)
+texture = ExtResource("3_jy5nt")
+
+[node name="Box" type="Panel" parent="CurrentAllegiance"]
+layout_mode = 0
+offset_top = 42.5
+offset_right = 430.0
+offset_bottom = 117.5
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_g6hjp")
+
+[node name="Icon" type="Sprite2D" parent="CurrentAllegiance/Box"]
+position = Vector2(45, 37.5)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("4_1r712")
+
+[node name="Name" type="RichTextLabel" parent="CurrentAllegiance/Box"]
+layout_mode = 0
+offset_left = 90.0
+offset_right = 270.0
+offset_bottom = 75.0
+mouse_filter = 2
+theme_override_fonts/normal_font = SubResource("FontVariation_4i1nc")
+theme_override_font_sizes/normal_font_size = 16
+text = "Current Allegiance"
+fit_content = true
+vertical_alignment = 1
+
+[node name="Tier" type="RichTextLabel" parent="CurrentAllegiance/Box"]
+layout_mode = 0
+offset_left = 280.0
+offset_right = 410.0
+offset_bottom = 75.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_qoiux")
+theme_override_font_sizes/normal_font_size = 16
+text = "Faction Tier 9"
+horizontal_alignment = 2
+vertical_alignment = 1
+
 [node name="OpponentBox" type="Panel" parent="."]
 layout_mode = 0
 offset_left = 150.0
-offset_top = 375.0
+offset_top = 265.0
 offset_right = 580.0
-offset_bottom = 725.0
+offset_bottom = 615.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_c5ial")
 
@@ -500,6 +571,331 @@ theme_override_font_sizes/normal_font_size = 14
 text = "SELECTED"
 horizontal_alignment = 1
 
+[node name="AllegianceContainer" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2
+
+[node name="Fungus A1" type="Control" parent="AllegianceContainer"]
+anchors_preset = 0
+offset_left = 575.0
+offset_top = 295.0
+offset_right = 1725.0
+offset_bottom = 1445.0
+scale = Vector2(0.425, 0.425)
+mouse_filter = 2
+
+[node name="3" type="Sprite2D" parent="AllegianceContainer/Fungus A1"]
+modulate = Color(0.20392157, 0.105882354, 0.101960786, 1)
+position = Vector2(575, 575)
+texture = ExtResource("7_cf31g")
+
+[node name="2" type="Sprite2D" parent="AllegianceContainer/Fungus A1"]
+modulate = Color(0.3764706, 0.14901961, 0.14901961, 1)
+position = Vector2(575, 575)
+texture = ExtResource("8_5vobu")
+
+[node name="1" type="Sprite2D" parent="AllegianceContainer/Fungus A1"]
+modulate = Color(0.5411765, 0.21960784, 0.2627451, 1)
+position = Vector2(575, 575)
+texture = ExtResource("9_56jyy")
+
+[node name="Allegiance 1" type="Panel" parent="AllegianceContainer"]
+layout_mode = 0
+offset_left = 650.0
+offset_top = 330.0
+offset_right = 990.0
+offset_bottom = 750.0
+pivot_offset = Vector2(170, 210)
+theme_override_styles/panel = SubResource("StyleBoxFlat_qoiux")
+
+[node name="Slot" type="Control" parent="AllegianceContainer/Allegiance 1"]
+clip_contents = true
+custom_minimum_size = Vector2(100, 100)
+anchors_preset = 0
+offset_left = 120.0
+offset_top = 40.0
+offset_right = 220.0
+offset_bottom = 140.0
+pivot_offset = Vector2(50, 50)
+mouse_filter = 2
+script = ExtResource("3_7u3tw")
+
+[node name="IconStrip" type="VBoxContainer" parent="AllegianceContainer/Allegiance 1/Slot"]
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Name" type="RichTextLabel" parent="AllegianceContainer/Allegiance 1"]
+layout_mode = 0
+offset_top = 150.0
+offset_right = 340.0
+offset_bottom = 190.0
+mouse_filter = 2
+theme_override_fonts/normal_font = SubResource("FontVariation_4i1nc")
+theme_override_font_sizes/normal_font_size = 20
+text = "Allegiance Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Description" type="RichTextLabel" parent="AllegianceContainer/Allegiance 1"]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 200.0
+offset_right = 310.0
+offset_bottom = 300.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_qoiux")
+theme_override_font_sizes/normal_font_size = 20
+text = "Allegiance Description
+Allegiance Description
+Allegiance Description
+Allegiance Description"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Tier" type="RichTextLabel" parent="AllegianceContainer/Allegiance 1"]
+layout_mode = 0
+offset_top = 330.0
+offset_right = 340.0
+offset_bottom = 370.0
+mouse_filter = 2
+theme_override_fonts/normal_font = SubResource("FontVariation_5ny4g")
+theme_override_font_sizes/normal_font_size = 20
+text = "Allegiance Tier 9"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Selected" type="RichTextLabel" parent="AllegianceContainer/Allegiance 1"]
+visible = false
+layout_mode = 0
+offset_top = 390.0
+offset_right = 340.0
+offset_bottom = 410.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_ghdy6")
+theme_override_font_sizes/normal_font_size = 14
+text = "SELECTED"
+horizontal_alignment = 1
+
+[node name="Fungus A2" type="Control" parent="AllegianceContainer"]
+anchors_preset = 0
+offset_left = 975.0
+offset_top = 295.0
+offset_right = 2125.0
+offset_bottom = 1445.0
+scale = Vector2(0.425, 0.425)
+mouse_filter = 2
+
+[node name="3" type="Sprite2D" parent="AllegianceContainer/Fungus A2"]
+modulate = Color(0.20392157, 0.105882354, 0.101960786, 1)
+position = Vector2(575, 575)
+texture = ExtResource("7_cf31g")
+
+[node name="2" type="Sprite2D" parent="AllegianceContainer/Fungus A2"]
+modulate = Color(0.3764706, 0.14901961, 0.14901961, 1)
+position = Vector2(575, 575)
+texture = ExtResource("8_5vobu")
+
+[node name="1" type="Sprite2D" parent="AllegianceContainer/Fungus A2"]
+modulate = Color(0.5411765, 0.21960784, 0.2627451, 1)
+position = Vector2(575, 575)
+texture = ExtResource("9_56jyy")
+
+[node name="Allegiance 2" type="Panel" parent="AllegianceContainer"]
+layout_mode = 0
+offset_left = 1050.0
+offset_top = 330.0
+offset_right = 1390.0
+offset_bottom = 750.0
+pivot_offset = Vector2(170, 210)
+theme_override_styles/panel = SubResource("StyleBoxFlat_qoiux")
+
+[node name="Slot" type="Control" parent="AllegianceContainer/Allegiance 2"]
+clip_contents = true
+custom_minimum_size = Vector2(100, 100)
+anchors_preset = 0
+offset_left = 120.0
+offset_top = 40.0
+offset_right = 220.0
+offset_bottom = 140.0
+pivot_offset = Vector2(50, 50)
+mouse_filter = 2
+script = ExtResource("3_7u3tw")
+
+[node name="IconStrip" type="VBoxContainer" parent="AllegianceContainer/Allegiance 2/Slot"]
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Name" type="RichTextLabel" parent="AllegianceContainer/Allegiance 2"]
+layout_mode = 0
+offset_top = 150.0
+offset_right = 340.0
+offset_bottom = 190.0
+mouse_filter = 2
+theme_override_fonts/normal_font = SubResource("FontVariation_4i1nc")
+theme_override_font_sizes/normal_font_size = 20
+text = "Allegiance Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Description" type="RichTextLabel" parent="AllegianceContainer/Allegiance 2"]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 200.0
+offset_right = 310.0
+offset_bottom = 300.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_qoiux")
+theme_override_font_sizes/normal_font_size = 20
+text = "Allegiance Description
+Allegiance Description
+Allegiance Description
+Allegiance Description"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Tier" type="RichTextLabel" parent="AllegianceContainer/Allegiance 2"]
+layout_mode = 0
+offset_top = 330.0
+offset_right = 340.0
+offset_bottom = 370.0
+mouse_filter = 2
+theme_override_fonts/normal_font = SubResource("FontVariation_5ny4g")
+theme_override_font_sizes/normal_font_size = 20
+text = "Allegiance Tier 9"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Selected" type="RichTextLabel" parent="AllegianceContainer/Allegiance 2"]
+visible = false
+layout_mode = 0
+offset_top = 390.0
+offset_right = 340.0
+offset_bottom = 410.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_ghdy6")
+theme_override_font_sizes/normal_font_size = 14
+text = "SELECTED"
+horizontal_alignment = 1
+
+[node name="Fungus A3" type="Control" parent="AllegianceContainer"]
+anchors_preset = 0
+offset_left = 1375.0
+offset_top = 295.0
+offset_right = 2525.0
+offset_bottom = 1445.0
+scale = Vector2(0.425, 0.425)
+mouse_filter = 2
+
+[node name="3" type="Sprite2D" parent="AllegianceContainer/Fungus A3"]
+modulate = Color(0.20392157, 0.105882354, 0.101960786, 1)
+position = Vector2(575, 575)
+texture = ExtResource("7_cf31g")
+
+[node name="2" type="Sprite2D" parent="AllegianceContainer/Fungus A3"]
+modulate = Color(0.3764706, 0.14901961, 0.14901961, 1)
+position = Vector2(575, 575)
+texture = ExtResource("8_5vobu")
+
+[node name="1" type="Sprite2D" parent="AllegianceContainer/Fungus A3"]
+modulate = Color(0.5411765, 0.21960784, 0.2627451, 1)
+position = Vector2(575, 575)
+texture = ExtResource("9_56jyy")
+
+[node name="Allegiance 3" type="Panel" parent="AllegianceContainer"]
+layout_mode = 0
+offset_left = 1450.0
+offset_top = 330.0
+offset_right = 1790.0
+offset_bottom = 750.0
+pivot_offset = Vector2(170, 210)
+theme_override_styles/panel = SubResource("StyleBoxFlat_qoiux")
+
+[node name="Slot" type="Control" parent="AllegianceContainer/Allegiance 3"]
+clip_contents = true
+custom_minimum_size = Vector2(100, 100)
+anchors_preset = 0
+offset_left = 120.0
+offset_top = 40.0
+offset_right = 220.0
+offset_bottom = 140.0
+pivot_offset = Vector2(50, 50)
+mouse_filter = 2
+script = ExtResource("3_7u3tw")
+
+[node name="IconStrip" type="VBoxContainer" parent="AllegianceContainer/Allegiance 3/Slot"]
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Name" type="RichTextLabel" parent="AllegianceContainer/Allegiance 3"]
+layout_mode = 0
+offset_top = 150.0
+offset_right = 340.0
+offset_bottom = 190.0
+mouse_filter = 2
+theme_override_fonts/normal_font = SubResource("FontVariation_4i1nc")
+theme_override_font_sizes/normal_font_size = 20
+text = "Allegiance Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Description" type="RichTextLabel" parent="AllegianceContainer/Allegiance 3"]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 200.0
+offset_right = 310.0
+offset_bottom = 300.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_qoiux")
+theme_override_font_sizes/normal_font_size = 20
+text = "Allegiance Description
+Allegiance Description
+Allegiance Description
+Allegiance Description"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Tier" type="RichTextLabel" parent="AllegianceContainer/Allegiance 3"]
+layout_mode = 0
+offset_top = 330.0
+offset_right = 340.0
+offset_bottom = 370.0
+mouse_filter = 2
+theme_override_fonts/normal_font = SubResource("FontVariation_5ny4g")
+theme_override_font_sizes/normal_font_size = 20
+text = "Allegiance Tier 9"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Selected" type="RichTextLabel" parent="AllegianceContainer/Allegiance 3"]
+visible = false
+layout_mode = 0
+offset_top = 390.0
+offset_right = 340.0
+offset_bottom = 410.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_ghdy6")
+theme_override_font_sizes/normal_font_size = 14
+text = "SELECTED"
+horizontal_alignment = 1
+
 [node name="NumberSelected" type="RichTextLabel" parent="."]
 layout_mode = 0
 offset_left = 1590.0
@@ -565,5 +961,14 @@ alignment = 0
 [connection signal="gui_input" from="ModifierContainer/Modifier 3" to="." method="_on_modifier_3_gui_input"]
 [connection signal="mouse_entered" from="ModifierContainer/Modifier 3" to="." method="_on_modifier_3_mouse_entered"]
 [connection signal="mouse_exited" from="ModifierContainer/Modifier 3" to="." method="_on_modifier_3_mouse_exited"]
+[connection signal="gui_input" from="AllegianceContainer/Allegiance 1" to="." method="_on_allegiance_1_gui_input"]
+[connection signal="mouse_entered" from="AllegianceContainer/Allegiance 1" to="." method="_on_allegiance_1_mouse_entered"]
+[connection signal="mouse_exited" from="AllegianceContainer/Allegiance 1" to="." method="_on_allegiance_1_mouse_exited"]
+[connection signal="gui_input" from="AllegianceContainer/Allegiance 2" to="." method="_on_allegiance_2_gui_input"]
+[connection signal="mouse_entered" from="AllegianceContainer/Allegiance 2" to="." method="_on_allegiance_2_mouse_entered"]
+[connection signal="mouse_exited" from="AllegianceContainer/Allegiance 2" to="." method="_on_allegiance_2_mouse_exited"]
+[connection signal="gui_input" from="AllegianceContainer/Allegiance 3" to="." method="_on_allegiance_3_gui_input"]
+[connection signal="mouse_entered" from="AllegianceContainer/Allegiance 3" to="." method="_on_allegiance_3_mouse_entered"]
+[connection signal="mouse_exited" from="AllegianceContainer/Allegiance 3" to="." method="_on_allegiance_3_mouse_exited"]
 [connection signal="mouse_entered" from="ConfirmButton" to="." method="_on_confirm_button_mouse_entered"]
 [connection signal="pressed" from="ConfirmButton" to="." method="_on_confirm_button_pressed"]

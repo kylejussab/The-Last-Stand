@@ -11,6 +11,10 @@ static var playerHealthValue: int
 static var activeModifiers: Array = []
 static var lastOfferedModifierIds: Array = [] # Used for weighted randomness with modifier selection
 static var lastOfferedOpponentModifierIds: Array = []
+
+static var activeAllegiance: Dictionary = {} # Empty means "no allegiance chosen yet" (round 1 case)
+static var lastOfferedAllegianceIds: Array = [] # Used for weighted randomness with allegiance selection
+
 enum Rank { S, A, B, C, D, F }
 const RankRequirements = {Rank.S: 440, Rank.A: 300, Rank.B: 220, Rank.C: 160, Rank.D: 80, Rank.F: 0}
 static var currentRank: Rank = Rank.F
@@ -136,6 +140,9 @@ static func reset_for_new_run():
 	replayedRound = false
 	currentRank = Rank.F
 	
+	activeAllegiance = {}
+	lastOfferedAllegianceIds.clear()
+	
 	start_new_run_log()
 	
 	reset_for_new_battle()
@@ -258,6 +265,8 @@ static func get_save_dict() -> Dictionary:
 		"playerHealthValue": playerHealthValue,
 		"playerHealthAtRoundStart": playerHealthAtRoundStart,
 		"activeModifiers": activeModifiers,
+		"activeAllegiance": activeAllegiance,
+		"lastOfferedAllegianceIds": lastOfferedAllegianceIds,
 		"currentRank": currentRank,
 		"numberOfWins": numberOfWins,
 		"roundsPlayed": roundsPlayed,
@@ -297,6 +306,15 @@ static func load_save_dict(data: Dictionary) -> void:
 			mod["amount"] = int(mod["amount"])
 			
 		activeModifiers.append(mod)
+	
+	activeAllegiance = data.get("activeAllegiance", {})
+	if not activeAllegiance.is_empty():
+		activeAllegiance["id"] = int(activeAllegiance["id"])
+		activeAllegiance["tier"] = int(activeAllegiance["tier"])
+	
+	lastOfferedAllegianceIds.clear()
+	for id in data.get("lastOfferedAllegianceIds", []):
+		lastOfferedAllegianceIds.append(int(id))
 	
 	numberOfWins = int(data["numberOfWins"])
 	roundsPlayed = int(data["roundsPlayed"])

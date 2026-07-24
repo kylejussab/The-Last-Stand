@@ -42,6 +42,13 @@ var discardedCards: Array = []
 var discardedCardZIndex: int = 1
 
 const BACKFIRE_CAPABLE = ["Molotov", "TrapMine", "ShotgunShells", "SmokeBomb", "Brick", "Bottle"]
+const FACTION_FUNGUS_COLORS = {
+	"Firefly": ["C2A23E", "9D7F2E", "4F4119"],
+	"Infected": ["CD6429", "96371F", "6F2214"],
+	"Jackson": ["546E32", "3D4F23", "29331B"],
+	"Seraphite": ["8657A3", "724099", "4B2B74"],
+	"WLF": ["81B0DE", "4A89C8", "185799"],
+}
 
 # --- UI SEQUENCE FLAGS ---
 var opponentPlayedSupport: bool = false
@@ -1673,6 +1680,15 @@ func _load_game_from_snapshot() -> void:
 	battleEngine.isRoundActive = true
 	%pauseIcon.show()
 	%bubbleContainer.render_active_modifiers()
+	
+	# Show active allegiance
+	$"../arena/background/currentAllegiance/Name".text = HoldoutStats.activeAllegiance.name
+	$"../arena/background/currentAllegiance/Icon".texture = load(HoldoutStats.activeAllegiance.icon)
+	$"../arena/background/currentAllegiance/Description".text = HoldoutStats.activeAllegiance.description
+	$"../arena/background/currentAllegiance/Tier".text = HoldoutStats.activeAllegiance.faction + " Tier " + str(HoldoutStats.activeAllegiance.tier)
+	var colors: Array = FACTION_FUNGUS_COLORS.get(HoldoutStats.activeAllegiance.faction, ["ffffff", "ffffff", "ffffff"])
+	$"../arena/background/currentAllegiance/2".modulate = Color(colors[1])
+	$"../arena/background/currentAllegiance/3".modulate = Color(colors[2])
 	
 	_apply_guerrilla_tactics_restrictions()
 	
