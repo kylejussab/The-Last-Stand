@@ -20,6 +20,13 @@ var delayBeforeTransition: float = 4.5
 var transitionDuration: float = 1.4
 var moveDistance: float = 700.0
 
+var iconTextures: Array[String] = [
+	"res://holdout/intro/Opponent.png",
+	"res://holdout/intro/Allegiance.png",
+	"res://holdout/intro/Modifier.png",
+	"res://holdout/intro/Removal.png",
+	"res://holdout/intro/Opponent.png"
+]
 
 func _ready() -> void:
 	if SaveManager.isLoadingSave:
@@ -68,7 +75,7 @@ func _run_intro_sequence() -> void:
 func _spawn_and_pop_in() -> void:
 	for i in range(numberOfIcons):
 		var icon = Sprite2D.new()
-		icon.texture = preload("res://holdout/intro/Opponent.png")
+		icon.texture = load(iconTextures[i])
 		infinityContainer.add_child(icon)
 		icons.append(icon)
 		

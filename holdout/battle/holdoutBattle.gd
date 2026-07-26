@@ -205,7 +205,7 @@ func _initialize_opponent(player: Actor.Avatar, opponent: Actor.Avatar) -> void:
 		Actor.Avatar.RHEA:
 			ui.setup_avatar(opponent, Actor.Type.OPPONENT)
 			opponentAI = OpponentAIAttrition.new()
-		Actor.Avatar.UCKMANN:
+		Actor.Avatar.KNEEL:
 			ui.setup_avatar(opponent, Actor.Type.OPPONENT)
 			opponentAI = OpponentAIBalanced.new()
 		Actor.Avatar.ALLEY:

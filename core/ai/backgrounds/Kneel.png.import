@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bpoxurnk6bh4r"
-path="res://.godot/imported/DrHurt.png-e725699eb9817c386adb256ccd1f6ace.ctex"
+uid="uid://cxvgbutrfiynd"
+path="res://.godot/imported/Kneel.png-b25f12edb12f8e919c4f4e8bd519b170.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://core/ai/heads/DrHurt.png"
-dest_files=["res://.godot/imported/DrHurt.png-e725699eb9817c386adb256ccd1f6ace.ctex"]
+source_file="res://core/ai/backgrounds/Kneel.png"
+dest_files=["res://.godot/imported/Kneel.png-b25f12edb12f8e919c4f4e8bd519b170.ctex"]
 
 [params]
 

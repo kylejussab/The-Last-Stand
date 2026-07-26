@@ -81,7 +81,11 @@ func _setup_hub() -> void:
 	# Hide everything else
 	modifierContainer.hide()
 	allegianceContainer.hide()
-	%currentAllegiance.modulate.a = 0
+	
+	if isAllegianceRound:
+		%currentAllegiance.modulate.a = 0
+	else:
+		%currentAllegiance.modulate.a = 1
 	
 	self.show()
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cw1h0lfvssfrw"
-path="res://.godot/imported/DrThinking.png-71e871e44b3f86d3d6ee4167bc8cb52d.ctex"
+uid="uid://dg7w63vae4eaa"
+path="res://.godot/imported/Allegiance.png-276bea5abd2478c06c79a14b700dbba8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://core/ai/heads/DrThinking.png"
-dest_files=["res://.godot/imported/DrThinking.png-71e871e44b3f86d3d6ee4167bc8cb52d.ctex"]
+source_file="res://holdout/intro/Allegiance.png"
+dest_files=["res://.godot/imported/Allegiance.png-276bea5abd2478c06c79a14b700dbba8.ctex"]
 
 [params]
 

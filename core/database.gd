@@ -253,6 +253,14 @@ var AVATARS = {
 		"backgroundPath": "res://core/ai/backgrounds/",
 		"playstyle": "Aggressive"
 	},
+	Actor.Avatar.KNEEL: {
+		"name": "Kneel Downman",
+		"description": "Alpha Dog",
+		"health": "%02d" % 20,
+		"headPath": "res://core/ai/heads/",
+		"backgroundPath": "res://core/ai/backgrounds/",
+		"playstyle": "Balanced"
+	},
 	Actor.Avatar.RHEA: {
 		"name": "Rhea",
 		"description": "Matriarch",
@@ -260,14 +268,6 @@ var AVATARS = {
 		"headPath": "res://core/ai/heads/",
 		"backgroundPath": "res://core/ai/backgrounds/",
 		"playstyle": "Attrition"
-	},
-	Actor.Avatar.UCKMANN: {
-		"name": "Dr Uckmann",
-		"description": "Dog Director",
-		"health": "%02d" % 20,
-		"headPath": "res://core/ai/heads/",
-		"backgroundPath": "res://core/ai/backgrounds/",
-		"playstyle": "Balanced"
 	},
 	Actor.Avatar.ALLEY: {
 		"name": "Alley Ross",
@@ -329,7 +329,7 @@ func get_avatar_head_texture(path: String) -> Texture2D:
 func clear_avatar_cache():
 	avatarHeadTextures.clear()
 
-const JUNE_OPPONENTS = [Actor.Avatar.ETHAN, Actor.Avatar.UCKMANN, Actor.Avatar.ALLEY, Actor.Avatar.MIRA, Actor.Avatar.RHEA]
+const JUNE_OPPONENTS = [Actor.Avatar.ETHAN, Actor.Avatar.KNEEL, Actor.Avatar.ALLEY, Actor.Avatar.MIRA, Actor.Avatar.RHEA]
 
 enum Modifier { REDUCED_HAND, VOLATILE_HAND, CALCULATED_RISK, DEEP_WOUNDS, HEAVY_HITTER, GUERRILLA_TACTICS, BLACK_MARKET, SLOW_BLEED, BAITED_DEFENSE, LOUD_NOISE, DESPERATE_MEASURES, OVER_EXERTION, INFECTED_DECK, HUMANITY_RESTORED, FRONT_RUNNER, FORSAKEN_HONOR, STACKED_ODDS, LONE_WOLF, PSYCHO_MANIA, SUPPLY_LINE, CARD_ROT, FRIENDLY_FIRE, BLIND_EYE, SEVERED_SUPPLY, GAMBLER, VAMPIRIC, DO_NOTHING, DEAD_WEIGHT, FLIP_SCRIPT, ENDURE }
 
@@ -599,21 +599,21 @@ const MODIFIERS = {
 		"multiplier": 0.0,
 		"duration": 1,
 	},
-	Modifier.ENDURE: {
-		"id": Modifier.ENDURE,
-		"name": "Endure",
-		"description": "The opponent will not be defeated by damage. You win on the first instance of deck out.",
-		"icon": "res://holdout/modifiers/icons/Endure.png",
-		"tier": 8,
-		"multiplier": 0.0,
-		"duration": 1,
-	},
+	#Modifier.ENDURE: {
+		#"id": Modifier.ENDURE,
+		#"name": "Endure",
+		#"description": "The opponent will not be defeated by damage. You win on the first instance of deck out.",
+		#"icon": "res://holdout/modifiers/icons/Endure.png",
+		#"tier": 8,
+		#"multiplier": 0.0,
+		#"duration": 1,
+	#},
 }
 
 enum Allegiance { 
 	FIREFLYAA, FIREFLYAB, FIREFLYAC, FIREFLYBA, FIREFLYBB, FIREFLYBC, FIREFLYCA, FIREFLYCB, FIREFLYCC,
-	NECROTIC_FEEDBACK, INFECTION, FUNGAL_GROWTH, FRENZIED_STATE, ECHOLOCATION, OVERRUN, BLOATER_PLATING, CORDYCEPS_BRAIN_INFECTION, MUTATION_CHAIN,
-	JACKSONAA, JACKSONAB, JACKSONAC, JACKSONBA, JACKSONBB, JACKSONBC, JACKSONCA, JACKSONCB, JACKSONCC,
+	NECROTIC_FEEDBACK, INFECTION, FUNGAL_GROWTH, FRENZIED_STATE, MUTATION_CHAIN, OVERRUN, BLOATER_PLATING, CORDYCEPS_BRAIN_INFECTION, HORDE_MENTALITY,
+	KEEP_MOVING, ONE_OF_OURS, SHARED_SUPPLIES, DEBT_REPAID, FUTURE_DAYS, PATROL_ROUTE, WHOEVERS_NEEDED, FOUND_FAMILY, PRACTICAL_WISDOM,
 	SERAPHITEAA, SERAPHITEAB, SERAPHITEAC, SERAPHITEBA, SERAPHITEBB, SERAPHITEBC, SERAPHITECA, SERAPHITECB, SERAPHITECC,
 	WLFAA, WLFAB, WLFAC, WLFBA, WLFBB, WLFBC, WLFCA, WLFCB, WLFCC
 }
@@ -726,10 +726,10 @@ const ALLEGIANCES = {
 		"tier": 2,
 		"faction": "Infected",
 	},
-	Allegiance.ECHOLOCATION: {
-		"id": Allegiance.ECHOLOCATION,
-		"name": "Echolocation",
-		"description": "Playing an Infected card halves the opponent's next support card value.",
+	Allegiance.MUTATION_CHAIN: {
+		"id": Allegiance.MUTATION_CHAIN,
+		"name": "Mutation Chain",
+		"description": "Playing an Infected card gives +3 value to its next stage if it is in your hand.",
 		"icon": "res://holdout/modifiers/icons/Calculated Risk.png",
 		"tier": 2,
 		"faction": "Infected",
@@ -758,84 +758,84 @@ const ALLEGIANCES = {
 		"tier": 3,
 		"faction": "Infected",
 	},
-	Allegiance.MUTATION_CHAIN: {
-		"id": Allegiance.MUTATION_CHAIN,
-		"name": "Mutation Chain",
-		"description": "Playing an Infected card gives +3 value to its next stage if it is in your hand.",
+	Allegiance.HORDE_MENTALITY: {
+		"id": Allegiance.HORDE_MENTALITY,
+		"name": "Horde Mentality",
+		"description": "Playing an Infected card gives +1 value to all Infected in your hand.",
 		"icon": "res://holdout/modifiers/icons/Forsaken Honor.png",
 		"tier": 3,
 		"faction": "Infected",
 	},
 	
 	# Jackson
-	Allegiance.JACKSONAA: {
-		"id": Allegiance.JACKSONAA,
-		"name": "Jackson 1a",
-		"description": "The description for a tier 1a Jackson allegiance.",
+	Allegiance.KEEP_MOVING: {
+		"id": Allegiance.KEEP_MOVING,
+		"name": "Keep Moving",
+		"description": "Played Jackson characters gain +2 if there are no Jackson characters in hand.",
 		"icon": "res://holdout/modifiers/icons/Volatile Hand.png",
 		"tier": 1,
 		"faction": "Jackson",
 	},
-	Allegiance.JACKSONAB: {
-		"id": Allegiance.JACKSONAB,
-		"name": "Jackson 1b",
-		"description": "The description for a tier 1b Jackson allegiance.",
+	Allegiance.ONE_OF_OURS: {
+		"id": Allegiance.ONE_OF_OURS,
+		"name": "One of Ours",
+		"description": "If the opponent plays a Jackson card, it is added to your hand at round end with -2 value.",
 		"icon": "res://holdout/modifiers/icons/Volatile Hand.png",
 		"tier": 1,
 		"faction": "Jackson",
 	},
-	Allegiance.JACKSONAC: {
-		"id": Allegiance.JACKSONAC,
-		"name": "Jackson 1c",
-		"description": "The description for a tier 1c Jackson allegiance.",
+	Allegiance.SHARED_SUPPLIES: {
+		"id": Allegiance.SHARED_SUPPLIES,
+		"name": "Shared Supplies",
+		"description": "Playing a Jackson card with a non backfire support gives a random card in hand +2.",
 		"icon": "res://holdout/modifiers/icons/Volatile Hand.png",
 		"tier": 1,
 		"faction": "Jackson",
 	},
-	Allegiance.JACKSONBA: {
-		"id": Allegiance.JACKSONBA,
-		"name": "Jackson 2a",
-		"description": "The description for a tier 2a Jackson allegiance.",
+	Allegiance.DEBT_REPAID: {
+		"id": Allegiance.DEBT_REPAID,
+		"name": "Debt Repaid",
+		"description": "Any named companion perk adds the value to both the played card and the companion in hand.",
 		"icon": "res://holdout/modifiers/icons/Calculated Risk.png",
 		"tier": 2,
 		"faction": "Jackson",
 	},
-	Allegiance.JACKSONBB: {
-		"id": Allegiance.JACKSONBB,
-		"name": "Jackson 2b",
-		"description": "The description for a tier 2b Jackson allegiance.",
+	Allegiance.FUTURE_DAYS: {
+		"id": Allegiance.FUTURE_DAYS,
+		"name": "Future Days",
+		"description": "If a Jackson card wins there is a 50% chance it is returned to hand rather than discarded.",
 		"icon": "res://holdout/modifiers/icons/Calculated Risk.png",
 		"tier": 2,
 		"faction": "Jackson",
 	},
-	Allegiance.JACKSONBC: {
-		"id": Allegiance.JACKSONBC,
-		"name": "Jackson 2c",
-		"description": "The description for a tier 2c Jackson allegiance.",
+	Allegiance.PATROL_ROUTE: {
+		"id": Allegiance.PATROL_ROUTE,
+		"name": "Patrol Route",
+		"description": "Playing a Jackson card reveals a random card in the opponent’s hand.",
 		"icon": "res://holdout/modifiers/icons/Calculated Risk.png",
 		"tier": 2,
 		"faction": "Jackson",
 	},
-	Allegiance.JACKSONCA: {
-		"id": Allegiance.JACKSONCA,
-		"name": "Jackson 3a",
-		"description": "The description for a tier 3a Jackson allegiance.",
+	Allegiance.WHOEVERS_NEEDED: {
+		"id": Allegiance.WHOEVERS_NEEDED,
+		"name": "Whoever's Needed",
+		"description": "Adds 2 Jackson Scouts to the deck. Scouts count as any named companion.",
 		"icon": "res://holdout/modifiers/icons/Forsaken Honor.png",
 		"tier": 3,
 		"faction": "Jackson",
 	},
-	Allegiance.JACKSONCB: {
-		"id": Allegiance.JACKSONCB,
-		"name": "Jackson 3b",
-		"description": "The description for a tier 3b Jackson allegiance.",
+	Allegiance.FOUND_FAMILY: {
+		"id": Allegiance.FOUND_FAMILY,
+		"name": "Found Family",
+		"description": "When you play a Jackson character, each Jackson character in your hand gains +3 value.",
 		"icon": "res://holdout/modifiers/icons/Forsaken Honor.png",
 		"tier": 3,
 		"faction": "Jackson",
 	},
-	Allegiance.JACKSONCC: {
-		"id": Allegiance.JACKSONCC,
-		"name": "Jackson 3c",
-		"description": "The description for a tier 3c Jackson allegiance.",
+	Allegiance.PRACTICAL_WISDOM: {
+		"id": Allegiance.PRACTICAL_WISDOM,
+		"name": "Practical Wisdom",
+		"description": "Supports never backfire if the played character is from Jackson.",
 		"icon": "res://holdout/modifiers/icons/Forsaken Honor.png",
 		"tier": 3,
 		"faction": "Jackson",
