@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://cc635drs7575"]
+[gd_scene load_steps=43 format=3 uid="uid://cc635drs7575"]
 
 [ext_resource type="Script" uid="uid://chxc2dlqsh4hl" path="res://holdout/hub/holdoutHub.gd" id="1_qh75h"]
 [ext_resource type="Texture2D" uid="uid://bridhs2vdvnms" path="res://core/ai/heads/AlleyNeutral.png" id="2_c5ial"]
@@ -126,6 +126,13 @@ corner_radius_bottom_left = 10
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wqtm4"]
 bg_color = Color(0.21960784, 0.21960784, 0.21960784, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1y4np"]
+bg_color = Color(0.08235294, 0.08235294, 0.08235294, 1)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
@@ -1195,6 +1202,31 @@ bbcode_enabled = true
 text = "View Decks"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="DeckViewScroll" type="ScrollContainer" parent="RemovalContainer"]
+layout_mode = 0
+offset_left = -750.0
+offset_top = 190.0
+offset_right = -250.0
+offset_bottom = 890.0
+pivot_offset = Vector2(250, 350)
+theme_override_styles/panel = SubResource("StyleBoxFlat_1y4np")
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 3
+
+[node name="DeckViewMargin" type="MarginContainer" parent="RemovalContainer/DeckViewScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="DeckViewGrid" type="HFlowContainer" parent="RemovalContainer/DeckViewScroll/DeckViewMargin"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/h_separation = 15
+theme_override_constants/v_separation = 25
 
 [node name="NumberSelected" type="RichTextLabel" parent="."]
 layout_mode = 0

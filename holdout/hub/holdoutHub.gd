@@ -78,6 +78,13 @@ const SUPPORT_DECK_FLOOR: int = 12 # The maximum supports that can be in hand by
 const MAX_REMOVALS_PER_ROUND: int = 3
 const SUPPORT_OFFER_THRESHOLD: int = SUPPORT_DECK_FLOOR + MAX_REMOVALS_PER_ROUND
 
+const REMOVAL_VIEW_CARD_SCENE_PATH = "res://core/cards/card.tscn"
+const REMOVAL_VIEW_CARD_SCALE = Vector2(0.8, 0.8)
+const REMOVAL_VIEW_CARD_GRID_SPACE = Vector2(140, 180)
+@onready var removalDeckViewGrid: Control = %DeckViewGrid
+var isShowingRemovalDeck: bool = false
+var isAnimatingRemovalDeck: bool = false
+
 var removalSlotsActive: Array
 var selectedRemovalIndex: int = -1
 var allowRemovalSelections: bool = false
@@ -256,7 +263,10 @@ func hide_hub() -> void:
 	_set_arena_data()
 	$ConfirmButton.hide()
 	
-	_hide_opponent_container()
+	if isShowingRemovalDeck:
+		_hide_removal_deck(true)
+	else:
+		_hide_opponent_container()
 	
 	if isModifierRound:
 		_hide_modifier_container()
@@ -1445,6 +1455,8 @@ func _setup_removal_container() -> void:
 	removalSlotsActive = [0, 0, 0]
 	selectedRemovalIndex = -1
 	allowRemovalSelections = false
+	isShowingRemovalDeck = false
+	isAnimatingRemovalDeck = false
 	
 	for visual in removalCardVisuals:
 		if is_instance_valid(visual):
@@ -1479,9 +1491,13 @@ func _setup_removal_container() -> void:
 	
 	_select_removal_cards()
 	
+	_populate_removal_deck_view()
+	
 	removalDisplayedHealth = HoldoutStats.playerHealthValue
 	$"RemovalContainer/Player Box/PlayerHead".texture = Database.get_avatar_head_texture(_get_removal_head_base_path() + "Neutral.png")
 	$"RemovalContainer/Player Box/Health".text = _format_removal_health_text(removalDisplayedHealth)
+	
+	$"RemovalContainer/View Deck Button/Text".text = "View Decks"
 
 func _animate_removal_container_one() -> void:
 	removalContainer.show()
@@ -1783,6 +1799,74 @@ func _apply_selected_removals() -> void:
 		var cardKey: String = card.id
 		HoldoutStats.deckAdjustments[cardKey] = HoldoutStats.deckAdjustments.get(cardKey, 0) - 1
 
+func _populate_removal_deck_view() -> void:
+	for child in removalDeckViewGrid.get_children():
+		child.queue_free()
+	
+	var characterDeck = Database.build_run_deck(Database.standardCharacterDeck)
+	var supportDeck = Database.build_run_deck(Database.standardSupportDeck)
+	
+	# Group characters by faction
+	var groups := {}
+	for cardKey in characterDeck:
+		var faction = Database.CHARACTERS[cardKey][2]
+		if not groups.has(faction):
+			groups[faction] = []
+		groups[faction].append(cardKey)
+	
+	var sortedFactions = groups.keys()
+	sortedFactions.sort()
+	
+	for faction in sortedFactions:
+		groups[faction].sort()
+		for key in groups[faction]:
+			_add_removal_deck_view_card(key, true)
+	
+	for key in supportDeck:
+		_add_removal_deck_view_card(key, false)
+
+func _add_removal_deck_view_card(key: String, isCharacter: bool) -> void:
+	var wrapper = Control.new()
+	wrapper.custom_minimum_size = REMOVAL_VIEW_CARD_GRID_SPACE
+	wrapper.mouse_filter = Control.MOUSE_FILTER_PASS
+	
+	var card = load(REMOVAL_VIEW_CARD_SCENE_PATH).instantiate()
+	card.cardKey = key
+	
+	if isCharacter and Database.CHARACTERS.has(key):
+		var data = Database.CHARACTERS[key]
+		card.value = data[0]
+		card.type = data[1]
+		card.faction = data[2]
+		card.role = data[3]
+		card.nameText = data[4]
+		if data.size() > 5:
+			card.perkDescription = data[5]
+	elif not isCharacter and Database.SUPPORTS.has(key):
+		var data = Database.SUPPORTS[key]
+		card.value = data["Value"]
+		card.type = data["Type"]
+		card.nameText = data["CardText"]
+		card.perkDescription = data["PerkText"]
+		card.faction = "Support"
+		if card.has_node("icons/faction"):
+			card.get_node("icons/faction").hide()
+	
+	card.process_mode = Node.PROCESS_MODE_DISABLED
+	card.scale = REMOVAL_VIEW_CARD_SCALE
+	card.position = wrapper.custom_minimum_size / 2
+	
+	if card.has_node("Area2D"):
+		card.get_node("Area2D").queue_free()
+	if card.has_method("update_visuals"):
+		card.update_visuals()
+	
+	if card is Control:
+		card.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
+	wrapper.add_child(card)
+	removalDeckViewGrid.add_child(wrapper)
+
 func _spawn_removal_card_visual(card: Dictionary) -> Node2D:
 	var cardScene = load("res://core/cards/card.tscn")
 	var newCard = cardScene.instantiate()
@@ -1865,6 +1949,45 @@ func _reveal_removal_card(slot: Panel, card: Dictionary) -> void:
 	
 	iconNode.hide()
 
+func _show_removal_deck() -> void:
+	isAnimatingRemovalDeck = true
+	AudioManager.play_move()
+	
+	var tween = create_tween()
+	
+	tween.set_trans(Tween.TRANS_BACK)
+	tween.set_ease(Tween.EASE_OUT)
+	
+	tween.tween_property($RemovalContainer/DeckViewScroll, "position:x", 80, 0.3)
+	tween.parallel().tween_property(opponentBox, "position:x", -750, 0.3)
+	tween.parallel().tween_property($CurrentAllegiance, "position:x", -750, 0.3)
+	
+	await tween.finished
+	
+	isShowingRemovalDeck = true
+	isAnimatingRemovalDeck = false
+	
+
+func _hide_removal_deck(viewDeckOnly: bool = false) -> void:
+	isAnimatingRemovalDeck = true
+	AudioManager.play_move()
+	
+	var tween = create_tween()
+	
+	tween.set_trans(Tween.TRANS_BACK)
+	tween.set_ease(Tween.EASE_OUT)
+	
+	tween.tween_property($RemovalContainer/DeckViewScroll, "position:x", -750, 0.3)
+	if !viewDeckOnly:
+		tween.parallel().tween_property(opponentBox, "position:x", 150, 0.3)
+		tween.parallel().tween_property($CurrentAllegiance, "position:x", 150, 0.3)
+	
+	await tween.finished
+	
+	isShowingRemovalDeck = false
+	isAnimatingRemovalDeck = false
+
+
 func _hide_removal_buttons() -> void:
 	var tween = create_tween()
 	
@@ -1915,6 +2038,33 @@ func _update_removal_player_health(newValue: int, instant: bool = false) -> void
 	removalDisplayedHealth = newValue
 	headSprite.texture = Database.get_avatar_head_texture(basePath + "Neutral.png")
 
+func _get_removal_card_visual(slot: Panel) -> Node:
+	if slot.has_node("CardVisual"):
+		return slot.get_node("CardVisual")
+	return null
+
+func _show_removal_card_description(slot: Panel) -> void:
+	var cardVisual = _get_removal_card_visual(slot)
+	if cardVisual == null:
+		return
+	
+	var animationPlayer = cardVisual.get_node("AnimationPlayer")
+	if animationPlayer == null or not animationPlayer.has_animation("showPerkDescription"):
+		return
+	
+	animationPlayer.play("showPerkDescription")
+
+func _hide_removal_card_description(slot: Panel) -> void:
+	var cardVisual = _get_removal_card_visual(slot)
+	if cardVisual == null:
+		return
+	
+	var animationPlayer = cardVisual.get_node("AnimationPlayer")
+	if animationPlayer == null or not animationPlayer.has_animation("showPerkDescription"):
+		return
+	
+	animationPlayer.play_backwards("showPerkDescription")
+
 func _on_removal_1_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and allowRemovalSelections:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
@@ -1926,6 +2076,7 @@ func _on_removal_1_mouse_entered() -> void:
 	var tween = create_tween()
 	tween.tween_property(removalSlotOne, "scale", Vector2(1.05, 1.05), 0.1)
 	AudioManager.play_card_hover()
+	_show_removal_card_description(removalSlotOne)
 
 func _on_removal_1_mouse_exited() -> void:
 	if !allowRemovalSelections:
@@ -1933,6 +2084,7 @@ func _on_removal_1_mouse_exited() -> void:
 	var tween = create_tween()
 	tween.tween_property(removalSlotOne, "scale", Vector2(1, 1), 0.1)
 	AudioManager.play_card_hover()
+	_hide_removal_card_description(removalSlotOne)
 
 func _on_removal_2_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and allowRemovalSelections:
@@ -1945,6 +2097,7 @@ func _on_removal_2_mouse_entered() -> void:
 	var tween = create_tween()
 	tween.tween_property(removalSlotTwo, "scale", Vector2(1.05, 1.05), 0.1)
 	AudioManager.play_card_hover()
+	_show_removal_card_description(removalSlotTwo)
 
 func _on_removal_2_mouse_exited() -> void:
 	if !allowRemovalSelections:
@@ -1952,6 +2105,7 @@ func _on_removal_2_mouse_exited() -> void:
 	var tween = create_tween()
 	tween.tween_property(removalSlotTwo, "scale", Vector2(1, 1), 0.1)
 	AudioManager.play_card_hover()
+	_hide_removal_card_description(removalSlotTwo)
 
 func _on_removal_3_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and allowRemovalSelections:
@@ -1964,6 +2118,7 @@ func _on_removal_3_mouse_entered() -> void:
 	var tween = create_tween()
 	tween.tween_property(removalSlotThree, "scale", Vector2(1.05, 1.05), 0.1)
 	AudioManager.play_card_hover()
+	_show_removal_card_description(removalSlotThree)
 
 func _on_removal_3_mouse_exited() -> void:
 	if !allowRemovalSelections:
@@ -1971,6 +2126,7 @@ func _on_removal_3_mouse_exited() -> void:
 	var tween = create_tween()
 	tween.tween_property(removalSlotThree, "scale", Vector2(1, 1), 0.1)
 	AudioManager.play_card_hover()
+	_hide_removal_card_description(removalSlotThree)
 
 func _toggle_removal_slot(index: int, slot: Panel) -> void:
 	if removalSlotsActive[index] == 1:
@@ -2130,13 +2286,29 @@ func _reset_removal_slots_for_reroll() -> void:
 func _on_view_deck_button_pressed() -> void:
 	$"RemovalContainer/View Deck Button".release_focus()
 	$"RemovalContainer/View Deck Button".button_pressed = false
+	
+	if isAnimatingRemovalDeck:
+		return
+	
+	if isShowingRemovalDeck:
+		$"RemovalContainer/View Deck Button/Text".text = "View Decks"
+		await _hide_removal_deck()
+	else:
+		$"RemovalContainer/View Deck Button/Text".text = "View Opponent"
+		await _show_removal_deck()
 
 func _on_view_deck_button_mouse_entered() -> void:
+	if isAnimatingRemovalDeck:
+		return
+		
 	var tween = create_tween()
 	tween.tween_property($"RemovalContainer/View Deck Button", "scale", Vector2(1.05, 1.05), 0.1)
 	AudioManager.play_card_hover()
 
 func _on_view_deck_button_mouse_exited() -> void:
+	if isAnimatingRemovalDeck:
+		return
+		
 	var tween = create_tween()
 	tween.tween_property($"RemovalContainer/View Deck Button", "scale", Vector2(1, 1), 0.1)
 	AudioManager.play_card_hover()
