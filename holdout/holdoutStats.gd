@@ -16,6 +16,7 @@ static var activeAllegiance: Dictionary = {} # Empty means "no allegiance chosen
 static var lastOfferedAllegianceIds: Array = [] # Used for weighted randomness with allegiance selection
 
 static var lastOfferedRemovalIds: Array = []
+static var deckAdjustments: Dictionary = {}
 
 enum Rank { S, A, B, C, D, F }
 const RankRequirements = {Rank.S: 440, Rank.A: 300, Rank.B: 220, Rank.C: 160, Rank.D: 80, Rank.F: 0}
@@ -144,6 +145,7 @@ static func reset_for_new_run():
 	
 	activeAllegiance = {}
 	lastOfferedAllegianceIds.clear()
+	deckAdjustments.clear()
 	
 	start_new_run_log()
 	
@@ -269,6 +271,7 @@ static func get_save_dict() -> Dictionary:
 		"activeModifiers": activeModifiers,
 		"activeAllegiance": activeAllegiance,
 		"lastOfferedAllegianceIds": lastOfferedAllegianceIds,
+		"deckAdjustments": deckAdjustments,
 		"currentRank": currentRank,
 		"numberOfWins": numberOfWins,
 		"roundsPlayed": roundsPlayed,
@@ -317,6 +320,10 @@ static func load_save_dict(data: Dictionary) -> void:
 	lastOfferedAllegianceIds.clear()
 	for id in data.get("lastOfferedAllegianceIds", []):
 		lastOfferedAllegianceIds.append(int(id))
+	
+	deckAdjustments.clear()
+	for key in data.get("deckAdjustments", {}):
+		deckAdjustments[key] = int(data["deckAdjustments"][key])
 	
 	numberOfWins = int(data["numberOfWins"])
 	roundsPlayed = int(data["roundsPlayed"])

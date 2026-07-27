@@ -1172,6 +1172,28 @@ const tutorialSupportDeck = [
 	"TrapMine", "TrapMine",
 ]
 
+# Builds a deck for the current run: takes one of the base deck consts and applies any player-driven adjustments
+func build_run_deck(baseDeck: Array) -> Array:
+	var deck: Array = baseDeck.duplicate()
+	
+	for cardKey in HoldoutStats.deckAdjustments:
+		var count: int = HoldoutStats.deckAdjustments[cardKey]
+		
+		if count < 0:
+			var remaining = -count
+			while remaining > 0:
+				var idx = deck.find(cardKey)
+				if idx == -1:
+					break # No more copies of this card left in this particular deck — fine, just stop.
+				deck.remove_at(idx)
+				remaining -= 1
+		elif count > 0:
+			for i in range(count):
+				deck.append(cardKey)
+	
+	return deck
+
+
 const CARD_VIEWER_DESCRIPTIONS = {
 	"Abby": "The WLF's top soldier. She excels in fights with brute force, and has spent years turning herself into a weapon in the pursuit of vengeance.\n\nRivalries: Ellie, Emily, Joel, Rat King.",
 	"AbbyFirefly": "Just a kid growing up in the Salt Lake City base. She idolizes her dad and genuinely believes the Fireflies are going to save the world.",

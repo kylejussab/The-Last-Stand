@@ -125,14 +125,14 @@ func initialize_game() -> void:
 	%pauseIcon.show()
 	
 	if battleEngine.has_modifier(Database.Modifier.INFECTED_DECK):
-		$"../characterDeck".deck = Database.infectedHeavyCharacterDeck.duplicate()
-		$"../supportDeck".deck = Database.infectedHeavySupportDeck.duplicate()
+		$"../characterDeck".deck = Database.build_run_deck(Database.infectedHeavyCharacterDeck)
+		$"../supportDeck".deck = Database.build_run_deck(Database.infectedHeavySupportDeck)
 	elif battleEngine.has_modifier(Database.Modifier.HUMANITY_RESTORED): 
-		$"../characterDeck".deck = Database.humanityRestoredCharacterDeck.duplicate()
-		$"../supportDeck".deck = Database.humanityRestoredSupportDeck.duplicate()
+		$"../characterDeck".deck = Database.build_run_deck(Database.humanityRestoredCharacterDeck)
+		$"../supportDeck".deck = Database.build_run_deck(Database.humanityRestoredSupportDeck)
 	else:
-		$"../characterDeck".deck = Database.standardCharacterDeck.duplicate()
-		$"../supportDeck".deck = Database.standardSupportDeck.duplicate()
+		$"../characterDeck".deck = Database.build_run_deck(Database.standardCharacterDeck)
+		$"../supportDeck".deck = Database.build_run_deck(Database.standardSupportDeck)
 	
 	if opponentAI.has_method("initialize_deck"):
 		opponentAI.initialize_deck($"../characterDeck".deck)

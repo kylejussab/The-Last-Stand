@@ -63,11 +63,11 @@ func open_deck_view(deckCaller = null):
 			$viewPanel/background.add_theme_stylebox_override("panel", style)
 			
 			if%battleManager.battleEngine.has_modifier(Database.Modifier.INFECTED_DECK):
-				deckData = cardDatabase.infectedHeavyCharacterDeck.duplicate()
+				deckData = Database.build_run_deck(cardDatabase.infectedHeavyCharacterDeck)
 			elif%battleManager.battleEngine.has_modifier(Database.Modifier.HUMANITY_RESTORED):
-				deckData = cardDatabase.humanityRestoredCharacterDeck.duplicate()
+				deckData = Database.build_run_deck(cardDatabase.humanityRestoredCharacterDeck)
 			else:
-				deckData = cardDatabase.standardCharacterDeck.duplicate()
+				deckData = Database.build_run_deck(cardDatabase.standardCharacterDeck)
 			_populate_character_deck(deckData)
 		
 		elif deckCaller.name == "supportDeck":
@@ -75,11 +75,11 @@ func open_deck_view(deckCaller = null):
 			$viewPanel/background.add_theme_stylebox_override("panel", style)
 			
 			if%battleManager.battleEngine.has_modifier(Database.Modifier.INFECTED_DECK):
-				deckData = cardDatabase.infectedHeavySupportDeck.duplicate()
+				deckData = Database.build_run_deck(cardDatabase.infectedHeavySupportDeck)
 			elif%battleManager.battleEngine.has_modifier(Database.Modifier.HUMANITY_RESTORED):
-				deckData = cardDatabase.humanityRestoredSupportDeck.duplicate()
+				deckData = Database.build_run_deck(cardDatabase.humanityRestoredSupportDeck)
 			else:
-				deckData = cardDatabase.standardSupportDeck.duplicate()
+				deckData = Database.build_run_deck(cardDatabase.standardSupportDeck)
 			_populate_support_deck(deckData)
 	
 	show()

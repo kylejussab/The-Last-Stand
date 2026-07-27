@@ -74,6 +74,10 @@ const REROLL_MIN_HEALTH: int = 4
 
 var removalDisplayedHealth: int = 0
 
+const SUPPORT_DECK_FLOOR: int = 12 # The maximum supports that can be in hand by both player and opponent
+const MAX_REMOVALS_PER_ROUND: int = 3
+const SUPPORT_OFFER_THRESHOLD: int = SUPPORT_DECK_FLOOR + MAX_REMOVALS_PER_ROUND
+
 var removalSlotsActive: Array
 var selectedRemovalIndex: int = -1
 var allowRemovalSelections: bool = false
@@ -1686,6 +1690,9 @@ func _animate_removal_container_three() -> void:
 	await tween.finished
 
 
+func _get_remaining_deck_count(baseDeck: Array) -> int:
+	return Database.build_run_deck(baseDeck).size()
+
 func _get_removal_pool() -> Array:
 	var seen := {}
 	var pool: Array = []
@@ -1705,20 +1712,22 @@ func _get_removal_pool() -> Array:
 			"icon": FACTION_REMOVAL_ICONS.get(data[2], FACTION_REMOVAL_ICONS["Support"]),
 		})
 	
-	for cardName in Database.standardSupportDeck:
-		if seen.has(cardName):
-			continue
-		seen[cardName] = true
-		
-		var data = Database.SUPPORTS[cardName]
-		pool.append({
-			"id": cardName,
-			"cardType": "Support",
-			"name": data["CardText"],
-			"faction": "Support",
-			"description": data["PerkText"],
-			"icon": FACTION_REMOVAL_ICONS["Support"],
-		})
+	var remainingSupportCount = _get_remaining_deck_count(Database.standardSupportDeck)
+	if remainingSupportCount >= SUPPORT_OFFER_THRESHOLD:
+		for cardName in Database.standardSupportDeck:
+			if seen.has(cardName):
+				continue
+			seen[cardName] = true
+			
+			var data = Database.SUPPORTS[cardName]
+			pool.append({
+				"id": cardName,
+				"cardType": "Support",
+				"name": data["CardText"],
+				"faction": "Support",
+				"description": data["PerkText"],
+				"icon": FACTION_REMOVAL_ICONS["Support"],
+			})
 	
 	return pool
 
@@ -1764,6 +1773,15 @@ func _select_removal_cards() -> void:
 	removalSlotTwo.get_node("Slot").setup_reel(fullPool)
 	removalSlotThree.get_node("Slot").setup_reel(fullPool)
 
+func _apply_selected_removals() -> void:
+	var selectedOptions = []
+	if removalSlotsActive[0] == 1: selectedOptions.append(removalOptionOne)
+	if removalSlotsActive[1] == 1: selectedOptions.append(removalOptionTwo)
+	if removalSlotsActive[2] == 1: selectedOptions.append(removalOptionThree)
+	
+	for card in selectedOptions:
+		var cardKey: String = card.id
+		HoldoutStats.deckAdjustments[cardKey] = HoldoutStats.deckAdjustments.get(cardKey, 0) - 1
 
 func _spawn_removal_card_visual(card: Dictionary) -> Node2D:
 	var cardScene = load("res://core/cards/card.tscn")
@@ -2167,6 +2185,7 @@ func _on_confirm_button_pressed() -> void:
 					else:
 						_play_denied_animation($ConfirmButton)
 				else:
+					_apply_selected_removals()
 					await hide_hub()
 					self.hide()
 					return
@@ -2180,6 +2199,7 @@ func _on_confirm_button_pressed() -> void:
 			_play_denied_animation($ConfirmButton)
 	
 	if isCardRemovalRound and !isModifierRound:
+		_apply_selected_removals()
 		await hide_hub()
 		self.hide()
 		return
