@@ -171,11 +171,10 @@ func _add_visual_card(key, grid, isCharacter):
 	
 	elif not isCharacter and cardDatabase.SUPPORTS.has(key):
 		var data = cardDatabase.SUPPORTS[key]
-		card.value = data[0]
-		card.type = data[1]
-		card.role = data[2]
-		card.nameText = data[4]
-		if data.size() > 5: card.perkDescription = data[5]
+		card.value = data["Value"]
+		card.type = data["Type"]
+		card.nameText = data["CardText"]
+		if data.size() > 5: card.perkDescription = data["PerkText"]
 		card.faction = "Support" 
 		card.get_node("icons/faction").hide()
 	

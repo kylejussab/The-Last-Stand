@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://cc635drs7575"]
+[gd_scene load_steps=42 format=3 uid="uid://cc635drs7575"]
 
 [ext_resource type="Script" uid="uid://chxc2dlqsh4hl" path="res://holdout/hub/holdoutHub.gd" id="1_qh75h"]
 [ext_resource type="Texture2D" uid="uid://bridhs2vdvnms" path="res://core/ai/heads/AlleyNeutral.png" id="2_c5ial"]
@@ -58,6 +58,79 @@ spacing_glyph = 1
 base_font = ExtResource("6_5ny4g")
 spacing_glyph = 1
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hqwga"]
+bg_color = Color(0.08235294, 0.08235294, 0.08235294, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="FontVariation" id="FontVariation_jy5nt"]
+base_font = ExtResource("5_4i1nc")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1r712"]
+bg_color = Color(0.08235294, 0.08235294, 0.08235294, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ilu7v"]
+bg_color = Color(0.21960784, 0.21960784, 0.21960784, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jy5nt"]
+bg_color = Color(0.08235294, 0.08235294, 0.08235294, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yo2wg"]
+bg_color = Color(0.21960784, 0.21960784, 0.21960784, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5nfgo"]
+bg_color = Color(0.08235294, 0.08235294, 0.08235294, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6jfd2"]
+bg_color = Color(0.21960784, 0.21960784, 0.21960784, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rpse4"]
+bg_color = Color(0.08235294, 0.08235294, 0.08235294, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jtoas"]
+bg_color = Color(0.21960784, 0.21960784, 0.21960784, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wqtm4"]
+bg_color = Color(0.21960784, 0.21960784, 0.21960784, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
 [sub_resource type="FontVariation" id="FontVariation_rpca4"]
 base_font = ExtResource("6_5ny4g")
 spacing_glyph = 1
@@ -106,9 +179,9 @@ color = Color(0, 0, 0, 1)
 [node name="CurrentAllegiance" type="Control" parent="."]
 anchors_preset = 0
 offset_left = 150.0
-offset_top = 590.0
+offset_top = 610.0
 offset_right = 585.0
-offset_bottom = 750.0
+offset_bottom = 770.0
 mouse_filter = 2
 
 [node name="3" type="Sprite2D" parent="CurrentAllegiance"]
@@ -164,9 +237,9 @@ vertical_alignment = 1
 [node name="OpponentBox" type="Panel" parent="."]
 layout_mode = 0
 offset_left = 150.0
-offset_top = 265.0
+offset_top = 315.0
 offset_right = 580.0
-offset_bottom = 615.0
+offset_bottom = 665.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_c5ial")
 
@@ -253,6 +326,7 @@ Modifier Description"
 horizontal_alignment = 1
 
 [node name="ModifierContainer" type="Control" parent="."]
+visible = false
 anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
@@ -896,6 +970,232 @@ theme_override_font_sizes/normal_font_size = 14
 text = "SELECTED"
 horizontal_alignment = 1
 
+[node name="RemovalContainer" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2
+
+[node name="Removal 1" type="Panel" parent="RemovalContainer"]
+layout_mode = 0
+offset_left = 620.0
+offset_top = 315.0
+offset_right = 915.0
+offset_bottom = 729.0
+pivot_offset = Vector2(147.5, 207)
+theme_override_styles/panel = SubResource("StyleBoxFlat_qoiux")
+
+[node name="Slot" type="Control" parent="RemovalContainer/Removal 1"]
+clip_contents = true
+custom_minimum_size = Vector2(100, 100)
+anchors_preset = 0
+offset_left = 120.0
+offset_top = 40.0
+offset_right = 220.0
+offset_bottom = 140.0
+pivot_offset = Vector2(50, 50)
+mouse_filter = 2
+script = ExtResource("3_7u3tw")
+
+[node name="IconStrip" type="VBoxContainer" parent="RemovalContainer/Removal 1/Slot"]
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Selected" type="RichTextLabel" parent="RemovalContainer/Removal 1"]
+visible = false
+layout_mode = 0
+offset_top = 380.0
+offset_right = 295.0
+offset_bottom = 400.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_ghdy6")
+theme_override_font_sizes/normal_font_size = 14
+text = "SELECTED"
+horizontal_alignment = 1
+
+[node name="Removal 2" type="Panel" parent="RemovalContainer"]
+layout_mode = 0
+offset_left = 950.0
+offset_top = 315.0
+offset_right = 1245.0
+offset_bottom = 729.0
+pivot_offset = Vector2(147.5, 207)
+theme_override_styles/panel = SubResource("StyleBoxFlat_qoiux")
+
+[node name="Slot" type="Control" parent="RemovalContainer/Removal 2"]
+clip_contents = true
+custom_minimum_size = Vector2(100, 100)
+anchors_preset = 0
+offset_left = 120.0
+offset_top = 40.0
+offset_right = 220.0
+offset_bottom = 140.0
+pivot_offset = Vector2(50, 50)
+mouse_filter = 2
+script = ExtResource("3_7u3tw")
+
+[node name="IconStrip" type="VBoxContainer" parent="RemovalContainer/Removal 2/Slot"]
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Selected" type="RichTextLabel" parent="RemovalContainer/Removal 2"]
+visible = false
+layout_mode = 0
+offset_top = 380.0
+offset_right = 295.0
+offset_bottom = 400.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_ghdy6")
+theme_override_font_sizes/normal_font_size = 14
+text = "SELECTED"
+horizontal_alignment = 1
+
+[node name="Removal 3" type="Panel" parent="RemovalContainer"]
+layout_mode = 0
+offset_left = 1280.0
+offset_top = 315.0
+offset_right = 1575.0
+offset_bottom = 729.0
+pivot_offset = Vector2(147.5, 207)
+theme_override_styles/panel = SubResource("StyleBoxFlat_qoiux")
+
+[node name="Slot" type="Control" parent="RemovalContainer/Removal 3"]
+clip_contents = true
+custom_minimum_size = Vector2(100, 100)
+anchors_preset = 0
+offset_left = 120.0
+offset_top = 40.0
+offset_right = 220.0
+offset_bottom = 140.0
+pivot_offset = Vector2(50, 50)
+mouse_filter = 2
+script = ExtResource("3_7u3tw")
+
+[node name="IconStrip" type="VBoxContainer" parent="RemovalContainer/Removal 3/Slot"]
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Selected" type="RichTextLabel" parent="RemovalContainer/Removal 3"]
+visible = false
+layout_mode = 0
+offset_top = 380.0
+offset_right = 295.0
+offset_bottom = 400.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_ghdy6")
+theme_override_font_sizes/normal_font_size = 14
+text = "SELECTED"
+horizontal_alignment = 1
+
+[node name="Player Box" type="Panel" parent="RemovalContainer"]
+layout_mode = 0
+offset_left = 1611.0
+offset_top = 315.0
+offset_right = 1796.0
+offset_bottom = 490.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hqwga")
+
+[node name="PlayerHead" type="Sprite2D" parent="RemovalContainer/Player Box"]
+position = Vector2(92.5, 70)
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("2_c5ial")
+
+[node name="Health" type="RichTextLabel" parent="RemovalContainer/Player Box"]
+layout_mode = 0
+offset_top = 130.0
+offset_right = 185.0
+offset_bottom = 158.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_jy5nt")
+theme_override_font_sizes/normal_font_size = 20
+bbcode_enabled = true
+text = "99 [img=20 color=#4c4c4c]res://holdout/arena/ui/HeartIcon.png[/img]"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Reroll Button" type="Button" parent="RemovalContainer"]
+layout_mode = 0
+offset_left = 1611.0
+offset_top = 501.0
+offset_right = 1796.0
+offset_bottom = 631.0
+pivot_offset = Vector2(92.5, 65)
+theme_override_styles/normal = SubResource("StyleBoxFlat_1r712")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ilu7v")
+theme_override_styles/hover = SubResource("StyleBoxFlat_jy5nt")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_yo2wg")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_5nfgo")
+theme_override_styles/focus = SubResource("StyleBoxFlat_6jfd2")
+
+[node name="Reroll" type="RichTextLabel" parent="RemovalContainer/Reroll Button"]
+layout_mode = 0
+offset_top = 28.0
+offset_right = 185.0
+offset_bottom = 68.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_jy5nt")
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+text = "[img=38 color=#ffffff]res://holdout/arena/ui/Reroll.png[/img] Reroll All"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Cost" type="RichTextLabel" parent="RemovalContainer/Reroll Button"]
+layout_mode = 0
+offset_top = 78.0
+offset_right = 185.0
+offset_bottom = 106.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_jy5nt")
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+text = "-4 [img=20 color=#ffffff]res://holdout/arena/ui/HeartIcon.png[/img]"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="View Deck Button" type="Button" parent="RemovalContainer"]
+layout_mode = 0
+offset_left = 1611.0
+offset_top = 644.0
+offset_right = 1796.0
+offset_bottom = 729.0
+pivot_offset = Vector2(92.5, 42.5)
+theme_override_styles/normal = SubResource("StyleBoxFlat_1r712")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ilu7v")
+theme_override_styles/hover = SubResource("StyleBoxFlat_rpse4")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_jtoas")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_5nfgo")
+theme_override_styles/focus = SubResource("StyleBoxFlat_wqtm4")
+
+[node name="Text" type="RichTextLabel" parent="RemovalContainer/View Deck Button"]
+layout_mode = 0
+offset_right = 185.0
+offset_bottom = 85.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_jy5nt")
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+text = "View Decks"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="NumberSelected" type="RichTextLabel" parent="."]
 layout_mode = 0
 offset_left = 1590.0
@@ -970,5 +1270,20 @@ alignment = 0
 [connection signal="gui_input" from="AllegianceContainer/Allegiance 3" to="." method="_on_allegiance_3_gui_input"]
 [connection signal="mouse_entered" from="AllegianceContainer/Allegiance 3" to="." method="_on_allegiance_3_mouse_entered"]
 [connection signal="mouse_exited" from="AllegianceContainer/Allegiance 3" to="." method="_on_allegiance_3_mouse_exited"]
+[connection signal="gui_input" from="RemovalContainer/Removal 1" to="." method="_on_removal_1_gui_input"]
+[connection signal="mouse_entered" from="RemovalContainer/Removal 1" to="." method="_on_removal_1_mouse_entered"]
+[connection signal="mouse_exited" from="RemovalContainer/Removal 1" to="." method="_on_removal_1_mouse_exited"]
+[connection signal="gui_input" from="RemovalContainer/Removal 2" to="." method="_on_removal_2_gui_input"]
+[connection signal="mouse_entered" from="RemovalContainer/Removal 2" to="." method="_on_removal_2_mouse_entered"]
+[connection signal="mouse_exited" from="RemovalContainer/Removal 2" to="." method="_on_removal_2_mouse_exited"]
+[connection signal="gui_input" from="RemovalContainer/Removal 3" to="." method="_on_removal_3_gui_input"]
+[connection signal="mouse_entered" from="RemovalContainer/Removal 3" to="." method="_on_removal_3_mouse_entered"]
+[connection signal="mouse_exited" from="RemovalContainer/Removal 3" to="." method="_on_removal_3_mouse_exited"]
+[connection signal="mouse_entered" from="RemovalContainer/Reroll Button" to="." method="_on_reroll_button_mouse_entered"]
+[connection signal="mouse_exited" from="RemovalContainer/Reroll Button" to="." method="_on_reroll_button_mouse_exited"]
+[connection signal="pressed" from="RemovalContainer/Reroll Button" to="." method="_on_reroll_button_pressed"]
+[connection signal="mouse_entered" from="RemovalContainer/View Deck Button" to="." method="_on_view_deck_button_mouse_entered"]
+[connection signal="mouse_exited" from="RemovalContainer/View Deck Button" to="." method="_on_view_deck_button_mouse_exited"]
+[connection signal="pressed" from="RemovalContainer/View Deck Button" to="." method="_on_view_deck_button_pressed"]
 [connection signal="mouse_entered" from="ConfirmButton" to="." method="_on_confirm_button_mouse_entered"]
 [connection signal="pressed" from="ConfirmButton" to="." method="_on_confirm_button_pressed"]

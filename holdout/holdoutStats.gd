@@ -15,6 +15,8 @@ static var lastOfferedOpponentModifierIds: Array = []
 static var activeAllegiance: Dictionary = {} # Empty means "no allegiance chosen yet" (round 1 case)
 static var lastOfferedAllegianceIds: Array = [] # Used for weighted randomness with allegiance selection
 
+static var lastOfferedRemovalIds: Array = []
+
 enum Rank { S, A, B, C, D, F }
 const RankRequirements = {Rank.S: 440, Rank.A: 300, Rank.B: 220, Rank.C: 160, Rank.D: 80, Rank.F: 0}
 static var currentRank: Rank = Rank.F

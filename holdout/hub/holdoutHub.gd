@@ -40,12 +40,14 @@ var allegianceOptionThree: Dictionary
 
 var allegianceSlotsActive: Array
 var selectedAllegianceIndex: int = -1
+var allowAllegianceSelections: bool = false
 
 const ALLEGIANCE_FACTIONS = ["Firefly", "Infected", "Jackson", "Seraphite", "WLF"]
 
 @onready var fungusSlotOne: Control = $"AllegianceContainer/Fungus A1"
 @onready var fungusSlotTwo: Control = $"AllegianceContainer/Fungus A2"
 @onready var fungusSlotThree: Control = $"AllegianceContainer/Fungus A3"
+var fungusFadeTween: Tween
 
 const FACTION_FUNGUS_COLORS = {
 	"Firefly": ["C2A23E", "9D7F2E", "4F4119"],
@@ -53,6 +55,37 @@ const FACTION_FUNGUS_COLORS = {
 	"Jackson": ["546E32", "3D4F23", "29331B"],
 	"Seraphite": ["8657A3", "724099", "4B2B74"],
 	"WLF": ["81B0DE", "4A89C8", "185799"],
+}
+
+# For Card Removal UI Component
+@onready var removalContainer: Control = $RemovalContainer
+@onready var removalSlotOne: Panel = $"RemovalContainer/Removal 1"
+@onready var removalSlotTwo: Panel = $"RemovalContainer/Removal 2"
+@onready var removalSlotThree: Panel = $"RemovalContainer/Removal 3"
+
+var removalOptionOne: Dictionary
+var removalOptionTwo: Dictionary
+var removalOptionThree: Dictionary
+
+var removalCardVisuals: Array = []
+
+const REROLL_HEALTH_COST: int = 4
+const REROLL_MIN_HEALTH: int = 4
+
+var removalDisplayedHealth: int = 0
+
+var removalSlotsActive: Array
+var selectedRemovalIndex: int = -1
+var allowRemovalSelections: bool = false
+var isRerollingRemoval: bool = false
+
+const FACTION_REMOVAL_ICONS = {
+	"Firefly": "res://holdout/removal/Firefly.png",
+	"Infected": "res://holdout/removal/Infected.png",
+	"Jackson": "res://holdout/removal/Jackson.png",
+	"Seraphite": "res://holdout/removal/Seraphite.png",
+	"WLF": "res://holdout/removal/WLF.png",
+	"Support": "res://holdout/removal/Support.png",
 }
 
 # Flags
@@ -70,6 +103,7 @@ func _setup_hub() -> void:
 	$Subheading.modulate.a = 0
 	$NumberSelected.modulate.a = 0
 	$NumberSelected.text = "0/3 Selected"
+	$NumberSelected.position = Vector2(1590, 780)
 	$ConfirmButton.text = "START BATTLE"
 	$ConfirmButton.hide()
 	$ConfirmButton.modulate.a = 0
@@ -77,6 +111,7 @@ func _setup_hub() -> void:
 	_setup_opponent_container()
 	_setup_modifier_container()
 	_setup_allegiance_container()
+	_setup_removal_container()
 	
 	# Hide everything else
 	modifierContainer.hide()
@@ -94,6 +129,7 @@ func _setup_round_flags() -> void:
 		isModifierRound = true
 	
 	isAllegianceRound = _is_allegiance_round(HoldoutStats.numberOfWins + 1)
+	isCardRemovalRound = _is_card_removal_round(HoldoutStats.numberOfWins + 1)
 
 func _is_allegiance_round(roundNumber: int) -> bool:
 	if roundNumber == 1:
@@ -104,6 +140,13 @@ func _is_allegiance_round(roundNumber: int) -> bool:
 		return int((roundNumber + 6) / 5) >= 2
 	
 	return false
+
+func _is_card_removal_round(roundNumber: int) -> bool:
+	if roundNumber < 3:
+		return false
+	
+	return (roundNumber + 2) % 5 == 0
+
 
 func show_hub() -> void:
 	if HoldoutStats.replayedRound:
@@ -169,6 +212,31 @@ func show_hub() -> void:
 		headingTween.parallel().tween_property($NumberSelected, "modulate:a", 1, 1)
 		
 		$ConfirmButton.text = "CONFIRM"
+	elif isCardRemovalRound:
+		await _animate_opponent_container_two()
+		
+		await get_tree().create_timer(0.5).timeout
+		
+		await _animate_removal_container_one()
+		
+		await get_tree().create_timer(1).timeout
+		
+		_animate_opponent_container_three()
+		
+		await _animate_removal_container_two()
+		
+		_animate_removal_container_three()
+		
+		$Heading.text = "REMOVE A CARD?"
+		$Subheading.text = "Select any number of cards."
+		$NumberSelected.position = Vector2(1375, 750)
+		$NumberSelected.text = "0/3 Selected"
+		var headingTween = create_tween()
+		headingTween.tween_property($Heading, "modulate:a", 1, 1)
+		headingTween.parallel().tween_property($Subheading, "modulate:a", 1, 1)
+		headingTween.parallel().tween_property($NumberSelected, "modulate:a", 1, 1)
+		
+		$ConfirmButton.text = "CONFIRM"
 	
 	# Show continue button
 	$ConfirmButton.position = Vector2((get_viewport_rect().size.x - $ConfirmButton.size.x) / 2, 850)
@@ -192,6 +260,10 @@ func hide_hub() -> void:
 	if isAllegianceRound:
 		_hide_allegiance_container()
 	
+	if isCardRemovalRound:
+		_hide_removal_buttons()
+		_hide_removal_container()
+	
 	var hideTween = create_tween()
 	hideTween.tween_property($Overlay, "modulate:a", 0, 1)
 	hideTween.parallel().tween_property($Heading, "modulate:a", 0, 0.3)
@@ -207,7 +279,6 @@ func hide_hub() -> void:
 func _set_arena_data() -> void:
 	# Opponent's modifier always goes in first
 	%battleManager.add_modifier(selectedOpponentModifier.id, true)
-	GameStats.record_modifier_selection(selectedOpponentModifier.name)
 	
 	if isModifierRound:
 		if modifierSlotsActive[0] == 1:
@@ -255,6 +326,7 @@ func _reset_internal_data() -> void:
 	isCardRemovalRound = false
 	isAllegianceRound = false
 	modifierSlotsActive = [0, 0, 0]
+	removalSlotsActive = [0, 0, 0]
 	
 	tierOneModifier = null
 	tierTwoModifier = null
@@ -920,6 +992,7 @@ func _hide_modifier_container() -> void:
 func _setup_allegiance_container() -> void:
 	allegianceSlotsActive = [0, 0, 0]
 	selectedAllegianceIndex = -1
+	allowAllegianceSelections = false
 	
 	var screenSize = get_viewport_rect().size
 	
@@ -1102,6 +1175,7 @@ func _animate_allegiance_container_two() -> void:
 	audioTween.tween_callback(AudioManager.play_pop)
 	
 	var tween = create_tween()
+	fungusFadeTween = tween
 	
 	tween.set_trans(Tween.TRANS_BACK)
 	tween.set_ease(Tween.EASE_OUT)
@@ -1124,6 +1198,8 @@ func _animate_allegiance_container_two() -> void:
 	tween.parallel().tween_property(allegianceSlotTwo.get_node("Description"), "modulate:a", 1, 1)
 	tween.parallel().tween_property(allegianceSlotThree.get_node("Name"), "modulate:a", 1, 1)
 	tween.parallel().tween_property(allegianceSlotThree.get_node("Description"), "modulate:a", 1, 1)
+	
+	allowAllegianceSelections = true
 	
 	tween.parallel().tween_property(fungusSlotOne, "modulate:a", 1, 3)
 	tween.parallel().tween_property(fungusSlotTwo, "modulate:a", 1, 3)
@@ -1255,21 +1331,24 @@ func _select_allegiance_slot(index: int) -> void:
 	selectedAllegianceIndex = index
 
 func _on_allegiance_1_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton:
+	if event is InputEventMouseButton and allowAllegianceSelections:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			_select_allegiance_slot(0)
 
 func _on_allegiance_2_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton:
+	if event is InputEventMouseButton and allowAllegianceSelections:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			_select_allegiance_slot(1)
 
 func _on_allegiance_3_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton:
+	if event is InputEventMouseButton and allowAllegianceSelections:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			_select_allegiance_slot(2)
 
 func _on_allegiance_1_mouse_entered() -> void:
+	if !allowAllegianceSelections:
+		return
+	
 	var tween = create_tween()
 	tween.tween_property(allegianceSlotOne, "scale", Vector2(1.05, 1.05), 0.1)
 	tween.parallel().tween_property(fungusSlotOne.get_node("1"), "scale", Vector2(1.05, 1.05), 0.1)
@@ -1278,6 +1357,9 @@ func _on_allegiance_1_mouse_entered() -> void:
 	AudioManager.play_card_hover()
 
 func _on_allegiance_1_mouse_exited() -> void:
+	if !allowAllegianceSelections:
+		return
+	
 	var tween = create_tween()
 	tween.tween_property(allegianceSlotOne, "scale", Vector2(1, 1), 0.1)
 	tween.parallel().tween_property(fungusSlotOne.get_node("1"), "scale", Vector2(1, 1), 0.1)
@@ -1286,6 +1368,9 @@ func _on_allegiance_1_mouse_exited() -> void:
 	AudioManager.play_card_hover()
 
 func _on_allegiance_2_mouse_entered() -> void:
+	if !allowAllegianceSelections:
+		return
+	
 	var tween = create_tween()
 	tween.tween_property(allegianceSlotTwo, "scale", Vector2(1.05, 1.05), 0.1)
 	tween.parallel().tween_property(fungusSlotTwo.get_node("1"), "scale", Vector2(1.05, 1.05), 0.1)
@@ -1294,6 +1379,9 @@ func _on_allegiance_2_mouse_entered() -> void:
 	AudioManager.play_card_hover()
 
 func _on_allegiance_2_mouse_exited() -> void:
+	if !allowAllegianceSelections:
+		return
+	
 	var tween = create_tween()
 	tween.tween_property(allegianceSlotTwo, "scale", Vector2(1, 1), 0.1)
 	tween.parallel().tween_property(fungusSlotTwo.get_node("1"), "scale", Vector2(1, 1), 0.1)
@@ -1302,6 +1390,9 @@ func _on_allegiance_2_mouse_exited() -> void:
 	AudioManager.play_card_hover()
 
 func _on_allegiance_3_mouse_entered() -> void:
+	if !allowAllegianceSelections:
+		return
+	
 	var tween = create_tween()
 	tween.tween_property(allegianceSlotThree, "scale", Vector2(1.05, 1.05), 0.1)
 	tween.parallel().tween_property(fungusSlotThree.get_node("1"), "scale", Vector2(1.05, 1.05), 0.1)
@@ -1310,6 +1401,9 @@ func _on_allegiance_3_mouse_entered() -> void:
 	AudioManager.play_card_hover()
 
 func _on_allegiance_3_mouse_exited() -> void:
+	if !allowAllegianceSelections:
+		return
+	
 	var tween = create_tween()
 	tween.tween_property(allegianceSlotThree, "scale", Vector2(1, 1), 0.1)
 	tween.parallel().tween_property(fungusSlotThree.get_node("1"), "scale", Vector2(1, 1), 0.1)
@@ -1318,6 +1412,9 @@ func _on_allegiance_3_mouse_exited() -> void:
 	AudioManager.play_card_hover()
 
 func _hide_allegiance_container() -> void:
+	if fungusFadeTween and fungusFadeTween.is_valid():
+		fungusFadeTween.kill()
+		
 	var tween = create_tween()
 	
 	tween.set_trans(Tween.TRANS_CUBIC)
@@ -1337,6 +1434,694 @@ func _hide_allegiance_container() -> void:
 	tween.parallel().tween_property(allegianceSlotThree, "position:y", -750.0, 0.3).set_delay(0.2)
 	
 	await tween.finished
+
+
+# Removal
+func _setup_removal_container() -> void:
+	removalSlotsActive = [0, 0, 0]
+	selectedRemovalIndex = -1
+	allowRemovalSelections = false
+	
+	for visual in removalCardVisuals:
+		if is_instance_valid(visual):
+			visual.queue_free()
+	removalCardVisuals.clear()
+	
+	var screenSize = get_viewport_rect().size
+	
+	var currentStyleBox = removalSlotOne.get_theme_stylebox("panel").duplicate()
+	currentStyleBox.bg_color = Color("151515")
+	removalSlotOne.add_theme_stylebox_override("panel", currentStyleBox)
+	removalSlotTwo.add_theme_stylebox_override("panel", currentStyleBox)
+	removalSlotThree.add_theme_stylebox_override("panel", currentStyleBox)
+	
+	removalSlotOne.position = Vector2(1020, screenSize.y + 250)
+	removalSlotTwo.position = Vector2(1300, screenSize.y + 250)
+	removalSlotThree.position = Vector2(1580, screenSize.y + 250)
+	
+	removalSlotOne.size = Vector2(180, 180)
+	removalSlotTwo.size = Vector2(180, 180)
+	removalSlotThree.size = Vector2(180, 180)
+	
+	$"RemovalContainer/Player Box".position = Vector2(2200, 315)
+	$"RemovalContainer/Reroll Button".position = Vector2(2200, 501)
+	$"RemovalContainer/View Deck Button".position = Vector2(2200, 644)
+	
+	for slot in [removalSlotOne, removalSlotTwo, removalSlotThree]:
+		slot.get_node("Slot").hide()
+		slot.get_node("Slot").scale = Vector2(1, 1)
+		slot.get_node("Slot").position = Vector2(40, 40)
+		slot.get_node("Selected").hide()
+	
+	_select_removal_cards()
+	
+	removalDisplayedHealth = HoldoutStats.playerHealthValue
+	$"RemovalContainer/Player Box/PlayerHead".texture = Database.get_avatar_head_texture(_get_removal_head_base_path() + "Neutral.png")
+	$"RemovalContainer/Player Box/Health".text = _format_removal_health_text(removalDisplayedHealth)
+
+func _animate_removal_container_one() -> void:
+	removalContainer.show()
+	
+	var tween = create_tween()
+	
+	tween.set_trans(Tween.TRANS_CUBIC)
+	tween.set_ease(Tween.EASE_OUT)
+	
+	tween.tween_property(removalSlotOne, "position", Vector2(1020, 450), 0.3)
+	tween.tween_interval(0.3)
+	
+	tween.tween_callback(func(): 
+		removalSlotOne.get_node("Slot").show()
+		removalSlotOne.get_node("Slot").spin_to_modifier(removalOptionOne)
+		)
+	
+	tween.tween_property(removalSlotTwo, "position", Vector2(1300, 450), 0.3)
+	tween.tween_interval(0.3)
+	
+	tween.tween_callback(func(): 
+		removalSlotTwo.get_node("Slot").show()
+		removalSlotTwo.get_node("Slot").spin_to_modifier(removalOptionTwo)
+		)
+	
+	tween.tween_property(removalSlotThree, "position", Vector2(1580, 450), 0.3)
+	tween.tween_interval(0.3)
+	
+	tween.tween_callback(func(): 
+		removalSlotThree.get_node("Slot").show()
+		removalSlotThree.get_node("Slot").spin_to_modifier(removalOptionThree)
+		)
+		
+	tween.tween_interval(1.9) # Right after the last spin is done
+	
+	var whooshTween = create_tween()
+	whooshTween.tween_interval(0.2)
+	whooshTween.tween_callback(AudioManager.play_move)
+	whooshTween.tween_interval(0.5)
+	whooshTween.tween_callback(AudioManager.play_move)
+	whooshTween.tween_interval(0.5)
+	whooshTween.tween_callback(AudioManager.play_move)
+	
+	var audioTween = create_tween()
+	
+	audioTween.tween_interval(0.6)
+	audioTween.tween_callback(AudioManager.play_slot_spin)
+	
+	audioTween.tween_interval(0.6)
+	audioTween.tween_callback(AudioManager.play_slot_spin)
+	
+	audioTween.tween_interval(0.6)
+	audioTween.tween_callback(AudioManager.play_slot_spin)
+	
+	audioTween.tween_interval(0.65) 
+	audioTween.tween_callback(AudioManager.play_slot_stop)
+	
+	audioTween.tween_interval(0.65)
+	audioTween.tween_callback(AudioManager.play_slot_stop)
+	
+	audioTween.tween_interval(0.65)
+	audioTween.tween_callback(AudioManager.play_slot_stop)
+	
+	await tween.finished
+
+
+func _animate_removal_container_one_variant(isReroll: bool = false) -> void:
+	var screenSize = get_viewport_rect().size
+	
+	if !isReroll:
+		removalSlotOne.position = Vector2(730, screenSize.y + 250)
+		removalSlotTwo.position = Vector2(1130, screenSize.y + 250)
+		removalSlotThree.position = Vector2(1530, screenSize.y + 250)
+	
+	removalSlotOne.size = Vector2(180, 180)
+	removalSlotTwo.size = Vector2(180, 180)
+	removalSlotThree.size = Vector2(180, 180)
+	
+	removalContainer.show()
+	
+	var tween = create_tween()
+	
+	tween.set_trans(Tween.TRANS_CUBIC)
+	tween.set_ease(Tween.EASE_OUT)
+	
+	if isReroll:
+		tween.tween_interval(0.6)
+	else:
+		tween.tween_property(removalSlotOne, "position", Vector2(730, 450), 0.3)
+		tween.tween_interval(0.3)
+		
+	
+	tween.tween_callback(func(): 
+		removalSlotOne.get_node("Slot").show()
+		removalSlotOne.get_node("Slot").spin_to_modifier(removalOptionOne)
+		)
+	
+	if isReroll:
+		tween.tween_interval(0.6)
+	else:
+		tween.tween_property(removalSlotTwo, "position", Vector2(1130, 450), 0.3)
+		tween.tween_interval(0.3)
+	
+	tween.tween_callback(func(): 
+		removalSlotTwo.get_node("Slot").show()
+		removalSlotTwo.get_node("Slot").spin_to_modifier(removalOptionTwo)
+		)
+	
+	if isReroll:
+		tween.tween_interval(0.6)
+	else:
+		tween.tween_property(removalSlotThree, "position", Vector2(1530, 450), 0.3)
+		tween.tween_interval(0.3)
+	
+	tween.tween_callback(func(): 
+		removalSlotThree.get_node("Slot").show()
+		removalSlotThree.get_node("Slot").spin_to_modifier(removalOptionThree)
+		)
+		
+	tween.tween_interval(1.9) # Right after the last spin is done
+	
+	if !isReroll:
+		var whooshTween = create_tween()
+		whooshTween.tween_interval(0.2)
+		whooshTween.tween_callback(AudioManager.play_move)
+		whooshTween.tween_interval(0.5)
+		whooshTween.tween_callback(AudioManager.play_move)
+		whooshTween.tween_interval(0.5)
+		whooshTween.tween_callback(AudioManager.play_move)
+	
+	var audioTween = create_tween()
+	
+	audioTween.tween_interval(0.6)
+	audioTween.tween_callback(AudioManager.play_slot_spin)
+	
+	audioTween.tween_interval(0.6)
+	audioTween.tween_callback(AudioManager.play_slot_spin)
+	
+	audioTween.tween_interval(0.6)
+	audioTween.tween_callback(AudioManager.play_slot_spin)
+	
+	audioTween.tween_interval(0.65) 
+	audioTween.tween_callback(AudioManager.play_slot_stop)
+	
+	audioTween.tween_interval(0.65)
+	audioTween.tween_callback(AudioManager.play_slot_stop)
+	
+	audioTween.tween_interval(0.65)
+	audioTween.tween_callback(AudioManager.play_slot_stop)
+	
+	await tween.finished
+
+
+func _animate_removal_container_two() -> void:
+	var audioTween = create_tween()
+	audioTween.tween_callback(AudioManager.play_pop)
+	audioTween.tween_interval(0.1)
+	audioTween.tween_callback(AudioManager.play_pop)
+	audioTween.tween_interval(0.1)
+	audioTween.tween_callback(AudioManager.play_pop)
+	
+	var tween = create_tween()
+	
+	tween.set_trans(Tween.TRANS_BACK)
+	tween.set_ease(Tween.EASE_OUT)
+	
+	tween.tween_property(removalSlotOne, "position", Vector2(620, 315), 0.3)
+	tween.parallel().tween_property(removalSlotOne, "size", Vector2(295, 414), 0.3)
+	tween.parallel().tween_property(removalSlotOne.get_node("Slot"), "position", Vector2(120, 40), 0.3)
+	
+	_reveal_removal_card(removalSlotOne, removalOptionOne)
+	
+	tween.parallel().tween_property(removalSlotTwo, "position", Vector2(950, 315), 0.3)
+	tween.parallel().tween_property(removalSlotTwo, "size", Vector2(295, 414), 0.3)
+	tween.parallel().tween_property(removalSlotTwo.get_node("Slot"), "position", Vector2(120, 40), 0.3)
+	
+	_reveal_removal_card(removalSlotTwo, removalOptionTwo)
+	
+	tween.parallel().tween_property(removalSlotThree, "position", Vector2(1280, 315), 0.3)
+	tween.parallel().tween_property(removalSlotThree, "size", Vector2(295, 414), 0.3)
+	tween.parallel().tween_property(removalSlotThree.get_node("Slot"), "position", Vector2(120, 40), 0.3)
+	
+	_reveal_removal_card(removalSlotThree, removalOptionThree)
+	
+	await tween.finished
+	
+	removalSlotOne.mouse_filter = Control.MOUSE_FILTER_STOP
+	removalSlotTwo.mouse_filter = Control.MOUSE_FILTER_STOP
+	removalSlotThree.mouse_filter = Control.MOUSE_FILTER_STOP
+	allowRemovalSelections = true
+
+
+func _animate_removal_container_three() -> void:
+	var tween = create_tween()
+	
+	tween.set_trans(Tween.TRANS_BACK)
+	tween.set_ease(Tween.EASE_OUT)
+	
+	AudioManager.play_move()
+	
+	tween.tween_property($"RemovalContainer/Player Box", "position", Vector2(1611, 315), 0.3)
+	tween.parallel().tween_property($"RemovalContainer/Reroll Button", "position", Vector2(1611, 501), 0.3).set_delay(0.1)
+	tween.parallel().tween_property($"RemovalContainer/View Deck Button", "position", Vector2(1611, 644), 0.3).set_delay(0.1)
+	
+	
+	await tween.finished
+
+
+func _get_removal_pool() -> Array:
+	var seen := {}
+	var pool: Array = []
+	
+	for cardName in Database.standardCharacterDeck:
+		if seen.has(cardName):
+			continue
+		seen[cardName] = true
+		
+		var data = Database.CHARACTERS[cardName]
+		pool.append({
+			"id": cardName,
+			"cardType": "Character",
+			"name": data[4],
+			"faction": data[2],
+			"description": data[5],
+			"icon": FACTION_REMOVAL_ICONS.get(data[2], FACTION_REMOVAL_ICONS["Support"]),
+		})
+	
+	for cardName in Database.standardSupportDeck:
+		if seen.has(cardName):
+			continue
+		seen[cardName] = true
+		
+		var data = Database.SUPPORTS[cardName]
+		pool.append({
+			"id": cardName,
+			"cardType": "Support",
+			"name": data["CardText"],
+			"faction": "Support",
+			"description": data["PerkText"],
+			"icon": FACTION_REMOVAL_ICONS["Support"],
+		})
+	
+	return pool
+
+func _pick_weighted_removal_card(pool: Array) -> Dictionary:
+	if pool.is_empty():
+		return {}
+	
+	if randf() < 0.8:
+		var freshPool = []
+		for card in pool:
+			if not card.id in HoldoutStats.lastOfferedRemovalIds:
+				freshPool.append(card)
+		
+		if not freshPool.is_empty():
+			return freshPool.pick_random()
+	
+	return pool.pick_random()
+
+func _select_removal_cards() -> void:
+	var fullPool = _get_removal_pool()
+	var workingPool = fullPool.duplicate()
+	var chosen: Array = []
+	
+	for i in range(3):
+		if workingPool.is_empty():
+			break
+		var picked = _pick_weighted_removal_card(workingPool)
+		chosen.append(picked)
+		workingPool.erase(picked) # don't offer the same card twice in one round
+	
+	removalOptionOne = chosen[0]
+	removalOptionTwo = chosen[1]
+	removalOptionThree = chosen[2]
+	
+	var currentPicks = [removalOptionOne.id, removalOptionTwo.id, removalOptionThree.id]
+	HoldoutStats.lastOfferedRemovalIds.append_array(currentPicks)
+	
+	if HoldoutStats.lastOfferedRemovalIds.size() >= 9:
+		HoldoutStats.lastOfferedRemovalIds.clear()
+		HoldoutStats.lastOfferedRemovalIds.append_array(currentPicks)
+	
+	removalSlotOne.get_node("Slot").setup_reel(fullPool)
+	removalSlotTwo.get_node("Slot").setup_reel(fullPool)
+	removalSlotThree.get_node("Slot").setup_reel(fullPool)
+
+
+func _spawn_removal_card_visual(card: Dictionary) -> Node2D:
+	var cardScene = load("res://core/cards/card.tscn")
+	var newCard = cardScene.instantiate()
+	
+	newCard.cardKey = card.id
+	newCard.canBePlayed = false
+	
+	if card.cardType == "Character":
+		var data = Database.CHARACTERS[card.id]
+		newCard.value = data[0]
+		newCard.type = data[1]
+		newCard.faction = data[2]
+		newCard.role = data[3]
+		newCard.nameText = data[4]
+		if data.size() > 5:
+			newCard.perkDescription = data[5]
+	else:
+		var data = Database.SUPPORTS[card.id]
+		newCard.value = data["Value"]
+		newCard.type = data["Type"]
+		newCard.faction = "Support"
+		newCard.role = ""
+		newCard.nameText = data["CardText"]
+		newCard.perkDescription = data["PerkText"]
+	
+	newCard.get_node("value").text = str(newCard.value)
+	newCard.get_node("name").text = newCard.nameText
+	newCard.get_node("imageBack").texture = load("res://core/cards/art/CardBackBlank.png")
+	
+	var iconsNode = newCard.get_node("icons")
+	if newCard.faction != "Support":
+		iconsNode.get_node("faction").texture = load("res://core/cards/icons/" + newCard.faction + ".png")
+	
+	var perkList = newCard.role.split("/") if newCard.role else []
+	var activePerks = []
+	for perk in perkList:
+		if perk != "": activePerks.append(perk)
+	
+	var perkSprites = [iconsNode.get_node("perk1"), iconsNode.get_node("perk2")]
+	
+	if activePerks.is_empty():
+		for sprite in perkSprites: sprite.visible = false
+	else:
+		for i in range(perkSprites.size()):
+			if i < activePerks.size():
+				perkSprites[i].visible = true
+				perkSprites[i].texture = load("res://core/cards/icons/" + activePerks[i] + ".png")
+			else:
+				perkSprites[i].visible = false
+	
+	# Disable interaction before this ever gets a chance to hover/respond
+	newCard.get_node("Area2D/CollisionShape2D").set_deferred("disabled", true)
+	
+	newCard.update_visuals()
+	newCard.modulate.a = 0
+	
+	return newCard
+
+func _reveal_removal_card(slot: Panel, card: Dictionary) -> void:
+	var iconNode = slot.get_node("Slot")
+	
+	var cardVisual = _spawn_removal_card_visual(card)
+	cardVisual.name = "CardVisual"
+	cardVisual.position = Vector2(147.5, 200)
+	cardVisual.scale = Vector2.ZERO
+	
+	slot.add_child(cardVisual)
+	removalCardVisuals.append(cardVisual)
+	
+	var tween = create_tween()
+	tween.set_trans(Tween.TRANS_BACK)
+	tween.set_ease(Tween.EASE_IN_OUT)
+	
+	tween.tween_property(iconNode, "position", Vector2(97.5, 157), 0.3)
+	tween.parallel().tween_property(iconNode, "modulate:a", 0, 0.6)
+	tween.parallel().tween_property(cardVisual, "modulate:a", 1, 1)
+	tween.parallel().tween_property(cardVisual, "scale", Vector2(1.6, 1.6), 1)
+	
+	await tween.finished
+	
+	iconNode.hide()
+
+func _hide_removal_buttons() -> void:
+	var tween = create_tween()
+	
+	tween.set_trans(Tween.TRANS_BACK)
+	tween.set_ease(Tween.EASE_OUT)
+	
+	AudioManager.play_move()
+	
+	tween.tween_property($"RemovalContainer/Player Box", "position", Vector2(2200, 315), 0.3)
+	tween.parallel().tween_property($"RemovalContainer/Reroll Button", "position", Vector2(2200, 501), 0.3)
+	tween.parallel().tween_property($"RemovalContainer/View Deck Button", "position", Vector2(2200, 644), 0.3)
+	
+	
+	await tween.finished
+
+func _format_removal_health_text(value: int) -> String:
+	return str(value) + " [img=20 color=#4c4c4c]res://holdout/arena/ui/HeartIcon.png[/img]"
+
+func _get_removal_head_base_path() -> String:
+	var data = Database.AVATARS[HoldoutStats.currentPlayer]
+	return data["headPath"] + data["name"].get_slice(" ", 0)
+
+func _update_removal_player_health(newValue: int, instant: bool = false) -> void:
+	var healthLabel: RichTextLabel = $"RemovalContainer/Player Box/Health"
+	var headSprite = $"RemovalContainer/Player Box/PlayerHead"
+	var basePath = _get_removal_head_base_path()
+	
+	if instant or AccessibilityData.animationsDisabled:
+		removalDisplayedHealth = newValue
+		healthLabel.text = _format_removal_health_text(newValue)
+		return
+	
+	var startValue = removalDisplayedHealth
+	
+	headSprite.texture = Database.get_avatar_head_texture(basePath + "Hurt.png")
+	AudioManager.play_take_damage()
+	
+	var tween = create_tween()
+	tween.tween_method(
+		func(val: int): healthLabel.text = _format_removal_health_text(val),
+		startValue,
+		newValue,
+		1.0
+	)
+	
+	await tween.finished
+	
+	removalDisplayedHealth = newValue
+	headSprite.texture = Database.get_avatar_head_texture(basePath + "Neutral.png")
+
+func _on_removal_1_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and allowRemovalSelections:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			_toggle_removal_slot(0, removalSlotOne)
+
+func _on_removal_1_mouse_entered() -> void:
+	if !allowRemovalSelections:
+		return
+	var tween = create_tween()
+	tween.tween_property(removalSlotOne, "scale", Vector2(1.05, 1.05), 0.1)
+	AudioManager.play_card_hover()
+
+func _on_removal_1_mouse_exited() -> void:
+	if !allowRemovalSelections:
+		return
+	var tween = create_tween()
+	tween.tween_property(removalSlotOne, "scale", Vector2(1, 1), 0.1)
+	AudioManager.play_card_hover()
+
+func _on_removal_2_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and allowRemovalSelections:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			_toggle_removal_slot(1, removalSlotTwo)
+
+func _on_removal_2_mouse_entered() -> void:
+	if !allowRemovalSelections:
+		return
+	var tween = create_tween()
+	tween.tween_property(removalSlotTwo, "scale", Vector2(1.05, 1.05), 0.1)
+	AudioManager.play_card_hover()
+
+func _on_removal_2_mouse_exited() -> void:
+	if !allowRemovalSelections:
+		return
+	var tween = create_tween()
+	tween.tween_property(removalSlotTwo, "scale", Vector2(1, 1), 0.1)
+	AudioManager.play_card_hover()
+
+func _on_removal_3_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and allowRemovalSelections:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			_toggle_removal_slot(2, removalSlotThree)
+
+func _on_removal_3_mouse_entered() -> void:
+	if !allowRemovalSelections:
+		return
+	var tween = create_tween()
+	tween.tween_property(removalSlotThree, "scale", Vector2(1.05, 1.05), 0.1)
+	AudioManager.play_card_hover()
+
+func _on_removal_3_mouse_exited() -> void:
+	if !allowRemovalSelections:
+		return
+	var tween = create_tween()
+	tween.tween_property(removalSlotThree, "scale", Vector2(1, 1), 0.1)
+	AudioManager.play_card_hover()
+
+func _toggle_removal_slot(index: int, slot: Panel) -> void:
+	if removalSlotsActive[index] == 1:
+		removalSlotsActive[index] = 0
+		slot.get_node("Selected").visible = false
+		
+		var currentStyleBox = slot.get_theme_stylebox("panel").duplicate()
+		currentStyleBox.bg_color = Color("151515")
+		slot.add_theme_stylebox_override("panel", currentStyleBox)
+	else:
+		removalSlotsActive[index] = 1
+		slot.get_node("Selected").visible = true
+		
+		var currentStyleBox = slot.get_theme_stylebox("panel").duplicate()
+		currentStyleBox.bg_color = Color("383838")
+		slot.add_theme_stylebox_override("panel", currentStyleBox)
+	
+	var totalSelected = removalSlotsActive.reduce(func(accumulator, number): return accumulator + number, 0)
+	$NumberSelected.text = str(totalSelected) + "/3 Selected"
+
+func _hide_removal_container() -> void:
+	AudioManager.play_move()
+	
+	var tween = create_tween()
+	
+	tween.set_trans(Tween.TRANS_CUBIC)
+	tween.set_ease(Tween.EASE_OUT)
+	
+	tween.parallel().tween_property(removalSlotOne, "position:y", -750.0, 0.3)
+	
+	tween.parallel().tween_callback(AudioManager.play_move).set_delay(0.1)
+	tween.parallel().tween_property(removalSlotTwo, "position:y", -750.0, 0.3).set_delay(0.1)
+	
+	tween.parallel().tween_callback(AudioManager.play_move).set_delay(0.2)
+	tween.parallel().tween_property(removalSlotThree, "position:y", -750.0, 0.3).set_delay(0.2)
+	
+	await tween.finished
+
+
+func _on_reroll_button_pressed() -> void:
+	if isRerollingRemoval:
+		$"RemovalContainer/Reroll Button".release_focus()
+		$"RemovalContainer/Reroll Button".button_pressed = false
+		return
+		
+	if HoldoutStats.playerHealthValue <= REROLL_MIN_HEALTH:
+		$"RemovalContainer/Reroll Button".release_focus()
+		$"RemovalContainer/Reroll Button".button_pressed = false
+		_play_denied_animation($"RemovalContainer/Reroll Button")
+		return
+	
+	allowRemovalSelections = false
+	isRerollingRemoval = true
+	$"RemovalContainer/Reroll Button".release_focus()
+	$"RemovalContainer/Reroll Button".button_pressed = false
+	
+	
+	%arena.update_health(Actor.Type.PLAYER, %arena.get_health(Actor.Type.PLAYER) - REROLL_HEALTH_COST)
+	#HoldoutStats.playerHealthValue -= REROLL_HEALTH_COST
+	await _update_removal_player_health(HoldoutStats.playerHealthValue)
+	
+	
+	$"RemovalContainer/Reroll Button".mouse_filter = Control.MOUSE_FILTER_IGNORE
+	removalSlotOne.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	removalSlotTwo.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	removalSlotThree.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
+	$Heading.modulate.a = 0
+	$Subheading.modulate.a = 0
+	$NumberSelected.modulate.a = 0
+	$ConfirmButton.hide()
+	$ConfirmButton.modulate.a = 0
+	
+	_hide_removal_buttons()
+	await _reset_removal_slots_for_reroll()
+	
+	_select_removal_cards()
+	
+	await _animate_removal_container_one_variant(true)
+	
+	await get_tree().create_timer(0.5).timeout
+	
+	await _animate_removal_container_two()
+	
+	_animate_removal_container_three()
+	
+	$"RemovalContainer/Reroll Button".mouse_filter = Control.MOUSE_FILTER_STOP
+	
+	isRerollingRemoval = false
+	allowRemovalSelections = true
+	
+	$Heading.text = "REMOVE A CARD?"
+	$Subheading.text = "Select any number of cards."
+	$NumberSelected.text = "0/3 Selected"
+	$NumberSelected.position = Vector2(1375, 750)
+	var headingTween = create_tween()
+	headingTween.tween_property($Heading, "modulate:a", 1, 1)
+	headingTween.parallel().tween_property($Subheading, "modulate:a", 1, 1)
+	headingTween.parallel().tween_property($NumberSelected, "modulate:a", 1, 1)
+	
+	$ConfirmButton.text = "CONFIRM"
+	$ConfirmButton.position = Vector2((get_viewport_rect().size.x - $ConfirmButton.size.x) / 2, 850)
+	$ConfirmButton.show()
+	var confirmButtonTween = create_tween()
+	confirmButtonTween.tween_property($ConfirmButton, "modulate:a", 1, 1)
+
+func _on_reroll_button_mouse_entered() -> void:
+	var tween = create_tween()
+	tween.tween_property($"RemovalContainer/Reroll Button", "scale", Vector2(1.05, 1.05), 0.1)
+	AudioManager.play_card_hover()
+
+func _on_reroll_button_mouse_exited() -> void:
+	var tween = create_tween()
+	tween.tween_property($"RemovalContainer/Reroll Button", "scale", Vector2(1, 1), 0.1)
+	AudioManager.play_card_hover()
+
+func _reset_removal_slots_for_reroll() -> void:
+	removalSlotsActive = [0, 0, 0]
+	allowRemovalSelections = false
+	$NumberSelected.text = "0/3 Selected"
+	
+	for visual in removalCardVisuals:
+		if is_instance_valid(visual):
+			visual.free()
+	removalCardVisuals.clear()
+	await get_tree().process_frame
+	
+	for slot in [removalSlotOne, removalSlotTwo, removalSlotThree]:
+		var iconNode = slot.get_node("Slot")
+		iconNode.show()
+		iconNode.modulate.a = 1
+		iconNode.scale = Vector2(1, 1)
+		iconNode.position = Vector2(40, 40)
+		
+		slot.get_node("Selected").hide()
+		
+		var currentStyleBox = slot.get_theme_stylebox("panel").duplicate()
+		currentStyleBox.bg_color = Color("151515")
+		slot.add_theme_stylebox_override("panel", currentStyleBox)
+		
+		slot.modulate.a = 1
+	
+	var tween = create_tween()
+	tween.set_trans(Tween.TRANS_BACK)
+	tween.set_ease(Tween.EASE_OUT)
+	
+	tween.tween_property(removalSlotOne, "size", Vector2(180, 180), 0.15)
+	tween.parallel().tween_property(removalSlotOne, "position", Vector2(730, 450), 0.15)
+	tween.parallel().tween_property(removalSlotTwo, "size", Vector2(180, 180), 0.15)
+	tween.parallel().tween_property(removalSlotTwo, "position", Vector2(1130, 450), 0.15)
+	tween.parallel().tween_property(removalSlotThree, "size", Vector2(180, 180), 0.15)
+	tween.parallel().tween_property(removalSlotThree, "position", Vector2(1530, 450), 0.15)
+	
+	await tween.finished
+
+
+func _on_view_deck_button_pressed() -> void:
+	$"RemovalContainer/View Deck Button".release_focus()
+	$"RemovalContainer/View Deck Button".button_pressed = false
+
+func _on_view_deck_button_mouse_entered() -> void:
+	var tween = create_tween()
+	tween.tween_property($"RemovalContainer/View Deck Button", "scale", Vector2(1.05, 1.05), 0.1)
+	AudioManager.play_card_hover()
+
+func _on_view_deck_button_mouse_exited() -> void:
+	var tween = create_tween()
+	tween.tween_property($"RemovalContainer/View Deck Button", "scale", Vector2(1, 1), 0.1)
+	AudioManager.play_card_hover()
 
 
 func _on_confirm_button_pressed() -> void:
@@ -1374,7 +2159,17 @@ func _on_confirm_button_pressed() -> void:
 						_play_denied_animation($ConfirmButton)
 			
 			elif isCardRemovalRound:
-				pass
+				if !modifierSelected:
+					if modifierSlotsActive.reduce(func(accumulator, number): return accumulator + number, 0) > 0:
+						modifierSelected = true
+						_play_removal_after_modifier_sequence()
+						return
+					else:
+						_play_denied_animation($ConfirmButton)
+				else:
+					await hide_hub()
+					self.hide()
+					return
 	
 	if isAllegianceRound and !isModifierRound:
 		if selectedAllegianceIndex != -1:
@@ -1384,7 +2179,10 @@ func _on_confirm_button_pressed() -> void:
 		else:
 			_play_denied_animation($ConfirmButton)
 	
-	# Over here would be a check if its a card removal and not a modifier round
+	if isCardRemovalRound and !isModifierRound:
+		await hide_hub()
+		self.hide()
+		return
 	
 	$ConfirmButton.release_focus()
 
@@ -1424,6 +2222,40 @@ func _play_allegiance_after_modifier_sequence() -> void:
 	$Heading.text = "PICK AN ALLEGIANCE"
 	$Subheading.text = "You must select only one."
 	$NumberSelected.text = "0/1 Selected"
+	var headingTween = create_tween()
+	headingTween.tween_property($Heading, "modulate:a", 1, 1)
+	headingTween.parallel().tween_property($Subheading, "modulate:a", 1, 1)
+	headingTween.parallel().tween_property($NumberSelected, "modulate:a", 1, 1)
+	
+	$ConfirmButton.text = "CONFIRM"
+	$ConfirmButton.position = Vector2((get_viewport_rect().size.x - $ConfirmButton.size.x) / 2, 850)
+	$ConfirmButton.show()
+	var confirmButtonTween = create_tween()
+	confirmButtonTween.tween_property($ConfirmButton, "modulate:a", 1, 1)
+
+func _play_removal_after_modifier_sequence() -> void:
+	$NumberSelected.modulate.a = 0
+	$Heading.modulate.a = 0
+	$Subheading.modulate.a = 0
+	$ConfirmButton.modulate.a = 0
+	
+	_animate_opponent_container_four()
+	await _animate_modifier_container_three()
+	
+	await get_tree().create_timer(0.5).timeout
+	
+	await _animate_removal_container_one_variant()
+	
+	await get_tree().create_timer(1).timeout
+	
+	await _animate_removal_container_two()
+	
+	_animate_removal_container_three()
+	
+	$Heading.text = "REMOVE A CARD?"
+	$Subheading.text = "Select any number of cards."
+	$NumberSelected.text = "0/3 Selected"
+	$NumberSelected.position = Vector2(1375, 750)
 	var headingTween = create_tween()
 	headingTween.tween_property($Heading, "modulate:a", 1, 1)
 	headingTween.parallel().tween_property($Subheading, "modulate:a", 1, 1)
