@@ -421,7 +421,7 @@ func _execute_opponent_support_play() -> void:
 					await _deal_damage(target, result["directDamageAmount"])
 				
 				if result.get("backfired", false) and battleEngine.has_modifier(Database.Modifier.PSYCHO_MANIA):
-					_apply_psycho_mania_bonus(opponentHand)
+					_apply_psycho_mania_bonus(playerHand)
 			
 			
 			if not handled:
