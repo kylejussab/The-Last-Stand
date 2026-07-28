@@ -904,10 +904,12 @@ func _reset_played_cards_perks() -> void:
 	if playerCharacterCard and playerCharacterCard.perk:
 		playerCharacterCard.get_node("value").text = str(playerCharacterCard.value)
 		playerCharacterCard.perkValueAppliedMidRound = 0
+		playerCharacterCard.isNullified = false
 	
 	if opponentCharacterCard and opponentCharacterCard.perk:
 		opponentCharacterCard.get_node("value").text = str(opponentCharacterCard.value)
 		opponentCharacterCard.perkValueAppliedMidRound = 0
+		opponentCharacterCard.isNullified = false
 
 func _reset_allowed_support_cards() -> void:
 	if playerSupportCard:
@@ -1438,7 +1440,7 @@ func _play_dust_effect(card: Node2D, isOpponent: bool = false) -> void:
 
 # --- PERK HELPERS ---
 func _execute_player_mid_perk() -> void:
-	if playerCharacterCard.perk && playerCharacterCard.perk.timing == "midRound":
+	if playerCharacterCard.perk and playerCharacterCard.perk.timing == "midRound" and not playerCharacterCard.isNullified:
 		await get_tree().create_timer(perkCalculationTime).timeout
 		
 		var statChange = await playerCharacterCard.perk.apply_mid_perk(playerCharacterCard, playerHand, opponentCharacterCard)
@@ -1446,7 +1448,7 @@ func _execute_player_mid_perk() -> void:
 		_log_perk_result(playerCharacterCard, statChange, true)
 
 func _execute_opponent_mid_perk() -> void:
-	if opponentCharacterCard.perk && opponentCharacterCard.perk.timing == "midRound":
+	if opponentCharacterCard.perk and opponentCharacterCard.perk.timing == "midRound" and not opponentCharacterCard.isNullified:
 		var playerRealRole = playerCharacterCard.role
 		var playerRealFaction = playerCharacterCard.faction
 		
@@ -1471,12 +1473,12 @@ func _execute_opponent_mid_perk() -> void:
 			_update_playable_support_cards()
 
 func _execute_player_char_end_perk() -> void:
-	if playerCharacterCard.perk && playerCharacterCard.perk.timing == "endRound":
+	if playerCharacterCard.perk and playerCharacterCard.perk.timing == "endRound" and not playerCharacterCard.isNullified:
 		var statChange = await playerCharacterCard.perk.apply_end_perk(playerCharacterCard, playerSupportCard, opponentCharacterCard, opponentSupportCard, playerHand)
 		_log_perk_result(playerCharacterCard, statChange, true)
 
 func _execute_opponent_char_end_perk() -> void:
-	if opponentCharacterCard.perk && opponentCharacterCard.perk.timing == "endRound":
+	if opponentCharacterCard.perk and opponentCharacterCard.perk.timing == "endRound" and not opponentCharacterCard.isNullified:
 		var playerRealRole = playerCharacterCard.role
 		var playerRealFaction = playerCharacterCard.faction
 		
@@ -1499,23 +1501,23 @@ func _execute_opponent_char_end_perk() -> void:
 
 
 func _execute_player_late_end_perk() -> void:
-	if playerCharacterCard.perk && playerCharacterCard.perk.timing == "lateEndRound":
+	if playerCharacterCard.perk and playerCharacterCard.perk.timing == "lateEndRound" and not playerCharacterCard.isNullified:
 		await get_tree().create_timer(perkCalculationTime).timeout
 		var statChange = await playerCharacterCard.perk.apply_end_perk(playerCharacterCard, playerSupportCard, opponentCharacterCard, opponentSupportCard, playerHand)
 		_log_perk_result(playerCharacterCard, statChange, true)
 
 func _execute_opponent_late_end_perk() -> void:
-	if opponentCharacterCard.perk && opponentCharacterCard.perk.timing == "lateEndRound":
+	if opponentCharacterCard.perk and opponentCharacterCard.perk.timing == "lateEndRound" and not opponentCharacterCard.isNullified:
 		var statChange = await opponentCharacterCard.perk.apply_end_perk(opponentCharacterCard, opponentSupportCard, playerCharacterCard, playerSupportCard, opponentHand)
 		_log_perk_result(opponentCharacterCard, statChange, false)
 
 func _execute_player_calc_perk(playerTotal: int, opponentTotal: int) -> void:
-	if playerCharacterCard.perk && playerCharacterCard.perk.timing == "calculationRound":
+	if playerCharacterCard.perk && playerCharacterCard.perk.timing == "calculationRound" && not playerCharacterCard.isNullified:
 		var statChange = await playerCharacterCard.perk.apply_after_calculation_perk(playerCharacterCard, playerHand, playerTotal, opponentTotal)
 		_log_perk_result(playerCharacterCard, statChange, true)
 
 func _execute_opponent_calc_perk(playerTotal: int, opponentTotal: int) -> void:
-	if opponentCharacterCard.perk && opponentCharacterCard.perk.timing == "calculationRound":
+	if opponentCharacterCard.perk && opponentCharacterCard.perk.timing == "calculationRound" && not opponentCharacterCard.isNullified:
 		var statChange = await opponentCharacterCard.perk.apply_after_calculation_perk(opponentCharacterCard, opponentHand, opponentTotal, playerTotal)
 		_log_perk_result(opponentCharacterCard, statChange, false)
 

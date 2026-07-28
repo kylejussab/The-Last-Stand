@@ -24,6 +24,7 @@ func apply_on_play_perk(thisCharacterCard, thisSupportCard, otherCharacterCard, 
 	
 	thisSupportCard.modify_value(-value)
 	await otherCharacterCard.modify_value(-value)
+	otherCharacterCard.isNullified = true
 	
 	var revertedAmount = 0
 	if otherCharacterCard.perkValueAppliedMidRound != 0:

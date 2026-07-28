@@ -38,6 +38,7 @@ var perkValueAtRoundEnd
 var canBePlayed: bool
 var perkDescription: String
 var perkValueAppliedMidRound: int = 0
+var isNullified: bool = false
 var parity: String
 
 func _ready() -> void:
