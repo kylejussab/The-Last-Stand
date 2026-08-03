@@ -476,7 +476,9 @@ func _fade_with_round_reset() -> void:
 	
 	battleManager.prepare_opponent()
 	
-	await get_tree().create_timer(1.0).timeout
+	if not HoldoutStats.replayedRound:
+		await holdoutHub._ensure_hub_data_ready()
+	
 	Curtain.fade_out()
 	
 	holdoutHub.show_hub()

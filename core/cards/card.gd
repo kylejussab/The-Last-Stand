@@ -40,12 +40,17 @@ var perkDescription: String
 var perkValueAppliedMidRound: int = 0
 var isNullified: bool = false
 var parity: String
+var gotInfected: bool = false
+var originalFaction: String = ""
 
 var handPosition: Vector2
 
 func _ready() -> void:
 	if get_parent().has_method("connect_card_signals"):
 		get_parent().connect_card_signals(self)
+	
+	if has_node("infectedImage"):
+		$infectedImage.modulate.a = 0.0
 
 func update_visuals():
 	_apply_accessibility_settings()
@@ -172,6 +177,9 @@ func _update_art_style():
 	else:
 		$image.texture = load(fallbackPath)
 	
+	if has_node("infectedImage") and _can_be_infected():
+		$infectedImage.texture = _load_infected_texture(safeFaction)
+	
 	var targetColor = Color.WHITE
 	
 	if faction != "Support" and AccessibilityData.currentCardStyle == AccessibilityData.CardStyle.STENCIL:
@@ -271,6 +279,93 @@ func _updateCardValue():
 		value,
 		0.5
 	)
+
+func _load_infected_texture(safeFaction: String) -> Texture2D:
+	var premiumPath = "res://core/cards/art/premium/infected/" + cardKey + "Card.png"
+	var fallbackPath = "res://core/cards/art/infected/" + safeFaction + ".png"
+	
+	if ResourceLoader.exists(premiumPath):
+		return load(premiumPath)
+	return load(fallbackPath)
+
+func _can_be_infected() -> bool:
+	return type == "Character" and faction != "Infected" and faction != "Support"
+
+func set_infected(infected: bool, animate: bool = true) -> void:
+	if infected:
+		if not _can_be_infected() or gotInfected:
+			return
+		
+		gotInfected = true
+		originalFaction = faction
+		faction = "Infected"
+		
+		_update_faction_icon("Infected")
+		
+		if animate:
+			_play_infection_shake()
+		
+		if has_node("infectedImage") and AccessibilityData.currentCardStyle == AccessibilityData.CardStyle.DEFAULT:
+			if animate:
+				var tween = create_tween()
+				tween.tween_property($infectedImage, "modulate:a", 1.0, 0.4)
+			else:
+				$infectedImage.modulate.a = 1.0
+	else:
+		if not gotInfected:
+			return
+		
+		gotInfected = false
+		faction = originalFaction
+		originalFaction = ""
+		
+		_update_faction_icon(faction)
+		
+		if has_node("infectedImage"):
+			if animate:
+				var tween = create_tween()
+				tween.tween_property($infectedImage, "modulate:a", 0.0, 0.4)
+			else:
+				$infectedImage.modulate.a = 0.0
+
+
+func _update_faction_icon(newFaction: String) -> void:
+	if not has_node("icons/faction"):
+		return
+	
+	if newFaction in KEYWORD_ICONS:
+		$icons.get_node("faction").texture = load(_get_card_icon_path(newFaction))
+
+
+func _play_infection_shake() -> void:
+	var collisionShape = get_node("Area2D/CollisionShape2D")
+	collisionShape.set_deferred("disabled", true)
+	
+	if AccessibilityData.animationsDisabled:
+		collisionShape.set_deferred("disabled", false)
+		return
+	
+	var originalScale = scale
+	var originalRotation = rotation
+	var peakScale = Vector2(1.35, 1.35)
+	
+	var tween = create_tween()
+	
+	tween.tween_property(self, "scale", peakScale, 0.15).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	
+	tween.parallel().tween_property(self, "rotation", originalRotation + deg_to_rad(8), 0.06)
+	tween.tween_property(self, "rotation", originalRotation - deg_to_rad(8), 0.06)
+	tween.tween_property(self, "rotation", originalRotation + deg_to_rad(6), 0.06)
+	tween.tween_property(self, "rotation", originalRotation - deg_to_rad(6), 0.06)
+	tween.tween_property(self, "rotation", originalRotation + deg_to_rad(3), 0.06)
+	tween.tween_property(self, "rotation", originalRotation - deg_to_rad(3), 0.06)
+	tween.tween_property(self, "rotation", originalRotation, 0.05)
+	
+	tween.tween_property(self, "scale", originalScale, 0.15).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
+	
+	await tween.finished
+	collisionShape.set_deferred("disabled", false)
+
 
 # Tooltips
 func _populate_character_tooltip():

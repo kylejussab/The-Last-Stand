@@ -39,6 +39,8 @@ func _ready() -> void:
 		set_process(false)
 		return
 	
+	%HoldoutHub.call_deferred("_prepare_hub_data")
+	
 	_run_intro_sequence()
 	_trigger_transition()
 
@@ -134,11 +136,8 @@ func _trigger_transition() -> void:
 	
 	AudioManager.play_whoosh(true)
 	
-	isOrbiting = false
-	%HoldoutHub.show()
-	%HoldoutHub._setup_hub()
-	
 	_transition_to_game()
+	
 	var transitionTween = create_tween().set_parallel(true)
 	
 	transitionTween.tween_property(infinityContainer, "position:y", infinityContainer.position.y - moveDistance, transitionDuration).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT).set_delay(0.15)
@@ -146,6 +145,8 @@ func _trigger_transition() -> void:
 	transitionTween.tween_property($ColorRect, "modulate:a", 0.0, 0.5)
 	
 	await transitionTween.finished
+	
+	isOrbiting = false
 	infinityContainer.hide()
 
 

@@ -40,6 +40,7 @@ var perkDescription: String
 var perkValueAppliedMidRound: int = 0
 var isNullified: bool = false
 var parity: String
+var gotInfected: bool = false
 
 func _ready() -> void:
 	if get_parent().has_method("connect_card_signals"):

@@ -31,6 +31,7 @@ var opponentCardScene = preload("res://core/cards/opponentCard.tscn")
 # --- ENGINE & LOGIC ---
 var battleEngine: HoldoutBattleEngine
 var opponentAI: OpponentAI
+var allegianceHandler: AllegianceHandler
 
 # --- CURRENT ROUND STATE (Physical Cards) ---
 var playerCharacterCard: Node2D
@@ -103,6 +104,11 @@ func prepare_opponent() -> void:
 	if not HoldoutStats.replayedRound:
 		HoldoutStats.currentOpponent = _pick_next_opponent()
 	
+	playerCharacterCard = null
+	playerSupportCard = null
+	opponentCharacterCard = null
+	opponentSupportCard = null
+	
 	_initialize_opponent(HoldoutStats.currentPlayer, HoldoutStats.currentOpponent)
 	
 	var maxIndex = Database.OPPONENT_HEALTH_AMOUNTS.size() - 1
@@ -123,6 +129,7 @@ func initialize_game() -> void:
 		seed(HoldoutStats.currentBattleSeed)
 		
 	%pauseIcon.show()
+	_load_allegiance_handler()
 	
 	if battleEngine.has_modifier(Database.Modifier.INFECTED_DECK):
 		$"../characterDeck".deck = Database.build_run_deck(Database.infectedHeavyCharacterDeck)
@@ -191,6 +198,14 @@ func remove_modifier(modifier: Database.Modifier) -> void:
 	battleEngine.remove_modifier(modifier)
 
 
+func _load_allegiance_handler() -> void:
+	allegianceHandler = null
+	var id = HoldoutStats.activeAllegiance.get("id")
+	if id != null and Database.ALLEGIANCE_HANDLERS.has(id):
+		var script = load(Database.ALLEGIANCE_HANDLERS[id])
+		allegianceHandler = script.new()
+		allegianceHandler.setup(self)
+
 # --- PRIVATES ---
 func _initialize_opponent(player: Actor.Avatar, opponent: Actor.Avatar) -> void:
 	ui.setup_avatar(player, Actor.Type.PLAYER)
@@ -239,6 +254,9 @@ func _on_player_character_played(card: Node2D) -> void:
 	
 	_play_dust_effect(playerCharacterCard)
 	
+	if allegianceHandler:
+		allegianceHandler.on_character_played(card, playerHand, opponentCharacterCard, true)
+	
 	if opponentCharacterCard != null:
 		await _apply_mid_round_perks()
 		_transition_to_support_phase()
@@ -262,6 +280,11 @@ func _execute_opponent_character_play() -> void:
 	
 	_animate_opponent_playing_card(card, opponentCharacterCardSlot)
 	opponentCharacterCard = card
+	
+	opponentCharacterCard = card
+
+	if allegianceHandler:
+		allegianceHandler.on_character_played(card, opponentHand, playerCharacterCard, false)
 	
 	if opponentAI.has_method("record_opponent_play"):
 		opponentAI.record_opponent_play(card)
@@ -875,6 +898,9 @@ func _move_cards_to_discard(cards: Array) -> void:
 		AudioManager.play_random_card_draw()
 		card.scale = Vector2(1, 1)
 		
+		if card.gotInfected:
+			card.set_infected(false, false)
+		
 		if "perk" in card and card.perk != null:
 			var anim = card.get_node("AnimationPlayer")
 			if anim.has_animation("showPerkDescription"):
@@ -1039,6 +1065,9 @@ func _place_card_in_discard(card: Node2D, hand: Node2D) -> void:
 	card.scale = Vector2(1, 1)
 	card.get_node("Area2D/CollisionShape2D").disabled = true
 	
+	if card.gotInfected:
+		card.set_infected(false, false)
+	
 	card.z_index = discardedCardZIndex
 	discardedCardZIndex += 1
 	var tween = get_tree().create_tween()
@@ -1112,6 +1141,9 @@ func _handle_player_win(damage: int, triggerCalculatedRisk: bool, stackedOddsBre
 	ui.change_mood(Actor.Type.PLAYER, Actor.Mood.HAPPY)
 	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.HURT)
 	
+	if allegianceHandler:
+		await allegianceHandler.on_round_resolved(playerCharacterCard, playerHand, opponentCharacterCard, opponentHand, true, damage)
+	
 	var opponentName: String = Actor.Avatar.keys()[HoldoutStats.currentOpponent].capitalize()
 	
 	if opponentCharacterCard.cardKey == "Owen":
@@ -1176,6 +1208,9 @@ func _handle_player_win(damage: int, triggerCalculatedRisk: bool, stackedOddsBre
 func _handle_opponent_win(damage: int, triggerDeepWounds: bool, triggerCalculatedRiskLoss: bool, stackedOddsOpponentBonus: int = 0) -> void:
 	ui.change_mood(Actor.Type.PLAYER, Actor.Mood.HURT)
 	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.HAPPY)
+	
+	if allegianceHandler:
+		await allegianceHandler.on_round_resolved(opponentCharacterCard, opponentHand, playerCharacterCard, playerHand, false, damage)
 	
 	if playerCharacterCard.cardKey == "Owen":
 		battleEngine.log_action("System. Owen's perk activated. You avoided damage.")
@@ -1561,6 +1596,9 @@ func _get_card_array_save_data(cardArray: Array) -> Array:
 				"role": card.role
 			}
 			
+			if card.gotInfected:
+				entry["gotInfected"] = true
+			
 			if card.has_meta("cardRotAge"):
 				entry["cardRotAge"] = card.get_meta("cardRotAge")
 			if card.has_meta("cardRotAmount"):
@@ -1692,6 +1730,8 @@ func _load_game_from_snapshot() -> void:
 	$"../arena/background/currentAllegiance/2".modulate = Color(colors[1])
 	$"../arena/background/currentAllegiance/3".modulate = Color(colors[2])
 	
+	_load_allegiance_handler()
+	
 	_apply_guerrilla_tactics_restrictions()
 	
 	if battleEngine.roundStage != battleEngine.RoundStage.END_CALCULATION and not isTutorialActive:
@@ -1770,6 +1810,9 @@ func _spawn_single_card(cardData: Dictionary, isOpponent: bool = false) -> Node2
 		newCard.set_meta("cardRotAmount", cardData["cardRotAmount"])
 	
 	newCard.update_visuals()
+	
+	if cardData.get("gotInfected", false):
+		newCard.set_infected(true, false)
 	
 	if isOpponent and not showOpponentsCards:
 		if newCard.has_node("image"): 

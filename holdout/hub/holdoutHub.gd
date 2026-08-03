@@ -74,9 +74,9 @@ const REROLL_MIN_HEALTH: int = 4
 
 var removalDisplayedHealth: int = 0
 
-const SUPPORT_DECK_FLOOR: int = 12 # The maximum supports that can be in hand by both player and opponent
+const CARD_DECK_FLOOR: int = 12 # The maximum supports that can be in hand by both player and opponent
 const MAX_REMOVALS_PER_ROUND: int = 3
-const SUPPORT_OFFER_THRESHOLD: int = SUPPORT_DECK_FLOOR + MAX_REMOVALS_PER_ROUND
+const REMOVAL_OFFER_THRESHOLD: int = CARD_DECK_FLOOR + MAX_REMOVALS_PER_ROUND
 
 const REMOVAL_VIEW_CARD_SCENE_PATH = "res://core/cards/card.tscn"
 const REMOVAL_VIEW_CARD_SCALE = Vector2(0.8, 0.8)
@@ -104,8 +104,17 @@ var isModifierRound: bool = false
 var isCardRemovalRound: bool = false
 var isAllegianceRound: bool = false
 
+signal hub_data_ready
+
+enum DataState { NOT_STARTED, PREPARING, READY }
+var dataState: DataState = DataState.NOT_STARTED
+
 # Hub
-func _setup_hub() -> void:
+func _prepare_hub_data() -> void:
+	if dataState != DataState.NOT_STARTED:
+		return
+	dataState = DataState.PREPARING
+	
 	_reset_internal_data()
 	_setup_round_flags()
 	
@@ -122,9 +131,8 @@ func _setup_hub() -> void:
 	_setup_opponent_container()
 	_setup_modifier_container()
 	_setup_allegiance_container()
-	_setup_removal_container()
+	await _setup_removal_container()
 	
-	# Hide everything else
 	modifierContainer.hide()
 	allegianceContainer.hide()
 	
@@ -133,7 +141,24 @@ func _setup_hub() -> void:
 	else:
 		%currentAllegiance.modulate.a = 1
 	
+	dataState = DataState.READY
+	hub_data_ready.emit()
+
+
+func _ensure_hub_data_ready() -> void:
+	if dataState == DataState.READY:
+		return
+	if dataState == DataState.NOT_STARTED:
+		_prepare_hub_data() # nobody preloaded it, kick it off now
+	if dataState != DataState.READY:
+		await hub_data_ready
+
+
+func _setup_hub() -> void:
+	await _ensure_hub_data_ready()
+	dataState = DataState.NOT_STARTED # so the next round preps fresh data
 	self.show()
+
 
 func _setup_round_flags() -> void:
 	if (HoldoutStats.numberOfWins + 1) % 2 == 0: # Even round
@@ -152,11 +177,24 @@ func _is_allegiance_round(roundNumber: int) -> bool:
 	
 	return false
 
+
 func _is_card_removal_round(roundNumber: int) -> bool:
 	if roundNumber < 3:
 		return false
+		
+	if roundNumber % 2 == 0:
+		return false
 	
-	return (roundNumber + 2) % 5 == 0
+	if _is_allegiance_round(roundNumber):
+		return false
+	
+	# Only if the decks arent at a game breaking position
+	var characterDeckCount = _get_remaining_deck_count(Database.standardCharacterDeck)
+	
+	if characterDeckCount <= REMOVAL_OFFER_THRESHOLD:
+		return false
+	
+	return true
 
 
 func show_hub() -> void:
@@ -164,8 +202,8 @@ func show_hub() -> void:
 		GameStats.gameMode = GameStats.Mode.HOLDOUT
 		%battleManager.initialize_game()
 		return
-		
-	_setup_hub()
+	
+	await _setup_hub()
 	
 	# Temporary delay at start
 	if HoldoutStats.numberOfWins == 0:
@@ -1487,17 +1525,19 @@ func _setup_removal_container() -> void:
 		slot.get_node("Slot").hide()
 		slot.get_node("Slot").scale = Vector2(1, 1)
 		slot.get_node("Slot").position = Vector2(40, 40)
+		slot.get_node("Slot").modulate.a = 1
 		slot.get_node("Selected").hide()
 	
 	_select_removal_cards()
 	
-	_populate_removal_deck_view()
+	await _populate_removal_deck_view()
 	
 	removalDisplayedHealth = HoldoutStats.playerHealthValue
 	$"RemovalContainer/Player Box/PlayerHead".texture = Database.get_avatar_head_texture(_get_removal_head_base_path() + "Neutral.png")
 	$"RemovalContainer/Player Box/Health".text = _format_removal_health_text(removalDisplayedHealth)
 	
 	$"RemovalContainer/View Deck Button/Text".text = "View Decks"
+
 
 func _animate_removal_container_one() -> void:
 	removalContainer.show()
@@ -1729,7 +1769,7 @@ func _get_removal_pool() -> Array:
 		})
 	
 	var remainingSupportCount = _get_remaining_deck_count(Database.standardSupportDeck)
-	if remainingSupportCount >= SUPPORT_OFFER_THRESHOLD:
+	if remainingSupportCount >= REMOVAL_OFFER_THRESHOLD:
 		for cardName in Database.standardSupportDeck:
 			if seen.has(cardName):
 				continue
@@ -1751,16 +1791,23 @@ func _pick_weighted_removal_card(pool: Array) -> Dictionary:
 	if pool.is_empty():
 		return {}
 	
+	var charPool = pool.filter(func(c): return c.cardType == "Character")
+	var suppPool = pool.filter(func(c): return c.cardType == "Support")
+	var targetPool = pool
+	
+	if not charPool.is_empty() and not suppPool.is_empty():
+		if randf() < 0.80:
+			targetPool = charPool
+		else:
+			targetPool = suppPool
+	
 	if randf() < 0.8:
-		var freshPool = []
-		for card in pool:
-			if not card.id in HoldoutStats.lastOfferedRemovalIds:
-				freshPool.append(card)
+		var freshPool = targetPool.filter(func(c): return not c.id in HoldoutStats.lastOfferedRemovalIds)
 		
 		if not freshPool.is_empty():
 			return freshPool.pick_random()
 	
-	return pool.pick_random()
+	return targetPool.pick_random()
 
 func _select_removal_cards() -> void:
 	var fullPool = _get_removal_pool()
@@ -1806,7 +1853,6 @@ func _populate_removal_deck_view() -> void:
 	var characterDeck = Database.build_run_deck(Database.standardCharacterDeck)
 	var supportDeck = Database.build_run_deck(Database.standardSupportDeck)
 	
-	# Group characters by faction
 	var groups := {}
 	for cardKey in characterDeck:
 		var faction = Database.CHARACTERS[cardKey][2]
@@ -1817,13 +1863,25 @@ func _populate_removal_deck_view() -> void:
 	var sortedFactions = groups.keys()
 	sortedFactions.sort()
 	
+	const CARDS_PER_FRAME := 3
+	var processedThisFrame := 0
+	
 	for faction in sortedFactions:
 		groups[faction].sort()
 		for key in groups[faction]:
 			_add_removal_deck_view_card(key, true)
+			processedThisFrame += 1
+			if processedThisFrame >= CARDS_PER_FRAME:
+				processedThisFrame = 0
+				await get_tree().process_frame
 	
 	for key in supportDeck:
 		_add_removal_deck_view_card(key, false)
+		processedThisFrame += 1
+		if processedThisFrame >= CARDS_PER_FRAME:
+			processedThisFrame = 0
+			await get_tree().process_frame
+
 
 func _add_removal_deck_view_card(key: String, isCharacter: bool) -> void:
 	var wrapper = Control.new()
@@ -1962,11 +2020,16 @@ func _show_removal_deck() -> void:
 	tween.parallel().tween_property(opponentBox, "position:x", -750, 0.3)
 	tween.parallel().tween_property($CurrentAllegiance, "position:x", -750, 0.3)
 	
+	if isModifierRound:
+		tween.parallel().tween_property(modifierSlotOne, "position", Vector2(-750, 690), 0.3)
+		tween.parallel().tween_property(modifierSlotTwo, "position", Vector2(-750, 690), 0.3)
+		tween.parallel().tween_property(modifierSlotThree, "position", Vector2(-750, 690), 0.3)
+	
 	await tween.finished
 	
 	isShowingRemovalDeck = true
 	isAnimatingRemovalDeck = false
-	
+
 
 func _hide_removal_deck(viewDeckOnly: bool = false) -> void:
 	isAnimatingRemovalDeck = true
@@ -1981,6 +2044,11 @@ func _hide_removal_deck(viewDeckOnly: bool = false) -> void:
 	if !viewDeckOnly:
 		tween.parallel().tween_property(opponentBox, "position:x", 150, 0.3)
 		tween.parallel().tween_property($CurrentAllegiance, "position:x", 150, 0.3)
+		
+		if isModifierRound:
+			tween.parallel().tween_property(modifierSlotOne, "position", Vector2(150, 690), 0.3)
+			tween.parallel().tween_property(modifierSlotTwo, "position", Vector2(315, 690), 0.3)
+			tween.parallel().tween_property(modifierSlotThree, "position", Vector2(480, 690), 0.3)
 	
 	await tween.finished
 	

@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://b1ue0o8lsverh"]
+[gd_scene load_steps=42 format=3 uid="uid://b1ue0o8lsverh"]
 
 [ext_resource type="Script" uid="uid://ucr1vk8xoov" path="res://core/cards/card.gd" id="1_6u4wf"]
 [ext_resource type="Texture2D" uid="uid://8huw5jf2orc0" path="res://core/cards/art/CardDust.png" id="2_42b55"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://bnfh81d7cqsxc" path="res://holdout/arena/ui/Lock Top.png" id="4_4wvaf"]
 [ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://core/fonts/SF-Pro-Display-Black.otf" id="4_6ligt"]
 [ext_resource type="Texture2D" uid="uid://d4kwo20uewt85" path="res://core/cards/art/BlackCard.png" id="5_6ligt"]
+[ext_resource type="Texture2D" uid="uid://dw6yc7ls312q4" path="res://core/cards/art/Infected.png" id="5_ljuou"]
 [ext_resource type="Texture2D" uid="uid://d1gq86jxjk63s" path="res://holdout/arena/ui/Lock Base.png" id="5_u8dfr"]
 [ext_resource type="Texture2D" uid="uid://e1pvs7f03co4" path="res://holdout/modifiers/icons/Guerrilla Tactics.png" id="6_u8dfr"]
 [ext_resource type="Texture2D" uid="uid://ucjtxpq82kyw" path="res://holdout/modifiers/icons/Forsaken Honor.png" id="7_hpf3o"]
@@ -1060,6 +1061,11 @@ texture = ExtResource("2_kg30u")
 [node name="image" type="Sprite2D" parent="."]
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("3_sy11y")
+
+[node name="infectedImage" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("5_ljuou")
 
 [node name="lockIcon" type="Node2D" parent="."]
 position = Vector2(0, -10)
