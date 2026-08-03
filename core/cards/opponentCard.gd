@@ -41,10 +41,30 @@ var perkValueAppliedMidRound: int = 0
 var isNullified: bool = false
 var parity: String
 var gotInfected: bool = false
+var frenzyBonusApplied: bool = false
+
+var _preAnimationCollisionState: bool = false
 
 func _ready() -> void:
 	if get_parent().has_method("connect_card_signals"):
 		get_parent().connect_card_signals(self)
+	
+	if has_node("AnimationPlayer"):
+		$AnimationPlayer.animation_started.connect(_on_any_animation_started)
+		$AnimationPlayer.animation_finished.connect(_on_any_animation_finished)
+
+func _on_any_animation_started(_animName: String) -> void:
+	if not has_node("Area2D/CollisionShape2D"):
+		return
+	
+	_preAnimationCollisionState = $Area2D/CollisionShape2D.disabled
+	$Area2D/CollisionShape2D.set_deferred("disabled", true)
+
+func _on_any_animation_finished(_animName: String) -> void:
+	if not has_node("Area2D/CollisionShape2D"):
+		return
+	
+	$Area2D/CollisionShape2D.set_deferred("disabled", _preAnimationCollisionState)
 
 func update_visuals():
 	_apply_accessibility_settings()

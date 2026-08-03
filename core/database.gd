@@ -622,6 +622,9 @@ const ALLEGIANCE_HANDLERS = {
 	Allegiance.NECROTIC_FEEDBACK: "res://holdout/allegiances/necroticFeedbackHandler.gd",
 	Allegiance.INFECTION: "res://holdout/allegiances/infectionHandler.gd",
 	Allegiance.FUNGAL_GROWTH: "res://holdout/allegiances/fungalGrowthHandler.gd",
+	# Allegiance.FRENZIED_STATE lives directly in card.gd
+	Allegiance.MUTATION_CHAIN: "res://holdout/allegiances/mutationChainHandler.gd",
+	Allegiance.VIOLENT_OUTBREAK: "res://holdout/allegiances/violentOutbreakHandler.gd",
 }
 
 const ALLEGIANCES = {

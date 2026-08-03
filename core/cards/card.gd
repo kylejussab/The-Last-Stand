@@ -42,8 +42,10 @@ var isNullified: bool = false
 var parity: String
 var gotInfected: bool = false
 var originalFaction: String = ""
+var frenzyBonusApplied: bool = false
 
 var handPosition: Vector2
+var _preAnimationCollisionState: bool = false
 
 func _ready() -> void:
 	if get_parent().has_method("connect_card_signals"):
@@ -51,10 +53,28 @@ func _ready() -> void:
 	
 	if has_node("infectedImage"):
 		$infectedImage.modulate.a = 0.0
+	
+	if has_node("AnimationPlayer"):
+		$AnimationPlayer.animation_started.connect(_on_any_animation_started)
+		$AnimationPlayer.animation_finished.connect(_on_any_animation_finished)
+
+func _on_any_animation_started(_animName: String) -> void:
+	if not has_node("Area2D/CollisionShape2D"):
+		return
+	
+	_preAnimationCollisionState = $Area2D/CollisionShape2D.disabled
+	$Area2D/CollisionShape2D.set_deferred("disabled", true)
+
+func _on_any_animation_finished(_animName: String) -> void:
+	if not has_node("Area2D/CollisionShape2D"):
+		return
+	
+	$Area2D/CollisionShape2D.set_deferred("disabled", _preAnimationCollisionState)
 
 func update_visuals():
 	_apply_accessibility_settings()
 	_apply_visibility_settings()
+	_apply_frenzied_state_bonus()
 	
 	if has_node("value"):
 		$value.text = str(value)
@@ -328,6 +348,20 @@ func set_infected(infected: bool, animate: bool = true) -> void:
 			else:
 				$infectedImage.modulate.a = 0.0
 
+func _apply_frenzied_state_bonus() -> void:
+	if frenzyBonusApplied:
+		return
+	if type != "Character" or faction != "Infected":
+		return
+	if HoldoutStats.activeAllegiance.get("id") != Database.Allegiance.FRENZIED_STATE:
+		return
+	if not Database.CHARACTERS.has(cardKey):
+		return
+	
+	var baseValue = Database.CHARACTERS[cardKey][0]
+	if baseValue <= 3:
+		frenzyBonusApplied = true
+		value += 2
 
 func _update_faction_icon(newFaction: String) -> void:
 	if not has_node("icons/faction"):

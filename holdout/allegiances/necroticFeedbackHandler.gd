@@ -11,4 +11,4 @@ func on_round_resolved(_winningCard: Node2D, _winningHand: Array, losingCard: No
 	await losingCard.get_node("AnimationPlayer").animation_finished
 	
 	battle.battleEngine.log_action("System. Necrotic Feedback activated. You dealt 2 damage anyway.")
-	battle._deal_damage(Actor.Type.OPPONENT, 2)
+	await battle._deal_damage(Actor.Type.OPPONENT, 2)

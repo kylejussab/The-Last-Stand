@@ -255,7 +255,8 @@ func _on_player_character_played(card: Node2D) -> void:
 	_play_dust_effect(playerCharacterCard)
 	
 	if allegianceHandler:
-		allegianceHandler.on_character_played(card, playerHand, opponentCharacterCard, true)
+		var validOpponentCard = opponentCharacterCard if is_instance_valid(opponentCharacterCard) else null
+		await allegianceHandler.on_character_played(card, playerHand, validOpponentCard, true)
 	
 	if opponentCharacterCard != null:
 		await _apply_mid_round_perks()
@@ -282,9 +283,6 @@ func _execute_opponent_character_play() -> void:
 	opponentCharacterCard = card
 	
 	opponentCharacterCard = card
-
-	if allegianceHandler:
-		allegianceHandler.on_character_played(card, opponentHand, playerCharacterCard, false)
 	
 	if opponentAI.has_method("record_opponent_play"):
 		opponentAI.record_opponent_play(card)
@@ -1084,6 +1082,8 @@ func _return_character_to_hand(card: Node2D) -> void:
 	
 	var baseValue = Database.CHARACTERS[card.cardKey][0]
 	card.value = baseValue
+	card.frenzyBonusApplied = false
+	card._apply_frenzied_state_bonus()
 	card.get_node("value").text = str(baseValue)
 	
 	card.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Dead Weight.png")
@@ -1599,6 +1599,9 @@ func _get_card_array_save_data(cardArray: Array) -> Array:
 			if card.gotInfected:
 				entry["gotInfected"] = true
 			
+			if card.frenzyBonusApplied:
+				entry["frenzyBonusApplied"] = true
+			
 			if card.has_meta("cardRotAge"):
 				entry["cardRotAge"] = card.get_meta("cardRotAge")
 			if card.has_meta("cardRotAmount"):
@@ -1808,6 +1811,9 @@ func _spawn_single_card(cardData: Dictionary, isOpponent: bool = false) -> Node2
 		newCard.set_meta("cardRotAge", cardData["cardRotAge"])
 	if cardData.has("cardRotAmount"):
 		newCard.set_meta("cardRotAmount", cardData["cardRotAmount"])
+	
+	if cardData.get("frenzyBonusApplied", false):
+		newCard.frenzyBonusApplied = true
 	
 	newCard.update_visuals()
 	
