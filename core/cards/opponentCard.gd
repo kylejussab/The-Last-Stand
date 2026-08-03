@@ -41,9 +41,13 @@ var perkValueAppliedMidRound: int = 0
 var isNullified: bool = false
 var parity: String
 var gotInfected: bool = false
+var permanentInfection: bool = false
 var frenzyBonusApplied: bool = false
 
+var originalFaction: String = ""
+
 var _preAnimationCollisionState: bool = false
+const GUARDED_ANIMATIONS = ["modifierIndicator", "cardFlip", "backfire", "lock"]
 
 func _ready() -> void:
 	if get_parent().has_method("connect_card_signals"):
@@ -52,19 +56,31 @@ func _ready() -> void:
 	if has_node("AnimationPlayer"):
 		$AnimationPlayer.animation_started.connect(_on_any_animation_started)
 		$AnimationPlayer.animation_finished.connect(_on_any_animation_finished)
+	
+	if has_node("image") and has_node("infectedImage"):
+		$image.visibility_changed.connect(_on_image_visibility_changed)
+		$infectedImage.visible = $image.visible
 
-func _on_any_animation_started(_animName: String) -> void:
+func _on_any_animation_started(animName: String) -> void:
+	if animName not in GUARDED_ANIMATIONS:
+		return
 	if not has_node("Area2D/CollisionShape2D"):
 		return
 	
 	_preAnimationCollisionState = $Area2D/CollisionShape2D.disabled
 	$Area2D/CollisionShape2D.set_deferred("disabled", true)
 
-func _on_any_animation_finished(_animName: String) -> void:
+func _on_any_animation_finished(animName: String) -> void:
+	if animName not in GUARDED_ANIMATIONS:
+		return
 	if not has_node("Area2D/CollisionShape2D"):
 		return
 	
 	$Area2D/CollisionShape2D.set_deferred("disabled", _preAnimationCollisionState)
+
+func _on_image_visibility_changed() -> void:
+	if has_node("infectedImage"):
+		$infectedImage.visible = $image.visible
 
 func update_visuals():
 	_apply_accessibility_settings()
@@ -191,6 +207,9 @@ func _update_art_style():
 	else:
 		$image.texture = load(fallbackPath)
 	
+	if has_node("infectedImage") and _can_be_infected():
+		$infectedImage.texture = _load_infected_texture(safeFaction)
+	
 	var targetColor = Color.WHITE
 	
 	if faction != "Support" and AccessibilityData.currentCardStyle == AccessibilityData.CardStyle.STENCIL:
@@ -299,6 +318,64 @@ func _updateCardValue():
 		value,
 		0.5
 	)
+
+func _load_infected_texture(safeFaction: String) -> Texture2D:
+	var premiumPath = "res://core/cards/art/premium/infected/" + cardKey + "Card.png"
+	var fallbackPath = "res://core/cards/art/infected/" + safeFaction + ".png"
+	
+	if ResourceLoader.exists(premiumPath):
+		return load(premiumPath)
+	return load(fallbackPath)
+
+
+func _can_be_infected() -> bool:
+	return type == "Character" and faction != "Infected" and faction != "Support"
+
+func set_infected(infected: bool, animate: bool = true, permanent: bool = false) -> void:
+	if infected:
+		if not _can_be_infected() or gotInfected:
+			return
+		
+		gotInfected = true
+		permanentInfection = permanent
+		originalFaction = faction
+		faction = "Infected"
+		
+		_update_faction_icon("Infected")
+		
+		if animate:
+			pass # In card this is used to play the shake
+		
+		if has_node("infectedImage"):
+			if animate:
+				var tween = create_tween()
+				tween.tween_property($infectedImage, "modulate:a", 1.0, 0.4)
+			else:
+				$infectedImage.modulate.a = 1.0
+	else:
+		if not gotInfected:
+			return
+		
+		gotInfected = false
+		permanentInfection = false
+		faction = originalFaction
+		originalFaction = ""
+		
+		_update_faction_icon(faction)
+		
+		if has_node("infectedImage"):
+			if animate:
+				var tween = create_tween()
+				tween.tween_property($infectedImage, "modulate:a", 0.0, 0.4)
+			else:
+				$infectedImage.modulate.a = 0.0
+
+func _update_faction_icon(newFaction: String) -> void:
+	if not has_node("icons/faction"):
+		return
+	
+	if newFaction in KEYWORD_ICONS:
+		$icons.get_node("faction").texture = load(_get_card_icon_path(newFaction))
 
 # Tooltips
 func _populate_character_tooltip():

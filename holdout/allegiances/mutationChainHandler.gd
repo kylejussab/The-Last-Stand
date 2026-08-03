@@ -1,31 +1,28 @@
 extends AllegianceHandler
 
-const NEXT_STAGE = {
-	"Runner": "Stalker",
-	"Stalker": "Clicker",
-	"Clicker": "Shambler",
-	"Shambler": "Bloater",
-	"Bloater": "RatKing",
-}
+const CHAIN_ORDER = ["Runner", "Stalker", "Clicker", "Shambler", "Bloater", "RatKing"]
 
-func on_character_played(card: Node2D, hand: Array, _opponentCard: Node2D, isPlayer: bool) -> void:
-	if not isPlayer:
-		return
+func on_character_played(card: Node2D, hand: Array, _opponentCard: Node2D) -> void:
 	if card.faction != "Infected":
 		return
-	if not NEXT_STAGE.has(card.cardKey):
+	
+	var playedIndex = CHAIN_ORDER.find(card.cardKey)
+	if playedIndex == -1:
 		return
 	
-	var nextStageKey = NEXT_STAGE[card.cardKey]
-	var target = hand.filter(func(c): return is_instance_valid(c) and c.cardKey == nextStageKey)
+	var targets = hand.filter(func(c):
+		return is_instance_valid(c) and CHAIN_ORDER.find(c.cardKey) != -1 and CHAIN_ORDER.find(c.cardKey) < playedIndex
+	)
 	
-	if target.is_empty():
+	if targets.is_empty():
 		return
 	
-	var targetCard = target[0]
+	battle.battleEngine.log_action("System. Mutation Chain activated. Weaker Infected in hand gained 3 from the infection progressing.")
 	
-	battle.battleEngine.log_action("System. Mutation Chain activated. " + targetCard.nameText + " gained 3 from the infection progressing.")
-	
+	for targetCard in targets:
+		_animate_and_boost(targetCard)
+
+func _animate_and_boost(targetCard: Node2D) -> void:
 	targetCard.get_node("ModifierIndicator").texture = load("res://holdout/allegiances/icons/Mutation Chain.png")
 	targetCard.get_node("AnimationPlayer").play("modifierIndicator")
 	await targetCard.get_node("AnimationPlayer").animation_finished

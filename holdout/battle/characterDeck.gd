@@ -60,6 +60,9 @@ func reshuffle_from_discards(discardedCards):
 		
 		processedNodes.append(card)
 		
+		if card.gotInfected and card.permanentInfection:
+			HoldoutStats.add_permanent_mark("infected", card.cardKey, true)
+		
 		deck.append(card.cardKey)
 		
 		AudioManager.play_random_card_draw()
@@ -137,7 +140,7 @@ func _create_card_instance(cardKey: String, scenePath: String, isPlayer: bool = 
 	var iconsNode = newCard.get_node("icons")
 	var factionPath = "res://core/cards/icons/" + newCard.faction + ".png" 
 	iconsNode.get_node("faction").texture = load(factionPath)
-
+	
 	var perkList = newCard.role.split("/") if newCard.role else []
 	var activePerks = []
 	for perk in perkList:
@@ -156,6 +159,9 @@ func _create_card_instance(cardKey: String, scenePath: String, isPlayer: bool = 
 				perkSprites[i].visible = false
 	
 	newCard.update_visuals()
+	
+	if HoldoutStats.consume_permanent_mark("infected", cardKey):
+		newCard.set_infected(true, false, true)
 	
 	$"../cardManager".add_child(newCard)
 	return newCard

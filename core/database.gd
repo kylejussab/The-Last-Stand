@@ -612,7 +612,7 @@ const MODIFIERS = {
 
 enum Allegiance { 
 	FIREFLYAA, FIREFLYAB, FIREFLYAC, FIREFLYBA, FIREFLYBB, FIREFLYBC, FIREFLYCA, FIREFLYCB, FIREFLYCC,
-	NECROTIC_FEEDBACK, INFECTION, FUNGAL_GROWTH, FRENZIED_STATE, MUTATION_CHAIN, VIOLENT_OUTBREAK, BLOATER_PLATING, CORDYCEPS_BRAIN_INFECTION, HORDE_MENTALITY,
+	NECROTIC_FEEDBACK, INFECTION, FUNGAL_GROWTH, FRENZIED_STATE, MUTATION_CHAIN, HORDE_MENTALITY, BLOATER_PLATING, CORDYCEPS_BRAIN_INFECTION, VIOLENT_OUTBREAK,
 	KEEP_MOVING, ONE_OF_OURS, SHARED_SUPPLIES, DEBT_REPAID, FUTURE_DAYS, PATROL_ROUTE, WHOEVERS_NEEDED, FOUND_FAMILY, PRACTICAL_WISDOM,
 	FALSE_COLORS, WHISTLE, FAITH_NETWORK, THE_PROPHECY, WOUNDED_PREY, SPLIT_ALLEGIANCE, DARK_VEILING, DOCTRINE_RESTRAINT, NESTED_SIN,
 	KILL_ORDER, SWEEP, COMBAT_INTEL, MANHUNT, SCENT_TRAIL, WOLF_TERRITORY, EXECUTED, WAR, NO_SAFE_HAVEN
@@ -624,6 +624,9 @@ const ALLEGIANCE_HANDLERS = {
 	Allegiance.FUNGAL_GROWTH: "res://holdout/allegiances/fungalGrowthHandler.gd",
 	# Allegiance.FRENZIED_STATE lives directly in card.gd
 	Allegiance.MUTATION_CHAIN: "res://holdout/allegiances/mutationChainHandler.gd",
+	Allegiance.HORDE_MENTALITY: "res://holdout/allegiances/hordeMentalityHandler.gd",
+	# Allegiance.BLOATER_PLATING lives directly in card.gd in modify_value
+	Allegiance.CORDYCEPS_BRAIN_INFECTION: "res://holdout/allegiances/cordycepsBrainInfectionHandler.gd",
 	Allegiance.VIOLENT_OUTBREAK: "res://holdout/allegiances/violentOutbreakHandler.gd",
 }
 
@@ -706,7 +709,7 @@ const ALLEGIANCES = {
 	Allegiance.NECROTIC_FEEDBACK: {
 		"id": Allegiance.NECROTIC_FEEDBACK,
 		"name": "Necrotic Feedback",
-		"description": "If you lose a round with an Infected card, deal 2 damage to the opponent anyway.",
+		"description": "Winning a round with an Infected card deals 2 additional damage to the opponent.",
 		"icon": "res://holdout/allegiances/icons/Necrotic Feedback.png",
 		"tier": 1,
 		"faction": "Infected",
@@ -722,7 +725,7 @@ const ALLEGIANCES = {
 	Allegiance.FUNGAL_GROWTH: {
 		"id": Allegiance.FUNGAL_GROWTH,
 		"name": "Fungal Growth",
-		"description": "When an Infected card loses, all Infected cards in your hand gain +1.",
+		"description": "If you win a round, every Infected card in your hand gains +1.",
 		"icon": "res://holdout/allegiances/icons/Fungal Growth.png",
 		"tier": 1,
 		"faction": "Infected",
@@ -738,16 +741,16 @@ const ALLEGIANCES = {
 	Allegiance.MUTATION_CHAIN: {
 		"id": Allegiance.MUTATION_CHAIN,
 		"name": "Mutation Chain",
-		"description": "Playing an Infected card gives +3 value to its next stage if it is in your hand.",
+		"description": "Playing an Infected card gives +3 to earlier infection stages in your hand.",
 		"icon": "res://holdout/allegiances/icons/Mutation Chain.png",
 		"tier": 2,
 		"faction": "Infected",
 	},
-	Allegiance.VIOLENT_OUTBREAK: {
-		"id": Allegiance.VIOLENT_OUTBREAK,
-		"name": "Violent Outbreak",
-		"description": "Winning with an Infected card at 10+ total value deals +3 bonus damage.",
-		"icon": "res://holdout/allegiances/icons/Violent Outbreak.png",
+	Allegiance.HORDE_MENTALITY: {
+		"id": Allegiance.HORDE_MENTALITY,
+		"name": "Horde Mentality",
+		"description": "Played Infected cards get +2 per infected card in hand.",
+		"icon": "res://holdout/allegiances/icons/Horde Mentality.png",
 		"tier": 2,
 		"faction": "Infected",
 	},
@@ -767,11 +770,11 @@ const ALLEGIANCES = {
 		"tier": 3,
 		"faction": "Infected",
 	},
-	Allegiance.HORDE_MENTALITY: {
-		"id": Allegiance.HORDE_MENTALITY,
-		"name": "Horde Mentality",
-		"description": "Playing an Infected card gives +1 value to all Infected in your hand.",
-		"icon": "res://holdout/allegiances/icons/Horde Mentality.png",
+	Allegiance.VIOLENT_OUTBREAK: {
+		"id": Allegiance.VIOLENT_OUTBREAK,
+		"name": "Violent Outbreak",
+		"description": "When an Infected card wins, infect a random card in your hand for the rest of the run.",
+		"icon": "res://holdout/allegiances/icons/Violent Outbreak.png",
 		"tier": 3,
 		"faction": "Infected",
 	},

@@ -18,6 +18,46 @@ static var lastOfferedAllegianceIds: Array = [] # Used for weighted randomness w
 static var lastOfferedRemovalIds: Array = []
 static var deckAdjustments: Dictionary = {}
 
+static var permanentCardMarks: Dictionary = {}
+static var masterPermanentCardMarks: Dictionary = {} # Tracks true run state for viewDeck
+
+static func add_permanent_mark(markType: String, cardKey: String, isReshuffle: bool = false) -> void:
+	if not permanentCardMarks.has(markType):
+		permanentCardMarks[markType] = {}
+	permanentCardMarks[markType][cardKey] = permanentCardMarks[markType].get(cardKey, 0) + 1
+	
+	if not isReshuffle:
+		if not masterPermanentCardMarks.has(markType):
+			masterPermanentCardMarks[markType] = {}
+		masterPermanentCardMarks[markType][cardKey] = masterPermanentCardMarks[markType].get(cardKey, 0) + 1
+
+static func consume_permanent_mark(markType: String, cardKey: String, isPermanentRemoval: bool = false) -> bool:
+	if not permanentCardMarks.has(markType):
+		return false
+	var counts: Dictionary = permanentCardMarks[markType]
+	if counts.get(cardKey, 0) <= 0:
+		return false
+	counts[cardKey] -= 1
+	if counts[cardKey] <= 0:
+		counts.erase(cardKey)
+		
+	if isPermanentRemoval and masterPermanentCardMarks.has(markType):
+		var masterCounts: Dictionary = masterPermanentCardMarks[markType]
+		if masterCounts.get(cardKey, 0) > 0:
+			masterCounts[cardKey] -= 1
+			if masterCounts[cardKey] <= 0:
+				masterCounts.erase(cardKey)
+				
+	return true
+
+static func has_permanent_mark(markType: String, cardKey: String) -> bool:
+	return permanentCardMarks.has(markType) and permanentCardMarks[markType].get(cardKey, 0) > 0
+
+static func register_new_master_mark(markType: String, cardKey: String) -> void:
+	if not masterPermanentCardMarks.has(markType):
+		masterPermanentCardMarks[markType] = {}
+	masterPermanentCardMarks[markType][cardKey] = masterPermanentCardMarks[markType].get(cardKey, 0) + 1
+
 enum Rank { S, A, B, C, D, F }
 const RankRequirements = {Rank.S: 440, Rank.A: 300, Rank.B: 220, Rank.C: 160, Rank.D: 80, Rank.F: 0}
 static var currentRank: Rank = Rank.F
@@ -146,6 +186,8 @@ static func reset_for_new_run():
 	activeAllegiance = {}
 	lastOfferedAllegianceIds.clear()
 	deckAdjustments.clear()
+	permanentCardMarks.clear()
+	masterPermanentCardMarks.clear()
 	
 	start_new_run_log()
 	
@@ -272,6 +314,8 @@ static func get_save_dict() -> Dictionary:
 		"activeAllegiance": activeAllegiance,
 		"lastOfferedAllegianceIds": lastOfferedAllegianceIds,
 		"deckAdjustments": deckAdjustments,
+		"permanentCardMarks": permanentCardMarks,
+		"masterPermanentCardMarks": masterPermanentCardMarks,
 		"currentRank": currentRank,
 		"numberOfWins": numberOfWins,
 		"roundsPlayed": roundsPlayed,
@@ -324,6 +368,18 @@ static func load_save_dict(data: Dictionary) -> void:
 	deckAdjustments.clear()
 	for key in data.get("deckAdjustments", {}):
 		deckAdjustments[key] = int(data["deckAdjustments"][key])
+	
+	permanentCardMarks.clear()
+	for markType in data.get("permanentCardMarks", {}):
+		permanentCardMarks[markType] = {}
+		for cardKey in data["permanentCardMarks"][markType]:
+			permanentCardMarks[markType][cardKey] = int(data["permanentCardMarks"][markType][cardKey])
+	
+	masterPermanentCardMarks.clear()
+	for markType in data.get("masterPermanentCardMarks", {}):
+		masterPermanentCardMarks[markType] = {}
+		for cardKey in data["masterPermanentCardMarks"][markType]:
+			masterPermanentCardMarks[markType][cardKey] = int(data["masterPermanentCardMarks"][markType][cardKey])
 	
 	numberOfWins = int(data["numberOfWins"])
 	roundsPlayed = int(data["roundsPlayed"])

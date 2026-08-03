@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://bn88i42vic2bw"]
+[gd_scene load_steps=38 format=3 uid="uid://bn88i42vic2bw"]
 
 [ext_resource type="Script" uid="uid://df6vntpyt6v25" path="res://core/cards/opponentCard.gd" id="1_6ngam"]
 [ext_resource type="Texture2D" uid="uid://cbgv0l1d6fl7k" path="res://core/cards/art/CardBackBlank.png" id="2_4jfu0"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://d4kwo20uewt85" path="res://core/cards/art/BlackCard.png" id="4_uqoa2"]
 [ext_resource type="Texture2D" uid="uid://bvx2xo56idmcx" path="res://core/cards/icons/Crafty.png" id="5_6rjld"]
 [ext_resource type="Texture2D" uid="uid://bbax35agbq4ku" path="res://core/menus/ui/GunTrigger.png" id="5_ndf7d"]
+[ext_resource type="Texture2D" uid="uid://dw6yc7ls312q4" path="res://core/cards/art/Infected.png" id="5_tkh5l"]
 [ext_resource type="Texture2D" uid="uid://dgdk6y2h230rb" path="res://core/cards/icons/Defensive.png" id="6_fgn7q"]
 [ext_resource type="Texture2D" uid="uid://je1qiwc7rlit" path="res://core/menus/ui/GunBottom.png" id="6_n0hst"]
 [ext_resource type="Texture2D" uid="uid://ckyjgdo1fykjj" path="res://core/cards/icons/Jackson.png" id="7_eh2lv"]
@@ -762,6 +763,11 @@ texture = ExtResource("2_4jfu0")
 [node name="image" type="Sprite2D" parent="."]
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("3_3qk15")
+
+[node name="infectedImage" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("5_tkh5l")
 
 [node name="backfireIcon" type="Node2D" parent="."]
 modulate = Color(1, 1, 1, 0)

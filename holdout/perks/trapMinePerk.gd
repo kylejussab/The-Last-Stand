@@ -3,7 +3,7 @@ var timing: String = "onPlay"
 const BACKFIRE_CHANCE: float = 0.5
 
 func apply_on_play_perk(thisCharacterCard, thisSupportCard, otherCharacterCard, _otherSupportCard, _thisHand, forceNoBackfire: bool = false) -> Dictionary:
-	var chance = 0.0 if otherCharacterCard.value >= 6 else BACKFIRE_CHANCE
+	var chance = 0.0 if thisCharacterCard.value >= 8 else BACKFIRE_CHANCE
 	var didBackfire = false if forceNoBackfire else randf() < chance
 	var value = thisSupportCard.value
 	

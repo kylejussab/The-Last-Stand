@@ -90,6 +90,8 @@ var selectedRemovalIndex: int = -1
 var allowRemovalSelections: bool = false
 var isRerollingRemoval: bool = false
 
+var simulatedRemovalInfections: Dictionary = {}
+
 const FACTION_REMOVAL_ICONS = {
 	"Firefly": "res://holdout/removal/Firefly.png",
 	"Infected": "res://holdout/removal/Infected.png",
@@ -1759,13 +1761,22 @@ func _get_removal_pool() -> Array:
 		seen[cardName] = true
 		
 		var data = Database.CHARACTERS[cardName]
+		var currentFaction = data[2]
+		var currentIcon = FACTION_REMOVAL_ICONS.get(currentFaction, FACTION_REMOVAL_ICONS["Support"])
+		
+		# This makes any cards that turned infected show up
+		if HoldoutStats.has_permanent_mark("infected", cardName):
+			currentFaction = "Infected"
+			if FACTION_REMOVAL_ICONS.has("Infected"):
+				currentIcon = FACTION_REMOVAL_ICONS["Infected"]
+			
 		pool.append({
 			"id": cardName,
 			"cardType": "Character",
 			"name": data[4],
-			"faction": data[2],
+			"faction": currentFaction,
 			"description": data[5],
-			"icon": FACTION_REMOVAL_ICONS.get(data[2], FACTION_REMOVAL_ICONS["Support"]),
+			"icon": currentIcon,
 		})
 	
 	var remainingSupportCount = _get_remaining_deck_count(Database.standardSupportDeck)
@@ -1845,8 +1856,13 @@ func _apply_selected_removals() -> void:
 	for card in selectedOptions:
 		var cardKey: String = card.id
 		HoldoutStats.deckAdjustments[cardKey] = HoldoutStats.deckAdjustments.get(cardKey, 0) - 1
+	
+		if card.cardType == "Character":
+			HoldoutStats.consume_permanent_mark("infected", cardKey, true)
 
 func _populate_removal_deck_view() -> void:
+	simulatedRemovalInfections.clear()
+	
 	for child in removalDeckViewGrid.get_children():
 		child.queue_free()
 	
@@ -1919,6 +1935,17 @@ func _add_removal_deck_view_card(key: String, isCharacter: bool) -> void:
 	if card.has_method("update_visuals"):
 		card.update_visuals()
 	
+	if isCharacter:
+		var totalInfectedMarks = 0
+		if HoldoutStats.permanentCardMarks.has("infected"):
+			totalInfectedMarks = HoldoutStats.permanentCardMarks["infected"].get(key, 0)
+			
+		var visualMarksUsed = simulatedRemovalInfections.get(key, 0)
+		
+		if visualMarksUsed < totalInfectedMarks:
+			card.set_infected(true, false, true)
+			simulatedRemovalInfections[key] = visualMarksUsed + 1
+	
 	if card is Control:
 		card.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	
@@ -1979,6 +2006,10 @@ func _spawn_removal_card_visual(card: Dictionary) -> Node2D:
 	newCard.get_node("Area2D/CollisionShape2D").set_deferred("disabled", true)
 	
 	newCard.update_visuals()
+	
+	if card.cardType == "Character" and HoldoutStats.has_permanent_mark("infected", card.id):
+		newCard.set_infected(true, false, true)
+	
 	newCard.modulate.a = 0
 	
 	return newCard

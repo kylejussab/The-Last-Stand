@@ -19,7 +19,7 @@ extends Node
 
 # --- SCENE REFERENCES ---
 @onready var ui: Node2D = %arena
-@onready var endScreenAnimator: Node = %holdoutEndScreenAnimator
+@onready var outro: Node = %outro
 @onready var opponentCharacterCardSlot: Node2D = %opponentCardSlotCharacter
 @onready var opponentSupportCardSlot: Node2D = %opponentCardSlotSupport
 @onready var playerHand: Array = %playerHand.playerHand
@@ -256,7 +256,7 @@ func _on_player_character_played(card: Node2D) -> void:
 	
 	if allegianceHandler:
 		var validOpponentCard = opponentCharacterCard if is_instance_valid(opponentCharacterCard) else null
-		await allegianceHandler.on_character_played(card, playerHand, validOpponentCard, true)
+		await allegianceHandler.on_character_played(card, playerHand, validOpponentCard)
 	
 	if opponentCharacterCard != null:
 		await _apply_mid_round_perks()
@@ -564,7 +564,7 @@ func _conclude_match() -> void:
 	
 	%bubbleContainer.clear_modifiers()
 	
-	endScreenAnimator.play_holdout_end_sequence(ui.get_health(Actor.Type.PLAYER) > 0)
+	outro.play_holdout_end_sequence(ui.get_health(Actor.Type.PLAYER) > 0)
 	
 	await _repopulate_decks(true)
 	
@@ -896,7 +896,7 @@ func _move_cards_to_discard(cards: Array) -> void:
 		AudioManager.play_random_card_draw()
 		card.scale = Vector2(1, 1)
 		
-		if card.gotInfected:
+		if card.gotInfected and not card.permanentInfection:
 			card.set_infected(false, false)
 		
 		if "perk" in card and card.perk != null:
@@ -1063,7 +1063,7 @@ func _place_card_in_discard(card: Node2D, hand: Node2D) -> void:
 	card.scale = Vector2(1, 1)
 	card.get_node("Area2D/CollisionShape2D").disabled = true
 	
-	if card.gotInfected:
+	if card.gotInfected and not card.permanentInfection:
 		card.set_infected(false, false)
 	
 	card.z_index = discardedCardZIndex
@@ -1141,9 +1141,6 @@ func _handle_player_win(damage: int, triggerCalculatedRisk: bool, stackedOddsBre
 	ui.change_mood(Actor.Type.PLAYER, Actor.Mood.HAPPY)
 	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.HURT)
 	
-	if allegianceHandler:
-		await allegianceHandler.on_round_resolved(playerCharacterCard, playerHand, opponentCharacterCard, opponentHand, true, damage)
-	
 	var opponentName: String = Actor.Avatar.keys()[HoldoutStats.currentOpponent].capitalize()
 	
 	if opponentCharacterCard.cardKey == "Owen":
@@ -1165,6 +1162,10 @@ func _handle_player_win(damage: int, triggerCalculatedRisk: bool, stackedOddsBre
 		await get_tree().create_timer(perkCalculationTimeAfterRoundEnd).timeout
 	else:
 		await _deal_damage(Actor.Type.OPPONENT, finalDamage, false)
+		
+		if allegianceHandler:
+			await allegianceHandler.on_round_resolved(playerCharacterCard, playerHand, opponentCharacterCard, opponentHand, true, finalDamage)
+		
 		await _handle_shambler_perk(Actor.Type.PLAYER)
 		
 		if playerCharacterCard.perkValueAtRoundEnd:
@@ -1209,9 +1210,6 @@ func _handle_opponent_win(damage: int, triggerDeepWounds: bool, triggerCalculate
 	ui.change_mood(Actor.Type.PLAYER, Actor.Mood.HURT)
 	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.HAPPY)
 	
-	if allegianceHandler:
-		await allegianceHandler.on_round_resolved(opponentCharacterCard, opponentHand, playerCharacterCard, playerHand, false, damage)
-	
 	if playerCharacterCard.cardKey == "Owen":
 		battleEngine.log_action("System. Owen's perk activated. You avoided damage.")
 		await get_tree().create_timer(perkCalculationTimeAfterRoundEnd).timeout
@@ -1230,6 +1228,10 @@ func _handle_opponent_win(damage: int, triggerDeepWounds: bool, triggerCalculate
 		await get_tree().create_timer(perkCalculationTimeAfterRoundEnd).timeout
 	else:
 		await _deal_damage(Actor.Type.PLAYER, finalDamage, false)
+		
+		if allegianceHandler:
+			await allegianceHandler.on_round_resolved(opponentCharacterCard, opponentHand, playerCharacterCard, playerHand, false, finalDamage)
+		
 		await _handle_shambler_perk(Actor.Type.OPPONENT)
 		
 		if opponentCharacterCard.perkValueAtRoundEnd:
@@ -1598,6 +1600,8 @@ func _get_card_array_save_data(cardArray: Array) -> Array:
 			
 			if card.gotInfected:
 				entry["gotInfected"] = true
+			if card.permanentInfection:
+				entry["permanentInfection"] = true
 			
 			if card.frenzyBonusApplied:
 				entry["frenzyBonusApplied"] = true
@@ -1676,18 +1680,17 @@ func _load_game_from_snapshot() -> void:
 		
 		HoldoutStats.replayedRound = false
 		HoldoutStats.totalRunRations = HoldoutStats.currentRunRations
-		GameStats.gameMode = GameStats.Mode.HOLDOUT
 		
-		ui.holdoutEndScreenAnimator.handle_modifier_durations()
-		ui._reset_board_state()
+		outro.handle_modifier_durations()
+		outro._reset_board_state()
 		
 		prepare_opponent()
 		
-		if HoldoutStats.numberOfWins % 2 == 1 and not HoldoutStats.replayedRound:
-			GameStats.gameMode = GameStats.Mode.MODIFIER_SELECTION
-			ui.modifierUI.show_modifier_menu()
+		var hub = get_node_or_null("%HoldoutHub")
+		if hub:
+			hub.show_hub()
 		else:
-			initialize_game()
+			$"../HoldoutHub".show_hub()
 			
 		return
 	
@@ -1724,14 +1727,19 @@ func _load_game_from_snapshot() -> void:
 	%pauseIcon.show()
 	%bubbleContainer.render_active_modifiers()
 	
-	# Show active allegiance
-	$"../arena/background/currentAllegiance/Name".text = HoldoutStats.activeAllegiance.name
-	$"../arena/background/currentAllegiance/Icon".texture = load(HoldoutStats.activeAllegiance.icon)
-	$"../arena/background/currentAllegiance/Description".text = HoldoutStats.activeAllegiance.description
-	$"../arena/background/currentAllegiance/Tier".text = HoldoutStats.activeAllegiance.faction + " Tier " + str(HoldoutStats.activeAllegiance.tier)
-	var colors: Array = FACTION_FUNGUS_COLORS.get(HoldoutStats.activeAllegiance.faction, ["ffffff", "ffffff", "ffffff"])
-	$"../arena/background/currentAllegiance/2".modulate = Color(colors[1])
-	$"../arena/background/currentAllegiance/3".modulate = Color(colors[2])
+	# Show active allegiance (Safeguarded)
+	if not HoldoutStats.activeAllegiance.is_empty():
+		$"../arena/background/currentAllegiance/Name".text = HoldoutStats.activeAllegiance.name
+		$"../arena/background/currentAllegiance/Icon".texture = load(HoldoutStats.activeAllegiance.icon)
+		$"../arena/background/currentAllegiance/Description".text = HoldoutStats.activeAllegiance.description
+		$"../arena/background/currentAllegiance/Tier".text = HoldoutStats.activeAllegiance.faction + " Tier " + str(HoldoutStats.activeAllegiance.tier)
+		
+		var colors: Array = FACTION_FUNGUS_COLORS.get(HoldoutStats.activeAllegiance.faction, ["ffffff", "ffffff", "ffffff"])
+		$"../arena/background/currentAllegiance/2".modulate = Color(colors[1])
+		$"../arena/background/currentAllegiance/3".modulate = Color(colors[2])
+		$"../arena/background/currentAllegiance".modulate.a = 1.0
+	else:
+		$"../arena/background/currentAllegiance".modulate.a = 0.0
 	
 	_load_allegiance_handler()
 	
@@ -1818,7 +1826,7 @@ func _spawn_single_card(cardData: Dictionary, isOpponent: bool = false) -> Node2
 	newCard.update_visuals()
 	
 	if cardData.get("gotInfected", false):
-		newCard.set_infected(true, false)
+		newCard.set_infected(true, false, cardData.get("permanentInfection", false))
 	
 	if isOpponent and not showOpponentsCards:
 		if newCard.has_node("image"): 
@@ -2015,7 +2023,7 @@ func _conclude_tutorial_match() -> void:
 	
 	await _move_cards_to_discard(cardsToDiscard)
 	
-	endScreenAnimator.play_holdout_tutorial_end_sequence()
+	outro.play_holdout_tutorial_end_sequence()
 	
 	await _repopulate_decks(true)
 	discardedCardZIndex = 1

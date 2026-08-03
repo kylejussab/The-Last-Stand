@@ -41,31 +41,40 @@ var perkValueAppliedMidRound: int = 0
 var isNullified: bool = false
 var parity: String
 var gotInfected: bool = false
+var permanentInfection: bool = false
 var originalFaction: String = ""
 var frenzyBonusApplied: bool = false
 
 var handPosition: Vector2
 var _preAnimationCollisionState: bool = false
+const GUARDED_ANIMATIONS = ["modifierIndicator", "cardFlip", "backfire", "lock"]
 
 func _ready() -> void:
 	if get_parent().has_method("connect_card_signals"):
 		get_parent().connect_card_signals(self)
 	
 	if has_node("infectedImage"):
-		$infectedImage.modulate.a = 0.0
+		if permanentInfection:
+			$infectedImage.modulate.a = 1.0
+		else:
+			$infectedImage.modulate.a = 0.0
 	
 	if has_node("AnimationPlayer"):
 		$AnimationPlayer.animation_started.connect(_on_any_animation_started)
 		$AnimationPlayer.animation_finished.connect(_on_any_animation_finished)
 
-func _on_any_animation_started(_animName: String) -> void:
+func _on_any_animation_started(animName: String) -> void:
+	if animName not in GUARDED_ANIMATIONS:
+		return
 	if not has_node("Area2D/CollisionShape2D"):
 		return
 	
 	_preAnimationCollisionState = $Area2D/CollisionShape2D.disabled
 	$Area2D/CollisionShape2D.set_deferred("disabled", true)
 
-func _on_any_animation_finished(_animName: String) -> void:
+func _on_any_animation_finished(animName: String) -> void:
+	if animName not in GUARDED_ANIMATIONS:
+		return
 	if not has_node("Area2D/CollisionShape2D"):
 		return
 	
@@ -266,10 +275,20 @@ func disable_interaction() -> void:
 func modify_value(amount: int) -> void:
 	if amount == 0:
 		return
+		
+	var animationPlayer = get_node("AnimationPlayer")
+	
+	# Bloater Plating Allegiance negation
+	if amount < 0 and _is_bloater_plating_immune():
+		get_node("ModifierIndicator").texture = load("res://holdout/allegiances/icons/Bloater Plating.png")
+		
+		if animationPlayer.is_playing():
+			animationPlayer.queue("modifierIndicator")
+		else:
+			animationPlayer.play("modifierIndicator")
+		return
 	
 	value += amount
-	
-	var animationPlayer = get_node("AnimationPlayer")
 	
 	if not animationPlayer.animation_started.is_connected(_when_animation_starts):
 		animationPlayer.animation_started.connect(_when_animation_starts)
@@ -311,12 +330,13 @@ func _load_infected_texture(safeFaction: String) -> Texture2D:
 func _can_be_infected() -> bool:
 	return type == "Character" and faction != "Infected" and faction != "Support"
 
-func set_infected(infected: bool, animate: bool = true) -> void:
+func set_infected(infected: bool, animate: bool = true, permanent: bool = false) -> void:
 	if infected:
 		if not _can_be_infected() or gotInfected:
 			return
 		
 		gotInfected = true
+		permanentInfection = permanent
 		originalFaction = faction
 		faction = "Infected"
 		
@@ -325,7 +345,7 @@ func set_infected(infected: bool, animate: bool = true) -> void:
 		if animate:
 			_play_infection_shake()
 		
-		if has_node("infectedImage") and AccessibilityData.currentCardStyle == AccessibilityData.CardStyle.DEFAULT:
+		if has_node("infectedImage"):
 			if animate:
 				var tween = create_tween()
 				tween.tween_property($infectedImage, "modulate:a", 1.0, 0.4)
@@ -336,6 +356,7 @@ func set_infected(infected: bool, animate: bool = true) -> void:
 			return
 		
 		gotInfected = false
+		permanentInfection = false
 		faction = originalFaction
 		originalFaction = ""
 		
@@ -400,6 +421,11 @@ func _play_infection_shake() -> void:
 	await tween.finished
 	collisionShape.set_deferred("disabled", false)
 
+
+func _is_bloater_plating_immune() -> bool:
+	if type != "Character" or faction != "Infected":
+		return false
+	return HoldoutStats.activeAllegiance.get("id") == Database.Allegiance.BLOATER_PLATING
 
 # Tooltips
 func _populate_character_tooltip():

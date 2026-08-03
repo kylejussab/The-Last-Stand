@@ -13,6 +13,8 @@ const SUBHEADER_FONT_PATH = "res://core/fonts/SF-Pro-Display-Semibold.otf"
 @onready var contentContainer = $viewPanel/ScrollContainer/VBoxContainer
 @onready var cardDatabase = preload("res://core/database.gd")
 
+var simulatedInfectionCounts: Dictionary = {}
+
 @onready var soundPlayer = $AudioStreamPlayer2D
 
 var drawSounds = [
@@ -46,6 +48,7 @@ func open_deck_view(deckCaller = null):
 	_play_draw_sound()
 	
 	activeDeckReference = deckCaller
+	simulatedInfectionCounts.clear()
 	
 	if stickyHeader:
 		stickyHeader.queue_free()
@@ -184,6 +187,17 @@ func _add_visual_card(key, grid, isCharacter):
 	
 	if card.has_node("Area2D"): card.get_node("Area2D").queue_free()
 	if card.has_method("update_visuals"): card.update_visuals()
+	
+	if isCharacter:
+		var totalInfectedMarks = 0
+		if HoldoutStats.masterPermanentCardMarks.has("infected"):
+			totalInfectedMarks = HoldoutStats.masterPermanentCardMarks["infected"].get(key, 0)
+			
+		var visualMarksUsed = simulatedInfectionCounts.get(key, 0)
+		
+		if visualMarksUsed < totalInfectedMarks:
+			card.set_infected(true, false, true)
+			simulatedInfectionCounts[key] = visualMarksUsed + 1
 	
 	if card is Control: card.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	

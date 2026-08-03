@@ -1,14 +1,14 @@
 extends AllegianceHandler
 
-func on_round_resolved(_winningCard: Node2D, _winningHand: Array, losingCard: Node2D, _losingHand: Array, isPlayerWinner: bool, _damage: int) -> void:
-	if isPlayerWinner:
+func on_round_resolved(winningCard: Node2D, _winningHand: Array, _losingCard: Node2D, _losingHand: Array, isPlayerWinner: bool, _damage: int) -> void:
+	if not isPlayerWinner:
 		return
-	if losingCard.faction != "Infected":
+	if winningCard.faction != "Infected":
 		return
 	
-	losingCard.get_node("ModifierIndicator").texture = load("res://holdout/allegiances/icons/Necrotic Feedback.png")
-	losingCard.get_node("AnimationPlayer").play("modifierIndicator")
-	await losingCard.get_node("AnimationPlayer").animation_finished
+	winningCard.get_node("ModifierIndicator").texture = load("res://holdout/allegiances/icons/Necrotic Feedback.png")
+	winningCard.get_node("AnimationPlayer").play("modifierIndicator")
+	await winningCard.get_node("AnimationPlayer").animation_finished
 	
-	battle.battleEngine.log_action("System. Necrotic Feedback activated. You dealt 2 damage anyway.")
+	battle.battleEngine.log_action("System. Necrotic Feedback activated. Opponent took 2 additional damage.")
 	await battle._deal_damage(Actor.Type.OPPONENT, 2)

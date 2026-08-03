@@ -6,7 +6,7 @@ var battle: Node # reference to holdoutBattle.gd, set on creation
 func setup(battleRef: Node) -> void:
 	battle = battleRef
 
-func on_character_played(_card: Node2D, _hand: Array, _opponentCard: Node2D, _isPlayer: bool) -> void:
+func on_character_played(_card: Node2D, _hand: Array, _opponentCard: Node2D) -> void:
 	if false: # Used to ignore warnings on scripts that await this funciton
 		await (Engine.get_main_loop() as SceneTree).process_frame
 	
