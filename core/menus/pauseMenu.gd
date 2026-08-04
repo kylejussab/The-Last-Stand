@@ -28,22 +28,20 @@ func _input(event):
 			elif currentNavigation == "View Deck": # This is changed by the viewDeck script
 				currentNavigation = "Main"
 				battleManager.lockPlayerInput = false
-			elif currentNavigation == "Restart Confirmation":
+			elif currentNavigation == "Tutorial":
 				AudioManager.play_button_back()
-				$restartConfirmation.hide()
-				$restartConfirmation.process_mode = Node.PROCESS_MODE_DISABLED
-				
+				var tween = create_tween()
+				tween.tween_property($TutorialMenu, "modulate:a", 0.0, 0.25)
+	
 				$mainButtonContainer.show()
 				$mainButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
 				currentNavigation = "Main"
-			elif currentNavigation == "Main Menu Confirmation":
-				AudioManager.play_button_back()
-				$mainMenuConfirmation.hide()
-				$mainMenuConfirmation.process_mode = Node.PROCESS_MODE_DISABLED
 				
-				$mainButtonContainer.show()
-				$mainButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
-				currentNavigation = "Main"
+				tween.finished.connect(func():
+					$TutorialMenu.hide()
+					$TutorialMenu.process_mode = Node.PROCESS_MODE_DISABLED
+					$TutorialMenu.modulate.a = 1.0
+				)
 
 func toggle_pause():
 	var pauseState = !get_tree().paused
@@ -82,8 +80,15 @@ func _on_options_menu_exited() -> void:
 	
 	_make_background_lighter()
 
-func _on_tutorial_button_pressed() -> void:
-	_play_denied_animation($mainButtonContainer/TutorialButton)
+func _on_help_button_pressed() -> void:
+	currentNavigation = "Tutorial"
+	$mainButtonContainer.hide()
+	$mainButtonContainer.process_mode = Node.PROCESS_MODE_DISABLED
+	
+	
+	$TutorialMenu.reset()
+	$TutorialMenu.show()
+	$TutorialMenu.process_mode = Node.PROCESS_MODE_INHERIT
 
 func _on_restart_button_mouse_entered() -> void:
 	%holdIcon.show()
@@ -92,10 +97,6 @@ func _on_restart_button_mouse_exited() -> void:
 	%holdIcon.hide()
 
 func _on_restart_button_hold_complete() -> void:
-	if battleManager.isTutorialRun:
-		_play_denied_animation($mainButtonContainer/RestartButton)
-		return
-		
 	get_tree().paused = false
 	outro._on_replay_button_hold_complete()
 	hide()

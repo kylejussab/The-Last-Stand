@@ -6,6 +6,7 @@ extends Node2D
 @onready var storyButtonContainer = $storyButtonContainer
 @onready var holdoutButtonContainer = $holdoutButtonContainer
 @onready var holdoutStatsContainer = $StatisticsMenu
+@onready var holdoutTutorialContainer = $HoldoutTutorialMenu
 @onready var cardViewerContainer = $cardViewerMenu
 
 # Background sprites
@@ -39,6 +40,8 @@ func _ready() -> void:
 	startingHoldoutBackgroundPosition = holdoutBg.position
 	startingHoldoutForegroundPosition = holdoutFg.position
 	$versionNumber.hide()
+	
+	$holdoutButtonContainer/NewButton.set_hold_enabled(!GameStats.showHoldoutTutorial)
 	
 	optionsMenu.options_exited.connect(_on_options_menu_exited)
 	
@@ -123,6 +126,15 @@ func _input(event: InputEvent) -> void:
 			holdoutButtonContainer.show()
 			holdoutButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
 			Curtain.fade_out(0.25)
+		elif currentNavigation == "HoldoutTutorial":
+			currentNavigation = "Holdout"
+			await Curtain.fade_in(0.25)
+			
+			holdoutTutorialContainer.hide()
+			
+			holdoutButtonContainer.show()
+			holdoutButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
+			Curtain.fade_out(0.25)
 		elif currentNavigation == "Card Viewer":
 			$pauseIcon.hide()
 			currentNavigation = "Main"
@@ -193,12 +205,19 @@ func _on_holdout_button_pressed() -> void:
 	Curtain.fade_out(0.75)
 
 func _on_new_button_mouse_entered() -> void:
-	$holdIcon.show()
+	if !GameStats.showHoldoutTutorial:
+		$holdIcon.show()
 	_start_parallax_effect()
 
 func _on_new_button_mouse_exited() -> void:
 	$holdIcon.hide()
 	_stop_parallax_effect()
+
+func _on_new_button_pressed() -> void: # This is exclusively used for the very first time holdout is played
+	if !GameStats.showHoldoutTutorial:
+		return
+	
+	_on_tutorial_button_pressed(1.0)
 
 func _on_new_button_hold_complete() -> void:
 	GameStats.gameMode = GameStats.Mode.HOLDOUT
@@ -236,8 +255,17 @@ func _on_tutorial_button_mouse_entered() -> void:
 func _on_tutorial_button_mouse_exited() -> void:
 	_stop_parallax_effect()
 
-func _on_tutorial_button_pressed() -> void:
-	_play_denied_animation(%TutorialButton)
+func _on_tutorial_button_pressed(fadeTime: float = 0.25) -> void:
+	holdoutButtonContainer.process_mode = Node.PROCESS_MODE_DISABLED
+	currentNavigation = "HoldoutTutorial"
+	
+	await Curtain.fade_in(fadeTime)
+	holdoutTutorialContainer.reset()
+	
+	holdoutButtonContainer.hide()
+	holdoutTutorialContainer.show()
+	
+	Curtain.fade_out(fadeTime)
 
 func _on_statistics_button_pressed() -> void:
 	holdoutButtonContainer.process_mode = Node.PROCESS_MODE_DISABLED

@@ -1,4 +1,4 @@
-[gd_scene load_steps=104 format=3 uid="uid://btdd4ppvwtnvy"]
+[gd_scene load_steps=105 format=3 uid="uid://btdd4ppvwtnvy"]
 
 [ext_resource type="Script" uid="uid://bmorqef62jko2" path="res://core/menus/mainMenu.gd" id="1_l7wge"]
 [ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://core/fonts/SF-Pro-Display-Black.otf" id="2_3d1i7"]
@@ -79,6 +79,7 @@
 [ext_resource type="Texture2D" uid="uid://ben5wi8yqr143" path="res://core/menus/explodedCard/WLF/Abby 3.png" id="54_i28h7"]
 [ext_resource type="Texture2D" uid="uid://ctpi34vlnw81y" path="res://core/menus/explodedCard/WLF/Abby 2.png" id="55_jmmhi"]
 [ext_resource type="Texture2D" uid="uid://deh61a5r48o77" path="res://core/menus/explodedCard/WLF/Abby 1.png" id="56_jdjgq"]
+[ext_resource type="PackedScene" uid="uid://cfsumnxjlq1dy" path="res://holdout/tutorial/holdoutTutorial.tscn" id="65_5rmu4"]
 
 [sub_resource type="FontVariation" id="FontVariation_y35fp"]
 base_font = ExtResource("3_48ign")
@@ -906,6 +907,9 @@ text = "STATISTICS"
 alignment = 0
 
 [node name="cardViewerMenu" parent="." instance=ExtResource("10_808lr")]
+visible = false
+
+[node name="HoldoutTutorialMenu" parent="." instance=ExtResource("65_5rmu4")]
 visible = false
 
 [node name="StatisticsMenu" type="Control" parent="."]
@@ -1965,6 +1969,7 @@ vertical_alignment = 1
 [connection signal="hold_complete" from="holdoutButtonContainer/NewButton" to="." method="_on_new_button_hold_complete"]
 [connection signal="mouse_entered" from="holdoutButtonContainer/NewButton" to="." method="_on_new_button_mouse_entered"]
 [connection signal="mouse_exited" from="holdoutButtonContainer/NewButton" to="." method="_on_new_button_mouse_exited"]
+[connection signal="pressed" from="holdoutButtonContainer/NewButton" to="." method="_on_new_button_pressed"]
 [connection signal="mouse_entered" from="holdoutButtonContainer/ContinueButton" to="." method="_on_continue_button_mouse_entered"]
 [connection signal="mouse_exited" from="holdoutButtonContainer/ContinueButton" to="." method="_on_continue_button_mouse_exited"]
 [connection signal="pressed" from="holdoutButtonContainer/ContinueButton" to="." method="_on_continue_button_pressed"]
