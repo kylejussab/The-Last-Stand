@@ -237,14 +237,7 @@ func _on_tutorial_button_mouse_exited() -> void:
 	_stop_parallax_effect()
 
 func _on_tutorial_button_pressed() -> void:
-	AudioManager.play_button_click()
-	AudioManager.stop_music(2.5) 
-	
-	GameStats.gameMode = GameStats.Mode.HOLDOUT_TUTORIAL 
-	
-	Curtain.change_scene("res://scenes/holdoutGame.tscn", 1.0, 0.75) # wait .75 seconds while the screen is black for scene load
-	
-	AudioManager.start_background_playlist()
+	_play_denied_animation(%TutorialButton)
 
 func _on_statistics_button_pressed() -> void:
 	holdoutButtonContainer.process_mode = Node.PROCESS_MODE_DISABLED
@@ -456,9 +449,14 @@ func _update_stats_screen() -> void:
 			modNode.modulate = Color("8c8c8c")
 
 func _format_time(time: float) -> String:
-	var minutes = int(time / 60)
+	var hours = int(time / 3600)
+	var minutes = int(time / 60) % 60
 	var seconds = int(time) % 60
-	return "%02d:%02d" % [minutes, seconds]
+	
+	if hours > 0:
+		return "%02d:%02d:%02d" % [hours, minutes, seconds]
+	else:
+		return "%02d:%02d" % [minutes, seconds]
 
 # Accolade hover functionality
 func _place_and_populate_tooltip(parent: Control, xOffset: float = -45.0, yOffset: float = -108.0) -> void:

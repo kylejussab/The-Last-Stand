@@ -334,6 +334,8 @@ func _set_arena_data() -> void:
 	# Opponent's modifier always goes in first
 	%battleManager.add_modifier(selectedOpponentModifier.id, true)
 	
+	%battleManager.add_modifier(Database.Modifier.DEAD_WEIGHT, true)
+	
 	if isModifierRound:
 		if modifierSlotsActive[0] == 1:
 			%battleManager.add_modifier(tierOneModifier.id)

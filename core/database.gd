@@ -613,7 +613,7 @@ const MODIFIERS = {
 enum Allegiance { 
 	FIREFLYAA, FIREFLYAB, FIREFLYAC, FIREFLYBA, FIREFLYBB, FIREFLYBC, FIREFLYCA, FIREFLYCB, FIREFLYCC,
 	NECROTIC_FEEDBACK, INFECTION, FUNGAL_GROWTH, FRENZIED_STATE, MUTATION_CHAIN, HORDE_MENTALITY, BLOATER_PLATING, CORDYCEPS_BRAIN_INFECTION, VIOLENT_OUTBREAK,
-	KEEP_MOVING, ONE_OF_OURS, SHARED_SUPPLIES, DEBT_REPAID, FUTURE_DAYS, PATROL_ROUTE, WHOEVERS_NEEDED, FOUND_FAMILY, PRACTICAL_WISDOM,
+	PATROL_ROUTE, ONE_OF_OURS, SHARED_SUPPLIES, DEBT_REPAID, FUTURE_DAYS, KEEP_MOVING, WHOEVERS_NEEDED, FOUND_FAMILY, PRACTICAL_WISDOM,
 	FALSE_COLORS, WHISTLE, FAITH_NETWORK, THE_PROPHECY, WOUNDED_PREY, SPLIT_ALLEGIANCE, DARK_VEILING, DOCTRINE_RESTRAINT, NESTED_SIN,
 	KILL_ORDER, SWEEP, COMBAT_INTEL, MANHUNT, SCENT_TRAIL, WOLF_TERRITORY, EXECUTED, WAR, NO_SAFE_HAVEN
 }
@@ -780,11 +780,11 @@ const ALLEGIANCES = {
 	},
 	
 	# Jackson
-	Allegiance.KEEP_MOVING: {
-		"id": Allegiance.KEEP_MOVING,
-		"name": "Keep Moving",
-		"description": "Played Jackson characters gain +2 if there are no Jackson characters in hand.",
-		"icon": "res://holdout/modifiers/icons/Volatile Hand.png",
+	Allegiance.PATROL_ROUTE: {
+		"id": Allegiance.PATROL_ROUTE,
+		"name": "Patrol Route",
+		"description": "Playing a Jackson card reveals a random card in the opponent’s hand.",
+		"icon": "res://holdout/allegiances/icons/Patrol Route.png",
 		"tier": 1,
 		"faction": "Jackson",
 	},
@@ -820,11 +820,11 @@ const ALLEGIANCES = {
 		"tier": 2,
 		"faction": "Jackson",
 	},
-	Allegiance.PATROL_ROUTE: {
-		"id": Allegiance.PATROL_ROUTE,
-		"name": "Patrol Route",
-		"description": "Playing a Jackson card reveals a random card in the opponent’s hand.",
-		"icon": "res://holdout/allegiances/icons/Patrol Route.png",
+	Allegiance.KEEP_MOVING: {
+		"id": Allegiance.KEEP_MOVING,
+		"name": "Keep Moving",
+		"description": "Playing a Jackson character grants +1 for each consecutive round you've played one.",
+		"icon": "res://holdout/modifiers/icons/Volatile Hand.png",
 		"tier": 2,
 		"faction": "Jackson",
 	},
@@ -857,7 +857,7 @@ const ALLEGIANCES = {
 	Allegiance.FALSE_COLORS: {
 		"id": Allegiance.FALSE_COLORS,
 		"name": "False Colors",
-		"description": "Seraphite characters count as any faction and gain +1 value for every different faction in your hand.",
+		"description": "Seraphite characters pass as any faction and gain +1 value for every different faction in your hand.",
 		"icon": "res://holdout/modifiers/icons/Volatile Hand.png",
 		"tier": 1,
 		"faction": "Seraphite",
@@ -865,7 +865,7 @@ const ALLEGIANCES = {
 	Allegiance.WHISTLE: {
 		"id": Allegiance.WHISTLE,
 		"name": "Whistle",
-		"description": "If a Seraphite card wins a round, you have a higher chance of drawing another Seraphite character.",
+		"description": "If you win with a Seraphite, your next character draw will be a Seraphite if there is one in the deck.",
 		"icon": "res://holdout/modifiers/icons/Volatile Hand.png",
 		"tier": 1,
 		"faction": "Seraphite",
@@ -889,7 +889,7 @@ const ALLEGIANCES = {
 	Allegiance.WOUNDED_PREY: {
 		"id": Allegiance.WOUNDED_PREY,
 		"name": "Wounded Prey",
-		"description": "If a Seraphite card loses, the opponent's winning card remains in play next round with its value halved.",
+		"description": "If you win with a Seraphite, the opponent's character remains in play next round with its value halved.",
 		"icon": "res://holdout/modifiers/icons/Calculated Risk.png",
 		"tier": 2,
 		"faction": "Seraphite",
@@ -939,7 +939,7 @@ const ALLEGIANCES = {
 	Allegiance.SWEEP: {
 		"id": Allegiance.SWEEP,
 		"name": "Sweep",
-		"description": "Each consecutively played WLF character gains an additional +1 value over the last.",
+		"description": "Playing a WLF character deals 2 direct damage if a WLF was played last round.",
 		"icon": "res://holdout/modifiers/icons/Volatile Hand.png",
 		"tier": 1,
 		"faction": "WLF",
@@ -947,7 +947,7 @@ const ALLEGIANCES = {
 	Allegiance.COMBAT_INTEL: {
 		"id": Allegiance.COMBAT_INTEL,
 		"name": "Combat Intel",
-		"description": "If you lose a round, a random WLF character in your hand gains +1.",
+		"description": "If you win a round, a random WLF character in your hand gains +1.",
 		"icon": "res://holdout/modifiers/icons/Volatile Hand.png",
 		"tier": 1,
 		"faction": "WLF",
@@ -986,7 +986,7 @@ const ALLEGIANCES = {
 	},
 	Allegiance.WAR: {
 		"id": Allegiance.WAR,
-		"name": "WLF 3b",
+		"name": "War",
 		"description": "Enables Hunted. The hunted status can now be applied to opposing cards of any faction except WLF.",
 		"icon": "res://holdout/modifiers/icons/Forsaken Honor.png",
 		"tier": 3,
@@ -1004,6 +1004,7 @@ const ALLEGIANCES = {
 
 
 const standardCharacterDeck = [
+	"Stalker", "RatKing",
 	"Runner", "Runner", "Runner", "Runner",
 	"Stalker", "Stalker", "Stalker",
 	"FireflySoldier", "FireflySoldier", "FireflySoldier",

@@ -74,18 +74,6 @@ func _ready() -> void:
 	$"../cardManager".connect("characterPlayed", Callable(self, "_on_player_character_played"))
 	$"../cardManager".connect("supportPlayed", Callable(self, "_on_player_support_played"))
 	
-	# Tutorial from main menu intercept
-	if GameStats.gameMode == GameStats.Mode.HOLDOUT_TUTORIAL:
-		$"../arena/HoldoutIntro".hide()
-		
-		HoldoutStats.currentPlayer = Actor.Avatar.JUNE
-		HoldoutStats.playerHealthValue = 99
-		HoldoutStats.playerHealthAtRoundStart = 99
-		ui.update_health(Actor.Type.PLAYER, HoldoutStats.playerHealthValue, true)
-		
-		call_deferred("start_tutorial")
-		return
-	
 	if SaveManager.isLoadingSave:
 		await _load_game_from_snapshot()
 		SaveManager.isLoadingSave = false
@@ -149,9 +137,8 @@ func initialize_game() -> void:
 	
 	await _draw_cards_at_start(false)
 	
-	if not isTutorialActive:
-		var tween = get_tree().create_tween()
-		tween.tween_property(%phaseTracker, "modulate:a", 1.0, perkCalculationTime)
+	var tween = get_tree().create_tween()
+	tween.tween_property(%phaseTracker, "modulate:a", 1.0, perkCalculationTime)
 	
 	battleEngine.start_new_round(battleEngine.has_modifier(Database.Modifier.FRONT_RUNNER), 1)
 	
@@ -247,9 +234,6 @@ func _on_player_character_played(card: Node2D) -> void:
 		card.modify_value(3)
 		battleEngine.log_action("System. Deep Wounds modifier activated. " + card.nameText + " gained +3 from resolve.")
 	
-	if isTutorialActive:
-		advance_tutorial("player_played_character", card)
-	
 	battleEngine.log_action("Player. You played " + card.nameText + ".")
 	
 	_play_dust_effect(playerCharacterCard)
@@ -325,9 +309,6 @@ func _transition_to_support_phase() -> void:
 	
 	_update_playable_support_cards()
 	
-	if isTutorialActive:
-		advance_tutorial("support_phase_started")
-	
 	if battleEngine.get_support_starter() == Actor.Type.PLAYER:
 		battleEngine.set_phase(battleEngine.RoundStage.PLAYER_SUPPORT)
 		ui.set_indicator(Actor.Type.PLAYER)
@@ -344,9 +325,6 @@ func _on_player_support_played(card: Node2D) -> void:
 	ui.show_end_turn_button(false)
 	
 	playerSupportCard = card
-	
-	if isTutorialActive:
-		advance_tutorial("player_played_support", card)
 	
 	HoldoutStats.record_played_card("Support", playerSupportCard.cardKey, playerSupportCard.value)
 	battleEngine.log_action("Player. You played " + card.nameText + ".")
@@ -491,10 +469,7 @@ func _transition_to_resolution_phase() -> void:
 	var opponentDefeated = opponentHealth <= 0 and not battleEngine.has_modifier(Database.Modifier.ENDURE)
 	
 	if playerHealth <= 0 or opponentDefeated:
-		if isTutorialRun:
-			await _conclude_tutorial_match()
-		else:
-			await _conclude_match()
+		await _conclude_match()
 		return
 	
 	_apply_in_hand_growth(playerHand, battleEngine.lastRoundWinner == battleEngine.Winner.PLAYER, true)
@@ -542,9 +517,8 @@ func _conclude_match() -> void:
 	
 	%pauseIcon.hide()
 	
-	if not isTutorialActive:
-		var tween = get_tree().create_tween()
-		tween.tween_property(%phaseTracker, "modulate:a", 0.0, perkCalculationTime)
+	var tween = get_tree().create_tween()
+	tween.tween_property(%phaseTracker, "modulate:a", 0.0, perkCalculationTime)
 	
 	var cardsToDiscard = []
 	
@@ -600,11 +574,8 @@ func _start_new_round() -> void:
 	battleEngine.start_new_round(battleEngine.has_modifier(Database.Modifier.FRONT_RUNNER), HoldoutStats.roundsPlayed)
 	_update_playable_support_cards()
 	
-	if isTutorialActive:
-		advance_tutorial("round_started")
-	else:
-		var tween = get_tree().create_tween()
-		tween.tween_property(%phaseTracker, "modulate:a", 1.0, perkCalculationTime)
+	var tween = get_tree().create_tween()
+	tween.tween_property(%phaseTracker, "modulate:a", 1.0, perkCalculationTime)
 	
 	if battleEngine.whoStartedRound == Actor.Type.OPPONENT:
 		ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.THINKING)
@@ -624,14 +595,7 @@ func _start_new_round() -> void:
 	_save_round_checkpoint()
 
 func _on_end_turn_button_pressed() -> void:
-	if isTutorialActive and (battleEngine.tutorialStep == 4 or battleEngine.tutorialStep == 5 or battleEngine.tutorialStep == 6):
-		return
-	
 	ui.show_end_turn_button(false)
-	
-	if battleEngine.tutorialStep == 2:
-		tutorialAnimationPlayer.play_backwards("show_tutorial_box")
-		await tutorialAnimationPlayer.animation_finished
 	
 	ui.change_mood(Actor.Type.PLAYER, Actor.Mood.NEUTRAL)
 	
@@ -725,9 +689,6 @@ func _animate_opponent_playing_card(opponentCard: Node2D, opponentCardSlot: Node
 	$"../opponentHand".remove_card_from_hand(opponentCard)
 
 func _apply_mid_round_perks() -> void:
-	if isTutorialActive and not arePerksActiveInTutorial:
-		return
-		
 	if battleEngine.has_modifier(Database.Modifier.FRIENDLY_FIRE):
 		if playerCharacterCard.faction == opponentCharacterCard.faction:
 			await get_tree().create_timer(0.3).timeout
@@ -772,9 +733,6 @@ func _update_playable_support_cards() -> void:
 			card.canBePlayed = not opponentBlocked
 
 func _apply_end_round_perks() -> void:
-	if isTutorialActive and not arePerksActiveInTutorial:
-		return
-		
 	if battleEngine.whoStartedRound == Actor.Type.PLAYER:
 		await _execute_player_char_end_perk()
 		await _execute_opponent_char_end_perk()
@@ -841,7 +799,7 @@ func _calculate_damage() -> void:
 		await _apply_slow_bleed_bonus(playerHand)
 	
 	if battleEngine.has_modifier(Database.Modifier.CARD_ROT):
-		_apply_card_rot_aging()
+		await _apply_card_rot_aging()
 
 func _apply_player_support(support: Node2D, opponentCharacter: Node2D, playerCharacter: Node2D) -> void:
 	await get_tree().create_timer(1.0).timeout
@@ -874,9 +832,6 @@ func _apply_opponent_support(support: Node2D, playerCharacter: Node2D, opponentC
 		await opponentCharacter.modify_value(value)
 
 func _apply_calculation_round_perks(playerTotal: int, opponentTotal: int) -> void:
-	if isTutorialActive and not arePerksActiveInTutorial:
-		return
-		
 	if battleEngine.whoStartedRound == Actor.Type.PLAYER:
 		await _execute_player_calc_perk(playerTotal, opponentTotal)
 		await _execute_opponent_calc_perk(playerTotal, opponentTotal)
@@ -1084,7 +1039,7 @@ func _return_character_to_hand(card: Node2D) -> void:
 	card.value = baseValue
 	card.frenzyBonusApplied = false
 	card._apply_frenzied_state_bonus()
-	card.get_node("value").text = str(baseValue)
+	card.get_node("value").text = str(card.value)
 	
 	card.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Dead Weight.png")
 	card.get_node("AnimationPlayer").play("modifierIndicator")
@@ -1097,6 +1052,8 @@ func _return_character_to_hand(card: Node2D) -> void:
 
 
 func _apply_card_rot_aging() -> void:
+	var animatingCards: Array = []
+	
 	for card in playerHand:
 		if not is_instance_valid(card) or card.type != "Character":
 			continue
@@ -1110,9 +1067,23 @@ func _apply_card_rot_aging() -> void:
 			
 			battleEngine.log_action("System. Card Rot modifier activated. " + card.nameText + " lost 1 value from rotting.")
 			card.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Card Rot.png")
-			card.get_node("AnimationPlayer").queue("modifierIndicator")
-			card.modify_value(-1)
-
+			card.get_node("AnimationPlayer").play("modifierIndicator")
+			animatingCards.append(card)
+	
+	if animatingCards.is_empty():
+		return
+	
+	var remaining: Array = [animatingCards.size()]
+	var on_finished = func(_animName): remaining[0] -= 1
+	
+	for card in animatingCards:
+		card.get_node("AnimationPlayer").animation_finished.connect(on_finished, CONNECT_ONE_SHOT)
+	
+	while remaining[0] > 0:
+		await get_tree().process_frame
+	
+	for card in animatingCards:
+		card.modify_value(-1)
 
 func _handle_runner_perk() -> void:
 	if playerCharacterCard.cardKey == "Runner" or opponentCharacterCard.cardKey == "Runner":
@@ -1628,7 +1599,7 @@ func get_arena_save_dict() -> Dictionary:
 	return arenaData
 
 func _save_round_checkpoint() -> void:
-	if SaveManager.isLoadingSave or isTutorialRun:
+	if SaveManager.isLoadingSave:
 		return
 
 	var fullSaveData = {
@@ -1745,7 +1716,7 @@ func _load_game_from_snapshot() -> void:
 	
 	_apply_guerrilla_tactics_restrictions()
 	
-	if battleEngine.roundStage != battleEngine.RoundStage.END_CALCULATION and not isTutorialActive:
+	if battleEngine.roundStage != battleEngine.RoundStage.END_CALCULATION:
 		%phaseTracker.modulate.a = 1.0
 	
 	if battleEngine.whoStartedRound == Actor.Type.PLAYER:
@@ -1844,195 +1815,3 @@ func _on_corrupt_start_new_run_button_pressed() -> void:
 	%saveFileCorrupt.visible = false
 	
 	initialize_game()
-
-# --- TUTORIAL ---
-var isTutorialRun: bool = false
-var isTutorialActive: bool = false
-var arePerksActiveInTutorial: bool = false
-@onready var tutorialAnimationPlayer = $"../arena/tutorialBox/AnimationPlayer"
-
-func start_tutorial() -> void:
-	isTutorialRun = true
-	isTutorialActive = true
-	battleEngine.set_tutorial_step(1)
-	
-	HoldoutStats.currentOpponent = Actor.Avatar.DUMMY 
-	_initialize_opponent(HoldoutStats.currentPlayer, HoldoutStats.currentOpponent)
-	
-	%pauseIcon.show()
-	
-	$"../characterDeck".deck = Database.tutorialCharacterDeck.duplicate()
-	$"../supportDeck".deck = Database.tutorialSupportDeck.duplicate()
-	
-	battleEngine.setup_tutorial_state()
-	
-	ui.set_indicator(Actor.Type.PLAYER)
-	ui.change_mood(Actor.Type.PLAYER, Actor.Mood.THINKING)
-	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
-	
-	lockPlayerInput = false
-	
-	await _draw_cards_at_start(false)
-	
-	%number.text = "1/6"
-	%heading.text = "Character Cards"
-	%instruction.text = "A character's value is located in the top-left corner of the card.\n\nClick and drag Marlene to the Character Slot to play her.\n\nAlternatively you can double click to instantly play it."
-	%Box.size.y = 450
-	
-	_update_tutorial_card_locks()
-	
-	await get_tree().create_timer(0.75).timeout
-	
-	tutorialAnimationPlayer.play("show_tutorial_box")
-	await tutorialAnimationPlayer.animation_finished
-
-func _update_tutorial_card_locks() -> void:
-	var currentStep = battleEngine.tutorialStep
-	var enforceLocks = battleEngine.is_tutorial_lock_enforced(currentStep)
-	var allowedKeys = battleEngine.get_allowed_tutorial_cards(currentStep)
-	
-	for card in playerHand:
-		if not is_instance_valid(card):
-			continue
-			
-		if enforceLocks:
-			card.canBePlayed = (card.cardKey in allowedKeys)
-		else:
-			if card.type == "Character":
-				card.canBePlayed = true
-
-func advance_tutorial(trigger: String, card: Node2D = null) -> void:
-	if not isTutorialActive:
-		return
-		
-	match battleEngine.tutorialStep:
-		1:
-			if trigger == "player_played_character" and card.cardKey == "Marlene":
-				battleEngine.set_tutorial_step(2)
-				
-				tutorialAnimationPlayer.play_backwards("show_tutorial_box")
-				await tutorialAnimationPlayer.animation_finished
-				
-				_update_tutorial_ai_moves()
-				
-				%number.text = "2/6"
-				%heading.text = "Dealing Damage"
-				%instruction.text = "The damage dealt is the difference between your value and your opponent’s.\n\nClick End Turn to resolve combat."
-				%Box.size.y = 330
-				
-				await get_tree().create_timer(0.75).timeout
-				
-				tutorialAnimationPlayer.play("show_tutorial_box")
-				await tutorialAnimationPlayer.animation_finished
-		2:
-			if trigger == "support_phase_started":
-				_update_tutorial_card_locks()
-			elif trigger == "round_started":
-				battleEngine.set_tutorial_step(3)
-				_update_tutorial_ai_moves()
-				
-				await get_tree().create_timer(1.5).timeout
-				
-				%number.text = "3/6"
-				%heading.text = "Character Cards"
-				%instruction.text = "Play Li."
-				%Box.size.y = 180
-				
-				tutorialAnimationPlayer.play("show_tutorial_box")
-				await tutorialAnimationPlayer.animation_finished
-				
-				_update_tutorial_card_locks()
-		3:
-			if trigger == "player_played_character":
-				battleEngine.set_tutorial_step(4)
-				tutorialAnimationPlayer.play_backwards("show_tutorial_box")
-				await tutorialAnimationPlayer.animation_finished
-		4:
-			if trigger == "support_phase_started":
-				_update_tutorial_card_locks()
-				ui.show_end_turn_button(false)
-				
-				await get_tree().create_timer(1.5).timeout
-				
-				%number.text = "4/6"
-				%heading.text = "Support Cards"
-				%instruction.text = "Support cards are optional. They can be played after your character to tactically boost your value in battle.\n\nYour opponent chose not to play a support.\n\nPlay a support card that matches Li's card type."
-				%Box.size.y = 480
-				
-				tutorialAnimationPlayer.play("show_tutorial_box")
-				await tutorialAnimationPlayer.animation_finished
-			elif trigger == "player_played_support":
-				tutorialAnimationPlayer.play_backwards("show_tutorial_box")
-				await tutorialAnimationPlayer.animation_finished
-			elif trigger == "round_started":
-				battleEngine.set_tutorial_step(5)
-				arePerksActiveInTutorial = true
-				
-				_update_tutorial_ai_moves()
-				
-				_update_tutorial_card_locks()
-				
-				await get_tree().create_timer(0.75).timeout
-				
-				%number.text = "5/6"
-				%heading.text = "Card Perks"
-				%instruction.text = "All Characters have perks.\n\nPerks offer additional boosts if the requirements are met.\n\nHover over Dina to view her perk, then play her."
-				%Box.size.y = 400
-				
-				tutorialAnimationPlayer.play("show_tutorial_box")
-				await tutorialAnimationPlayer.animation_finished
-		5:
-			if trigger == "player_played_character" and card.cardKey == "Dina":
-				tutorialAnimationPlayer.play_backwards("show_tutorial_box")
-				await tutorialAnimationPlayer.animation_finished
-			if trigger == "support_phase_started":
-				battleEngine.set_tutorial_step(6)
-				
-				_update_tutorial_card_locks()
-				
-				%number.text = "6/6"
-				%heading.text = "Conclusion"
-				%instruction.text = "The combination of both supports and perks can swing a losing battle into a winning one.\n\nUse both wisely to deal more, or take less damage.\n\nPlay a matching support to deal additional damage."
-				%Box.size.y = 470
-				
-				tutorialAnimationPlayer.play("show_tutorial_box")
-				await tutorialAnimationPlayer.animation_finished
-		6:
-			if trigger == "player_played_support":
-				tutorialAnimationPlayer.play_backwards("show_tutorial_box")
-				await tutorialAnimationPlayer.animation_finished
-				
-				isTutorialActive = false
-
-func _conclude_tutorial_match() -> void:
-	battleEngine.isRoundActive = false
-	%pauseIcon.hide()
-	
-	var cardsToDiscard = []
-	if playerSupportCard: cardsToDiscard.append(playerSupportCard)
-	cardsToDiscard.append(playerCharacterCard)
-	cardsToDiscard.append(opponentCharacterCard)
-	if opponentSupportCard: cardsToDiscard.append(opponentSupportCard)
-	
-	cardsToDiscard.append_array(playerHand)
-	
-	for card in opponentHand:
-		card.get_node("AnimationPlayer").play("cardFlip")
-		card.get_node("image").visible = true
-		cardsToDiscard.append(card)
-	
-	await _move_cards_to_discard(cardsToDiscard)
-	
-	outro.play_holdout_tutorial_end_sequence()
-	
-	await _repopulate_decks(true)
-	discardedCardZIndex = 1
-	
-	GameStats.showHoldoutTutorial = false
-	GameStats.save_game()
-
-func _update_tutorial_ai_moves() -> void:
-	if opponentAI is OpponentAITutorialDummy:
-		var moves = battleEngine.get_forced_ai_moves(battleEngine.tutorialStep)
-		opponentAI.forcedCharacterKey = moves.character
-		opponentAI.forcedSupportKey = moves.support
