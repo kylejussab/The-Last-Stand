@@ -42,6 +42,7 @@ const CHARACTERS = { # Value, Type, Faction, Class, Card Name Text, Perk Text
 	"Bill": [4, "Character", "Jackson", "Crafty", "BILL", "+4 if the played support card has a backfire chance"],
 	"Jessie": [5, "Character", "Jackson", "Defensive", "JESSIE", "-1 to opponent, if opposing card is Aggressive"],
 	"Shimmer": [2, "Character", "Jackson", "Defensive", "SHIMMER", "+3 if Ellie or Dina in hand"],
+	"JacksonScout": [3, "Character", "Jackson", "Survivor", "SCOUT", "Counts as any named companion for Jackson character perks"],
 	
 	# New / altered cards based on humanity restored modifier
 	"JoelSmuggler": [6, "Character", "Smuggler", "Aggressive", "JOEL", "+2 if opposing card is Aggressive or Defensive or Survivor"],
@@ -197,6 +198,7 @@ const HOLDOUT_PERKS = {
 	"Li": "res://holdout/perks/liPerk.gd",
 	"SeraphiteBrute": "res://holdout/perks/seraphiteBrutePerk.gd",
 	"Shimmer": "res://holdout/perks/shimmerPerk.gd",
+	"JacksonScout": "res://holdout/perks/jacksonScoutPerk.gd",
 	
 	"JoelSmuggler": "res://holdout/perks/joelSmugglerPerk.gd",
 	"BillSmuggler": "res://holdout/perks/billPerk.gd",
@@ -301,7 +303,7 @@ var AVATARS = {
 		"backgroundPath": "res://core/ai/backgrounds/",
 		"playstyle": "Predictive"
 	}
-}
+} 
 
 const OPPONENT_HEALTH_AMOUNTS: Array[int] = [
 	13, # Round 1
@@ -628,6 +630,16 @@ const ALLEGIANCE_HANDLERS = {
 	# Allegiance.BLOATER_PLATING lives directly in card.gd in modify_value
 	Allegiance.CORDYCEPS_BRAIN_INFECTION: "res://holdout/allegiances/cordycepsBrainInfectionHandler.gd",
 	Allegiance.VIOLENT_OUTBREAK: "res://holdout/allegiances/violentOutbreakHandler.gd",
+	
+	Allegiance.PATROL_ROUTE: "res://holdout/allegiances/patrolRouteHandler.gd",
+	Allegiance.ONE_OF_OURS: "res://holdout/allegiances/oneOfOursHandler.gd",
+	Allegiance.SHARED_SUPPLIES: "res://holdout/allegiances/sharedSuppliesHandler.gd",
+	Allegiance.DEBT_REPAID: "res://holdout/allegiances/debtRepaidHandler.gd",
+	Allegiance.FUTURE_DAYS: "res://holdout/allegiances/futureDaysHandler.gd",
+	Allegiance.KEEP_MOVING: "res://holdout/allegiances/keepMovingHandler.gd",
+	# Handled in HoldoutHub set_arena_data function
+	Allegiance.FOUND_FAMILY: "res://holdout/allegiances/foundFamilyHandler.gd",
+	Allegiance.PRACTICAL_WISDOM: "res://holdout/allegiances/practicalWisdomHandler.gd",
 }
 
 const ALLEGIANCES = {
@@ -800,7 +812,7 @@ const ALLEGIANCES = {
 		"id": Allegiance.SHARED_SUPPLIES,
 		"name": "Shared Supplies",
 		"description": "Playing a Jackson card with a non backfire support gives a random card in hand +2.",
-		"icon": "res://holdout/modifiers/icons/Volatile Hand.png",
+		"icon": "res://holdout/allegiances/icons/Shared Supplies.png",
 		"tier": 1,
 		"faction": "Jackson",
 	},
@@ -815,7 +827,7 @@ const ALLEGIANCES = {
 	Allegiance.FUTURE_DAYS: {
 		"id": Allegiance.FUTURE_DAYS,
 		"name": "Future Days",
-		"description": "If a Jackson card wins there is a 50% chance it is returned to hand rather than discarded.",
+		"description": "If a Jackson card wins it is returned to hand at -1 value rather than discarded.",
 		"icon": "res://holdout/allegiances/icons/Future Days.png",
 		"tier": 2,
 		"faction": "Jackson",
@@ -824,15 +836,15 @@ const ALLEGIANCES = {
 		"id": Allegiance.KEEP_MOVING,
 		"name": "Keep Moving",
 		"description": "Playing a Jackson character grants +1 for each consecutive round you've played one.",
-		"icon": "res://holdout/modifiers/icons/Volatile Hand.png",
+		"icon": "res://holdout/allegiances/icons/Keep Moving.png",
 		"tier": 2,
 		"faction": "Jackson",
 	},
 	Allegiance.WHOEVERS_NEEDED: {
 		"id": Allegiance.WHOEVERS_NEEDED,
 		"name": "Whoever's Needed",
-		"description": "Adds 2 Jackson Scouts to the deck. Scouts count as any named companion.",
-		"icon": "res://holdout/modifiers/icons/Forsaken Honor.png",
+		"description": "Adds 3 Jackson Scouts to the deck. Scouts count as any named companion.",
+		"icon": "res://holdout/allegiances/icons/Whoevers Needed.png",
 		"tier": 3,
 		"faction": "Jackson",
 	},
@@ -848,7 +860,7 @@ const ALLEGIANCES = {
 		"id": Allegiance.PRACTICAL_WISDOM,
 		"name": "Practical Wisdom",
 		"description": "Supports never backfire if the played character is from Jackson.",
-		"icon": "res://holdout/modifiers/icons/Forsaken Honor.png",
+		"icon": "res://holdout/allegiances/icons/Practical Wisdom.png",
 		"tier": 3,
 		"faction": "Jackson",
 	},
@@ -1004,7 +1016,6 @@ const ALLEGIANCES = {
 
 
 const standardCharacterDeck = [
-	"Stalker", "RatKing",
 	"Runner", "Runner", "Runner", "Runner",
 	"Stalker", "Stalker", "Stalker",
 	"FireflySoldier", "FireflySoldier", "FireflySoldier",
@@ -1188,16 +1199,23 @@ const tutorialSupportDeck = [
 # Builds a deck for the current run: takes one of the base deck consts and applies any player-driven adjustments
 func build_run_deck(baseDeck: Array) -> Array:
 	var deck: Array = baseDeck.duplicate()
+	var isCharacterDeck = not baseDeck.is_empty() and CHARACTERS.has(baseDeck[0])
 	
 	for cardKey in HoldoutStats.deckAdjustments:
 		var count: int = HoldoutStats.deckAdjustments[cardKey]
+		if count == 0:
+			continue
+		
+		var keyBelongsToCharacterDeck = CHARACTERS.has(cardKey)
+		if keyBelongsToCharacterDeck != isCharacterDeck:
+			continue
 		
 		if count < 0:
 			var remaining = -count
 			while remaining > 0:
 				var idx = deck.find(cardKey)
 				if idx == -1:
-					break # No more copies of this card left in this particular deck — fine, just stop.
+					break
 				deck.remove_at(idx)
 				remaining -= 1
 		elif count > 0:
@@ -1205,7 +1223,6 @@ func build_run_deck(baseDeck: Array) -> Array:
 				deck.append(cardKey)
 	
 	return deck
-
 
 const CARD_VIEWER_DESCRIPTIONS = {
 	"Abby": "The WLF's top soldier. She excels in fights with brute force, and has spent years turning herself into a weapon in the pursuit of vengeance.\n\nRivalries: Ellie, Emily, Joel, Rat King.",

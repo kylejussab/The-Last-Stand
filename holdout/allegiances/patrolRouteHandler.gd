@@ -19,7 +19,6 @@ func on_character_played(card: Node2D, _hand: Array, _opponentCard: Node2D) -> v
 	
 	AudioManager.play_random_card_draw()
 	target.get_node("AnimationPlayer").play("cardFlip")
-	target.get_node("image").visible = true
 	
 	battle.get_node("%opponentHand").update_hand_positions(battle.cardMoveSpeed)
 	

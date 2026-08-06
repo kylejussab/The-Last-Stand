@@ -17,6 +17,7 @@ static var lastOfferedAllegianceIds: Array = [] # Used for weighted randomness w
 
 static var lastOfferedRemovalIds: Array = []
 static var deckAdjustments: Dictionary = {}
+static var whoeversNeededApplied: bool = false
 
 static var permanentCardMarks: Dictionary = {}
 static var masterPermanentCardMarks: Dictionary = {} # Tracks true run state for viewDeck
@@ -186,6 +187,7 @@ static func reset_for_new_run():
 	activeAllegiance = {}
 	lastOfferedAllegianceIds.clear()
 	deckAdjustments.clear()
+	whoeversNeededApplied = false
 	permanentCardMarks.clear()
 	masterPermanentCardMarks.clear()
 	
@@ -314,6 +316,7 @@ static func get_save_dict() -> Dictionary:
 		"activeAllegiance": activeAllegiance,
 		"lastOfferedAllegianceIds": lastOfferedAllegianceIds,
 		"deckAdjustments": deckAdjustments,
+		"whoeversNeededApplied": whoeversNeededApplied,
 		"permanentCardMarks": permanentCardMarks,
 		"masterPermanentCardMarks": masterPermanentCardMarks,
 		"currentRank": currentRank,
@@ -368,6 +371,8 @@ static func load_save_dict(data: Dictionary) -> void:
 	deckAdjustments.clear()
 	for key in data.get("deckAdjustments", {}):
 		deckAdjustments[key] = int(data["deckAdjustments"][key])
+	
+	whoeversNeededApplied = data.get("whoeversNeededApplied", false)
 	
 	permanentCardMarks.clear()
 	for markType in data.get("permanentCardMarks", {}):

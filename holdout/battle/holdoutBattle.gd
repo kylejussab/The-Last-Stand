@@ -331,8 +331,16 @@ func _on_player_support_played(card: Node2D) -> void:
 	
 	_play_dust_effect(playerSupportCard)
 	
-	var forceNoBackfire = battleEngine.has_modifier(Database.Modifier.DESPERATE_MEASURES)
+	if allegianceHandler:
+		await allegianceHandler.on_support_played(playerSupportCard, playerCharacterCard, playerHand, true)
+	
+	var desperateMeasuresActive = battleEngine.has_modifier(Database.Modifier.DESPERATE_MEASURES)
+	var practicalWisdomActive = allegianceHandler and allegianceHandler.prevents_backfire(playerCharacterCard)
+	var forceNoBackfire = desperateMeasuresActive or practicalWisdomActive
 	var handled = false
+	
+	if practicalWisdomActive and playerSupportCard.cardKey in BACKFIRE_CAPABLE:
+		battleEngine.log_action("System. Practical Wisdom activated. Your support card cannot backfire.")
 	
 	if playerSupportCard.perk and playerSupportCard.perk.timing == "onPlay":
 		await get_tree().create_timer(opponentThinkingTime).timeout
@@ -350,7 +358,7 @@ func _on_player_support_played(card: Node2D) -> void:
 		if result.get("backfired", false) and battleEngine.has_modifier(Database.Modifier.PSYCHO_MANIA):
 			_apply_psycho_mania_bonus(playerHand)
 	
-	if forceNoBackfire and playerSupportCard.cardKey in BACKFIRE_CAPABLE:
+	if desperateMeasuresActive and playerSupportCard.cardKey in BACKFIRE_CAPABLE:
 		battleEngine.log_action("System. Desperate Measures modifier activated. You took 1 damage.")
 		playerSupportCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Desperate Measures.png")
 		playerSupportCard.get_node("AnimationPlayer").play("modifierIndicator")
@@ -403,6 +411,9 @@ func _execute_opponent_support_play() -> void:
 				opponentSupportCard.modify_value(int(opponentCharacterCard.value / 2.0))
 				
 				battleEngine.log_action("System. Gambler modifier activated. " + opponentName + "'s " + opponentSupportCard.nameText + " gained +" + str(int(opponentCharacterCard.value / 2.0)) + " value.")
+			
+			if allegianceHandler:
+				await allegianceHandler.on_support_played(opponentSupportCard, opponentCharacterCard, opponentHand, false)
 			
 			var handled = false
 			
@@ -478,15 +489,23 @@ func _transition_to_resolution_phase() -> void:
 	var deadWeightSavesPlayerCard = battleEngine.has_modifier(Database.Modifier.DEAD_WEIGHT) and battleEngine.lastRoundWinner == battleEngine.Winner.OPPONENT
 	var baitedDefenseSteal = battleEngine.has_modifier(Database.Modifier.BAITED_DEFENSE) and battleEngine.lastRoundWinner == battleEngine.Winner.OPPONENT and "Defensive" in playerCharacterCard.role
 	
+	var allegianceRoundEndResult = {}
+	if allegianceHandler:
+		allegianceRoundEndResult = await allegianceHandler.on_round_end(playerCharacterCard, playerHand, opponentCharacterCard, opponentHand)
+	var allegianceSteal = allegianceRoundEndResult.get("stealOpponentCard", false) and not baitedDefenseSteal
+	var futureDaysSave = allegianceRoundEndResult.get("returnWinningCardToHand", false)
+	
 	if baitedDefenseSteal:
 		battleEngine.log_action("System. Baited Defense modifier activated. " + opponentCharacterCard.nameText + " was stolen and added to your hand.")
 		await _steal_character_to_hand(opponentCharacterCard)
+	elif allegianceSteal:
+		await _steal_character_to_hand(opponentCharacterCard, allegianceRoundEndResult.get("stealValueModifier", 0), "res://holdout/allegiances/icons/One of Ours.png")
 	
 	var cardsToDiscard = []
 	if playerSupportCard: cardsToDiscard.append(playerSupportCard)
-	if not deadWeightSavesPlayerCard:
+	if not deadWeightSavesPlayerCard and not futureDaysSave:
 		cardsToDiscard.append(playerCharacterCard)
-	if not baitedDefenseSteal:
+	if not baitedDefenseSteal and not allegianceSteal:
 		cardsToDiscard.append(opponentCharacterCard)
 	if opponentSupportCard: cardsToDiscard.append(opponentSupportCard)
 	
@@ -495,6 +514,8 @@ func _transition_to_resolution_phase() -> void:
 	if deadWeightSavesPlayerCard:
 		battleEngine.log_action("System. Dead Weight modifier activated. " + playerCharacterCard.nameText + " was returned to your hand.")
 		await _return_character_to_hand(playerCharacterCard)
+	elif futureDaysSave:
+		await _return_winning_character_to_hand(playerCharacterCard)
 	
 	ui.show_end_turn_button(false)
 	
@@ -1051,6 +1072,27 @@ func _return_character_to_hand(card: Node2D) -> void:
 		AudioManager.play_random_card_draw()
 
 
+func _return_winning_character_to_hand(card: Node2D) -> void:
+	AudioManager.play_random_card_draw()
+	card.scale = Vector2(1, 1)
+	
+	var decayStacks: int = card.get_meta("futureDaysDecay", 0) + 1
+	card.set_meta("futureDaysDecay", decayStacks)
+	
+	var baseValue = Database.CHARACTERS[card.cardKey][0]
+	card.value = baseValue - decayStacks
+	card.get_node("value").text = str(card.value)
+	
+	card.get_node("ModifierIndicator").texture = load("res://holdout/allegiances/icons/Future Days.png")
+	card.get_node("AnimationPlayer").play("modifierIndicator")
+	await card.get_node("AnimationPlayer").animation_finished
+	
+	var tween = %playerHand.add_card_to_hand(card, cardMoveSpeed)
+	if tween:
+		await tween.finished
+		AudioManager.play_random_card_draw()
+
+
 func _apply_card_rot_aging() -> void:
 	var animatingCards: Array = []
 	
@@ -1253,20 +1295,20 @@ func _handle_opponent_win(damage: int, triggerDeepWounds: bool, triggerCalculate
 			_draw_bonus_support(Actor.Type.OPPONENT)
 
 
-func _steal_character_to_hand(card: Node2D) -> void:
+func _steal_character_to_hand(card: Node2D, valueModifier: int = 0, iconPath: String = "res://holdout/modifiers/icons/Baited Defense.png") -> void:
 	var cardKey = card.cardKey
 	var spawnPosition = card.position
 	
 	card.queue_free()
 	
-	var baseValue = Database.CHARACTERS[cardKey][0]
+	var baseValue = Database.CHARACTERS[cardKey][0] + valueModifier
 	var newCard = _spawn_single_card({"cardKey": cardKey, "value": baseValue}, false)
 	newCard.position = spawnPosition
 	newCard.scale = Vector2(1, 1)
 	
 	$"../cardManager".add_child(newCard)
 	
-	newCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Baited Defense.png")
+	newCard.get_node("ModifierIndicator").texture = load(iconPath)
 	newCard.get_node("AnimationPlayer").play("modifierIndicator")
 	await newCard.get_node("AnimationPlayer").animation_finished
 	
@@ -1275,7 +1317,6 @@ func _steal_character_to_hand(card: Node2D) -> void:
 	if tween:
 		await tween.finished
 		AudioManager.play_random_card_draw()
-
 
 func _resolution_has_retreat() -> bool:
 	if playerSupportCard and playerSupportCard.cardKey == "Retreat":
@@ -1576,11 +1617,16 @@ func _get_card_array_save_data(cardArray: Array) -> Array:
 			
 			if card.frenzyBonusApplied:
 				entry["frenzyBonusApplied"] = true
+				
+			if card.has_meta("isRevealed") and card.get_meta("isRevealed"):
+				entry["isRevealed"] = true
 			
 			if card.has_meta("cardRotAge"):
 				entry["cardRotAge"] = card.get_meta("cardRotAge")
 			if card.has_meta("cardRotAmount"):
 				entry["cardRotAmount"] = card.get_meta("cardRotAmount")
+			if card.has_meta("futureDaysDecay"):
+				entry["futureDaysDecay"] = card.get_meta("futureDaysDecay")
 			
 			parsedData.append(entry)
 	return parsedData
@@ -1595,6 +1641,9 @@ func get_arena_save_dict() -> Dictionary:
 	arenaData["opponentHand"] = _get_card_array_save_data(opponentHand)
 	arenaData["discardedCards"] = _get_card_array_save_data(discardedCards)
 	arenaData["pendingDeepWoundsBonus"] = pendingDeepWoundsBonus
+	
+	if allegianceHandler:
+		arenaData["allegianceHandlerData"] = allegianceHandler.get_save_dict()
 	
 	return arenaData
 
@@ -1714,6 +1763,9 @@ func _load_game_from_snapshot() -> void:
 	
 	_load_allegiance_handler()
 	
+	if arena.has("allegianceHandlerData") and allegianceHandler:
+		allegianceHandler.load_save_dict(arena["allegianceHandlerData"])
+	
 	_apply_guerrilla_tactics_restrictions()
 	
 	if battleEngine.roundStage != battleEngine.RoundStage.END_CALCULATION:
@@ -1790,9 +1842,14 @@ func _spawn_single_card(cardData: Dictionary, isOpponent: bool = false) -> Node2
 		newCard.set_meta("cardRotAge", cardData["cardRotAge"])
 	if cardData.has("cardRotAmount"):
 		newCard.set_meta("cardRotAmount", cardData["cardRotAmount"])
+	if cardData.has("futureDaysDecay"):
+		newCard.set_meta("futureDaysDecay", cardData["futureDaysDecay"])
 	
 	if cardData.get("frenzyBonusApplied", false):
 		newCard.frenzyBonusApplied = true
+	
+	if cardData.get("isRevealed", false):
+		newCard.set_meta("isRevealed", true)
 	
 	newCard.update_visuals()
 	
@@ -1805,7 +1862,17 @@ func _spawn_single_card(cardData: Dictionary, isOpponent: bool = false) -> Node2
 		if newCard.has_node("imageBack"): 
 			newCard.get_node("imageBack").visible = true
 	
+	if isOpponent and newCard.get_meta("isRevealed", false):
+		_apply_instant_reveal(newCard)
+	
 	return newCard
+
+
+func _apply_instant_reveal(card: Node2D) -> void:
+	var anim = card.get_node("AnimationPlayer")
+	anim.play("cardFlip")
+	anim.seek(anim.current_animation_length, true)
+	anim.stop(true)
 
 func _on_corrupt_start_new_run_button_pressed() -> void:
 	var tween = create_tween()

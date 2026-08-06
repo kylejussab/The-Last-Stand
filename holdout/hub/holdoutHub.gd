@@ -334,8 +334,6 @@ func _set_arena_data() -> void:
 	# Opponent's modifier always goes in first
 	%battleManager.add_modifier(selectedOpponentModifier.id, true)
 	
-	%battleManager.add_modifier(Database.Modifier.DEAD_WEIGHT, true)
-	
 	if isModifierRound:
 		if modifierSlotsActive[0] == 1:
 			%battleManager.add_modifier(tierOneModifier.id)
@@ -350,6 +348,10 @@ func _set_arena_data() -> void:
 	if isAllegianceRound and selectedAllegianceIndex != -1:
 		HoldoutStats.activeAllegiance = _get_selected_allegiance()
 		_set_arena_allegiance_ui()
+	
+		if HoldoutStats.activeAllegiance.get("id") == Database.Allegiance.WHOEVERS_NEEDED and not HoldoutStats.whoeversNeededApplied:
+			HoldoutStats.deckAdjustments["JacksonScout"] = HoldoutStats.deckAdjustments.get("JacksonScout", 0) + 3
+			HoldoutStats.whoeversNeededApplied = true
 
 func _get_selected_allegiance() -> Dictionary:
 	match selectedAllegianceIndex:
@@ -1809,7 +1811,7 @@ func _pick_weighted_removal_card(pool: Array) -> Dictionary:
 	var targetPool = pool
 	
 	if not charPool.is_empty() and not suppPool.is_empty():
-		if randf() < 0.80:
+		if randf() < 0.90:
 			targetPool = charPool
 		else:
 			targetPool = suppPool
