@@ -10,7 +10,10 @@ func calculate_end_perk_value(_thisCharacterCard, _thisSupportCard, _otherCharac
 func apply_end_perk(thisCharacterCard, thisSupportCard, otherCharacterCard, otherSupportCard, thisHand) -> int:
 	var toAdd = calculate_end_perk_value(thisCharacterCard, thisSupportCard, otherCharacterCard, otherSupportCard, thisHand)
 	if toAdd != 0:
-		thisCharacterCard.modify_value(toAdd)
+		if thisCharacterCard.isDoctrineBackfired:
+			otherCharacterCard.modify_value(toAdd)
+		else:
+			thisCharacterCard.modify_value(toAdd)
 	return toAdd
 
 func would_perk_trigger(thisCharacterCard, thisSupportCard, otherCharacterCard, otherSupportCard, thisHand) -> bool:

@@ -38,6 +38,12 @@ func on_deck_build(_characterDeck: Array, _supportDeck: Array) -> void:
 func prevents_backfire(_characterCard: Node2D) -> bool:
 	return false
 
+func get_forced_draw_faction() -> String:
+	return ""
+
+func clear_forced_draw() -> void:
+	pass
+
 func get_save_dict() -> Dictionary:
 	return {}
 

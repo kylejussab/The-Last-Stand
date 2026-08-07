@@ -1759,16 +1759,22 @@ func _get_removal_pool() -> Array:
 	var seen := {}
 	var pool: Array = []
 	
+	var remainingCharacterCounts := {}
+	for cardKey in Database.build_run_deck(Database.standardCharacterDeck):
+		remainingCharacterCounts[cardKey] = remainingCharacterCounts.get(cardKey, 0) + 1
+	
 	for cardName in Database.standardCharacterDeck:
 		if seen.has(cardName):
 			continue
 		seen[cardName] = true
 		
+		if remainingCharacterCounts.get(cardName, 0) <= 0:
+			continue
+		
 		var data = Database.CHARACTERS[cardName]
 		var currentFaction = data[2]
 		var currentIcon = FACTION_REMOVAL_ICONS.get(currentFaction, FACTION_REMOVAL_ICONS["Support"])
 		
-		# This makes any cards that turned infected show up
 		if HoldoutStats.has_permanent_mark("infected", cardName):
 			currentFaction = "Infected"
 			if FACTION_REMOVAL_ICONS.has("Infected"):
@@ -1785,10 +1791,17 @@ func _get_removal_pool() -> Array:
 	
 	var remainingSupportCount = _get_remaining_deck_count(Database.standardSupportDeck)
 	if remainingSupportCount >= REMOVAL_OFFER_THRESHOLD:
+		var remainingSupportCounts := {}
+		for cardKey in Database.build_run_deck(Database.standardSupportDeck):
+			remainingSupportCounts[cardKey] = remainingSupportCounts.get(cardKey, 0) + 1
+		
 		for cardName in Database.standardSupportDeck:
 			if seen.has(cardName):
 				continue
 			seen[cardName] = true
+			
+			if remainingSupportCounts.get(cardName, 0) <= 0:
+				continue
 			
 			var data = Database.SUPPORTS[cardName]
 			pool.append({

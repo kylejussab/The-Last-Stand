@@ -20,5 +20,5 @@ func get_companion_bonus(_thisCard, thisHand, _otherCard) -> Dictionary:
 
 func _get_matching_companions(thisHand: Array) -> Array:
 	return thisHand.filter(func(c): 
-		return is_instance_valid(c) and (c.cardKey in COMPANION_KEYS or c.cardKey == "JacksonScout")
+		return is_instance_valid(c) and (COMPANION_KEYS.any(func(k): return c.is_named_companion(k)) or c.cardKey == "JacksonScout")
 )

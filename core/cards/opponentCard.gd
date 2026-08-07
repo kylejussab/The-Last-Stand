@@ -43,9 +43,12 @@ var parity: String
 var gotInfected: bool = false
 var permanentInfection: bool = false
 var frenzyBonusApplied: bool = false
+var splitAllegianceBonusApplied: bool = false
+var isDoctrineBackfired: bool = false
 
 var originalFaction: String = ""
 
+var _activeGuardedAnimations: int = 0
 var _preAnimationCollisionState: bool = false
 const GUARDED_ANIMATIONS = ["modifierIndicator", "cardFlip", "backfire", "lock"]
 
@@ -67,7 +70,10 @@ func _on_any_animation_started(animName: String) -> void:
 	if not has_node("Area2D/CollisionShape2D"):
 		return
 	
-	_preAnimationCollisionState = $Area2D/CollisionShape2D.disabled
+	if _activeGuardedAnimations == 0:
+		_preAnimationCollisionState = $Area2D/CollisionShape2D.disabled
+		
+	_activeGuardedAnimations += 1
 	$Area2D/CollisionShape2D.set_deferred("disabled", true)
 
 func _on_any_animation_finished(animName: String) -> void:
@@ -76,7 +82,11 @@ func _on_any_animation_finished(animName: String) -> void:
 	if not has_node("Area2D/CollisionShape2D"):
 		return
 	
-	$Area2D/CollisionShape2D.set_deferred("disabled", _preAnimationCollisionState)
+	_activeGuardedAnimations -= 1
+	
+	if _activeGuardedAnimations <= 0:
+		_activeGuardedAnimations = 0
+		$Area2D/CollisionShape2D.set_deferred("disabled", _preAnimationCollisionState)
 
 func _on_image_visibility_changed() -> void:
 	if has_node("infectedImage"):
@@ -376,6 +386,20 @@ func _update_faction_icon(newFaction: String) -> void:
 	
 	if newFaction in KEYWORD_ICONS:
 		$icons.get_node("faction").texture = load(_get_card_icon_path(newFaction))
+
+func matches_faction(targetFaction: String) -> bool:
+	if faction == targetFaction:
+		return true
+	if faction == "Seraphite" and HoldoutStats.activeAllegiance.get("id") == Database.Allegiance.FALSE_COLORS:
+		return true
+	return false
+
+func is_named_companion(key: String) -> bool:
+	if cardKey == key:
+		return true
+	if cardKey in ["Lev", "Yara"] and HoldoutStats.activeAllegiance.get("id") == Database.Allegiance.SPLIT_ALLEGIANCE:
+		return true
+	return false
 
 # Tooltips
 func _populate_character_tooltip():

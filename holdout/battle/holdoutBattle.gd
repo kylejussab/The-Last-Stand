@@ -61,6 +61,9 @@ var lockPlayerInput: bool = true:
 			if is_instance_valid(%cardManager):
 				%cardManager.force_unhighlight_all_cards()
 var pendingDeepWoundsBonus: bool = false
+var pendingWoundedPreyCard: bool = false
+var opponentPlayedCharacterThisRound: bool = false
+var pendingDoctrineRestraint: bool = false
 
 func _ready() -> void:
 	battleEngine = HoldoutBattleEngine.new()
@@ -107,6 +110,10 @@ func prepare_opponent() -> void:
 
 func initialize_game() -> void:
 	pendingDeepWoundsBonus = false
+	opponentPlayedCharacterThisRound = false
+	opponentPlayedSupport = false
+	pendingWoundedPreyCard = false
+	pendingDoctrineRestraint = false
 	
 	if HoldoutStats.replayedRound:
 		seed(HoldoutStats.currentBattleSeed)
@@ -242,50 +249,68 @@ func _on_player_character_played(card: Node2D) -> void:
 		var validOpponentCard = opponentCharacterCard if is_instance_valid(opponentCharacterCard) else null
 		await allegianceHandler.on_character_played(card, playerHand, validOpponentCard)
 	
-	if opponentCharacterCard != null:
+	ui.change_mood(Actor.Type.PLAYER, Actor.Mood.NEUTRAL)
+	
+	if opponentPlayedCharacterThisRound:
 		await _apply_mid_round_perks()
 		_transition_to_support_phase()
 	else:
 		battleEngine.player_played_character()
 		_execute_opponent_character_play()
-	
-	ui.change_mood(Actor.Type.PLAYER, Actor.Mood.NEUTRAL)
-
 
 func _execute_opponent_character_play() -> void:
+	opponentPlayedCharacterThisRound = true
 	ui.set_indicator(Actor.Type.OPPONENT)
 	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.THINKING)
 	lockPlayerInput = true
+	
 	await get_tree().create_timer(opponentThinkingTime).timeout
 	
-	opponentAI.set_flip_script_active(battleEngine.has_modifier(Database.Modifier.FLIP_SCRIPT))
-	
-	var card = opponentAI.play_character_card(opponentHand, playerHand, playerCharacterCard)
-	card.cardSlot = opponentCharacterCardSlot
-	
-	_animate_opponent_playing_card(card, opponentCharacterCardSlot)
-	opponentCharacterCard = card
-	
-	opponentCharacterCard = card
-	
-	if opponentAI.has_method("record_opponent_play"):
-		opponentAI.record_opponent_play(card)
-	
-	var opponentName: String = Actor.Avatar.keys()[HoldoutStats.currentOpponent].capitalize()
-	battleEngine.log_action("Opponent. " + opponentName + " played " + card.nameText + ".")
-	
-	if battleEngine.has_modifier(Database.Modifier.GAMBLER) and randf() <= battleEngine.gamblerChance:
-		await get_tree().create_timer(opponentThinkingTime).timeout
-		opponentCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Gambler.png")
-		opponentCharacterCard.get_node("AnimationPlayer").queue("modifierIndicator")
-		await opponentCharacterCard.get_node("AnimationPlayer").animation_finished
+	if pendingWoundedPreyCard:
+		pendingWoundedPreyCard = false
+		var opponentName: String = Actor.Avatar.keys()[HoldoutStats.currentOpponent].capitalize()
+		battleEngine.log_action("System. " + opponentName + "'s character remains trapped by Wounded Prey.")
+	else:
+		opponentAI.set_flip_script_active(battleEngine.has_modifier(Database.Modifier.FLIP_SCRIPT))
 		
-		opponentCharacterCard.modify_value(int(opponentCharacterCard.value / 2.0))
+		var card = opponentAI.play_character_card(opponentHand, playerHand, playerCharacterCard)
+		card.cardSlot = opponentCharacterCardSlot
 		
-		battleEngine.log_action("System. Gambler modifier activated. " + opponentName + "'s " + opponentCharacterCard.nameText + " gained +" + str(int(opponentCharacterCard.value / 2.0)) + " value.")
+		_animate_opponent_playing_card(card, opponentCharacterCardSlot)
+		opponentCharacterCard = card
 		
+		if opponentAI.has_method("record_opponent_play"):
+			opponentAI.record_opponent_play(card)
+		
+		var opponentName: String = Actor.Avatar.keys()[HoldoutStats.currentOpponent].capitalize()
+		battleEngine.log_action("Opponent. " + opponentName + " played " + card.nameText + ".")
+		
+		if pendingDoctrineRestraint:
+			pendingDoctrineRestraint = false
+			
+			await get_tree().create_timer(0.75).timeout
+			card.get_node("ModifierIndicator").texture = load("res://holdout/allegiances/icons/Doctrine of Restraint.png")
+			card.get_node("AnimationPlayer").queue("modifierIndicator")
+			await card.get_node("AnimationPlayer").animation_finished
+			
+			card.modify_value(-2)
+			battleEngine.log_action("System. Doctrine of Restraint activated. " + opponentName + "'s " + card.nameText + " took -2 from your previous Seraphite victory.")
+			
+			if randf() <= 0.5:
+				card.isDoctrineBackfired = true
+				battleEngine.log_action("System. Doctrine of Restraint's backfire triggered. " + card.nameText + "'s perk will be turned against " + opponentName + ".")
+		
+		if battleEngine.has_modifier(Database.Modifier.GAMBLER) and randf() <= battleEngine.gamblerChance:
+			await get_tree().create_timer(opponentThinkingTime).timeout
+			opponentCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Gambler.png")
+			opponentCharacterCard.get_node("AnimationPlayer").queue("modifierIndicator")
+			await opponentCharacterCard.get_node("AnimationPlayer").animation_finished
+			
+			opponentCharacterCard.modify_value(int(opponentCharacterCard.value / 2.0))
+			
+			battleEngine.log_action("System. Gambler modifier activated. " + opponentName + "'s " + opponentCharacterCard.nameText + " gained +" + str(int(opponentCharacterCard.value / 2.0)) + " value.")
+			
 	if playerCharacterCard != null:
-		ui.show_end_turn_button()
 		await _apply_mid_round_perks()
 		_transition_to_support_phase()
 	else:
@@ -301,7 +326,6 @@ func _execute_opponent_character_play() -> void:
 		
 		ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.NEUTRAL)
 
-
 func _transition_to_support_phase() -> void:
 	lockPlayerInput = false
 	ui.change_mood(Actor.Type.PLAYER, Actor.Mood.NEUTRAL)
@@ -313,6 +337,7 @@ func _transition_to_support_phase() -> void:
 		battleEngine.set_phase(battleEngine.RoundStage.PLAYER_SUPPORT)
 		ui.set_indicator(Actor.Type.PLAYER)
 		ui.change_mood(Actor.Type.PLAYER, Actor.Mood.THINKING)
+		ui.show_end_turn_button()
 	else:
 		battleEngine.set_phase(battleEngine.RoundStage.OPPONENT_SUPPORT)
 		ui.set_indicator(Actor.Type.OPPONENT)
@@ -470,6 +495,9 @@ func _transition_to_resolution_phase() -> void:
 			
 		if waitTime > 0:
 			await get_tree().create_timer(waitTime + 0.5).timeout
+			# If a restart happened during that timer, abort the whole phase.
+			if not battleEngine.isRoundActive:
+				return 
 	
 	await _calculate_damage()
 	await get_tree().create_timer(endRoundTime).timeout
@@ -494,6 +522,7 @@ func _transition_to_resolution_phase() -> void:
 		allegianceRoundEndResult = await allegianceHandler.on_round_end(playerCharacterCard, playerHand, opponentCharacterCard, opponentHand)
 	var allegianceSteal = allegianceRoundEndResult.get("stealOpponentCard", false) and not baitedDefenseSteal
 	var futureDaysSave = allegianceRoundEndResult.get("returnWinningCardToHand", false)
+	var woundedPreySave = allegianceRoundEndResult.get("preserveOpponentCard", false)
 	
 	if baitedDefenseSteal:
 		battleEngine.log_action("System. Baited Defense modifier activated. " + opponentCharacterCard.nameText + " was stolen and added to your hand.")
@@ -505,9 +534,11 @@ func _transition_to_resolution_phase() -> void:
 	if playerSupportCard: cardsToDiscard.append(playerSupportCard)
 	if not deadWeightSavesPlayerCard and not futureDaysSave:
 		cardsToDiscard.append(playerCharacterCard)
-	if not baitedDefenseSteal and not allegianceSteal:
+	if not baitedDefenseSteal and not allegianceSteal and not woundedPreySave:
 		cardsToDiscard.append(opponentCharacterCard)
 	if opponentSupportCard: cardsToDiscard.append(opponentSupportCard)
+	
+	pendingWoundedPreyCard = woundedPreySave
 	
 	await _move_cards_to_discard(cardsToDiscard)
 	
@@ -575,11 +606,14 @@ func _conclude_match() -> void:
 	battleEngine.clear_history()
 
 func _start_new_round() -> void:
+	opponentPlayedCharacterThisRound = false
+	
 	playerCharacterCard = null
 	playerSupportCard = null
-	opponentCharacterCard = null
+	if not pendingWoundedPreyCard:
+		opponentCharacterCard = null
 	opponentSupportCard = null
-
+	
 	opponentPlayedSupport = false
 	ui.show_end_turn_button(false)
 	
@@ -710,6 +744,13 @@ func _animate_opponent_playing_card(opponentCard: Node2D, opponentCardSlot: Node
 	$"../opponentHand".remove_card_from_hand(opponentCard)
 
 func _apply_mid_round_perks() -> void:
+	if not is_instance_valid(playerCharacterCard) or not is_instance_valid(opponentCharacterCard):
+		return
+		
+	if opponentCharacterCard.isDoctrineBackfired:
+		opponentCharacterCard.get_node("AnimationPlayer").queue("backfire")
+		await opponentCharacterCard.get_node("AnimationPlayer").animation_finished
+		
 	if battleEngine.has_modifier(Database.Modifier.FRIENDLY_FIRE):
 		if playerCharacterCard.faction == opponentCharacterCard.faction:
 			await get_tree().create_timer(0.3).timeout
@@ -868,6 +909,9 @@ func _move_cards_to_discard(cards: Array) -> void:
 		%cardManager.hoveredCard = null
 	
 	for card in cards:
+		if not is_instance_valid(card):
+			continue
+			
 		discardedCards.append(card)
 		AudioManager.play_random_card_draw()
 		card.scale = Vector2(1, 1)
@@ -891,6 +935,9 @@ func _move_cards_to_discard(cards: Array) -> void:
 		tween.tween_property(card, "position", discardPilePosition, cardMoveFastSpeed)
 		
 		await tween.finished
+		
+		if not battleEngine.isRoundActive:
+				return
 	
 	$"../cardSlots/cardSlotSupport".occupied = false
 	$"../cardSlots/cardSlotCharacter".occupied = false
@@ -905,11 +952,13 @@ func _reset_played_cards_perks() -> void:
 		playerCharacterCard.get_node("value").text = str(playerCharacterCard.value)
 		playerCharacterCard.perkValueAppliedMidRound = 0
 		playerCharacterCard.isNullified = false
+		playerCharacterCard.isDoctrineBackfired = false
 	
 	if opponentCharacterCard and opponentCharacterCard.perk:
 		opponentCharacterCard.get_node("value").text = str(opponentCharacterCard.value)
 		opponentCharacterCard.perkValueAppliedMidRound = 0
 		opponentCharacterCard.isNullified = false
+		opponentCharacterCard.isDoctrineBackfired = false
 
 func _reset_allowed_support_cards() -> void:
 	if playerSupportCard:
@@ -1034,6 +1083,9 @@ func _repopulate_decks(endGame: bool = false) -> bool:
 
 
 func _place_card_in_discard(card: Node2D, hand: Node2D) -> void:
+	if not is_instance_valid(card):
+		return
+		
 	discardedCards.append(card)
 	AudioManager.play_random_card_draw()
 	card.scale = Vector2(1, 1)
@@ -1049,6 +1101,9 @@ func _place_card_in_discard(card: Node2D, hand: Node2D) -> void:
 	tween.tween_property(card, "position", discardPilePosition, cardMoveFastSpeed)
 	
 	await tween.finished
+	
+	if not is_instance_valid(card) or not is_instance_valid(hand):
+		return
 	
 	hand.remove_card_from_hand(card)
 
@@ -1128,6 +1183,9 @@ func _apply_card_rot_aging() -> void:
 		card.modify_value(-1)
 
 func _handle_runner_perk() -> void:
+	if not is_instance_valid(playerCharacterCard) or not is_instance_valid(opponentCharacterCard):
+		return
+		
 	if playerCharacterCard.cardKey == "Runner" or opponentCharacterCard.cardKey == "Runner":
 		var runnerCards = []
 		
@@ -1155,6 +1213,9 @@ func _handle_player_win(damage: int, triggerCalculatedRisk: bool, stackedOddsBre
 	ui.change_mood(Actor.Type.OPPONENT, Actor.Mood.HURT)
 	
 	var opponentName: String = Actor.Avatar.keys()[HoldoutStats.currentOpponent].capitalize()
+	
+	if HoldoutStats.activeAllegiance.get("id") == Database.Allegiance.DOCTRINE_RESTRAINT and playerCharacterCard.faction == "Seraphite":
+		pendingDoctrineRestraint = true
 	
 	if opponentCharacterCard.cardKey == "Owen":
 		battleEngine.log_action("System. Owen's perk activated. " + opponentName + " avoided damage.")
@@ -1184,6 +1245,14 @@ func _handle_player_win(damage: int, triggerCalculatedRisk: bool, stackedOddsBre
 		if playerCharacterCard.perkValueAtRoundEnd:
 			battleEngine.log_action("System. " + playerCharacterCard.nameText + "'s perk dealt " + str(playerCharacterCard.perkValueAtRoundEnd) + " additional damage to " + opponentName + ".")
 			await _deal_damage(Actor.Type.OPPONENT, playerCharacterCard.perkValueAtRoundEnd)
+		
+		if opponentCharacterCard.perkValueAtRoundEnd:
+			if opponentCharacterCard.isDoctrineBackfired:
+				battleEngine.log_action("System. Doctrine of Restraint redirected " + opponentName + "'s perk damage back at them.")
+				await _deal_damage(Actor.Type.OPPONENT, opponentCharacterCard.perkValueAtRoundEnd)
+			else:
+				battleEngine.log_action("System. " + opponentCharacterCard.nameText + "'s perk dealt " + str(opponentCharacterCard.perkValueAtRoundEnd) + " additional damage to you.")
+				await _deal_damage(Actor.Type.PLAYER, opponentCharacterCard.perkValueAtRoundEnd)
 		
 		if triggerCalculatedRisk:
 			playerCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Calculated Risk.png")
@@ -1248,8 +1317,13 @@ func _handle_opponent_win(damage: int, triggerDeepWounds: bool, triggerCalculate
 		await _handle_shambler_perk(Actor.Type.OPPONENT)
 		
 		if opponentCharacterCard.perkValueAtRoundEnd:
-			battleEngine.log_action("System. " + opponentCharacterCard.nameText + "'s perk dealt " + str(opponentCharacterCard.perkValueAtRoundEnd) + " additional damage to you.")
-			await _deal_damage(Actor.Type.PLAYER, opponentCharacterCard.perkValueAtRoundEnd)
+			if opponentCharacterCard.isDoctrineBackfired:
+				var opponentName: String = Actor.Avatar.keys()[HoldoutStats.currentOpponent].capitalize()
+				battleEngine.log_action("System. Doctrine of Restraint redirected " + opponentName + "'s perk damage back at them.")
+				await _deal_damage(Actor.Type.OPPONENT, opponentCharacterCard.perkValueAtRoundEnd)
+			else:
+				battleEngine.log_action("System. " + opponentCharacterCard.nameText + "'s perk dealt " + str(opponentCharacterCard.perkValueAtRoundEnd) + " additional damage to you.")
+				await _deal_damage(Actor.Type.PLAYER, opponentCharacterCard.perkValueAtRoundEnd)
 		
 		if triggerDeepWounds:
 			playerCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Deep Wounds.png")
@@ -1489,7 +1563,7 @@ func _play_dust_effect(card: Node2D, isOpponent: bool = false) -> void:
 
 # --- PERK HELPERS ---
 func _execute_player_mid_perk() -> void:
-	if playerCharacterCard.perk and playerCharacterCard.perk.timing == "midRound" and not playerCharacterCard.isNullified:
+	if is_instance_valid(playerCharacterCard) and playerCharacterCard.perk and playerCharacterCard.perk.timing == "midRound" and not playerCharacterCard.isNullified:
 		await get_tree().create_timer(perkCalculationTime).timeout
 		
 		var statChange = await playerCharacterCard.perk.apply_mid_perk(playerCharacterCard, playerHand, opponentCharacterCard)
@@ -1497,11 +1571,14 @@ func _execute_player_mid_perk() -> void:
 		_log_perk_result(playerCharacterCard, statChange, true)
 
 func _execute_opponent_mid_perk() -> void:
-	if opponentCharacterCard.perk and opponentCharacterCard.perk.timing == "midRound" and not opponentCharacterCard.isNullified:
+	if is_instance_valid(opponentCharacterCard) and opponentCharacterCard.perk and opponentCharacterCard.perk.timing == "midRound" and not opponentCharacterCard.isNullified:
 		var playerRealRole = playerCharacterCard.role
 		var playerRealFaction = playerCharacterCard.faction
 		
-		if battleEngine.has_modifier(Database.Modifier.FORSAKEN_HONOR):
+		var forsakenHonorActive = battleEngine.has_modifier(Database.Modifier.FORSAKEN_HONOR)
+		var darkVeilingActive = HoldoutStats.activeAllegiance.get("id") == Database.Allegiance.DARK_VEILING and playerCharacterCard.matches_faction("Seraphite")
+		
+		if forsakenHonorActive:
 			if opponentCharacterCard.perk.has_method("would_perk_trigger") and opponentCharacterCard.perk.would_perk_trigger(opponentCharacterCard, opponentHand, playerCharacterCard):
 				playerCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Forsaken Honor.png")
 				playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
@@ -1509,6 +1586,13 @@ func _execute_opponent_mid_perk() -> void:
 			
 			playerCharacterCard.role = "Unknown"
 			playerCharacterCard.faction = "Unknown"
+		elif darkVeilingActive:
+			if opponentCharacterCard.perk.has_method("would_perk_trigger") and opponentCharacterCard.perk.would_perk_trigger(opponentCharacterCard, opponentHand, playerCharacterCard):
+				playerCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/allegiances/icons/Dark Veiling.png")
+				playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
+				await playerCharacterCard.get_node("AnimationPlayer").animation_finished
+			
+			playerCharacterCard.role = "Unknown"
 		
 		await get_tree().create_timer(perkCalculationTime).timeout
 		
@@ -1516,22 +1600,25 @@ func _execute_opponent_mid_perk() -> void:
 		opponentCharacterCard.perkValueAppliedMidRound = statChange if typeof(statChange) == TYPE_INT else 0
 		_log_perk_result(opponentCharacterCard, statChange, false)
 		
-		if battleEngine.has_modifier(Database.Modifier.FORSAKEN_HONOR):
+		if forsakenHonorActive or darkVeilingActive:
 			playerCharacterCard.role = playerRealRole
 			playerCharacterCard.faction = playerRealFaction
 			_update_playable_support_cards()
 
 func _execute_player_char_end_perk() -> void:
-	if playerCharacterCard.perk and playerCharacterCard.perk.timing == "endRound" and not playerCharacterCard.isNullified:
+	if is_instance_valid(playerCharacterCard) and playerCharacterCard.perk and playerCharacterCard.perk.timing == "endRound" and not playerCharacterCard.isNullified:
 		var statChange = await playerCharacterCard.perk.apply_end_perk(playerCharacterCard, playerSupportCard, opponentCharacterCard, opponentSupportCard, playerHand)
 		_log_perk_result(playerCharacterCard, statChange, true)
 
 func _execute_opponent_char_end_perk() -> void:
-	if opponentCharacterCard.perk and opponentCharacterCard.perk.timing == "endRound" and not opponentCharacterCard.isNullified:
+	if is_instance_valid(opponentCharacterCard) and opponentCharacterCard.perk and opponentCharacterCard.perk.timing == "endRound" and not opponentCharacterCard.isNullified:
 		var playerRealRole = playerCharacterCard.role
 		var playerRealFaction = playerCharacterCard.faction
 		
-		if battleEngine.has_modifier(Database.Modifier.FORSAKEN_HONOR):
+		var forsakenHonorActive = battleEngine.has_modifier(Database.Modifier.FORSAKEN_HONOR)
+		var darkVeilingActive = HoldoutStats.activeAllegiance.get("id") == Database.Allegiance.DARK_VEILING and playerCharacterCard.matches_faction("Seraphite")
+		
+		if forsakenHonorActive:
 			if opponentCharacterCard.perk.has_method("would_perk_trigger") and opponentCharacterCard.perk.would_perk_trigger(opponentCharacterCard, opponentSupportCard, playerCharacterCard, playerSupportCard, opponentHand):
 				playerCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Forsaken Honor.png")
 				playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
@@ -1539,15 +1626,21 @@ func _execute_opponent_char_end_perk() -> void:
 			
 			playerCharacterCard.role = "Unknown"
 			playerCharacterCard.faction = "Unknown"
+		elif darkVeilingActive:
+			if opponentCharacterCard.perk.has_method("would_perk_trigger") and opponentCharacterCard.perk.would_perk_trigger(opponentCharacterCard, opponentSupportCard, playerCharacterCard, playerSupportCard, opponentHand):
+				playerCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/allegiances/icons/Dark Veiling.png")
+				playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
+				await playerCharacterCard.get_node("AnimationPlayer").animation_finished
+			
+			playerCharacterCard.role = "Unknown"
 			
 		var statChange = await opponentCharacterCard.perk.apply_end_perk(opponentCharacterCard, opponentSupportCard, playerCharacterCard, playerSupportCard, opponentHand)
 		_log_perk_result(opponentCharacterCard, statChange, false)
 		
-		if battleEngine.has_modifier(Database.Modifier.FORSAKEN_HONOR):
+		if forsakenHonorActive or darkVeilingActive:
 			playerCharacterCard.role = playerRealRole
 			playerCharacterCard.faction = playerRealFaction
 			_update_playable_support_cards()
-
 
 func _execute_player_late_end_perk() -> void:
 	if playerCharacterCard.perk and playerCharacterCard.perk.timing == "lateEndRound" and not playerCharacterCard.isNullified:
@@ -1617,6 +1710,8 @@ func _get_card_array_save_data(cardArray: Array) -> Array:
 			
 			if card.frenzyBonusApplied:
 				entry["frenzyBonusApplied"] = true
+			if card.splitAllegianceBonusApplied:
+				entry["splitAllegianceBonusApplied"] = true
 				
 			if card.has_meta("isRevealed") and card.get_meta("isRevealed"):
 				entry["isRevealed"] = true
@@ -1641,6 +1736,10 @@ func get_arena_save_dict() -> Dictionary:
 	arenaData["opponentHand"] = _get_card_array_save_data(opponentHand)
 	arenaData["discardedCards"] = _get_card_array_save_data(discardedCards)
 	arenaData["pendingDeepWoundsBonus"] = pendingDeepWoundsBonus
+	arenaData["pendingDeepWoundsBonus"] = pendingDeepWoundsBonus
+	
+	if is_instance_valid(opponentCharacterCard):
+		arenaData["preservedOpponentCharacterCard"] = _get_card_array_save_data([opponentCharacterCard])[0]
 	
 	if allegianceHandler:
 		arenaData["allegianceHandlerData"] = allegianceHandler.get_save_dict()
@@ -1691,6 +1790,9 @@ func _load_game_from_snapshot() -> void:
 	
 	battleEngine.load_engine_save_dict(arena)
 	pendingDeepWoundsBonus = bool(arena.get("pendingDeepWoundsBonus", false))
+	
+	pendingWoundedPreyCard = bool(arena.get("pendingWoundedPreyCard", false))
+	opponentPlayedCharacterThisRound = false
 	
 	# If coming from the main menu on a round win
 	if arena.has("opponentHealth") and int(arena["opponentHealth"]) <= 0:
@@ -1747,7 +1849,7 @@ func _load_game_from_snapshot() -> void:
 	%pauseIcon.show()
 	%bubbleContainer.render_active_modifiers()
 	
-	# Show active allegiance (Safeguarded)
+	# Show active allegiance
 	if not HoldoutStats.activeAllegiance.is_empty():
 		$"../arena/background/currentAllegiance/Name".text = HoldoutStats.activeAllegiance.name
 		$"../arena/background/currentAllegiance/Icon".texture = load(HoldoutStats.activeAllegiance.icon)
@@ -1760,6 +1862,13 @@ func _load_game_from_snapshot() -> void:
 		$"../arena/background/currentAllegiance".modulate.a = 1.0
 	else:
 		$"../arena/background/currentAllegiance".modulate.a = 0.0
+	
+	if arena.has("preservedOpponentCharacterCard"):
+		var preservedCard = _spawn_single_card(arena["preservedOpponentCharacterCard"], true)
+		preservedCard.position = opponentCharacterCardSlot.position
+		preservedCard.get_node("Area2D/CollisionShape2D").disabled = false
+		$"../cardManager".add_child(preservedCard)
+		opponentCharacterCard = preservedCard
 	
 	_load_allegiance_handler()
 	
@@ -1847,6 +1956,9 @@ func _spawn_single_card(cardData: Dictionary, isOpponent: bool = false) -> Node2
 	
 	if cardData.get("frenzyBonusApplied", false):
 		newCard.frenzyBonusApplied = true
+	
+	if cardData.get("splitAllegianceBonusApplied", false):
+		newCard.splitAllegianceBonusApplied = true
 	
 	if cardData.get("isRevealed", false):
 		newCard.set_meta("isRevealed", true)

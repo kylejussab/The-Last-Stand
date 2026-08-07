@@ -1,5 +1,4 @@
 extends MidRoundPerk
-
 func calculate_perk_value(_thisCard, thisHand, _otherCard) -> int:
 	var toAdd = 0
 	
@@ -7,9 +6,9 @@ func calculate_perk_value(_thisCard, thisHand, _otherCard) -> int:
 	var hasSeraphite: bool = false
 	
 	for ally in thisHand:
-		if ally.cardKey == "Yara" or ally.cardKey == "Abby":
+		if ally.is_named_companion("Yara") or ally.is_named_companion("Abby"):
 			hasAlly = true
-		if ally.faction == "Seraphite":
+		if ally.matches_faction("Seraphite"):
 			hasSeraphite = true
 			
 	if hasAlly:
