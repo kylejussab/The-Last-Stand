@@ -115,6 +115,8 @@ func initialize_game() -> void:
 	pendingWoundedPreyCard = false
 	pendingDoctrineRestraint = false
 	
+	HoldoutStats.reset_for_new_battle()
+	
 	if HoldoutStats.replayedRound:
 		seed(HoldoutStats.currentBattleSeed)
 		battleEngine.clear_history() # remove the combat history
@@ -565,7 +567,6 @@ func _transition_to_resolution_phase() -> void:
 func _conclude_match() -> void:
 	battleEngine.isRoundActive = true
 	GameStats.gameMode = GameStats.Mode.HOLDOUT_ROUND_COMPLETED
-	GameStats.totalInGameTimePlayed += HoldoutStats.currentRoundDuration
 	
 	%pauseIcon.hide()
 	
@@ -589,6 +590,9 @@ func _conclude_match() -> void:
 	await _move_cards_to_discard(cardsToDiscard)
 	
 	%bubbleContainer.clear_modifiers()
+	
+	GameStats.totalInGameTimePlayed += HoldoutStats.currentRoundDuration
+	HoldoutStats.totalRunDuration += HoldoutStats.currentRoundDuration
 	
 	outro.play_holdout_end_sequence(ui.get_health(Actor.Type.PLAYER) > 0)
 	

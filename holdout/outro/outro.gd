@@ -177,8 +177,8 @@ func _assign_values_to_labels() -> void:
 	$"../../arena/outro/wins".text = "%02d" % HoldoutStats.numberOfWins
 	
 	# Overview
-	$"../../arena/outro/overview/overviewStatContainer/roundsPlayedValue".text = str(HoldoutStats.roundsPlayed)
-	$"../../arena/outro/overview/overviewStatContainer/timeElapsedValue".text = format_time(HoldoutStats.currentRoundDuration)
+	$"../../arena/outro/overview/overviewStatContainer/encounterTimeValue".text = format_time(HoldoutStats.currentRoundDuration)
+	$"../../arena/outro/overview/overviewStatContainer/runTimeValue".text = format_time(HoldoutStats.totalRunDuration)
 	
 	# Performance
 	$"../../arena/outro/performance/performanceStatContainer/roundWinValue".text = str(baseRoundWinValue)
@@ -214,9 +214,14 @@ func _assign_values_to_labels() -> void:
 	$"../../arena/outro/total/accoladeIcon".texture = load("res://holdout/outro/icons/accolade/" + accolade.title + ".png")
 
 func format_time(time: float) -> String:
-	var minutes = int(time / 60)
+	var hours = int(time / 3600)
+	var minutes = int(time / 60) % 60
 	var seconds = int(time) % 60
-	return "%02d:%02d" % [minutes, seconds]
+	
+	if hours > 0:
+		return "%02d:%02d:%02d" % [hours, minutes, seconds]
+	else:
+		return "%02d:%02d" % [minutes, seconds]
 
 func get_card_stats(playedCards):
 	var factionImpact = {}

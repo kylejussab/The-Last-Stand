@@ -6,6 +6,7 @@ static var currentOpponent: Actor.Avatar
 static var currentBattleSeed: int = 0
 static var replayedRound: bool = false
 static var currentRoundDuration: float = 0.0
+static var totalRunDuration: float = 0.0
 static var opponentList: Array = []
 static var playerHealthValue: int
 static var activeModifiers: Array = []
@@ -174,6 +175,7 @@ static func count_time_played(delta: float):
 static func reset_for_new_run():
 	numberOfWins = 0
 	totalRunRations = 0
+	totalRunDuration = 0.0
 	
 	GameStats.holdoutRunsAttempted += 1
 	
@@ -309,6 +311,7 @@ static func get_save_dict() -> Dictionary:
 		"currentOpponent": currentOpponent,
 		"currentBattleSeed": currentBattleSeed,
 		"currentRoundDuration": currentRoundDuration,
+		"totalRunDuration": totalRunDuration,
 		"opponentList": opponentList,
 		"playerHealthValue": playerHealthValue,
 		"playerHealthAtRoundStart": playerHealthAtRoundStart,
@@ -342,6 +345,7 @@ static func load_save_dict(data: Dictionary) -> void:
 	
 	currentBattleSeed = data["currentBattleSeed"]
 	currentRoundDuration = data["currentRoundDuration"]
+	totalRunDuration = data.get("totalRunDuration", 0.0)
 	opponentList = data["opponentList"]
 	playerHealthValue = int(data["playerHealthValue"])
 	playerHealthAtRoundStart = int(data["playerHealthAtRoundStart"])

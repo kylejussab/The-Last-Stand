@@ -2252,7 +2252,7 @@ color = Color(1, 1, 1, 0.35686275)
 [node name="overviewStatContainer" type="Node2D" parent="arena/outro/overview"]
 modulate = Color(1, 1, 1, 0)
 
-[node name="roundsPlayedText" type="RichTextLabel" parent="arena/outro/overview/overviewStatContainer"]
+[node name="encounterTimeText" type="RichTextLabel" parent="arena/outro/overview/overviewStatContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -2267,10 +2267,10 @@ grow_vertical = 2
 pivot_offset = Vector2(150, 25)
 theme_override_fonts/normal_font = SubResource("FontVariation_j2jfr")
 theme_override_font_sizes/normal_font_size = 20
-text = "Rounds Played"
+text = "Encounter Time"
 vertical_alignment = 1
 
-[node name="roundsPlayedValue" type="RichTextLabel" parent="arena/outro/overview/overviewStatContainer"]
+[node name="encounterTimeValue" type="RichTextLabel" parent="arena/outro/overview/overviewStatContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -2285,11 +2285,11 @@ grow_vertical = 2
 pivot_offset = Vector2(150, 25)
 theme_override_fonts/normal_font = SubResource("FontVariation_bjg73")
 theme_override_font_sizes/normal_font_size = 20
-text = "99"
+text = "99:99"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="timeElapsedText" type="RichTextLabel" parent="arena/outro/overview/overviewStatContainer"]
+[node name="runTimeText" type="RichTextLabel" parent="arena/outro/overview/overviewStatContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -2304,10 +2304,10 @@ grow_vertical = 2
 pivot_offset = Vector2(150, 25)
 theme_override_fonts/normal_font = SubResource("FontVariation_j2jfr")
 theme_override_font_sizes/normal_font_size = 20
-text = "Time Elapsed"
+text = "Run Time"
 vertical_alignment = 1
 
-[node name="timeElapsedValue" type="RichTextLabel" parent="arena/outro/overview/overviewStatContainer"]
+[node name="runTimeValue" type="RichTextLabel" parent="arena/outro/overview/overviewStatContainer"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -2322,7 +2322,7 @@ grow_vertical = 2
 pivot_offset = Vector2(150, 25)
 theme_override_fonts/normal_font = SubResource("FontVariation_bjg73")
 theme_override_font_sizes/normal_font_size = 20
-text = "99"
+text = "99:99"
 horizontal_alignment = 2
 vertical_alignment = 1
 
