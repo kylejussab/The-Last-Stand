@@ -174,15 +174,14 @@ func check_guerrilla_restriction(cardFaction: String, cardRoles: String) -> bool
 func process_combat_stats(playerTotal: int, opponentTotal: int, playerKey: String, opponentKey: String) -> Dictionary:
 	var damage = abs(playerTotal - opponentTotal)
 	var combatWinner = Winner.TIE
-	var isFlipScript = has_modifier(Database.Modifier.FLIP_SCRIPT)
 	
 	# Update Dominance
 	if (playerTotal - opponentTotal) > HoldoutStats.highestDominance:
 		HoldoutStats.highestDominance = (playerTotal - opponentTotal)
 		
 	# Determine Winner & Update Streaks
-	var playerWins = playerTotal < opponentTotal if isFlipScript else playerTotal > opponentTotal
-	var opponentWins = opponentTotal < playerTotal if isFlipScript else opponentTotal > playerTotal
+	var playerWins = playerTotal > opponentTotal
+	var opponentWins = opponentTotal > playerTotal
 	
 	if playerWins:
 		combatWinner = Winner.PLAYER

@@ -306,9 +306,9 @@ var AVATARS = {
 } 
 
 const OPPONENT_HEALTH_AMOUNTS: Array[int] = [
-	1, # Round 1
-	1, # Round 2
-	1, # Round 3
+	13, # Round 1
+	15, # Round 2
+	17, # Round 3
 	19, # Round 4
 	20, # Round 5
 	22, # Round 6
@@ -813,7 +813,7 @@ const ALLEGIANCES = {
 	Allegiance.ONE_OF_OURS: {
 		"id": Allegiance.ONE_OF_OURS,
 		"name": "One of Ours",
-		"description": "If the opponent plays a Jackson card, it is added to your hand at round end with -2 value.",
+		"description": "If the opponent plays a Jackson card, steal it at round end with -2 value.",
 		"icon": "res://holdout/allegiances/icons/One of Ours.png",
 		"tier": 1,
 		"faction": "Jackson",
@@ -879,7 +879,7 @@ const ALLEGIANCES = {
 	Allegiance.FALSE_COLORS: {
 		"id": Allegiance.FALSE_COLORS,
 		"name": "False Colors",
-		"description": "Seraphite characters pass as any faction and gain +1 value for every different faction in your hand.",
+		"description": "Seraphites act as any faction, gaining +1 for each unique faction in your hand.",
 		"icon": "res://holdout/allegiances/icons/False Colors.png",
 		"tier": 1,
 		"faction": "Seraphite",
@@ -903,7 +903,7 @@ const ALLEGIANCES = {
 	Allegiance.THE_PROPHECY: {
 		"id": Allegiance.THE_PROPHECY,
 		"name": "The Prophecy Foretold",
-		"description": "If The Prophet is in your hand, played Seraphites add 25% of their final value to a random non-Prophet card in hand.",
+		"description": "While holding The Prophet, played Seraphites add 25% of their value to a random non-Prophet card.",
 		"icon": "res://holdout/allegiances/icons/The Prophecy Foretold.png",
 		"tier": 2,
 		"faction": "Seraphite",
@@ -911,7 +911,7 @@ const ALLEGIANCES = {
 	Allegiance.WOUNDED_PREY: {
 		"id": Allegiance.WOUNDED_PREY,
 		"name": "Wounded Prey",
-		"description": "If you win with a Seraphite, the opponent's character remains in play next round with its value halved.",
+		"description": "Winning with a Seraphite traps the opponent's character in play next round at half value.",
 		"icon": "res://holdout/allegiances/icons/Wounded Prey.png",
 		"tier": 2,
 		"faction": "Seraphite",
@@ -943,7 +943,7 @@ const ALLEGIANCES = {
 	Allegiance.NESTED_SIN: {
 		"id": Allegiance.NESTED_SIN,
 		"name": "Nested Sin",
-		"description": "Playing a Seraphite card while your hand contains only Seraphites grants +4 value to the played card.",
+		"description": "Playing a Seraphite with a hand of entirely Seraphites grants the played card +4 value.",
 		"icon": "res://holdout/allegiances/icons/Nested Sin.png",
 		"tier": 3,
 		"faction": "Seraphite",
@@ -985,7 +985,7 @@ const ALLEGIANCES = {
 	Allegiance.SCENT_TRAIL: {
 		"id": Allegiance.SCENT_TRAIL,
 		"name": "Scent Trail",
-		"description": "Enables Hunted. Hunting a card or defeating an already hunted card reveals a random card in the opponent's hand.",
+		"description": "Enables Hunted. Hunting or defeating a Hunted card reveals one of the opponent's cards.",
 		"icon": "res://holdout/modifiers/icons/Calculated Risk.png",
 		"tier": 2,
 		"faction": "WLF",
@@ -1001,7 +1001,7 @@ const ALLEGIANCES = {
 	Allegiance.EXECUTED: {
 		"id": Allegiance.EXECUTED,
 		"name": "Executed",
-		"description": "Enables Hunted. If an opponent's hunted card loses a round, it is permanently removed from the deck.",
+		"description": "Enables Hunted. If an opponent's Hunted card loses a round, it is permanently removed.",
 		"icon": "res://holdout/modifiers/icons/Forsaken Honor.png",
 		"tier": 3,
 		"faction": "WLF",

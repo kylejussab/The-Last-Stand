@@ -273,8 +273,6 @@ func _execute_opponent_character_play() -> void:
 		var opponentName: String = Actor.Avatar.keys()[HoldoutStats.currentOpponent].capitalize()
 		battleEngine.log_action("System. " + opponentName + "'s character remains trapped by Wounded Prey.")
 	else:
-		opponentAI.set_flip_script_active(battleEngine.has_modifier(Database.Modifier.FLIP_SCRIPT))
-		
 		var card = opponentAI.play_character_card(opponentHand, playerHand, playerCharacterCard)
 		card.cardSlot = opponentCharacterCardSlot
 		
@@ -417,7 +415,6 @@ func _execute_opponent_support_play() -> void:
 	if battleEngine.is_support_blocked(Actor.Type.OPPONENT):
 		battleEngine.log_action("System. The opponent's support was blocked this round.")
 	else:
-		opponentAI.set_flip_script_active(battleEngine.has_modifier(Database.Modifier.FLIP_SCRIPT))
 		var card = opponentAI.choose_support_card(opponentHand, opponentCharacterCard, playerCharacterCard, ui.get_health(Actor.Type.OPPONENT), ui.get_health(Actor.Type.PLAYER))
 		
 		if card != null:

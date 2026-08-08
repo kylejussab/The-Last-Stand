@@ -51,26 +51,25 @@ func play_character_card(opponentHand, _playerHand, _playerPlayedCard = null, _p
 func _play_aggressive(characters: Array) -> Node2D:
 	var best = characters[0]
 	for character in characters:
-		if _is_better_score(character.value, best.value):
+		if character.value > best.value:
 			best = character
 	return best
 
 func _play_balanced(characters: Array, supports: Array) -> Node2D:
 	var bestCharacter = characters[0]
-	var maxComboValue = _worst_score()
+	var maxComboValue = -1.0
 	
 	for character in characters:
 		var bestSupportScore = 0.0
-		if not isFlipScriptActive:
-			for support in supports:
-				var score = float(support.value)
-				if support.cardKey in RISKY_CARDS:
-					score *= 0.6
-				if score > bestSupportScore:
-					bestSupportScore = score
+		for support in supports:
+			var score = float(support.value)
+			if support.cardKey in RISKY_CARDS:
+				score *= 0.6
+			if score > bestSupportScore:
+				bestSupportScore = score
 		
 		var comboValue = character.value + bestSupportScore
-		if _is_better_score(comboValue, maxComboValue):
+		if comboValue > maxComboValue:
 			maxComboValue = comboValue
 			bestCharacter = character
 	
@@ -78,17 +77,16 @@ func _play_balanced(characters: Array, supports: Array) -> Node2D:
 
 func _play_calculated(characters: Array, supports: Array, opponentHand: Array) -> Node2D:
 	var bestCharacter = characters[0]
-	var maxPotentialValue = _worst_score()
+	var maxPotentialValue = -1.0
 
 	for character in characters:
 		var potentialValue = character.value
 		
-		if not isFlipScriptActive:
-			var bestSupportValue = 0
-			for support in supports:
-				if support.value > bestSupportValue:
-					bestSupportValue = support.value
-			potentialValue += bestSupportValue
+		var bestSupportValue = 0
+		for support in supports:
+			if support.value > bestSupportValue:
+				bestSupportValue = support.value
+		potentialValue += bestSupportValue
 		
 		if character.perk != null:
 			match character.perk.timing:
@@ -96,16 +94,15 @@ func _play_calculated(characters: Array, supports: Array, opponentHand: Array) -
 					potentialValue += character.perk.calculate_perk_value(character, opponentHand, null)
 				"endRound", "lateEndRound":
 					var bestEndBonus = character.perk.calculate_end_perk_value(character, null, null, null, opponentHand)
-					if not isFlipScriptActive:
-						for support in supports:
-							var bonus = character.perk.calculate_end_perk_value(character, support, null, null, opponentHand)
-							if bonus > bestEndBonus:
-								bestEndBonus = bonus
+					for support in supports:
+						var bonus = character.perk.calculate_end_perk_value(character, support, null, null, opponentHand)
+						if bonus > bestEndBonus:
+							bestEndBonus = bonus
 					potentialValue += bestEndBonus
 				"calculationRound":
 					potentialValue += character.perk.calculate_after_calculation_perk_value(character, opponentHand, 0, 1)
 		
-		if _is_better_score(potentialValue, maxPotentialValue):
+		if potentialValue > maxPotentialValue:
 			maxPotentialValue = potentialValue
 			bestCharacter = character
 	
@@ -133,18 +130,13 @@ func choose_support_card(opponent_hand, opponent_character, player_character, op
 		return _choose_support_balanced(eligible, currentDiff, opponent_health)
 
 func _choose_support_aggressive(eligible: Array, currentDiff: int, opponent_health: int) -> Node2D:
-	var effectiveDiff = _effective_diff(currentDiff)
-	
-	if effectiveDiff >= 4:
+	if currentDiff >= 4:
 		return null
 	
-	if effectiveDiff <= -4 and opponent_health <= 25:
+	if currentDiff <= -4 and opponent_health <= 25:
 		for support in eligible:
 			if support.cardKey in DEFENSIVE_CARDS:
 				return support
-	
-	if isFlipScriptActive:
-		return null
 	
 	var best = null
 	var bestScore = -INF
@@ -164,18 +156,13 @@ func _choose_support_aggressive(eligible: Array, currentDiff: int, opponent_heal
 	return null
 
 func _choose_support_balanced(eligible: Array, currentDiff: int, opponent_health: int) -> Node2D:
-	var effectiveDiff = _effective_diff(currentDiff)
-	
-	if effectiveDiff >= 4:
+	if currentDiff >= 4:
 		return null
 	
-	if effectiveDiff <= -4 and opponent_health <= 25:
+	if currentDiff <= -4 and opponent_health <= 25:
 		for support in eligible:
 			if support.cardKey in DEFENSIVE_CARDS:
 				return support
-	
-	if isFlipScriptActive:
-		return null
 	
 	var scored = []
 	for support in eligible:
@@ -198,26 +185,23 @@ func _choose_support_balanced(eligible: Array, currentDiff: int, opponent_health
 	return best.support
 
 func _choose_support_defensive(eligible: Array, currentDiff: int, _opponent_health: int) -> Node2D:
-	var effectiveDiff = _effective_diff(currentDiff)
-	
-	if effectiveDiff > 0:
+	if currentDiff > 0:
 		return null
 	
-	if not isFlipScriptActive:
-		var candidates = []
-		for support in eligible:
-			if support.cardKey in DEFENSIVE_CARDS:
-				continue
-			var score = float(support.value)
-			if support.cardKey in RISKY_CARDS:
-				score *= 0.6
-			var resultingMargin = currentDiff + score
-			if resultingMargin > 0:
-				candidates.append({"support": support, "margin": resultingMargin})
-		
-		if not candidates.is_empty():
-			candidates.sort_custom(func(a, b): return a.margin < b.margin)
-			return candidates[0].support
+	var candidates = []
+	for support in eligible:
+		if support.cardKey in DEFENSIVE_CARDS:
+			continue
+		var score = float(support.value)
+		if support.cardKey in RISKY_CARDS:
+			score *= 0.6
+		var resultingMargin = currentDiff + score
+		if resultingMargin > 0:
+			candidates.append({"support": support, "margin": resultingMargin})
+	
+	if not candidates.is_empty():
+		candidates.sort_custom(func(a, b): return a.margin < b.margin)
+		return candidates[0].support
 	
 	for support in eligible:
 		if support.cardKey == "Retreat":
