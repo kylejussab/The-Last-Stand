@@ -291,7 +291,7 @@ func _execute_opponent_character_play() -> void:
 			await get_tree().create_timer(0.75).timeout
 			card.get_node("ModifierIndicator").texture = load("res://holdout/allegiances/icons/Doctrine of Restraint.png")
 			card.get_node("AnimationPlayer").queue("modifierIndicator")
-			await card.get_node("AnimationPlayer").animation_finished
+			await _await_card_animation(card, "modifierIndicator")
 			
 			card.modify_value(-2)
 			battleEngine.log_action("System. Doctrine of Restraint activated. " + opponentName + "'s " + card.nameText + " took -2 from your previous Seraphite victory.")
@@ -304,7 +304,7 @@ func _execute_opponent_character_play() -> void:
 			await get_tree().create_timer(opponentThinkingTime).timeout
 			opponentCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Gambler.png")
 			opponentCharacterCard.get_node("AnimationPlayer").queue("modifierIndicator")
-			await opponentCharacterCard.get_node("AnimationPlayer").animation_finished
+			await _await_card_animation(opponentCharacterCard, "modifierIndicator")
 			
 			opponentCharacterCard.modify_value(int(opponentCharacterCard.value / 2.0))
 			
@@ -386,8 +386,8 @@ func _on_player_support_played(card: Node2D) -> void:
 	if desperateMeasuresActive and playerSupportCard.cardKey in BACKFIRE_CAPABLE:
 		battleEngine.log_action("System. Desperate Measures modifier activated. You took 1 damage.")
 		playerSupportCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Desperate Measures.png")
-		playerSupportCard.get_node("AnimationPlayer").play("modifierIndicator")
-		await playerSupportCard.get_node("AnimationPlayer").animation_finished
+		playerSupportCard.get_node("AnimationPlayer").queue("modifierIndicator")
+		await _await_card_animation(playerSupportCard, "modifierIndicator")
 		await _deal_damage(Actor.Type.PLAYER, 1)
 	
 	if not handled:
@@ -430,7 +430,7 @@ func _execute_opponent_support_play() -> void:
 				await get_tree().create_timer(opponentThinkingTime).timeout
 				opponentSupportCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Gambler.png")
 				opponentSupportCard.get_node("AnimationPlayer").queue("modifierIndicator")
-				await opponentSupportCard.get_node("AnimationPlayer").animation_finished
+				await _await_card_animation(opponentSupportCard, "modifierIndicator")
 				
 				opponentSupportCard.modify_value(int(opponentCharacterCard.value / 2.0))
 				
@@ -666,6 +666,17 @@ func _on_end_turn_button_pressed() -> void:
 	_transition_to_resolution_phase()
 
 # --- HELPERS ---
+func _await_card_animation(card: Node2D, animName: String) -> void:
+	if not is_instance_valid(card):
+		return
+	var anim: AnimationPlayer = card.get_node("AnimationPlayer")
+	if not is_instance_valid(anim):
+		return
+	while is_instance_valid(anim):
+		var finishedAnim = await anim.animation_finished
+		if finishedAnim == animName or not is_instance_valid(card):
+			return
+
 func _draw_cards_at_start(firstStart: bool = true) -> void:
 	%pauseIcon.hide()
 	
@@ -731,14 +742,14 @@ func _animate_opponent_playing_card(opponentCard: Node2D, opponentCardSlot: Node
 	opponentCard.get_node("Area2D/CollisionShape2D").disabled = false
 	
 	if !battleEngine.isBlindEyeActiveThisRound:
-		opponentCard.get_node("AnimationPlayer").play("cardFlip")
+		opponentCard.get_node("AnimationPlayer").queue("cardFlip")
 	
 	var tween = get_tree().create_tween()
 	tween.finished.connect(AudioManager.play_random_card_draw)
 	tween.tween_property(opponentCard, "position", opponentCardSlot.position, cardMoveSpeed)
 	
 	if !battleEngine.isBlindEyeActiveThisRound:
-		await opponentCard.get_node("AnimationPlayer").animation_finished
+		await _await_card_animation(opponentCard, "cardFlip")
 	
 	_play_dust_effect(opponentCard, true)
 	
@@ -750,7 +761,7 @@ func _apply_mid_round_perks() -> void:
 		
 	if opponentCharacterCard.isDoctrineBackfired:
 		opponentCharacterCard.get_node("AnimationPlayer").queue("backfire")
-		await opponentCharacterCard.get_node("AnimationPlayer").animation_finished
+		await _await_card_animation(opponentCharacterCard, "backfire")
 		
 	if battleEngine.has_modifier(Database.Modifier.FRIENDLY_FIRE):
 		if playerCharacterCard.faction == opponentCharacterCard.faction:
@@ -759,7 +770,7 @@ func _apply_mid_round_perks() -> void:
 			playerCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Friendly Fire.png")
 			playerCharacterCard.get_node("AnimationPlayer").queue("modifierIndicator")
 			playerCharacterCard.modify_value(-int(ceil(playerCharacterCard.value / 2.0)))
-			await playerCharacterCard.get_node("AnimationPlayer").animation_finished
+			await _await_card_animation(playerCharacterCard, "modifierIndicator")
 		
 		if _hand_has_all_different_factions(playerHand):
 			await get_tree().create_timer(0.3).timeout
@@ -767,7 +778,7 @@ func _apply_mid_round_perks() -> void:
 			playerCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Friendly Fire.png")
 			playerCharacterCard.get_node("AnimationPlayer").queue("modifierIndicator")
 			playerCharacterCard.modify_value(2)
-			await playerCharacterCard.get_node("AnimationPlayer").animation_finished
+			await _await_card_animation(playerCharacterCard, "modifierIndicator")
 	
 	if battleEngine.whoStartedRound == Actor.Type.PLAYER:
 		await _execute_player_mid_perk()
@@ -847,7 +858,7 @@ func _calculate_damage() -> void:
 	if report.overExertionBonus > 0:
 		battleEngine.log_action("System. Over-Exertion modifier activated. " + opponentName + " took " + str(report.overExertionBonus) + " additional damage.")
 		playerCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Over Exertion.png")
-		playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
+		playerCharacterCard.get_node("AnimationPlayer").queue("modifierIndicator")
 		await _deal_damage(Actor.Type.OPPONENT, report.overExertionBonus)
 	
 	if report.winner == battleEngine.Winner.PLAYER:
@@ -1119,8 +1130,8 @@ func _return_character_to_hand(card: Node2D) -> void:
 	card.get_node("value").text = str(card.value)
 	
 	card.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Dead Weight.png")
-	card.get_node("AnimationPlayer").play("modifierIndicator")
-	await card.get_node("AnimationPlayer").animation_finished
+	card.get_node("AnimationPlayer").queue("modifierIndicator")
+	await _await_card_animation(card, "modifierIndicator")
 	
 	var tween = %playerHand.add_card_to_hand(card, cardMoveSpeed)
 	if tween:
@@ -1140,8 +1151,8 @@ func _return_winning_character_to_hand(card: Node2D) -> void:
 	card.get_node("value").text = str(card.value)
 	
 	card.get_node("ModifierIndicator").texture = load("res://holdout/allegiances/icons/Future Days.png")
-	card.get_node("AnimationPlayer").play("modifierIndicator")
-	await card.get_node("AnimationPlayer").animation_finished
+	card.get_node("AnimationPlayer").queue("modifierIndicator")
+	await _await_card_animation(card, "modifierIndicator")
 	
 	var tween = %playerHand.add_card_to_hand(card, cardMoveSpeed)
 	if tween:
@@ -1165,23 +1176,30 @@ func _apply_card_rot_aging() -> void:
 			
 			battleEngine.log_action("System. Card Rot modifier activated. " + card.nameText + " lost 1 value from rotting.")
 			card.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Card Rot.png")
-			card.get_node("AnimationPlayer").play("modifierIndicator")
+			card.get_node("AnimationPlayer").queue("modifierIndicator")
 			animatingCards.append(card)
 	
 	if animatingCards.is_empty():
 		return
 	
 	var remaining: Array = [animatingCards.size()]
-	var on_finished = func(_animName): remaining[0] -= 1
 	
 	for card in animatingCards:
-		card.get_node("AnimationPlayer").animation_finished.connect(on_finished, CONNECT_ONE_SHOT)
+		var anim: AnimationPlayer = card.get_node("AnimationPlayer")
+		var on_finished
+		on_finished = func(animName):
+			if animName == "modifierIndicator":
+				remaining[0] -= 1
+				if anim.animation_finished.is_connected(on_finished):
+					anim.animation_finished.disconnect(on_finished)
+		anim.animation_finished.connect(on_finished)
 	
 	while remaining[0] > 0:
 		await get_tree().process_frame
 	
 	for card in animatingCards:
-		card.modify_value(-1)
+		if is_instance_valid(card):
+			card.modify_value(-1)
 
 func _handle_runner_perk() -> void:
 	if not is_instance_valid(playerCharacterCard) or not is_instance_valid(opponentCharacterCard):
@@ -1257,20 +1275,20 @@ func _handle_player_win(damage: int, triggerCalculatedRisk: bool, stackedOddsBre
 		
 		if triggerCalculatedRisk:
 			playerCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Calculated Risk.png")
-			playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
+			playerCharacterCard.get_node("AnimationPlayer").queue("modifierIndicator")
 			battleEngine.log_action("System. Calculated Risk modifier activated. " + opponentName + " took 3 additional damage.")
 			await _deal_damage(Actor.Type.OPPONENT, 3)
 		
 		if battleEngine.has_modifier(Database.Modifier.HEAVY_HITTER) and playerCharacterCard.value >= 5:
 			playerCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Heavy Hitter.png")
-			playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
+			playerCharacterCard.get_node("AnimationPlayer").queue("modifierIndicator")
 			battleEngine.log_action("System. Heavy Hitter modifier activated. " + opponentName + " took 2 additional damage.")
 			await _deal_damage(Actor.Type.OPPONENT, 2)
 		
 		if stackedOddsBreakBonus > 0:
 			playerCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Stacked Odds.png")
-			playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
-			await playerCharacterCard.get_node("AnimationPlayer").animation_finished
+			playerCharacterCard.get_node("AnimationPlayer").queue("modifierIndicator")
+			await _await_card_animation(playerCharacterCard, "modifierIndicator")
 			playerCharacterCard.modify_value(stackedOddsBreakBonus)
 			battleEngine.log_action("System. Stacked Odds modifier activated. " + opponentName + " took " + str(stackedOddsBreakBonus) + " additional damage.")
 			await _deal_damage(Actor.Type.OPPONENT, stackedOddsBreakBonus)
@@ -1278,7 +1296,7 @@ func _handle_player_win(damage: int, triggerCalculatedRisk: bool, stackedOddsBre
 		var rotAmount = playerCharacterCard.get_meta("cardRotAmount", 0)
 		if rotAmount > 0:
 			playerCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Card Rot.png")
-			playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
+			playerCharacterCard.get_node("AnimationPlayer").queue("modifierIndicator")
 			battleEngine.log_action("System. Card Rot modifier activated. " + opponentName + " took " + str(rotAmount) + " additional damage from " + playerCharacterCard.nameText + "'s rot.")
 			await _deal_damage(Actor.Type.OPPONENT, rotAmount)
 	
@@ -1328,20 +1346,20 @@ func _handle_opponent_win(damage: int, triggerDeepWounds: bool, triggerCalculate
 		
 		if triggerDeepWounds:
 			playerCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Deep Wounds.png")
-			playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
+			playerCharacterCard.get_node("AnimationPlayer").queue("modifierIndicator")
 			battleEngine.log_action("System. Deep Wounds modifier activated. You took 2 additional damage.")
 			await _deal_damage(Actor.Type.PLAYER, 2)
 			pendingDeepWoundsBonus = true
 		
 		if triggerCalculatedRiskLoss:
 			opponentCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Calculated Risk.png")
-			opponentCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
+			opponentCharacterCard.get_node("AnimationPlayer").queue("modifierIndicator")
 			battleEngine.log_action("System. Calculated Risk modifier activated. You took 3 additional damage.")
 			await _deal_damage(Actor.Type.PLAYER, 3)
 		
 		if battleEngine.has_modifier(Database.Modifier.HEAVY_HITTER) and playerCharacterCard.value >= 5:
 			playerCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Heavy Hitter.png")
-			playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
+			playerCharacterCard.get_node("AnimationPlayer").queue("modifierIndicator")
 			battleEngine.log_action("System. Heavy Hitter modifier activated. You took 2 additional damage.")
 			await _deal_damage(Actor.Type.PLAYER, 2)
 		
@@ -1351,14 +1369,14 @@ func _handle_opponent_win(damage: int, triggerDeepWounds: bool, triggerCalculate
 			
 			opponentCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Vampiric.png")
 			opponentCharacterCard.get_node("AnimationPlayer").queue("modifierIndicator")
-			await opponentCharacterCard.get_node("AnimationPlayer").animation_finished
+			await _await_card_animation(opponentCharacterCard, "modifierIndicator")
 			await _deal_damage(Actor.Type.OPPONENT, -3)
 		
 		if stackedOddsOpponentBonus > 0:
 			var opponentName: String = Actor.Avatar.keys()[HoldoutStats.currentOpponent].capitalize()
 			opponentCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Stacked Odds.png")
-			opponentCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
-			await opponentCharacterCard.get_node("AnimationPlayer").animation_finished
+			opponentCharacterCard.get_node("AnimationPlayer").queue("modifierIndicator")
+			await _await_card_animation(opponentCharacterCard, "modifierIndicator")
 			opponentCharacterCard.modify_value(stackedOddsOpponentBonus)
 			battleEngine.log_action("System. Stacked Odds modifier activated. " + opponentName + " dealt " + str(stackedOddsOpponentBonus) + " additional damage from their streak.")
 			await _deal_damage(Actor.Type.PLAYER, stackedOddsOpponentBonus)
@@ -1384,8 +1402,8 @@ func _steal_character_to_hand(card: Node2D, valueModifier: int = 0, iconPath: St
 	$"../cardManager".add_child(newCard)
 	
 	newCard.get_node("ModifierIndicator").texture = load(iconPath)
-	newCard.get_node("AnimationPlayer").play("modifierIndicator")
-	await newCard.get_node("AnimationPlayer").animation_finished
+	newCard.get_node("AnimationPlayer").queue("modifierIndicator")
+	await _await_card_animation(newCard, "modifierIndicator")
 	
 	AudioManager.play_random_card_draw()
 	var tween = %playerHand.add_card_to_hand(newCard, cardMoveSpeed)
@@ -1440,8 +1458,8 @@ func _apply_psycho_mania_bonus(hand: Array) -> void:
 	
 	var target = eligible[randi() % eligible.size()]
 	target.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Psycho Mania.png")
-	target.get_node("AnimationPlayer").play("modifierIndicator")
-	await target.get_node("AnimationPlayer").animation_finished
+	target.get_node("AnimationPlayer").queue("modifierIndicator")
+	await _await_card_animation(target, "modifierIndicator")
 	target.modify_value(2)
 	battleEngine.log_action("System. Psycho-mania modifier activated. " + target.nameText + " gained +2.")
 
@@ -1452,8 +1470,8 @@ func _apply_slow_bleed_bonus(hand: Array) -> void:
 
 	var target = eligible[randi() % eligible.size()]
 	target.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Slow Bleed.png")
-	target.get_node("AnimationPlayer").play("modifierIndicator")
-	await target.get_node("AnimationPlayer").animation_finished
+	target.get_node("AnimationPlayer").queue("modifierIndicator")
+	await _await_card_animation(target, "modifierIndicator")
 	target.modify_value(1)
 	battleEngine.log_action("System. Slow Bleed modifier activated. " + target.nameText + " permanently gained +1.")
 
@@ -1524,7 +1542,7 @@ func _apply_guerrilla_tactics_restrictions() -> void:
 
 func _animate_card_lock(card):
 	if card.get_node("lockIcon/top").modulate.a < 0.9:
-		card.get_node("AnimationPlayer").play("lock")
+		card.get_node("AnimationPlayer").queue("lock")
 		card.get_node("Area2D/CollisionShape2D").disabled = true
 		await get_tree().create_timer(0.35).timeout
 		AudioManager.play_card_lock()
@@ -1582,16 +1600,24 @@ func _execute_opponent_mid_perk() -> void:
 		if forsakenHonorActive:
 			if opponentCharacterCard.perk.has_method("would_perk_trigger") and opponentCharacterCard.perk.would_perk_trigger(opponentCharacterCard, opponentHand, playerCharacterCard):
 				playerCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Forsaken Honor.png")
-				playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
-				await playerCharacterCard.get_node("AnimationPlayer").animation_finished
+				playerCharacterCard.get_node("AnimationPlayer").queue("modifierIndicator")
+				await _await_card_animation(playerCharacterCard, "modifierIndicator")
 			
 			playerCharacterCard.role = "Unknown"
 			playerCharacterCard.faction = "Unknown"
 		elif darkVeilingActive:
-			if opponentCharacterCard.perk.has_method("would_perk_trigger") and opponentCharacterCard.perk.would_perk_trigger(opponentCharacterCard, opponentHand, playerCharacterCard):
-				playerCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/allegiances/icons/Dark Veiling.png")
-				playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
-				await playerCharacterCard.get_node("AnimationPlayer").animation_finished
+			if opponentCharacterCard.perk.has_method("calculate_perk_value"):
+				var valueUnmasked = opponentCharacterCard.perk.calculate_perk_value(opponentCharacterCard, opponentHand, playerCharacterCard)
+				
+				var realRole = playerCharacterCard.role
+				playerCharacterCard.role = "Unknown"
+				var valueMasked = opponentCharacterCard.perk.calculate_perk_value(opponentCharacterCard, opponentHand, playerCharacterCard)
+				playerCharacterCard.role = realRole
+				
+				if valueUnmasked != valueMasked:
+					playerCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/allegiances/icons/Dark Veiling.png")
+					playerCharacterCard.get_node("AnimationPlayer").queue("modifierIndicator")
+					await _await_card_animation(playerCharacterCard, "modifierIndicator")
 			
 			playerCharacterCard.role = "Unknown"
 		
@@ -1622,16 +1648,24 @@ func _execute_opponent_char_end_perk() -> void:
 		if forsakenHonorActive:
 			if opponentCharacterCard.perk.has_method("would_perk_trigger") and opponentCharacterCard.perk.would_perk_trigger(opponentCharacterCard, opponentSupportCard, playerCharacterCard, playerSupportCard, opponentHand):
 				playerCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Forsaken Honor.png")
-				playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
-				await playerCharacterCard.get_node("AnimationPlayer").animation_finished
+				playerCharacterCard.get_node("AnimationPlayer").queue("modifierIndicator")
+				await _await_card_animation(playerCharacterCard, "modifierIndicator")
 			
 			playerCharacterCard.role = "Unknown"
 			playerCharacterCard.faction = "Unknown"
 		elif darkVeilingActive:
-			if opponentCharacterCard.perk.has_method("would_perk_trigger") and opponentCharacterCard.perk.would_perk_trigger(opponentCharacterCard, opponentSupportCard, playerCharacterCard, playerSupportCard, opponentHand):
-				playerCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/allegiances/icons/Dark Veiling.png")
-				playerCharacterCard.get_node("AnimationPlayer").play("modifierIndicator")
-				await playerCharacterCard.get_node("AnimationPlayer").animation_finished
+			if opponentCharacterCard.perk.has_method("calculate_perk_value"):
+				var valueUnmasked = opponentCharacterCard.perk.calculate_perk_value(opponentCharacterCard, opponentSupportCard, playerCharacterCard, playerSupportCard, opponentHand)
+				
+				var realRole = playerCharacterCard.role
+				playerCharacterCard.role = "Unknown"
+				var valueMasked = opponentCharacterCard.perk.calculate_perk_value(opponentCharacterCard, opponentSupportCard, playerCharacterCard, playerSupportCard, opponentHand)
+				playerCharacterCard.role = realRole
+				
+				if valueUnmasked != valueMasked:
+					playerCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/allegiances/icons/Dark Veiling.png")
+					playerCharacterCard.get_node("AnimationPlayer").queue("modifierIndicator")
+					await _await_card_animation(playerCharacterCard, "modifierIndicator")
 			
 			playerCharacterCard.role = "Unknown"
 			

@@ -135,6 +135,15 @@ func _input(event: InputEvent) -> void:
 			holdoutButtonContainer.show()
 			holdoutButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
 			Curtain.fade_out(0.25)
+		elif currentNavigation == "HoldoutTutorialOnStart":
+			currentNavigation = "Holdout"
+			await Curtain.fade_in(0.25)
+			
+			$HoldoutTutorialOnStart.hide()
+			
+			holdoutButtonContainer.show()
+			holdoutButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
+			Curtain.fade_out(0.25)
 		elif currentNavigation == "Card Viewer":
 			$pauseIcon.hide()
 			currentNavigation = "Main"
@@ -217,7 +226,16 @@ func _on_new_button_pressed() -> void: # This is exclusively used for the very f
 	if !GameStats.showHoldoutTutorial:
 		return
 	
-	_on_tutorial_button_pressed(1.0)
+	holdoutButtonContainer.process_mode = Node.PROCESS_MODE_DISABLED
+	currentNavigation = "HoldoutTutorialOnStart"
+	
+	await Curtain.fade_in(1.0)
+	$HoldoutTutorialOnStart.reset()
+	
+	holdoutButtonContainer.hide()
+	$HoldoutTutorialOnStart.show()
+	
+	Curtain.fade_out(1.0)
 
 func _on_new_button_hold_complete() -> void:
 	GameStats.gameMode = GameStats.Mode.HOLDOUT

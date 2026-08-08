@@ -1,0 +1,138 @@
+[gd_scene load_steps=14 format=3 uid="uid://h2gtjb3ry55q"]
+
+[ext_resource type="Script" uid="uid://cyvsg66r0a1ba" path="res://holdout/tutorial/onStart/holdoutTutorialOnStart.gd" id="1_ekx72"]
+[ext_resource type="Texture2D" uid="uid://bk14ed22arons" path="res://holdout/tutorial/1.png" id="2_n3lsa"]
+[ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://core/fonts/SF-Pro-Display-Black.otf" id="3_gy7id"]
+[ext_resource type="FontFile" uid="uid://di1dchl37cfhu" path="res://core/fonts/SF-Pro-Display-Semibold.otf" id="4_kw6jq"]
+[ext_resource type="Texture2D" uid="uid://cf8imluhjhkne" path="res://core/menus/subcomponents/ArrowLeft.png" id="5_r5dnw"]
+[ext_resource type="Texture2D" uid="uid://cxd55axo1w2rm" path="res://core/menus/subcomponents/ArrowLeftPressed.png" id="6_bq3lj"]
+
+[sub_resource type="FontVariation" id="FontVariation_loydv"]
+base_font = ExtResource("3_gy7id")
+spacing_glyph = 1
+
+[sub_resource type="FontVariation" id="FontVariation_k86s4"]
+base_font = ExtResource("4_kw6jq")
+spacing_glyph = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_plscn"]
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n7618"]
+bg_color = Color(0, 0, 0, 0)
+border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ffqui"]
+bg_color = Color(0.08627451, 0.08627451, 0.08627451, 0)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pgvaj"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lsqid"]
+
+[node name="TutorialMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_ekx72")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Image" type="Sprite2D" parent="."]
+position = Vector2(960, 540)
+scale = Vector2(0.33, 0.33)
+texture = ExtResource("2_n3lsa")
+
+[node name="Heading" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_top = 120.0
+offset_right = 1920.0
+offset_bottom = 170.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_loydv")
+theme_override_font_sizes/normal_font_size = 34
+text = "HOLDOUT"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Body" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_top = 840.0
+offset_right = 1920.0
+offset_bottom = 905.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_k86s4")
+theme_override_font_sizes/normal_font_size = 26
+text = "You start every run at 99 health, fighting opponents until you hit 0.
+Both players draw from the same shared decks."
+horizontal_alignment = 1
+
+[node name="Number" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = 460.0
+offset_top = 120.0
+offset_right = 510.0
+offset_bottom = 170.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_k86s4")
+theme_override_font_sizes/normal_font_size = 26
+text = "1/7"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Navigation" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 922.5
+offset_top = 960.0
+offset_right = 997.5
+offset_bottom = 1000.0
+mouse_filter = 2
+
+[node name="LeftButton" type="TextureButton" parent="Navigation"]
+layout_mode = 0
+offset_right = 136.0
+offset_bottom = 136.0
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("5_r5dnw")
+texture_hover = ExtResource("6_bq3lj")
+stretch_mode = 5
+
+[node name="RightButton" type="TextureButton" parent="Navigation"]
+layout_mode = 0
+offset_left = 40.0
+offset_right = 176.0
+offset_bottom = 136.0
+scale = Vector2(0.25, 0.25)
+texture_normal = ExtResource("5_r5dnw")
+texture_hover = ExtResource("6_bq3lj")
+stretch_mode = 5
+flip_h = true
+
+[node name="StartNewRunButton" type="Button" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 1100.0
+offset_top = 965.0
+offset_right = 1262.0
+offset_bottom = 990.0
+theme_override_colors/font_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_gy7id")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_plscn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_n7618")
+theme_override_styles/hover = SubResource("StyleBoxFlat_ffqui")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_pgvaj")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_lsqid")
+text = "START NEW RUN"
+
+[connection signal="pressed" from="Navigation/LeftButton" to="." method="_on_left_button_pressed"]
+[connection signal="pressed" from="Navigation/RightButton" to="." method="_on_right_button_pressed"]
+[connection signal="pressed" from="StartNewRunButton" to="." method="_on_start_new_run_button_pressed"]
