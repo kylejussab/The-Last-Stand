@@ -8,6 +8,7 @@ var FACTION_ICON_SCALE = 0.12
 var PERK_ICON_ONE_Y_POSITION = -66
 var PERK_ICON_TWO_Y_POSITION = -43.5
 var PERK_LINE_Y_SIZE = 15
+var HUNTED_ICON_Y_POSITION = 60
 
 const KEYWORD_ICONS = {
 	"Aggressive": "res://core/cards/icons/Aggressive.png",
@@ -45,10 +46,11 @@ var permanentInfection: bool = false
 var frenzyBonusApplied: bool = false
 var splitAllegianceBonusApplied: bool = false
 var isDoctrineBackfired: bool = false
+var isHunted: bool = false
 
 var originalFaction: String = ""
 
-var _activeGuardedAnimations: int = 0
+var _isGuardingCollision: bool = false
 var _preAnimationCollisionState: bool = false
 const GUARDED_ANIMATIONS = ["modifierIndicator", "cardFlip", "backfire", "lock"]
 
@@ -57,36 +59,40 @@ func _ready() -> void:
 		get_parent().connect_card_signals(self)
 	
 	if has_node("AnimationPlayer"):
-		$AnimationPlayer.animation_started.connect(_on_any_animation_started)
-		$AnimationPlayer.animation_finished.connect(_on_any_animation_finished)
+		$AnimationPlayer.animation_started.connect(_evaluate_collision_guard)
+		$AnimationPlayer.animation_finished.connect(_evaluate_collision_guard)
+		$AnimationPlayer.current_animation_changed.connect(_evaluate_collision_guard)
 	
 	if has_node("image") and has_node("infectedImage"):
 		$image.visibility_changed.connect(_on_image_visibility_changed)
 		$infectedImage.visible = $image.visible
 
-func _on_any_animation_started(animName: String) -> void:
-	if animName not in GUARDED_ANIMATIONS:
-		return
+func _evaluate_collision_guard(_animName: String = "") -> void:
 	if not has_node("Area2D/CollisionShape2D"):
 		return
 	
-	if _activeGuardedAnimations == 0:
-		_preAnimationCollisionState = $Area2D/CollisionShape2D.disabled
-		
-	_activeGuardedAnimations += 1
-	$Area2D/CollisionShape2D.set_deferred("disabled", true)
+	var animPlayer = $AnimationPlayer
+	var needs_guard = false
+	
+	if animPlayer.is_playing() and animPlayer.current_animation in GUARDED_ANIMATIONS:
+		needs_guard = true
+	
+	if not needs_guard:
+		for q_anim in animPlayer.get_queue():
+			if q_anim in GUARDED_ANIMATIONS:
+				needs_guard = true
+				break
+	
+	if needs_guard:
+		if not _isGuardingCollision:
+			_preAnimationCollisionState = $Area2D/CollisionShape2D.disabled
+			_isGuardingCollision = true
+		$Area2D/CollisionShape2D.disabled = true
+	else:
+		if _isGuardingCollision:
+			_isGuardingCollision = false
+			$Area2D/CollisionShape2D.disabled = _preAnimationCollisionState
 
-func _on_any_animation_finished(animName: String) -> void:
-	if animName not in GUARDED_ANIMATIONS:
-		return
-	if not has_node("Area2D/CollisionShape2D"):
-		return
-	
-	_activeGuardedAnimations -= 1
-	
-	if _activeGuardedAnimations <= 0:
-		_activeGuardedAnimations = 0
-		$Area2D/CollisionShape2D.set_deferred("disabled", _preAnimationCollisionState)
 
 func _on_image_visibility_changed() -> void:
 	if has_node("infectedImage"):
@@ -117,11 +123,16 @@ func update_visuals():
 		var perkOne = $icons.get_node("perk1")
 		var perkTwo = $icons.get_node("perk2")
 		
+		var hunted = $icons.get_node("hunted")
+		
 		perkOne.scale = Vector2(PERK_ICON_SCALE, PERK_ICON_SCALE)
 		perkOne.position = Vector2(-58.5, PERK_ICON_ONE_Y_POSITION)
 		
 		perkTwo.scale = Vector2(PERK_ICON_SCALE, PERK_ICON_SCALE)
 		perkTwo.position = Vector2(-58.5, PERK_ICON_TWO_Y_POSITION)
+		
+		hunted.scale = Vector2(PERK_ICON_SCALE, PERK_ICON_SCALE)
+		hunted.position = Vector2(-58.5, HUNTED_ICON_Y_POSITION)
 		
 		if $icons.has_node("faction"):
 			$icons.get_node("faction").scale = Vector2(FACTION_ICON_SCALE, FACTION_ICON_SCALE)
@@ -166,6 +177,7 @@ func _apply_accessibility_settings():
 			PERK_ICON_SCALE = 0.095
 			PERK_ICON_ONE_Y_POSITION = -66
 			PERK_ICON_TWO_Y_POSITION = -43.5
+			HUNTED_ICON_Y_POSITION = 65
 			FACTION_ICON_SCALE = 0.12
 			PERK_LINE_Y_SIZE = 15
 		AccessibilityData.CardUISize.MEDIUM:
@@ -175,6 +187,7 @@ func _apply_accessibility_settings():
 			PERK_ICON_SCALE = 0.117
 			PERK_ICON_ONE_Y_POSITION = -61
 			PERK_ICON_TWO_Y_POSITION = -33.5
+			HUNTED_ICON_Y_POSITION = 60
 			FACTION_ICON_SCALE = 0.145
 			PERK_LINE_Y_SIZE = 17.5
 		AccessibilityData.CardUISize.LARGE:
@@ -184,6 +197,7 @@ func _apply_accessibility_settings():
 			PERK_ICON_SCALE = 0.15
 			PERK_ICON_ONE_Y_POSITION = -56
 			PERK_ICON_TWO_Y_POSITION = -28.5
+			HUNTED_ICON_Y_POSITION = 55
 			FACTION_ICON_SCALE = 0.17
 			PERK_LINE_Y_SIZE = 20
 

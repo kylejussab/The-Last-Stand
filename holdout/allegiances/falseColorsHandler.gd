@@ -17,9 +17,9 @@ func on_character_played(card: Node2D, hand: Array, _opponentCard: Node2D) -> vo
 	await (Engine.get_main_loop() as SceneTree).create_timer(0.75).timeout
 	
 	card.get_node("ModifierIndicator").texture = load("res://holdout/allegiances/icons/False Colors.png")
-	card.get_node("AnimationPlayer").play("modifierIndicator")
+	card.get_node("AnimationPlayer").queue("modifierIndicator")
 	await card.get_node("AnimationPlayer").animation_finished
 	
-	card.modify_value(bonus)
+	await card.modify_value(bonus)
 	
 	battle.battleEngine.log_action("System. False Colors activated. " + card.nameText + " gained +" + str(bonus) + " from faction diversity.")

@@ -207,6 +207,23 @@ func show_hub() -> void:
 	
 	await _setup_hub()
 	
+	### DEBUG FOR ALLEGIANCES
+	const DEBUG_SKIP_HUB: bool = false
+	
+	if DEBUG_SKIP_HUB:
+		HoldoutStats.activeAllegiance = Database.ALLEGIANCES[Database.Allegiance.NO_SAFE_HAVEN]
+		_set_arena_allegiance_ui()
+		
+		if selectedOpponentModifier:
+			%battleManager.add_modifier(Database.Modifier.DO_NOTHING, true)
+		
+		GameStats.gameMode = GameStats.Mode.HOLDOUT
+		%battleManager.initialize_game()
+		
+		self.hide() 
+		return
+	###
+	
 	# Temporary delay at start
 	if HoldoutStats.numberOfWins == 0:
 		await get_tree().create_timer(0.2).timeout
@@ -1963,6 +1980,9 @@ func _add_removal_deck_view_card(key: String, isCharacter: bool) -> void:
 			card.set_infected(true, false, true)
 			simulatedRemovalInfections[key] = visualMarksUsed + 1
 	
+		if HoldoutStats.is_hunted(key):
+				card.get_node("icons/hunted").modulate.a = 1
+	
 	if card is Control:
 		card.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	
@@ -2026,6 +2046,9 @@ func _spawn_removal_card_visual(card: Dictionary) -> Node2D:
 	
 	if card.cardType == "Character" and HoldoutStats.has_permanent_mark("infected", card.id):
 		newCard.set_infected(true, false, true)
+	
+	if card.cardType == "Character" and HoldoutStats.is_hunted(card.id):
+		newCard.get_node("icons/hunted").modulate.a = 1
 	
 	newCard.modulate.a = 0
 	

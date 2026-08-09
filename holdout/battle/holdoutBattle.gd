@@ -672,10 +672,38 @@ func _await_card_animation(card: Node2D, animName: String) -> void:
 	var anim: AnimationPlayer = card.get_node("AnimationPlayer")
 	if not is_instance_valid(anim):
 		return
+	
 	while is_instance_valid(anim):
-		var finishedAnim = await anim.animation_finished
-		if finishedAnim == animName or not is_instance_valid(card):
+		if not anim.is_playing() and anim.get_queue().is_empty():
 			return
+		
+		var timeoutTimer = get_tree().create_timer(1.5)
+		var result = await _wait_for_finish_or_timeout(anim, timeoutTimer)
+		
+		if result == animName or result == "timeout" or not is_instance_valid(card):
+			return
+
+func _wait_for_finish_or_timeout(anim: AnimationPlayer, timer: SceneTreeTimer) -> String:
+	var state := {"finished": false, "timedOut": false, "animName": ""}
+	
+	var onFinish = func(aName): 
+		state["finished"] = true
+		state["animName"] = aName
+	var onTimeout = func(): 
+		state["timedOut"] = true
+	
+	anim.animation_finished.connect(onFinish, CONNECT_ONE_SHOT)
+	timer.timeout.connect(onTimeout, CONNECT_ONE_SHOT)
+	
+	while not state["finished"] and not state["timedOut"]:
+		await get_tree().process_frame
+	
+	if anim.animation_finished.is_connected(onFinish):
+		anim.animation_finished.disconnect(onFinish)
+	if timer.timeout.is_connected(onTimeout):
+		timer.timeout.disconnect(onTimeout)
+	
+	return "timeout" if state["timedOut"] else state["animName"]
 
 func _draw_cards_at_start(firstStart: bool = true) -> void:
 	%pauseIcon.hide()
@@ -763,22 +791,27 @@ func _apply_mid_round_perks() -> void:
 		opponentCharacterCard.get_node("AnimationPlayer").queue("backfire")
 		await _await_card_animation(opponentCharacterCard, "backfire")
 		
+	if allegianceHandler:
+		await allegianceHandler.on_both_characters_played(playerCharacterCard, playerHand, opponentCharacterCard)
+	
 	if battleEngine.has_modifier(Database.Modifier.FRIENDLY_FIRE):
 		if playerCharacterCard.faction == opponentCharacterCard.faction:
 			await get_tree().create_timer(0.3).timeout
 			battleEngine.log_action("System. Friendly Fire modifier activated. Your character's value was halved.")
 			playerCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Friendly Fire.png")
 			playerCharacterCard.get_node("AnimationPlayer").queue("modifierIndicator")
-			playerCharacterCard.modify_value(-int(ceil(playerCharacterCard.value / 2.0)))
 			await _await_card_animation(playerCharacterCard, "modifierIndicator")
+			playerCharacterCard.modify_value(-int(ceil(playerCharacterCard.value / 2.0)))
+			await _await_card_animation(playerCharacterCard, "showPerk")
 		
 		if _hand_has_all_different_factions(playerHand):
 			await get_tree().create_timer(0.3).timeout
 			battleEngine.log_action("System. Friendly Fire modifier activated. Your hand's diversity granted +3.")
 			playerCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Friendly Fire.png")
 			playerCharacterCard.get_node("AnimationPlayer").queue("modifierIndicator")
-			playerCharacterCard.modify_value(2)
 			await _await_card_animation(playerCharacterCard, "modifierIndicator")
+			playerCharacterCard.modify_value(2)
+			await _await_card_animation(playerCharacterCard, "showPerk")
 	
 	if battleEngine.whoStartedRound == Actor.Type.PLAYER:
 		await _execute_player_mid_perk()
@@ -787,7 +820,7 @@ func _apply_mid_round_perks() -> void:
 		await _execute_opponent_mid_perk()
 		await _execute_player_mid_perk()
 	
-	_handle_runner_perk()
+	await _handle_runner_perk()
 
 func _update_playable_support_cards() -> void:
 	var playerBlocked = battleEngine.is_support_blocked(Actor.Type.PLAYER)
@@ -1186,13 +1219,13 @@ func _apply_card_rot_aging() -> void:
 	
 	for card in animatingCards:
 		var anim: AnimationPlayer = card.get_node("AnimationPlayer")
-		var on_finished
-		on_finished = func(animName):
+		var handler := {}
+		handler["fn"] = func(animName):
 			if animName == "modifierIndicator":
 				remaining[0] -= 1
-				if anim.animation_finished.is_connected(on_finished):
-					anim.animation_finished.disconnect(on_finished)
-		anim.animation_finished.connect(on_finished)
+				if anim.animation_finished.is_connected(handler["fn"]):
+					anim.animation_finished.disconnect(handler["fn"])
+		anim.animation_finished.connect(handler["fn"])
 	
 	while remaining[0] > 0:
 		await get_tree().process_frame
@@ -1223,7 +1256,7 @@ func _handle_runner_perk() -> void:
 					runnerCards.append(card)
 			
 			for card in runnerCards:
-				card.get_node("AnimationPlayer").play("cardFlip")
+				card.get_node("AnimationPlayer").queue("cardFlip")
 				await _place_card_in_discard(card, %opponentHand)
 
 
@@ -1549,7 +1582,10 @@ func _animate_card_lock(card):
 
 func _animate_card_unlock(card):
 	if card.get_node("lockIcon/top").modulate.a > 0.1:
-		card.get_node("AnimationPlayer").play_backwards("lock")
+		var anim = card.get_node("AnimationPlayer")
+		if anim.is_playing():
+			await anim.animation_finished
+		anim.play_backwards("lock")
 		card.get_node("Area2D/CollisionShape2D").disabled = false
 		await get_tree().create_timer(0.35).timeout
 		AudioManager.play_card_lock()
@@ -1994,6 +2030,10 @@ func _spawn_single_card(cardData: Dictionary, isOpponent: bool = false) -> Node2
 	
 	if cardData.get("splitAllegianceBonusApplied", false):
 		newCard.splitAllegianceBonusApplied = true
+	
+	newCard.isHunted = HoldoutStats.is_hunted(key)
+	if newCard.isHunted:
+		newCard.get_node("icons/hunted").modulate.a = 1
 	
 	if cardData.get("isRevealed", false):
 		newCard.set_meta("isRevealed", true)

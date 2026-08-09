@@ -133,6 +133,12 @@ func _create_card_instance(cardKey: String, scenePath: String, isPlayer: bool = 
 	if%battleManager.battleEngine.has_modifier(Database.Modifier.LONE_WOLF) and isPlayer:
 		newCard.value *= 1.5
 	
+	if HoldoutStats.is_hunted(cardKey):
+		newCard.isHunted = true
+		newCard.get_node("icons/hunted").modulate.a = 1
+		if not isPlayer:
+			newCard.value -= 2
+	
 	newCard.get_node("value").text = str(newCard.value)
 	newCard.get_node("name").text = newCard.nameText
 	

@@ -5,6 +5,7 @@ extends Node
 @onready var buttonBack = $UI/ButtonBack
 @onready var whoosh = $UI/Whoosh
 @onready var pop = $UI/Pop
+@onready var mark = $UI/Mark
 @onready var move = $UI/Move
 @onready var slotSpin = $UI/SlotSpin
 @onready var slotStop = $UI/SlotStop
@@ -105,6 +106,10 @@ func play_move() -> void:
 func play_pop() -> void:
 	pop.pitch_scale = randf_range(0.9, 1.1)
 	pop.play()
+
+func play_mark() -> void:
+	mark.pitch_scale = randf_range(0.95, 1.05)
+	mark.play()
 
 func play_slot_spin() -> void:
 	slotSpin.pitch_scale = randf_range(0.9, 1.1)

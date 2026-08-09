@@ -60,6 +60,14 @@ static func register_new_master_mark(markType: String, cardKey: String) -> void:
 		masterPermanentCardMarks[markType] = {}
 	masterPermanentCardMarks[markType][cardKey] = masterPermanentCardMarks[markType].get(cardKey, 0) + 1
 
+static var huntedCharacters: Dictionary = {}
+
+static func mark_hunted(cardKey: String) -> void:
+	huntedCharacters[cardKey] = true
+
+static func is_hunted(cardKey: String) -> bool:
+	return huntedCharacters.get(cardKey, false)
+
 enum Rank { S, A, B, C, D, F }
 const RankRequirements = {Rank.S: 440, Rank.A: 300, Rank.B: 220, Rank.C: 160, Rank.D: 80, Rank.F: 0}
 static var currentRank: Rank = Rank.F
@@ -192,6 +200,7 @@ static func reset_for_new_run():
 	whoeversNeededApplied = false
 	permanentCardMarks.clear()
 	masterPermanentCardMarks.clear()
+	huntedCharacters.clear()
 	
 	start_new_run_log()
 	
@@ -322,6 +331,7 @@ static func get_save_dict() -> Dictionary:
 		"whoeversNeededApplied": whoeversNeededApplied,
 		"permanentCardMarks": permanentCardMarks,
 		"masterPermanentCardMarks": masterPermanentCardMarks,
+		"huntedCharacters": huntedCharacters,
 		"currentRank": currentRank,
 		"numberOfWins": numberOfWins,
 		"roundsPlayed": roundsPlayed,
@@ -389,6 +399,10 @@ static func load_save_dict(data: Dictionary) -> void:
 		masterPermanentCardMarks[markType] = {}
 		for cardKey in data["masterPermanentCardMarks"][markType]:
 			masterPermanentCardMarks[markType][cardKey] = int(data["masterPermanentCardMarks"][markType][cardKey])
+	
+	huntedCharacters.clear()
+	for key in data.get("huntedCharacters", {}):
+		huntedCharacters[key] = true
 	
 	numberOfWins = int(data["numberOfWins"])
 	roundsPlayed = int(data["roundsPlayed"])

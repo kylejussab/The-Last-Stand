@@ -198,6 +198,9 @@ func _add_visual_card(key, grid, isCharacter):
 		if visualMarksUsed < totalInfectedMarks:
 			card.set_infected(true, false, true)
 			simulatedInfectionCounts[key] = visualMarksUsed + 1
+		
+		if HoldoutStats.is_hunted(key):
+			card.get_node("icons/hunted").modulate.a = 1
 	
 	if card is Control: card.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	
