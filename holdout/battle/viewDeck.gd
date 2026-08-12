@@ -124,6 +124,12 @@ func close_deck_view():
 	activeDeckReference = null
 	isViewDeckActive = false
 	$overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
+	for child in contentContainer.get_children():
+		child.queue_free()
+	if stickyHeader:
+		stickyHeader.queue_free()
+		stickyHeader = null
 
 func _populate_character_deck(deckArray: Array):
 	_add_deck_header("Character Deck", deckArray.size())

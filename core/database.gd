@@ -306,7 +306,7 @@ var AVATARS = {
 } 
 
 const OPPONENT_HEALTH_AMOUNTS: Array[int] = [
-	13, # Round 1
+	1, # Round 1
 	15, # Round 2
 	17, # Round 3
 	19, # Round 4
@@ -613,7 +613,7 @@ const MODIFIERS = {
 }
 
 enum Allegiance { 
-	FIREFLYAA, FIREFLYAB, FIREFLYAC, FIREFLYBA, FIREFLYBB, FIREFLYBC, FIREFLYCA, FIREFLYCB, FIREFLYCC,
+	COMMON_CAUSE, JUST_CARGO, THE_RIGHT_PEOPLE, WHATEVER_IT_TAKES, DIVIDED_LOYALTIES, SCAVENGERS_DUE, NECESSARY_COMPROMISE, THE_LIGHT, UNLIKELY_ALLIES,
 	NECROTIC_FEEDBACK, INFECTION, FUNGAL_GROWTH, FRENZIED_STATE, MUTATION_CHAIN, HORDE_MENTALITY, BLOATER_PLATING, CORDYCEPS_BRAIN_INFECTION, VIOLENT_OUTBREAK,
 	PATROL_ROUTE, ONE_OF_OURS, SHARED_SUPPLIES, DEBT_REPAID, FUTURE_DAYS, KEEP_MOVING, WHOEVERS_NEEDED, FOUND_FAMILY, PRACTICAL_WISDOM,
 	FALSE_COLORS, WHISTLE, FAITH_NETWORK, THE_PROPHECY, WOUNDED_PREY, SPLIT_ALLEGIANCE, DARK_VEILING, DOCTRINE_RESTRAINT, NESTED_SIN,
@@ -664,75 +664,75 @@ const ALLEGIANCE_HANDLERS = {
 
 const ALLEGIANCES = {
 	# Firefly
-	Allegiance.FIREFLYAA: {
-		"id": Allegiance.FIREFLYAA,
-		"name": "Firefly 1a",
-		"description": "The description for a tier 1a Firefly allegiance.",
-		"icon": "res://holdout/modifiers/icons/Volatile Hand.png",
+	Allegiance.COMMON_CAUSE: {
+		"id": Allegiance.COMMON_CAUSE,
+		"name": "Common Cause",
+		"description": "Played Fireflies get +1 per Firefly in hand. Winning grants +2 to all Fireflies in hand.",
+		"icon": "res://holdout/allegiances/icons/Common Cause.png",
 		"tier": 1,
 		"faction": "Firefly",
 	},
-	Allegiance.FIREFLYAB: {
-		"id": Allegiance.FIREFLYAB,
-		"name": "Firefly 1b",
-		"description": "The description for a tier 1b Firefly allegiance.",
-		"icon": "res://holdout/modifiers/icons/Volatile Hand.png",
+	Allegiance.JUST_CARGO: {
+		"id": Allegiance.JUST_CARGO,
+		"name": "Just Cargo",
+		"description": "A played Firefly gets +1 value for each card type in your hand that it does not share.",
+		"icon": "res://holdout/allegiances/icons/Just Cargo.png",
 		"tier": 1,
 		"faction": "Firefly",
 	},
-	Allegiance.FIREFLYAC: {
-		"id": Allegiance.FIREFLYAC,
-		"name": "Firefly 1c",
-		"description": "The description for a tier 1c Firefly allegiance.",
-		"icon": "res://holdout/modifiers/icons/Volatile Hand.png",
+	Allegiance.THE_RIGHT_PEOPLE: {
+		"id": Allegiance.THE_RIGHT_PEOPLE,
+		"name": "The Right People",
+		"description": "When you play a Firefly, choose a faction in hand. Cards in hand of that faction gain +3 value.",
+		"icon": "res://holdout/allegiances/icons/The Right People.png",
 		"tier": 1,
 		"faction": "Firefly",
 	},
-	Allegiance.FIREFLYBA: {
-		"id": Allegiance.FIREFLYBA,
-		"name": "Firefly 2a",
-		"description": "The description for a tier 2a Firefly allegiance.",
-		"icon": "res://holdout/modifiers/icons/Calculated Risk.png",
+	Allegiance.WHATEVER_IT_TAKES: {
+		"id": Allegiance.WHATEVER_IT_TAKES,
+		"name": "Whatever It Takes",
+		"description": "When you play a Firefly, choose a faction in hand. Randomly copy a perk from that faction.",
+		"icon": "res://holdout/allegiances/icons/Whatever It Takes.png",
 		"tier": 2,
 		"faction": "Firefly",
 	},
-	Allegiance.FIREFLYBB: {
-		"id": Allegiance.FIREFLYBB,
-		"name": "Firefly 2b",
-		"description": "The description for a tier 2b Firefly allegiance.",
-		"icon": "res://holdout/modifiers/icons/Calculated Risk.png",
+	Allegiance.DIVIDED_LOYALTIES: {
+		"id": Allegiance.DIVIDED_LOYALTIES,
+		"name": "Divided Loyalties",
+		"description": "Played Fireflies use the highest base value among non-Firefly cards in hand, if higher.",
+		"icon": "res://holdout/allegiances/icons/Divided Loyalties.png",
 		"tier": 2,
 		"faction": "Firefly",
 	},
-	Allegiance.FIREFLYBC: {
-		"id": Allegiance.FIREFLYBC,
-		"name": "Firefly 2c",
-		"description": "The description for a tier 2c Firefly allegiance.",
-		"icon": "res://holdout/modifiers/icons/Calculated Risk.png",
+	Allegiance.SCAVENGERS_DUE: {
+		"id": Allegiance.SCAVENGERS_DUE,
+		"name": "Scavenger's Due",
+		"description": "Playing a Firefly draws 1 support card if hand size limit is not reached.",
+		"icon": "res://holdout/allegiances/icons/Scavengers Due.png",
 		"tier": 2,
 		"faction": "Firefly",
 	},
-	Allegiance.FIREFLYCA: {
-		"id": Allegiance.FIREFLYCA,
-		"name": "Firefly 3a",
-		"description": "The description for a tier 3a Firefly allegiance.",
-		"icon": "res://holdout/modifiers/icons/Forsaken Honor.png",
+	Allegiance.NECESSARY_COMPROMISE: {
+		"id": Allegiance.NECESSARY_COMPROMISE,
+		"name": "Necessary Compromise",
+		"description": "Firefly perks trigger automatically without meeting their condition.",
+		"icon": "res://holdout/allegiances/icons/Necessary Compromise.png",
 		"tier": 3,
 		"faction": "Firefly",
 	},
-	Allegiance.FIREFLYCB: {
-		"id": Allegiance.FIREFLYCB,
-		"name": "Firefly 3b",
-		"description": "The description for a tier 3b Firefly allegiance.",
-		"icon": "res://holdout/modifiers/icons/Forsaken Honor.png",
+	Allegiance.THE_LIGHT: {
+		"id": Allegiance.THE_LIGHT,
+		"name": "The Light",
+		"description": "Playing a Firefly card gives +2 value to all character cards in hand.",
+		"icon": "res://holdout/allegiances/icons/The Light.png",
 		"tier": 3,
 		"faction": "Firefly",
 	},
-	Allegiance.FIREFLYCC: {
-		"id": Allegiance.FIREFLYCC,
-		"name": "Firefly 3c",
-		"description": "The description for a tier 3c Firefly allegiance.",
-		"icon": "res://holdout/modifiers/icons/Forsaken Honor.png",
+	Allegiance.UNLIKELY_ALLIES: {
+		"id": Allegiance.UNLIKELY_ALLIES,
+		"name": "Unlikely Allies",
+		"description": "Once per battle, playing a Firefly lets you choose a faction in hand. Those cards gain +3 this battle.",
+		"icon": "res://holdout/allegiances/icons/Unlikely Allies.png",
 		"tier": 3,
 		"faction": "Firefly",
 	},

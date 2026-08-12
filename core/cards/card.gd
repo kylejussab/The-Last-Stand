@@ -231,7 +231,7 @@ func _update_art_style():
 	else:
 		$image.texture = load(fallbackPath)
 	
-	if has_node("infectedImage") and _can_be_infected():
+	if has_node("infectedImage") and gotInfected:
 		$infectedImage.texture = _load_infected_texture(safeFaction)
 	
 	var targetColor = Color.WHITE
@@ -366,6 +366,9 @@ func set_infected(infected: bool, animate: bool = true, permanent: bool = false)
 		faction = "Infected"
 		
 		_update_faction_icon("Infected")
+		
+		if has_node("infectedImage"):
+			$infectedImage.texture = _load_infected_texture(faction if faction != "" else "Support")
 		
 		if animate:
 			_play_infection_shake()

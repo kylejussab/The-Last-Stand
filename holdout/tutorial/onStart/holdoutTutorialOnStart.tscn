@@ -1,7 +1,7 @@
 [gd_scene load_steps=14 format=3 uid="uid://h2gtjb3ry55q"]
 
 [ext_resource type="Script" uid="uid://cyvsg66r0a1ba" path="res://holdout/tutorial/onStart/holdoutTutorialOnStart.gd" id="1_ekx72"]
-[ext_resource type="Texture2D" uid="uid://bk14ed22arons" path="res://holdout/tutorial/1.png" id="2_n3lsa"]
+[ext_resource type="Texture2D" uid="uid://dswfudorix5xv" path="res://holdout/tutorial/onStart/1.png" id="2_ekx72"]
 [ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://core/fonts/SF-Pro-Display-Black.otf" id="3_gy7id"]
 [ext_resource type="FontFile" uid="uid://di1dchl37cfhu" path="res://core/fonts/SF-Pro-Display-Semibold.otf" id="4_kw6jq"]
 [ext_resource type="Texture2D" uid="uid://cf8imluhjhkne" path="res://core/menus/subcomponents/ArrowLeft.png" id="5_r5dnw"]
@@ -43,8 +43,8 @@ color = Color(0, 0, 0, 1)
 
 [node name="Image" type="Sprite2D" parent="."]
 position = Vector2(960, 540)
-scale = Vector2(0.33, 0.33)
-texture = ExtResource("2_n3lsa")
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_ekx72")
 
 [node name="Heading" type="RichTextLabel" parent="."]
 layout_mode = 0

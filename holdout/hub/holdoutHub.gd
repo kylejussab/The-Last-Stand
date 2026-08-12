@@ -84,6 +84,7 @@ const REMOVAL_VIEW_CARD_GRID_SPACE = Vector2(140, 180)
 @onready var removalDeckViewGrid: Control = %DeckViewGrid
 var isShowingRemovalDeck: bool = false
 var isAnimatingRemovalDeck: bool = false
+var removalDeckViewPopulated: bool = false 
 
 var removalSlotsActive: Array
 var selectedRemovalIndex: int = -1
@@ -133,7 +134,7 @@ func _prepare_hub_data() -> void:
 	_setup_opponent_container()
 	_setup_modifier_container()
 	_setup_allegiance_container()
-	await _setup_removal_container()
+	_setup_removal_container()
 	
 	modifierContainer.hide()
 	allegianceContainer.hide()
@@ -211,7 +212,7 @@ func show_hub() -> void:
 	const DEBUG_SKIP_HUB: bool = false
 	
 	if DEBUG_SKIP_HUB:
-		HoldoutStats.activeAllegiance = Database.ALLEGIANCES[Database.Allegiance.NO_SAFE_HAVEN]
+		HoldoutStats.activeAllegiance = Database.ALLEGIANCES[Database.Allegiance.WAR]
 		_set_arena_allegiance_ui()
 		
 		if selectedOpponentModifier:
@@ -1553,7 +1554,7 @@ func _setup_removal_container() -> void:
 	
 	_select_removal_cards()
 	
-	await _populate_removal_deck_view()
+	_clear_removal_deck_view()
 	
 	removalDisplayedHealth = HoldoutStats.playerHealthValue
 	$"RemovalContainer/Player Box/PlayerHead".texture = Database.get_avatar_head_texture(_get_removal_head_base_path() + "Neutral.png")
@@ -1896,9 +1897,7 @@ func _apply_selected_removals() -> void:
 
 func _populate_removal_deck_view() -> void:
 	simulatedRemovalInfections.clear()
-	
-	for child in removalDeckViewGrid.get_children():
-		child.queue_free()
+	_clear_removal_deck_view()
 	
 	var characterDeck = Database.build_run_deck(Database.standardCharacterDeck)
 	var supportDeck = Database.build_run_deck(Database.standardSupportDeck)
@@ -1932,6 +1931,10 @@ func _populate_removal_deck_view() -> void:
 			processedThisFrame = 0
 			await get_tree().process_frame
 
+func _clear_removal_deck_view() -> void:
+	for child in removalDeckViewGrid.get_children():
+		child.queue_free()
+	removalDeckViewPopulated = false
 
 func _add_removal_deck_view_card(key: String, isCharacter: bool) -> void:
 	var wrapper = Control.new()
@@ -2125,6 +2128,8 @@ func _hide_removal_deck(viewDeckOnly: bool = false) -> void:
 	
 	isShowingRemovalDeck = false
 	isAnimatingRemovalDeck = false
+	
+	_clear_removal_deck_view()
 
 
 func _hide_removal_buttons() -> void:
@@ -2433,6 +2438,9 @@ func _on_view_deck_button_pressed() -> void:
 		$"RemovalContainer/View Deck Button/Text".text = "View Decks"
 		await _hide_removal_deck()
 	else:
+		if not removalDeckViewPopulated:
+			await _populate_removal_deck_view()
+			removalDeckViewPopulated = true
 		$"RemovalContainer/View Deck Button/Text".text = "View Opponent"
 		await _show_removal_deck()
 

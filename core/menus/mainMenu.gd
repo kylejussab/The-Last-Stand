@@ -67,6 +67,7 @@ func _ready() -> void:
 	if OS.has_feature("web"):
 		$mainButtonContainer/QuitButton.hide()
 
+
 func pulse_text():
 	var pulse = create_tween().set_loops()
 	

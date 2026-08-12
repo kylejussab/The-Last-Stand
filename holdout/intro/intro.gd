@@ -13,7 +13,7 @@ var lineSpacing: float = 80.0
 var widthAmplitude: float = 160.0
 var heightAmplitude: float = 75.0
 var orbitSpeed: float = 9.0
-var targetScale: float = 0.05
+var targetScale: float = 0.5
 var peelDelay: float = 0.15
 
 var delayBeforeTransition: float = 4.5

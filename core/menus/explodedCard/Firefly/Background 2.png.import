@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c4bc24sgww2ub"
-path="res://.godot/imported/Background 2.png-1df6a4beff451b0b4f15d504ec8c5a89.ctex"
+path.s3tc="res://.godot/imported/Background 2.png-1df6a4beff451b0b4f15d504ec8c5a89.s3tc.ctex"
+path.etc2="res://.godot/imported/Background 2.png-1df6a4beff451b0b4f15d504ec8c5a89.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://core/menus/explodedCard/Firefly/Background 2.png"
-dest_files=["res://.godot/imported/Background 2.png-1df6a4beff451b0b4f15d504ec8c5a89.ctex"]
+dest_files=["res://.godot/imported/Background 2.png-1df6a4beff451b0b4f15d504ec8c5a89.s3tc.ctex", "res://.godot/imported/Background 2.png-1df6a4beff451b0b4f15d504ec8c5a89.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

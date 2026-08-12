@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b80306d04tx3i"
-path="res://.godot/imported/Clicker 2.png-ab88c7f4b65ca7bf759117b69cba3b81.ctex"
+path.s3tc="res://.godot/imported/Clicker 2.png-ab88c7f4b65ca7bf759117b69cba3b81.s3tc.ctex"
+path.etc2="res://.godot/imported/Clicker 2.png-ab88c7f4b65ca7bf759117b69cba3b81.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://core/menus/explodedCard/Infected/Clicker 2.png"
-dest_files=["res://.godot/imported/Clicker 2.png-ab88c7f4b65ca7bf759117b69cba3b81.ctex"]
+dest_files=["res://.godot/imported/Clicker 2.png-ab88c7f4b65ca7bf759117b69cba3b81.s3tc.ctex", "res://.godot/imported/Clicker 2.png-ab88c7f4b65ca7bf759117b69cba3b81.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

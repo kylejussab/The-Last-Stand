@@ -978,6 +978,7 @@ text = "SELECTED"
 horizontal_alignment = 1
 
 [node name="RemovalContainer" type="Control" parent="."]
+visible = false
 anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1080.0

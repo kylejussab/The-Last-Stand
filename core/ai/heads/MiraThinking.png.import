@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://coai58kbrypk1"
-path="res://.godot/imported/MiraThinking.png-a9d31cf2cef38cb549b8da0a155497da.ctex"
+path.s3tc="res://.godot/imported/MiraThinking.png-a9d31cf2cef38cb549b8da0a155497da.s3tc.ctex"
+path.etc2="res://.godot/imported/MiraThinking.png-a9d31cf2cef38cb549b8da0a155497da.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://core/ai/heads/MiraThinking.png"
-dest_files=["res://.godot/imported/MiraThinking.png-a9d31cf2cef38cb549b8da0a155497da.ctex"]
+dest_files=["res://.godot/imported/MiraThinking.png-a9d31cf2cef38cb549b8da0a155497da.s3tc.ctex", "res://.godot/imported/MiraThinking.png-a9d31cf2cef38cb549b8da0a155497da.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

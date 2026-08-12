@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cy454ixj5txgo"
-path="res://.godot/imported/Yara 2.png-d188834c5c877f9b4a783c8a4a7a9766.ctex"
+path.s3tc="res://.godot/imported/Yara 2.png-d188834c5c877f9b4a783c8a4a7a9766.s3tc.ctex"
+path.etc2="res://.godot/imported/Yara 2.png-d188834c5c877f9b4a783c8a4a7a9766.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://core/menus/explodedCard/Seraphite/Yara 2.png"
-dest_files=["res://.godot/imported/Yara 2.png-d188834c5c877f9b4a783c8a4a7a9766.ctex"]
+dest_files=["res://.godot/imported/Yara 2.png-d188834c5c877f9b4a783c8a4a7a9766.s3tc.ctex", "res://.godot/imported/Yara 2.png-d188834c5c877f9b4a783c8a4a7a9766.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

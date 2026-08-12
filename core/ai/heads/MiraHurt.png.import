@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://d1i6fmah3iube"
-path="res://.godot/imported/MiraHurt.png-60ff04e46c3adbe23356205fad589f67.ctex"
+path.s3tc="res://.godot/imported/MiraHurt.png-60ff04e46c3adbe23356205fad589f67.s3tc.ctex"
+path.etc2="res://.godot/imported/MiraHurt.png-60ff04e46c3adbe23356205fad589f67.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://core/ai/heads/MiraHurt.png"
-dest_files=["res://.godot/imported/MiraHurt.png-60ff04e46c3adbe23356205fad589f67.ctex"]
+dest_files=["res://.godot/imported/MiraHurt.png-60ff04e46c3adbe23356205fad589f67.s3tc.ctex", "res://.godot/imported/MiraHurt.png-60ff04e46c3adbe23356205fad589f67.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

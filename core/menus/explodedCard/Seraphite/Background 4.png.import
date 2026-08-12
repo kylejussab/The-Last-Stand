@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://db7dh864xrnkk"
-path="res://.godot/imported/Background 4.png-796caf1f99003aa828b6e35d566e57e6.ctex"
+path.s3tc="res://.godot/imported/Background 4.png-796caf1f99003aa828b6e35d566e57e6.s3tc.ctex"
+path.etc2="res://.godot/imported/Background 4.png-796caf1f99003aa828b6e35d566e57e6.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://core/menus/explodedCard/Seraphite/Background 4.png"
-dest_files=["res://.godot/imported/Background 4.png-796caf1f99003aa828b6e35d566e57e6.ctex"]
+dest_files=["res://.godot/imported/Background 4.png-796caf1f99003aa828b6e35d566e57e6.s3tc.ctex", "res://.godot/imported/Background 4.png-796caf1f99003aa828b6e35d566e57e6.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
