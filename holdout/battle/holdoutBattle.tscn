@@ -1,4 +1,4 @@
-[gd_scene load_steps=123 format=3 uid="uid://dgb52shq4jcyg"]
+[gd_scene load_steps=124 format=3 uid="uid://dgb52shq4jcyg"]
 
 [ext_resource type="Script" uid="uid://dfohy7ltt78s3" path="res://core/save/gameStats.gd" id="1_v4gi3"]
 [ext_resource type="Script" uid="uid://c3p2rmoacsirj" path="res://core/inputManager.gd" id="2_m3a1y"]
@@ -54,6 +54,7 @@
 [ext_resource type="PackedScene" uid="uid://cc635drs7575" path="res://holdout/hub/holdoutHub.tscn" id="51_f3itf"]
 [ext_resource type="PackedScene" uid="uid://cfsumnxjlq1dy" path="res://holdout/tutorial/holdoutTutorial.tscn" id="52_dwb4o"]
 [ext_resource type="Texture2D" uid="uid://be0aihjd72rmo" path="res://core/menus/ui/RightClickIcon.png" id="52_k20ls"]
+[ext_resource type="Script" uid="uid://cmo3mbib1voks" path="res://holdout/arena/factionHandSelector.gd" id="54_dwb4o"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jyhfs"]
 size = Vector2(140, 196)
@@ -3268,6 +3269,19 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_a8y0u")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_jkv2x")
 text = "MAIN MENU"
 alignment = 0
+
+[node name="factionHandSelector" type="Node2D" parent="arena"]
+unique_name_in_owner = true
+z_index = 600
+script = ExtResource("54_dwb4o")
+
+[node name="fade" type="ColorRect" parent="arena/factionHandSelector"]
+visible = false
+modulate = Color(1, 1, 1, 0)
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
 
 [node name="pauseIcon" type="Node2D" parent="."]
 unique_name_in_owner = true

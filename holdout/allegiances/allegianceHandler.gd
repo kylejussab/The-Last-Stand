@@ -49,6 +49,9 @@ func get_forced_draw_faction() -> String:
 func clear_forced_draw() -> void:
 	pass
 
+func get_spawn_bonus(_faction: String) -> int:
+	return 0
+
 func _try_hunt(winningCard: Node2D, losingCard: Node2D, anyFactionExceptWLF: bool = false) -> bool:
 	if winningCard.faction != "WLF":
 		return false

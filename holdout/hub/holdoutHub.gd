@@ -212,7 +212,7 @@ func show_hub() -> void:
 	const DEBUG_SKIP_HUB: bool = false
 	
 	if DEBUG_SKIP_HUB:
-		HoldoutStats.activeAllegiance = Database.ALLEGIANCES[Database.Allegiance.WAR]
+		HoldoutStats.activeAllegiance = Database.ALLEGIANCES[Database.Allegiance.WHATEVER_IT_TAKES]
 		_set_arena_allegiance_ui()
 		
 		if selectedOpponentModifier:

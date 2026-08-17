@@ -306,7 +306,7 @@ var AVATARS = {
 } 
 
 const OPPONENT_HEALTH_AMOUNTS: Array[int] = [
-	1, # Round 1
+	13, # Round 1
 	15, # Round 2
 	17, # Round 3
 	19, # Round 4
@@ -621,6 +621,16 @@ enum Allegiance {
 }
 
 const ALLEGIANCE_HANDLERS = {
+	Allegiance.COMMON_CAUSE: "res://holdout/allegiances/commonCauseHandler.gd",
+	Allegiance.JUST_CARGO: "res://holdout/allegiances/justCargoHandler.gd",
+	Allegiance.THE_RIGHT_PEOPLE: "res://holdout/allegiances/theRightPeopleHandler.gd",
+	Allegiance.WHATEVER_IT_TAKES: "res://holdout/allegiances/whateverItTakesHandler.gd",
+	Allegiance.DIVIDED_LOYALTIES: "res://holdout/allegiances/dividedLoyaltiesHandler.gd",
+	Allegiance.SCAVENGERS_DUE: "res://holdout/allegiances/scavengersDueHandler.gd",
+	Allegiance.NECESSARY_COMPROMISE: "res://holdout/allegiances/necessaryCompromiseHandler.gd",
+	Allegiance.THE_LIGHT: "res://holdout/allegiances/theLightHandler.gd",
+	Allegiance.UNLIKELY_ALLIES: "res://holdout/allegiances/unlikelyAlliesHandler.gd",
+	
 	Allegiance.NECROTIC_FEEDBACK: "res://holdout/allegiances/necroticFeedbackHandler.gd",
 	Allegiance.INFECTION: "res://holdout/allegiances/infectionHandler.gd",
 	Allegiance.FUNGAL_GROWTH: "res://holdout/allegiances/fungalGrowthHandler.gd",
@@ -1035,7 +1045,7 @@ const ALLEGIANCES = {
 }
 
 
-const standardCharacterDeck = [
+const standardCharacterDeck = [ 
 	"Runner", "Runner", "Runner", "Runner",
 	"Stalker", "Stalker", "Stalker",
 	"FireflySoldier", "FireflySoldier", "FireflySoldier",
@@ -1165,55 +1175,6 @@ const humanityRestoredSupportDeck = [
 	
 	"Supplements", "Supplements", 
 	"SupplyCache", "SupplyCache"
-]
-
-const tutorialCharacterDeck = [
-	"Dina", "Tommy", "Marlene", "Runner", "Li", "FireflySoldier", "Clicker",
-	
-	
-	"SeraphiteInitiate", "TheProphet", "Runner", "Ellie", "Shimmer",
-	"Isaac", "WLFSoldier", "Stalker",
-	"FireflySoldier",
-	"WLFSoldier", "Stalker",
-	"SeraphiteBrute", "SeraphiteBrute",
-	"SeraphiteInitiate",
-	"Runner",
-	
-	"Clicker", "FireflySoldier",
-	"Shambler",
-	"Emily", "Lev", "Yara",
-	"Nora", "Manny", "Alice",
-	"Bill", "Jessie", "TommyFirefly", 
-	"Riley", "Eugene", "Malik",
-	
-	"Joel",
-	
-	"Abby",
-	"Stalker",
-	"Runner",
-	"RatKing",
-]
-
-const tutorialSupportDeck = [
-	"Brick", "ScavengedParts", "Resilience", "Bottle", "TrainingManual", "SmokeBomb", "Retreat", "Bottle",
-	
-	"Rage",
-	"Brick", "Bottle", "ScavengedParts",
-	"Supplements", "Supplements",
-	"SupplyCache", "SupplyCache",
-	
-	"MedKit", "MedKit",
-	"SmokeBomb", "SmokeBomb",
-	"ScavengedParts", "Silencer",
-	"ReinforcedMelee", "ReinforcedMelee",
-	"TrainingManual",
-	"Retreat",
-	"Resilience",
-	"ShotgunShells",
-	
-	"Molotov",
-	"Rage",
-	"TrapMine", "TrapMine",
 ]
 
 # Builds a deck for the current run: takes one of the base deck consts and applies any player-driven adjustments

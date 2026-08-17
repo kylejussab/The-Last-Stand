@@ -18,6 +18,7 @@ enum Winner { TIE, PLAYER, OPPONENT }
 var lastRoundWinner: int = Winner.TIE
 var isPlayerThinking: bool = false
 var currentThinkTime: float = 0.0
+var cachedSupportStarter: int = Actor.Type.PLAYER
 
 func _process(delta: float) -> void:
 	if isRoundActive:
@@ -128,9 +129,7 @@ func remove_modifier(modifierId: int) -> void:
 	modifier_toggled.emit(modifierId, false)
 
 func get_support_starter() -> int:
-	if has_modifier(Database.Modifier.FRONT_RUNNER):
-		return Actor.Type.OPPONENT
-	return whoStartedRound
+	return cachedSupportStarter
 
 func get_stacked_odds_bonus() -> int:
 	if not has_modifier(Database.Modifier.STACKED_ODDS):
@@ -250,7 +249,9 @@ func start_new_round(isAlwaysFirst: bool, roundsPlayed: int) -> void:
 	else:
 		whoStartedRound = Actor.Type.PLAYER
 		set_phase(RoundStage.PLAYER_CHARACTER)
-		
+	
+	cachedSupportStarter = Actor.Type.OPPONENT if has_modifier(Database.Modifier.FRONT_RUNNER) else whoStartedRound
+	
 	isRoundActive = true
 
 func player_played_character() -> void:

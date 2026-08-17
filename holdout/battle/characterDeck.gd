@@ -116,6 +116,11 @@ func _create_card_instance(cardKey: String, scenePath: String, isPlayer: bool = 
 	if data.size() > 5:
 		newCard.perkDescription = data[5]
 	
+	if isPlayer and %battleManager.allegianceHandler:
+		var allegianceSpawnBonus = %battleManager.allegianceHandler.get_spawn_bonus(newCard.faction)
+		if allegianceSpawnBonus != 0:
+			newCard.value += allegianceSpawnBonus
+	
 	if %battleManager.battleEngine.has_modifier(Database.Modifier.LOUD_NOISE) and "Stealthy" in newCard.role and isPlayer:
 		var roles = Array(newCard.role.split("/"))
 		

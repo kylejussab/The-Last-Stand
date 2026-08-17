@@ -36,6 +36,7 @@ var value: int
 var role: String
 var faction: String
 var perk
+var borrowedPerk = null
 var perkValueAtRoundEnd
 var canBePlayed: bool
 var perkDescription: String

@@ -42,6 +42,8 @@ var opponentSupportCard: Node2D
 var discardedCards: Array = []
 var discardedCardZIndex: int = 1
 
+var handSelectedFaction: String = ""
+
 const BACKFIRE_CAPABLE = ["Molotov", "TrapMine", "ShotgunShells", "SmokeBomb", "Brick", "Bottle"]
 const FACTION_FUNGUS_COLORS = {
 	"Firefly": ["C2A23E", "9D7F2E", "4F4119"],
@@ -999,6 +1001,9 @@ func _reset_played_cards_perks() -> void:
 		playerCharacterCard.isNullified = false
 		playerCharacterCard.isDoctrineBackfired = false
 	
+	if playerCharacterCard:
+		playerCharacterCard.borrowedPerk = null
+	
 	if opponentCharacterCard and opponentCharacterCard.perk:
 		opponentCharacterCard.get_node("value").text = str(opponentCharacterCard.value)
 		opponentCharacterCard.perkValueAppliedMidRound = 0
@@ -1624,6 +1629,13 @@ func _execute_player_mid_perk() -> void:
 		var statChange = await playerCharacterCard.perk.apply_mid_perk(playerCharacterCard, playerHand, opponentCharacterCard)
 		playerCharacterCard.perkValueAppliedMidRound = statChange if typeof(statChange) == TYPE_INT else 0
 		_log_perk_result(playerCharacterCard, statChange, true)
+	
+	if is_instance_valid(playerCharacterCard) and playerCharacterCard.borrowedPerk and playerCharacterCard.borrowedPerk.timing == "midRound" and not playerCharacterCard.isNullified:
+		await get_tree().create_timer(perkCalculationTime).timeout
+		
+		var borrowedStatChange = await playerCharacterCard.borrowedPerk.apply_mid_perk(playerCharacterCard, playerHand, opponentCharacterCard)
+		playerCharacterCard.perkValueAppliedMidRound += (borrowedStatChange if typeof(borrowedStatChange) == TYPE_INT else 0)
+		_log_perk_result(playerCharacterCard, borrowedStatChange, true)
 
 func _execute_opponent_mid_perk() -> void:
 	if is_instance_valid(opponentCharacterCard) and opponentCharacterCard.perk and opponentCharacterCard.perk.timing == "midRound" and not opponentCharacterCard.isNullified:
@@ -1672,6 +1684,10 @@ func _execute_player_char_end_perk() -> void:
 	if is_instance_valid(playerCharacterCard) and playerCharacterCard.perk and playerCharacterCard.perk.timing == "endRound" and not playerCharacterCard.isNullified:
 		var statChange = await playerCharacterCard.perk.apply_end_perk(playerCharacterCard, playerSupportCard, opponentCharacterCard, opponentSupportCard, playerHand)
 		_log_perk_result(playerCharacterCard, statChange, true)
+	
+	if is_instance_valid(playerCharacterCard) and playerCharacterCard.borrowedPerk and playerCharacterCard.borrowedPerk.timing == "endRound" and not playerCharacterCard.isNullified:
+		var borrowedStatChange = await playerCharacterCard.borrowedPerk.apply_end_perk(playerCharacterCard, playerSupportCard, opponentCharacterCard, opponentSupportCard, playerHand)
+		_log_perk_result(playerCharacterCard, borrowedStatChange, true)
 
 func _execute_opponent_char_end_perk() -> void:
 	if is_instance_valid(opponentCharacterCard) and opponentCharacterCard.perk and opponentCharacterCard.perk.timing == "endRound" and not opponentCharacterCard.isNullified:
@@ -1718,6 +1734,11 @@ func _execute_player_late_end_perk() -> void:
 		await get_tree().create_timer(perkCalculationTime).timeout
 		var statChange = await playerCharacterCard.perk.apply_end_perk(playerCharacterCard, playerSupportCard, opponentCharacterCard, opponentSupportCard, playerHand)
 		_log_perk_result(playerCharacterCard, statChange, true)
+	
+	if playerCharacterCard.borrowedPerk and playerCharacterCard.borrowedPerk.timing == "lateEndRound" and not playerCharacterCard.isNullified:
+		await get_tree().create_timer(perkCalculationTime).timeout
+		var borrowedStatChange = await playerCharacterCard.borrowedPerk.apply_end_perk(playerCharacterCard, playerSupportCard, opponentCharacterCard, opponentSupportCard, playerHand)
+		_log_perk_result(playerCharacterCard, borrowedStatChange, true)
 
 func _execute_opponent_late_end_perk() -> void:
 	if opponentCharacterCard.perk and opponentCharacterCard.perk.timing == "lateEndRound" and not opponentCharacterCard.isNullified:
@@ -1728,6 +1749,12 @@ func _execute_player_calc_perk(playerTotal: int, opponentTotal: int) -> void:
 	if playerCharacterCard.perk && playerCharacterCard.perk.timing == "calculationRound" && not playerCharacterCard.isNullified:
 		var statChange = await playerCharacterCard.perk.apply_after_calculation_perk(playerCharacterCard, playerHand, playerTotal, opponentTotal)
 		_log_perk_result(playerCharacterCard, statChange, true)
+	
+	if playerCharacterCard.borrowedPerk && playerCharacterCard.borrowedPerk.timing == "calculationRound" && not playerCharacterCard.isNullified:
+		var borrowedToAdd = playerCharacterCard.borrowedPerk.calculate_after_calculation_perk_value(playerCharacterCard, playerHand, playerTotal, opponentTotal)
+		if borrowedToAdd != 0:
+			playerCharacterCard.perkValueAtRoundEnd = (playerCharacterCard.perkValueAtRoundEnd if playerCharacterCard.perkValueAtRoundEnd else 0) + borrowedToAdd
+			_log_perk_result(playerCharacterCard, borrowedToAdd, true)
 
 func _execute_opponent_calc_perk(playerTotal: int, opponentTotal: int) -> void:
 	if opponentCharacterCard.perk && opponentCharacterCard.perk.timing == "calculationRound" && not opponentCharacterCard.isNullified:
@@ -1806,6 +1833,7 @@ func get_arena_save_dict() -> Dictionary:
 	arenaData["playerHand"] = _get_card_array_save_data(playerHand)
 	arenaData["opponentHand"] = _get_card_array_save_data(opponentHand)
 	arenaData["discardedCards"] = _get_card_array_save_data(discardedCards)
+	arenaData["handSelectedFaction"] = handSelectedFaction
 	arenaData["pendingDeepWoundsBonus"] = pendingDeepWoundsBonus
 	arenaData["pendingDeepWoundsBonus"] = pendingDeepWoundsBonus
 	
@@ -1919,6 +1947,8 @@ func _load_game_from_snapshot() -> void:
 	battleEngine.isRoundActive = true
 	%pauseIcon.show()
 	%bubbleContainer.render_active_modifiers()
+	
+	handSelectedFaction = arena.get("handSelectedFaction", "")
 	
 	# Show active allegiance
 	if not HoldoutStats.activeAllegiance.is_empty():
