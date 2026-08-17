@@ -208,7 +208,6 @@ layout_mode = 0
 offset_top = 42.5
 offset_right = 430.0
 offset_bottom = 117.5
-mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_g6hjp")
 
 [node name="Icon" type="Sprite2D" parent="CurrentAllegiance/Box"]
@@ -239,6 +238,20 @@ theme_override_fonts/normal_font = SubResource("FontVariation_qoiux")
 theme_override_font_sizes/normal_font_size = 16
 text = "Faction Tier 9"
 horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Description" type="RichTextLabel" parent="CurrentAllegiance/Box"]
+layout_mode = 0
+offset_left = 62.5
+offset_top = 65.0
+offset_right = 392.5
+offset_bottom = 165.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
+theme_override_fonts/normal_font = SubResource("FontVariation_qoiux")
+theme_override_font_sizes/normal_font_size = 16
+text = "Allegiance Description"
+horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="OpponentBox" type="Panel" parent="."]
@@ -1285,6 +1298,8 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_oeskt")
 text = "CONFIRM"
 alignment = 0
 
+[connection signal="mouse_entered" from="CurrentAllegiance/Box" to="." method="_on_current_allegiance_box_mouse_entered"]
+[connection signal="mouse_exited" from="CurrentAllegiance/Box" to="." method="_on_current_allegiance_box_mouse_exited"]
 [connection signal="gui_input" from="ModifierContainer/Modifier 1" to="." method="_on_modifier_1_gui_input"]
 [connection signal="mouse_entered" from="ModifierContainer/Modifier 1" to="." method="_on_modifier_1_mouse_entered"]
 [connection signal="mouse_exited" from="ModifierContainer/Modifier 1" to="." method="_on_modifier_1_mouse_exited"]

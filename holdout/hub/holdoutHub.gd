@@ -42,6 +42,13 @@ var allegianceSlotsActive: Array
 var selectedAllegianceIndex: int = -1
 var allowAllegianceSelections: bool = false
 
+var allegianceHoverTween: Tween
+var allegianceBoxExpanded: bool = false
+
+const CURRENT_ALLEGIANCE_BASE_HEIGHT: float = 75.0
+const CURRENT_ALLEGIANCE_EXPANDED_HEIGHT: float = 180.0
+const CURRENT_ALLEGIANCE_GROWTH_AMOUNT: float = CURRENT_ALLEGIANCE_EXPANDED_HEIGHT - CURRENT_ALLEGIANCE_BASE_HEIGHT
+
 const ALLEGIANCE_FACTIONS = ["Firefly", "Infected", "Jackson", "Seraphite", "WLF"]
 
 @onready var fungusSlotOne: Control = $"AllegianceContainer/Fungus A1"
@@ -450,10 +457,17 @@ func _setup_opponent_container() -> void:
 	# For selected allegiance
 	$CurrentAllegiance.global_position = Vector2(150, screenSize.y + 250)
 	
+	$CurrentAllegiance.size.y = 75
+	$CurrentAllegiance/Box.mouse_filter = Control.MOUSE_FILTER_STOP
+	$CurrentAllegiance/Box/Description.modulate.a = 0
+	
+	allegianceBoxExpanded = false
+	
 	if HoldoutStats.activeAllegiance:
 		$CurrentAllegiance/Box/Icon.texture = load(HoldoutStats.activeAllegiance.icon)
 		$CurrentAllegiance/Box/Name.text = HoldoutStats.activeAllegiance.name
 		$CurrentAllegiance/Box/Tier.text = HoldoutStats.activeAllegiance.faction + " Tier " + str(HoldoutStats.activeAllegiance.tier)
+		$CurrentAllegiance/Box/Description.text = HoldoutStats.activeAllegiance.description
 		var colors: Array = FACTION_FUNGUS_COLORS.get(HoldoutStats.activeAllegiance.faction, ["ffffff", "ffffff", "ffffff"])
 		$"CurrentAllegiance/2".modulate = Color(colors[1])
 		$"CurrentAllegiance/3".modulate = Color(colors[2])
@@ -654,6 +668,82 @@ func _hide_opponent_container() -> void:
 	
 	await tween.finished
 
+func _on_current_allegiance_box_mouse_entered() -> void:
+	if HoldoutStats.activeAllegiance.is_empty():
+		return
+	
+	if allegianceBoxExpanded:
+		return
+	
+	allegianceBoxExpanded = true
+	AudioManager.play_card_hover()
+	
+	if allegianceHoverTween and allegianceHoverTween.is_valid():
+		allegianceHoverTween.kill()
+	
+	var shouldMoveModifiers = isModifierRound and (isAllegianceRound or isCardRemovalRound) and modifierSelected
+	var baseY = _get_modifier_base_positions_y() if shouldMoveModifiers else []
+	
+	$CurrentAllegiance/Box/Description.modulate.a = 0
+	
+	var tween = create_tween()
+	allegianceHoverTween = tween
+	
+	tween.set_trans(Tween.TRANS_BACK)
+	tween.set_ease(Tween.EASE_OUT)
+	
+	tween.tween_property($CurrentAllegiance/Box, "size:y", CURRENT_ALLEGIANCE_EXPANDED_HEIGHT, 0.3)
+	
+	if shouldMoveModifiers:
+		tween.parallel().tween_property(modifierSlotOne, "position:y", baseY[0] + CURRENT_ALLEGIANCE_GROWTH_AMOUNT, 0.3)
+		tween.parallel().tween_property(modifierSlotTwo, "position:y", baseY[1] + CURRENT_ALLEGIANCE_GROWTH_AMOUNT, 0.3)
+		tween.parallel().tween_property(modifierSlotThree, "position:y", baseY[2] + CURRENT_ALLEGIANCE_GROWTH_AMOUNT, 0.3)
+	
+	tween.tween_property($CurrentAllegiance/Box/Description, "modulate:a", 1, 0.3)
+	
+	await tween.finished
+
+func _on_current_allegiance_box_mouse_exited() -> void:
+	if HoldoutStats.activeAllegiance.is_empty():
+		return
+	
+	if !allegianceBoxExpanded:
+		return
+	
+	allegianceBoxExpanded = false
+	AudioManager.play_card_hover()
+	
+	if allegianceHoverTween and allegianceHoverTween.is_valid():
+		allegianceHoverTween.kill()
+	
+	$CurrentAllegiance/Box/Description.modulate.a = 0
+	
+	var shouldMoveModifiers = isModifierRound and (isAllegianceRound or isCardRemovalRound) and modifierSelected
+	var baseY = _get_modifier_base_positions_y() if shouldMoveModifiers else []
+	
+	var tween = create_tween()
+	allegianceHoverTween = tween
+	
+	tween.set_trans(Tween.TRANS_BACK)
+	tween.set_ease(Tween.EASE_OUT)
+	
+	tween.tween_property($CurrentAllegiance/Box, "size:y", CURRENT_ALLEGIANCE_BASE_HEIGHT, 0.3)
+	
+	if shouldMoveModifiers:
+		tween.parallel().tween_property(modifierSlotOne, "position:y", baseY[0], 0.3)
+		tween.parallel().tween_property(modifierSlotTwo, "position:y", baseY[1], 0.3)
+		tween.parallel().tween_property(modifierSlotThree, "position:y", baseY[2], 0.3)
+	
+	await tween.finished
+
+func _get_modifier_base_positions_y() -> Array:
+	var currentGrowth = $CurrentAllegiance/Box.size.y - CURRENT_ALLEGIANCE_BASE_HEIGHT
+	return [
+		modifierSlotOne.position.y - currentGrowth,
+		modifierSlotTwo.position.y - currentGrowth,
+		modifierSlotThree.position.y - currentGrowth,
+	]
+
 # Modifier
 func _setup_modifier_container() -> void:
 	modifierSlotsActive = [0, 0, 0]
@@ -824,16 +914,19 @@ func _animate_modifier_container_three() -> void:
 	modifierSlotOne.get_node("Multiplier").modulate.a = 0
 	modifierSlotOne.get_node("Line").modulate.a = 0
 	modifierSlotOne.get_node("Duration").modulate.a = 0
+	modifierSlotOne.get_node("Selected").modulate.a = 0
 	modifierSlotTwo.get_node("Name").modulate.a = 0
 	modifierSlotTwo.get_node("Description").modulate.a = 0
 	modifierSlotTwo.get_node("Multiplier").modulate.a = 0
 	modifierSlotTwo.get_node("Line").modulate.a = 0
 	modifierSlotTwo.get_node("Duration").modulate.a = 0
+	modifierSlotTwo.get_node("Selected").modulate.a = 0
 	modifierSlotThree.get_node("Name").modulate.a = 0
 	modifierSlotThree.get_node("Description").modulate.a = 0
 	modifierSlotThree.get_node("Multiplier").modulate.a = 0
 	modifierSlotThree.get_node("Line").modulate.a = 0
 	modifierSlotThree.get_node("Duration").modulate.a = 0
+	modifierSlotThree.get_node("Selected").modulate.a = 0
 	
 	AudioManager.play_move()
 	
