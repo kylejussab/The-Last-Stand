@@ -1,4 +1,4 @@
-[gd_scene load_steps=124 format=3 uid="uid://dgb52shq4jcyg"]
+[gd_scene load_steps=126 format=3 uid="uid://dgb52shq4jcyg"]
 
 [ext_resource type="Script" uid="uid://dfohy7ltt78s3" path="res://core/save/gameStats.gd" id="1_v4gi3"]
 [ext_resource type="Script" uid="uid://c3p2rmoacsirj" path="res://core/inputManager.gd" id="2_m3a1y"]
@@ -27,7 +27,9 @@
 [ext_resource type="Texture2D" uid="uid://8hw6od81twwb" path="res://holdout/arena/ui/SupportCardSlot.png" id="25_r4u3h"]
 [ext_resource type="Texture2D" uid="uid://c6lrinhn8btly" path="res://holdout/arena/ui/CharacterCardSlot.png" id="26_iub25"]
 [ext_resource type="Texture2D" uid="uid://dd57qjg2itlsi" path="res://holdout/allegiances/fungus/CA3.png" id="27_egwbx"]
+[ext_resource type="Texture2D" uid="uid://b21gjmvti45rp" path="res://holdout/arena/ui/CharacterIcon.png" id="27_oyyju"]
 [ext_resource type="Texture2D" uid="uid://d4ge0yb1rledw" path="res://holdout/arena/ui/HeadCircle.png" id="27_yf0jv"]
+[ext_resource type="Texture2D" uid="uid://co3g47n5nw68d" path="res://holdout/arena/ui/SupportIcon.png" id="28_bltor"]
 [ext_resource type="Texture2D" uid="uid://clln5f4kvkeeb" path="res://holdout/allegiances/fungus/CA2.png" id="28_dwb4o"]
 [ext_resource type="Texture2D" uid="uid://ct3dvs5fypuo1" path="res://holdout/arena/ui/HeartIcon.png" id="28_kvoyu"]
 [ext_resource type="Script" uid="uid://bsauufx1n4tot" path="res://core/menus/subcomponents/phaseTracker.gd" id="29_2g8kw"]
@@ -1737,6 +1739,49 @@ texture = ExtResource("25_r4u3h")
 position = Vector2(825, 455)
 scale = Vector2(0.24000001, 0.24000001)
 texture = ExtResource("26_iub25")
+
+[node name="characterSupportIndicator" type="Control" parent="arena/background/static"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 0
+offset_top = 700.0
+offset_right = 1920.0
+offset_bottom = 780.0
+mouse_filter = 2
+
+[node name="characterIcon" type="Sprite2D" parent="arena/background/static/characterSupportIndicator"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.19607843)
+position = Vector2(387.5, 40)
+scale = Vector2(0.075, 0.075)
+texture = ExtResource("27_oyyju")
+
+[node name="supportIcon" type="Sprite2D" parent="arena/background/static/characterSupportIndicator"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.19607843)
+position = Vector2(1112.5, 40)
+scale = Vector2(0.075, 0.075)
+texture = ExtResource("28_bltor")
+
+[node name="characterLine" type="ColorRect" parent="arena/background/static/characterSupportIndicator"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.19607843)
+layout_mode = 0
+offset_left = 125.0
+offset_top = 70.0
+offset_right = 650.0
+offset_bottom = 71.0
+mouse_filter = 2
+
+[node name="supportLine" type="ColorRect" parent="arena/background/static/characterSupportIndicator"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.19607843)
+layout_mode = 0
+offset_left = 850.0
+offset_top = 70.0
+offset_right = 1375.0
+offset_bottom = 71.0
+mouse_filter = 2
 
 [node name="currentAllegiance" type="Control" parent="arena/background"]
 unique_name_in_owner = true

@@ -151,6 +151,20 @@ func initialize_game() -> void:
 	var tween = get_tree().create_tween()
 	tween.tween_property(%phaseTracker, "modulate:a", 1.0, perkCalculationTime)
 	
+	if GameStats.showHoldoutCharacterSupportIndicator:
+		%characterLine.position.x = %playerHand.calculate_card_position(0)
+		%characterIcon.position.x = %playerHand.calculate_card_position(0) + 262.5
+		
+		%supportLine.position.x = %playerHand.calculate_card_position(4)
+		%supportLine.size.x = (525.0 / 3.0)
+		%supportIcon.position.x = %playerHand.calculate_card_position(4) + (262.5 / 3.0)
+		
+		if battleEngine.has_modifier(Database.Modifier.SEVERED_SUPPLY):
+			%supportLine.size.x = 525.0
+			%supportIcon.position.x = %playerHand.calculate_card_position(4) + 262.5
+		
+		tween.parallel().tween_property(%characterSupportIndicator, "modulate:a", 1.0, perkCalculationTime)
+	
 	battleEngine.start_new_round(battleEngine.has_modifier(Database.Modifier.FRONT_RUNNER), 1)
 	
 	ui.set_indicator(Actor.Type.PLAYER)
@@ -265,6 +279,12 @@ func _on_player_character_played(card: Node2D) -> void:
 	else:
 		battleEngine.player_played_character()
 		_execute_opponent_character_play()
+	
+	if GameStats.showHoldoutCharacterSupportIndicator:
+		var tween = get_tree().create_tween()
+		tween.parallel().tween_property(%characterSupportIndicator, "modulate:a", 0.0, perkCalculationTime)
+		GameStats.showHoldoutCharacterSupportIndicator = false
+		GameStats.save_game()
 
 func _execute_opponent_character_play() -> void:
 	opponentPlayedCharacterThisRound = true

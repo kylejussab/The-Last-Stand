@@ -7,6 +7,7 @@ var gameMode: Mode = Mode.MAIN_MENU
 
 var totalInGameTimePlayed: float = 0.0
 var showHoldoutTutorial: bool = true 
+var showHoldoutCharacterSupportIndicator: bool = true
 var rations: int = 0
 
 func _ready() -> void:
@@ -16,6 +17,7 @@ func _ready() -> void:
 		totalInGameTimePlayed = saveData.get("totalInGameTimePlayed", 0.0)
 		rations = saveData.get("rations", 0)
 		showHoldoutTutorial = saveData.get("showHoldoutTutorial", true)
+		showHoldoutCharacterSupportIndicator = saveData.get("showHoldoutCharacterSupportIndicator", true)
 		
 		holdoutRunsAttempted = saveData.get("holdoutRunsAttempted", 0)
 		holdoutBattlesWon = saveData.get("holdoutBattlesWon", 0)
@@ -115,6 +117,7 @@ func get_save_dict() -> Dictionary:
 		"totalInGameTimePlayed": totalInGameTimePlayed,
 		"rations": rations,
 		"showHoldoutTutorial": showHoldoutTutorial,
+		"showHoldoutCharacterSupportIndicator": showHoldoutCharacterSupportIndicator,
 		
 		"holdoutRunsAttempted": holdoutRunsAttempted,
 		"holdoutBattlesWon": holdoutBattlesWon,
@@ -149,6 +152,7 @@ func record_modifier_selection(modName: String) -> void:
 func reset_all_data() -> void:
 	totalInGameTimePlayed = 0.0
 	showHoldoutTutorial = true
+	showHoldoutCharacterSupportIndicator = true
 	rations = 0
 	
 	holdoutRunsAttempted = 0
