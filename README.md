@@ -1,4 +1,4 @@
-**Current Version:** `v0.5.0` (Opponent AIs)
+**Current Version:** `v0.5.1` (Opponent AIs)
 
 <img width="5335" alt="Last Stand Banner" src="https://github.com/user-attachments/assets/07732bec-68d5-4e32-acb5-a529d0c1e090" />
 
@@ -34,7 +34,7 @@ This project is **not for sale** and is **not affiliated with or endorsed by Son
   - [x] **v0.3.2:** - Difficulty curves and endless mode progression.
 - [x] **v0.4: Core Systems Integration** - Data persistence (Save/Load), In-game tutorials, and Options/Settings.
 - [ ] **v0.5: Opponent AI**
-  - [ ] **v0.5.1:** - Aligning AI behavior with specific character playstyles.
+  - [x] **v0.5.1:** - Aligning AI behavior with specific character playstyles.
   - [ ] **v0.5.2:** - Enhanced decision-making trees for faction-based logic.
 - [ ] **v0.6: Remnants Mode** - Deck building, gauntlet based game mode.
   - [ ] **v0.6.1:** - Development of the Remnants-specific gameplay loop.
