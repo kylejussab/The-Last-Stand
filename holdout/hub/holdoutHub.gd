@@ -20,11 +20,25 @@ var cardBodyFont = preload("res://core/fonts/Semibold.tres")
 @onready var modifierSlotTwo: Panel = $"ModifierContainer/Modifier 2"
 @onready var modifierSlotThree: Panel = $"ModifierContainer/Modifier 3"
 
+var modifierHoverTokenOne: int = 0
+var modifierHoverTokenTwo: int = 0
+var modifierHoverTokenThree: int = 0
+var modifierExpandTweenOne: Tween
+var modifierExpandTweenTwo: Tween
+var modifierExpandTweenThree: Tween
+
 # For Allegiance UI Component
 @onready var allegianceContainer: Control = $AllegianceContainer
 @onready var allegianceSlotOne: Panel = $"AllegianceContainer/Allegiance 1"
 @onready var allegianceSlotTwo: Panel = $"AllegianceContainer/Allegiance 2"
 @onready var allegianceSlotThree: Panel = $"AllegianceContainer/Allegiance 3"
+
+var allegianceHoverTokenOne: int = 0
+var allegianceHoverTokenTwo: int = 0
+var allegianceHoverTokenThree: int = 0
+var allegianceExpandTweenOne: Tween
+var allegianceExpandTweenTwo: Tween
+var allegianceExpandTweenThree: Tween
 
 var tierOneModifier
 var tierTwoModifier
@@ -48,6 +62,9 @@ var allegianceBoxExpanded: bool = false
 const CURRENT_ALLEGIANCE_BASE_HEIGHT: float = 75.0
 const CURRENT_ALLEGIANCE_EXPANDED_HEIGHT: float = 180.0
 const CURRENT_ALLEGIANCE_GROWTH_AMOUNT: float = CURRENT_ALLEGIANCE_EXPANDED_HEIGHT - CURRENT_ALLEGIANCE_BASE_HEIGHT
+const CURRENT_ALLEGIANCE_INFO_EXPANDED_HEIGHT: float = 250.0
+const CURRENT_ALLEGIANCE_INFO_GROWTH_AMOUNT: float = CURRENT_ALLEGIANCE_INFO_EXPANDED_HEIGHT - CURRENT_ALLEGIANCE_EXPANDED_HEIGHT
+var currentAllegianceInfoHovering: bool = false
 
 const ALLEGIANCE_FACTIONS = ["Firefly", "Infected", "Jackson", "Seraphite", "WLF"]
 
@@ -417,10 +434,11 @@ func _reset_internal_data() -> void:
 
 func _colorize_faction_terms(text: String) -> String:
 	var result := text
+	var regex := RegEx.new()
 	for faction in FACTION_FUNGUS_COLORS.keys():
-		if result.find(faction) != -1:
-			var color: String = FACTION_FUNGUS_COLORS[faction][0]
-			result = result.replace(faction, "[color=#%s]%s[/color]" % [color, faction])
+		var color: String = FACTION_FUNGUS_COLORS[faction][0]
+		regex.compile("\\b(%ss?)\\b" % faction)
+		result = regex.sub(result, "[color=#%s]$1[/color]" % color, true)
 	return result
 
 # Opponent 
@@ -468,6 +486,7 @@ func _setup_opponent_container() -> void:
 	$CurrentAllegiance.size.y = 75
 	$CurrentAllegiance/Box.mouse_filter = Control.MOUSE_FILTER_STOP
 	$CurrentAllegiance/Box/Description.modulate.a = 0
+	$CurrentAllegiance/Box/Info.modulate.a = 0
 	
 	allegianceBoxExpanded = false
 	
@@ -475,7 +494,17 @@ func _setup_opponent_container() -> void:
 		$CurrentAllegiance/Box/Icon.texture = load(HoldoutStats.activeAllegiance.icon)
 		$CurrentAllegiance/Box/Name.text = HoldoutStats.activeAllegiance.name
 		$CurrentAllegiance/Box/Tier.text = _colorize_faction_terms(HoldoutStats.activeAllegiance.faction + " Tier " + str(HoldoutStats.activeAllegiance.tier))
-		$CurrentAllegiance/Box/Description.text = _colorize_faction_terms(HoldoutStats.activeAllegiance.description)
+		
+		var descriptionText = _colorize_faction_terms(HoldoutStats.activeAllegiance.description)
+		if HoldoutStats.activeAllegiance.has("info"):
+			if descriptionText.ends_with("."):
+				descriptionText = descriptionText.substr(0, descriptionText.length() - 1)
+			descriptionText += " [img=16x16 color=#4c4c4c]res://core/menus/ui/info.png[/img]"
+		$CurrentAllegiance/Box/Description.text = descriptionText
+		
+		if HoldoutStats.activeAllegiance.has("info"):
+			$CurrentAllegiance/Box/Info.text = _colorize_faction_terms(HoldoutStats.activeAllegiance.info)
+		
 		var colors: Array = FACTION_FUNGUS_COLORS.get(HoldoutStats.activeAllegiance.faction, ["ffffff", "ffffff", "ffffff"])
 		$"CurrentAllegiance/2".modulate = Color(colors[1])
 		$"CurrentAllegiance/3".modulate = Color(colors[2])
@@ -693,6 +722,7 @@ func _on_current_allegiance_box_mouse_entered() -> void:
 	var baseY = _get_modifier_base_positions_y() if shouldMoveModifiers else []
 	
 	$CurrentAllegiance/Box/Description.modulate.a = 0
+	$CurrentAllegiance/Box/Info.modulate.a = 0
 	
 	var tween = create_tween()
 	allegianceHoverTween = tween
@@ -710,6 +740,35 @@ func _on_current_allegiance_box_mouse_entered() -> void:
 	tween.tween_property($CurrentAllegiance/Box/Description, "modulate:a", 1, 0.3)
 	
 	await tween.finished
+	
+	if !HoldoutStats.activeAllegiance.has("info"):
+		return
+	
+	currentAllegianceInfoHovering = true
+	await get_tree().create_timer(0.5).timeout
+	if !currentAllegianceInfoHovering:
+		return
+	
+	if allegianceHoverTween and allegianceHoverTween.is_valid():
+		allegianceHoverTween.kill()
+	
+	var infoTween = create_tween()
+	allegianceHoverTween = infoTween
+	
+	infoTween.set_trans(Tween.TRANS_BACK)
+	infoTween.set_ease(Tween.EASE_OUT)
+	
+	infoTween.tween_property($CurrentAllegiance/Box, "size:y", CURRENT_ALLEGIANCE_INFO_EXPANDED_HEIGHT, 0.3)
+	
+	if shouldMoveModifiers:
+		infoTween.parallel().tween_property(modifierSlotOne, "position:y", baseY[0] + CURRENT_ALLEGIANCE_GROWTH_AMOUNT + CURRENT_ALLEGIANCE_INFO_GROWTH_AMOUNT, 0.3)
+		infoTween.parallel().tween_property(modifierSlotTwo, "position:y", baseY[1] + CURRENT_ALLEGIANCE_GROWTH_AMOUNT + CURRENT_ALLEGIANCE_INFO_GROWTH_AMOUNT, 0.3)
+		infoTween.parallel().tween_property(modifierSlotThree, "position:y", baseY[2] + CURRENT_ALLEGIANCE_GROWTH_AMOUNT + CURRENT_ALLEGIANCE_INFO_GROWTH_AMOUNT, 0.3)
+	
+	infoTween.tween_property($CurrentAllegiance/Box/Info, "modulate:a", 1, 0.3)
+	
+	await infoTween.finished
+
 
 func _on_current_allegiance_box_mouse_exited() -> void:
 	if HoldoutStats.activeAllegiance.is_empty():
@@ -719,12 +778,14 @@ func _on_current_allegiance_box_mouse_exited() -> void:
 		return
 	
 	allegianceBoxExpanded = false
+	currentAllegianceInfoHovering = false
 	AudioManager.play_card_hover()
 	
 	if allegianceHoverTween and allegianceHoverTween.is_valid():
 		allegianceHoverTween.kill()
 	
 	$CurrentAllegiance/Box/Description.modulate.a = 0
+	$CurrentAllegiance/Box/Info.modulate.a = 0
 	
 	var shouldMoveModifiers = isModifierRound and (isAllegianceRound or isCardRemovalRound) and modifierSelected
 	var baseY = _get_modifier_base_positions_y() if shouldMoveModifiers else []
@@ -783,6 +844,7 @@ func _setup_modifier_container() -> void:
 		slot.get_node("Slot").position = Vector2(40, 40)
 		slot.get_node("Name").modulate.a = 0
 		slot.get_node("Description").modulate.a = 0
+		slot.get_node("Info").modulate.a = 0
 		slot.get_node("Multiplier").modulate.a = 0
 		slot.get_node("Line").modulate.a = 0
 		slot.get_node("Duration").modulate.a = 0
@@ -1000,7 +1062,17 @@ func _select_modifiers() -> void:
 
 func _update_slot_ui(modifier: Dictionary, slot: Control) -> void:
 	slot.get_node("Name").text = modifier.name
-	slot.get_node("Description").text = _colorize_faction_terms(modifier.description)
+	
+	var descriptionText = _colorize_faction_terms(modifier.description)
+	if modifier.has("info"):
+		if descriptionText.ends_with("."):
+			descriptionText = descriptionText.substr(0, descriptionText.length() - 1)
+		descriptionText += " [img=20x20 color=#4c4c4c]res://core/menus/ui/info.png[/img]"
+	slot.get_node("Description").text = descriptionText
+	
+	if modifier.has("info"):
+		slot.get_node("Info").text = _colorize_faction_terms(modifier.info)
+	
 	slot.get_node("Multiplier").text = "+ " + str(modifier.multiplier) + "x"
 	slot.get_node("Duration").text = str(modifier.duration) + " Game" + ("s" if modifier.duration > 1 else "")
 
@@ -1092,6 +1164,17 @@ func _on_modifier_1_mouse_entered() -> void:
 	var tween = create_tween()
 	tween.tween_property(modifierSlotOne, "scale", Vector2(1.05, 1.05), 0.1)
 	AudioManager.play_card_hover()
+	
+	if !tierOneModifier.has("info"):
+		return
+	
+	modifierHoverTokenOne += 1
+	var myToken = modifierHoverTokenOne
+	await get_tree().create_timer(0.5).timeout
+	if myToken != modifierHoverTokenOne:
+		return
+	
+	modifierExpandTweenOne = _reveal_modifier_info(modifierSlotOne, modifierSlotOne.get_node("Info"), modifierExpandTweenOne)
 
 func _on_modifier_1_mouse_exited() -> void:
 	if modifierSelected:
@@ -1100,6 +1183,9 @@ func _on_modifier_1_mouse_exited() -> void:
 	var tween = create_tween()
 	tween.tween_property(modifierSlotOne, "scale", Vector2(1, 1), 0.1)
 	AudioManager.play_card_hover()
+	
+	modifierHoverTokenOne += 1
+	modifierExpandTweenOne = _hide_modifier_info(modifierSlotOne, modifierSlotOne.get_node("Info"), modifierExpandTweenOne)
 
 func _on_modifier_2_mouse_entered() -> void:
 	if modifierSelected:
@@ -1108,6 +1194,17 @@ func _on_modifier_2_mouse_entered() -> void:
 	var tween = create_tween()
 	tween.tween_property(modifierSlotTwo, "scale", Vector2(1.05, 1.05), 0.1)
 	AudioManager.play_card_hover()
+	
+	if !tierTwoModifier.has("info"):
+		return
+	
+	modifierHoverTokenTwo += 1
+	var myToken = modifierHoverTokenTwo
+	await get_tree().create_timer(0.5).timeout
+	if myToken != modifierHoverTokenTwo:
+		return
+	
+	modifierExpandTweenTwo = _reveal_modifier_info(modifierSlotTwo, modifierSlotTwo.get_node("Info"), modifierExpandTweenTwo)
 
 func _on_modifier_2_mouse_exited() -> void:
 	if modifierSelected:
@@ -1116,6 +1213,9 @@ func _on_modifier_2_mouse_exited() -> void:
 	var tween = create_tween()
 	tween.tween_property(modifierSlotTwo, "scale", Vector2(1, 1), 0.1)
 	AudioManager.play_card_hover()
+	
+	modifierHoverTokenTwo += 1
+	modifierExpandTweenTwo = _hide_modifier_info(modifierSlotTwo, modifierSlotTwo.get_node("Info"), modifierExpandTweenTwo)
 
 func _on_modifier_3_mouse_entered() -> void:
 	if modifierSelected:
@@ -1124,6 +1224,17 @@ func _on_modifier_3_mouse_entered() -> void:
 	var tween = create_tween()
 	tween.tween_property(modifierSlotThree, "scale", Vector2(1.05, 1.05), 0.1)
 	AudioManager.play_card_hover()
+	
+	if !tierThreeModifier.has("info"):
+		return
+	
+	modifierHoverTokenThree += 1
+	var myToken = modifierHoverTokenThree
+	await get_tree().create_timer(0.5).timeout
+	if myToken != modifierHoverTokenThree:
+		return
+	
+	modifierExpandTweenThree = _reveal_modifier_info(modifierSlotThree, modifierSlotThree.get_node("Info"), modifierExpandTweenThree)
 
 func _on_modifier_3_mouse_exited() -> void:
 	if modifierSelected:
@@ -1132,6 +1243,43 @@ func _on_modifier_3_mouse_exited() -> void:
 	var tween = create_tween()
 	tween.tween_property(modifierSlotThree, "scale", Vector2(1, 1), 0.1)
 	AudioManager.play_card_hover()
+	
+	modifierHoverTokenThree += 1
+	modifierExpandTweenThree = _hide_modifier_info(modifierSlotThree, modifierSlotThree.get_node("Info"), modifierExpandTweenThree)
+
+func _reveal_modifier_info(slot: Panel, info: Control, currentTween: Tween) -> Tween:
+	if currentTween and currentTween.is_valid():
+		currentTween.kill()
+	
+	var tween = create_tween()
+	tween.set_trans(Tween.TRANS_CUBIC)
+	tween.set_ease(Tween.EASE_OUT)
+	
+	tween.tween_property(info, "modulate:a", 1.0, 0.2)
+	tween.parallel().tween_property(slot, "size:y", 495, 0.2)
+	tween.parallel().tween_property(slot.get_node("Multiplier"), "position:y", 405, 0.2)
+	tween.parallel().tween_property(slot.get_node("Duration"), "position:y", 405, 0.2)
+	tween.parallel().tween_property(slot.get_node("Line"), "position:y", 405, 0.2)
+	tween.parallel().tween_property(slot.get_node("Selected"), "position:y", 465, 0.2)
+	
+	return tween
+
+func _hide_modifier_info(slot: Panel, info: Control, currentTween: Tween) -> Tween:
+	if currentTween and currentTween.is_valid():
+		currentTween.kill()
+	
+	var tween = create_tween()
+	tween.set_trans(Tween.TRANS_CUBIC)
+	tween.set_ease(Tween.EASE_IN)
+	
+	tween.tween_property(info, "modulate:a", 0.0, 0.15)
+	tween.parallel().tween_property(slot, "size:y", 420, 0.15)
+	tween.parallel().tween_property(slot.get_node("Multiplier"), "position:y", 330, 0.15)
+	tween.parallel().tween_property(slot.get_node("Duration"), "position:y", 330, 0.15)
+	tween.parallel().tween_property(slot.get_node("Line"), "position:y", 330, 0.15)
+	tween.parallel().tween_property(slot.get_node("Selected"), "position:y", 390, 0.15)
+	
+	return tween
 
 func _hide_modifier_container() -> void:
 	#important, if something comes after the modifier we must do something else
@@ -1196,6 +1344,7 @@ func _setup_allegiance_container() -> void:
 		slot.get_node("Slot").position = Vector2(40, 40)
 		slot.get_node("Name").modulate.a = 0
 		slot.get_node("Description").modulate.a = 0
+		slot.get_node("Info").modulate.a = 0
 		slot.get_node("Tier").modulate.a = 0
 		slot.get_node("Selected").hide()
 	
@@ -1477,8 +1626,18 @@ func _pick_weighted_allegiance(pool: Array) -> Dictionary:
 
 func _update_allegiance_slot_ui(allegiance: Dictionary, slot: Control) -> void:
 	slot.get_node("Name").text = allegiance.name
-	slot.get_node("Description").text = _colorize_faction_terms(allegiance.description)
+	
+	var descriptionText = _colorize_faction_terms(allegiance.description)
+	if allegiance.has("info"):
+		if descriptionText.ends_with("."):
+			descriptionText = descriptionText.substr(0, descriptionText.length() - 1)
+		descriptionText += " [img=20x20 color=#4c4c4c]res://core/menus/ui/info.png[/img]"
+	slot.get_node("Description").text = descriptionText
+	
 	slot.get_node("Tier").text = _colorize_faction_terms(str(allegiance.faction) + " Tier " + str(allegiance.tier))
+	
+	if allegiance.has("info"):
+		slot.get_node("Info").text = _colorize_faction_terms(allegiance.info)
 
 func _get_allegiance_slots() -> Array:
 	return [allegianceSlotOne, allegianceSlotTwo, allegianceSlotThree]
@@ -1521,6 +1680,7 @@ func _on_allegiance_3_gui_input(event: InputEvent) -> void:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			_select_allegiance_slot(2)
 
+
 func _on_allegiance_1_mouse_entered() -> void:
 	if !allowAllegianceSelections:
 		return
@@ -1531,6 +1691,17 @@ func _on_allegiance_1_mouse_entered() -> void:
 	tween.parallel().tween_property(fungusSlotOne.get_node("2"), "scale", Vector2(1.05, 1.05), 0.1)
 	tween.parallel().tween_property(fungusSlotOne.get_node("3"), "scale", Vector2(1.05, 1.05), 0.1)
 	AudioManager.play_card_hover()
+	
+	if !allegianceOptionOne.has("info"):
+		return
+	
+	allegianceHoverTokenOne += 1
+	var myToken = allegianceHoverTokenOne
+	await get_tree().create_timer(0.5).timeout
+	if myToken != allegianceHoverTokenOne:
+		return
+	
+	_reveal_allegiance_info(allegianceSlotOne, $"AllegianceContainer/Allegiance 1/Info", allegianceExpandTweenOne)
 
 func _on_allegiance_1_mouse_exited() -> void:
 	if !allowAllegianceSelections:
@@ -1542,6 +1713,9 @@ func _on_allegiance_1_mouse_exited() -> void:
 	tween.parallel().tween_property(fungusSlotOne.get_node("2"), "scale", Vector2(1, 1), 0.1)
 	tween.parallel().tween_property(fungusSlotOne.get_node("3"), "scale", Vector2(1, 1), 0.1)
 	AudioManager.play_card_hover()
+	
+	allegianceHoverTokenOne += 1
+	_hide_allegiance_info(allegianceSlotOne, $"AllegianceContainer/Allegiance 1/Info", allegianceExpandTweenOne)
 
 func _on_allegiance_2_mouse_entered() -> void:
 	if !allowAllegianceSelections:
@@ -1553,6 +1727,17 @@ func _on_allegiance_2_mouse_entered() -> void:
 	tween.parallel().tween_property(fungusSlotTwo.get_node("2"), "scale", Vector2(1.05, 1.05), 0.1)
 	tween.parallel().tween_property(fungusSlotTwo.get_node("3"), "scale", Vector2(1.05, 1.05), 0.1)
 	AudioManager.play_card_hover()
+	
+	if !allegianceOptionTwo.has("info"):
+		return
+	
+	allegianceHoverTokenTwo += 1
+	var myToken = allegianceHoverTokenTwo
+	await get_tree().create_timer(0.5).timeout
+	if myToken != allegianceHoverTokenTwo:
+		return
+	
+	_reveal_allegiance_info(allegianceSlotTwo, $"AllegianceContainer/Allegiance 2/Info", allegianceExpandTweenTwo)
 
 func _on_allegiance_2_mouse_exited() -> void:
 	if !allowAllegianceSelections:
@@ -1564,6 +1749,9 @@ func _on_allegiance_2_mouse_exited() -> void:
 	tween.parallel().tween_property(fungusSlotTwo.get_node("2"), "scale", Vector2(1, 1), 0.1)
 	tween.parallel().tween_property(fungusSlotTwo.get_node("3"), "scale", Vector2(1, 1), 0.1)
 	AudioManager.play_card_hover()
+	
+	allegianceHoverTokenTwo += 1
+	_hide_allegiance_info(allegianceSlotTwo, $"AllegianceContainer/Allegiance 2/Info", allegianceExpandTweenTwo)
 
 func _on_allegiance_3_mouse_entered() -> void:
 	if !allowAllegianceSelections:
@@ -1575,6 +1763,17 @@ func _on_allegiance_3_mouse_entered() -> void:
 	tween.parallel().tween_property(fungusSlotThree.get_node("2"), "scale", Vector2(1.05, 1.05), 0.1)
 	tween.parallel().tween_property(fungusSlotThree.get_node("3"), "scale", Vector2(1.05, 1.05), 0.1)
 	AudioManager.play_card_hover()
+	
+	if !allegianceOptionThree.has("info"):
+		return
+	
+	allegianceHoverTokenThree += 1
+	var myToken = allegianceHoverTokenThree
+	await get_tree().create_timer(0.5).timeout
+	if myToken != allegianceHoverTokenThree:
+		return
+	
+	_reveal_allegiance_info(allegianceSlotThree, $"AllegianceContainer/Allegiance 3/Info", allegianceExpandTweenThree, true)
 
 func _on_allegiance_3_mouse_exited() -> void:
 	if !allowAllegianceSelections:
@@ -1586,6 +1785,46 @@ func _on_allegiance_3_mouse_exited() -> void:
 	tween.parallel().tween_property(fungusSlotThree.get_node("2"), "scale", Vector2(1, 1), 0.1)
 	tween.parallel().tween_property(fungusSlotThree.get_node("3"), "scale", Vector2(1, 1), 0.1)
 	AudioManager.play_card_hover()
+	
+	allegianceHoverTokenThree += 1
+	_hide_allegiance_info(allegianceSlotThree, $"AllegianceContainer/Allegiance 3/Info", allegianceExpandTweenThree, true)
+
+func _reveal_allegiance_info(slot: Panel, info: Control, currentTween: Tween, movesNumberSelected: bool = false) -> Tween:
+	if currentTween and currentTween.is_valid():
+		currentTween.kill()
+	
+	var tween = create_tween()
+	tween.set_trans(Tween.TRANS_CUBIC)
+	tween.set_ease(Tween.EASE_OUT)
+	
+	tween.tween_property(info, "modulate:a", 1.0, 0.2)
+	tween.parallel().tween_property(slot, "size:y", 495, 0.2)
+	tween.parallel().tween_property(slot.get_node("Tier"), "position:y", 405, 0.2)
+	tween.parallel().tween_property(slot.get_node("Selected"), "position:y", 465, 0.2)
+	
+	if movesNumberSelected:
+		tween.parallel().tween_property($NumberSelected, "position:y", 855, 0.2)
+	
+	return tween
+
+func _hide_allegiance_info(slot: Panel, info: Control, currentTween: Tween, movesNumberSelected: bool = false) -> Tween:
+	if currentTween and currentTween.is_valid():
+		currentTween.kill()
+	
+	var tween = create_tween()
+	tween.set_trans(Tween.TRANS_CUBIC)
+	tween.set_ease(Tween.EASE_IN)
+	
+	tween.tween_property(info, "modulate:a", 0.0, 0.15)
+	tween.parallel().tween_property(slot, "size:y", 420, 0.15)
+	tween.parallel().tween_property(slot.get_node("Tier"), "position:y", 330, 0.15)
+	tween.parallel().tween_property(slot.get_node("Selected"), "position:y", 390, 0.15)
+	
+	if movesNumberSelected:
+		tween.parallel().tween_property($NumberSelected, "position:y", 780, 0.15)
+	
+	return tween
+
 
 func _hide_allegiance_container() -> void:
 	if fungusFadeTween and fungusFadeTween.is_valid():

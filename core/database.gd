@@ -370,6 +370,7 @@ const MODIFIERS = {
 		"tier": 1,
 		"multiplier": 0.10,
 		"duration": 2,
+		"info": "Backfire: The value and perk is turned against the player who played it.",
 	},
 	Modifier.BLACK_MARKET: {
 		"id": Modifier.BLACK_MARKET,
@@ -427,6 +428,7 @@ const MODIFIERS = {
 		"tier": 2,
 		"multiplier": 0.15,
 		"duration": 1,
+		"info": "Backfire: The value and perk is turned against the player who played it.",
 	},
 	Modifier.CALCULATED_RISK: {
 		"id": Modifier.CALCULATED_RISK,
@@ -824,6 +826,7 @@ const ALLEGIANCES = {
 		"icon": "res://holdout/allegiances/icons/Infection.png",
 		"tier": 1,
 		"faction": "Infected",
+		"info": "Infect: Turns a card's faction into Infected.",
 	},
 	Allegiance.FUNGAL_GROWTH: {
 		"id": Allegiance.FUNGAL_GROWTH,
@@ -848,6 +851,7 @@ const ALLEGIANCES = {
 		"icon": "res://holdout/allegiances/icons/Mutation Chain.png",
 		"tier": 2,
 		"faction": "Infected",
+		"info": "Infected cards progress through stages: Runner → Stalker → Clicker → Shambler → Bloater → Rat King",
 	},
 	Allegiance.HORDE_MENTALITY: {
 		"id": Allegiance.HORDE_MENTALITY,
@@ -880,6 +884,7 @@ const ALLEGIANCES = {
 		"icon": "res://holdout/allegiances/icons/Violent Outbreak.png",
 		"tier": 3,
 		"faction": "Infected",
+		"info": "Infect: Turns a card's faction into Infected.",
 	},
 	
 	# Jackson
@@ -906,6 +911,7 @@ const ALLEGIANCES = {
 		"icon": "res://holdout/allegiances/icons/Shared Supplies.png",
 		"tier": 1,
 		"faction": "Jackson",
+		"info": "Backfire: The value and perk is turned against the player who played it.",
 	},
 	Allegiance.DEBT_REPAID: {
 		"id": Allegiance.DEBT_REPAID,
@@ -914,6 +920,7 @@ const ALLEGIANCES = {
 		"icon": "res://holdout/allegiances/icons/Debt Repaid.png",
 		"tier": 2,
 		"faction": "Jackson",
+		"info": "Named Companion: A specific unique character card (e.g. Lev, Yara) mentioned in another card's perk.",
 	},
 	Allegiance.FUTURE_DAYS: {
 		"id": Allegiance.FUTURE_DAYS,
@@ -938,6 +945,7 @@ const ALLEGIANCES = {
 		"icon": "res://holdout/allegiances/icons/Whoevers Needed.png",
 		"tier": 3,
 		"faction": "Jackson",
+		"info": "Named Companion: A specific unique character card (e.g. Lev, Yara) mentioned in another card's perk.",
 	},
 	Allegiance.FOUND_FAMILY: {
 		"id": Allegiance.FOUND_FAMILY,
@@ -954,6 +962,7 @@ const ALLEGIANCES = {
 		"icon": "res://holdout/allegiances/icons/Practical Wisdom.png",
 		"tier": 3,
 		"faction": "Jackson",
+		"info": "Backfire: The value and perk is turned against the player who played it.",
 	},
 	
 	# Seraphite
@@ -1004,6 +1013,7 @@ const ALLEGIANCES = {
 		"icon": "res://holdout/allegiances/icons/Split Allegiance.png",
 		"tier": 2,
 		"faction": "Seraphite",
+		"info": "Named Companion: A specific unique character card (e.g. Lev, Yara) mentioned in another card's perk.",
 	},
 	Allegiance.DARK_VEILING: {
 		"id": Allegiance.DARK_VEILING,
@@ -1020,6 +1030,7 @@ const ALLEGIANCES = {
 		"icon": "res://holdout/allegiances/icons/Doctrine of Restraint.png",
 		"tier": 3,
 		"faction": "Seraphite",
+		"info": "Backfire: The value and perk is turned against the player who played it.",
 	},
 	Allegiance.NESTED_SIN: {
 		"id": Allegiance.NESTED_SIN,
@@ -1062,6 +1073,7 @@ const ALLEGIANCES = {
 		"icon": "res://holdout/allegiances/icons/Manhunt.png",
 		"tier": 2,
 		"faction": "WLF",
+		"info": "Hunted: Seraphite and Infected cards are marked Hunted when defeated by a WLF card. Hunted opponent cards get -2 value when played.",
 	},
 	Allegiance.SCENT_TRAIL: {
 		"id": Allegiance.SCENT_TRAIL,
@@ -1070,6 +1082,7 @@ const ALLEGIANCES = {
 		"icon": "res://holdout/allegiances/icons/Scent Trail.png",
 		"tier": 2,
 		"faction": "WLF",
+		"info": "Hunted: Seraphite and Infected cards are marked Hunted when defeated by a WLF card. Hunted opponent cards get -2 value when played.",
 	},
 	Allegiance.WOLF_TERRITORY: {
 		"id": Allegiance.WOLF_TERRITORY,
@@ -1086,6 +1099,7 @@ const ALLEGIANCES = {
 		"icon": "res://holdout/allegiances/icons/Executed.png",
 		"tier": 3,
 		"faction": "WLF",
+		"info": "Hunted: Seraphite and Infected cards are marked Hunted when defeated by a WLF card. Hunted opponent cards get -2 value when played.",
 	},
 	Allegiance.WAR: {
 		"id": Allegiance.WAR,
@@ -1094,6 +1108,7 @@ const ALLEGIANCES = {
 		"icon": "res://holdout/allegiances/icons/War.png",
 		"tier": 3,
 		"faction": "WLF",
+		"info": "Hunted: Seraphite and Infected cards are marked Hunted when defeated by a WLF card. Hunted opponent cards get -2 value when played.",
 	},
 	Allegiance.NO_SAFE_HAVEN: {
 		"id": Allegiance.NO_SAFE_HAVEN,
