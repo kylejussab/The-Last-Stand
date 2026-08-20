@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://deh61a5r48o77"
-path="res://.godot/imported/Abby 1.png-f75aeaae27fde922fb87fc10f925e6cd.ctex"
+path.s3tc="res://.godot/imported/Abby 1.png-f75aeaae27fde922fb87fc10f925e6cd.s3tc.ctex"
+path.etc2="res://.godot/imported/Abby 1.png-f75aeaae27fde922fb87fc10f925e6cd.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://core/menus/explodedCard/WLF/Abby 1.png"
-dest_files=["res://.godot/imported/Abby 1.png-f75aeaae27fde922fb87fc10f925e6cd.ctex"]
+dest_files=["res://.godot/imported/Abby 1.png-f75aeaae27fde922fb87fc10f925e6cd.s3tc.ctex", "res://.godot/imported/Abby 1.png-f75aeaae27fde922fb87fc10f925e6cd.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

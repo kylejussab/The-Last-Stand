@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cal61omho1cji"
-path="res://.godot/imported/Background 4.png-5ed1ad1610c9c0a9ed37e69098d66d50.ctex"
+path.s3tc="res://.godot/imported/Background 4.png-5ed1ad1610c9c0a9ed37e69098d66d50.s3tc.ctex"
+path.etc2="res://.godot/imported/Background 4.png-5ed1ad1610c9c0a9ed37e69098d66d50.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://core/menus/explodedCard/Jackson/Background 4.png"
-dest_files=["res://.godot/imported/Background 4.png-5ed1ad1610c9c0a9ed37e69098d66d50.ctex"]
+dest_files=["res://.godot/imported/Background 4.png-5ed1ad1610c9c0a9ed37e69098d66d50.s3tc.ctex", "res://.godot/imported/Background 4.png-5ed1ad1610c9c0a9ed37e69098d66d50.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

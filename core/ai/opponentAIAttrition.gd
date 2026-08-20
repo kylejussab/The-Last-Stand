@@ -56,23 +56,23 @@ func _find_minimum_winning_card(characters: Array, supports: Array, targetValue:
 	var bestCharacter = characters[0]
 	var bestMargin = INF
 	var bestFallbackCharacter = characters[0]
-	var bestFallbackValue = _worst_score()
+	var bestFallbackValue = -1.0
 	
 	for character in characters:
 		var bestComboValue = character.value
-		if not isFlipScriptActive:
-			for support in supports:
-				var comboValue = character.value + support.value
-				if comboValue > bestComboValue:
-					bestComboValue = comboValue
 		
-		# Normally: how far above target we land. Under Flip: how far below.
-		var margin = (targetValue - bestComboValue) if isFlipScriptActive else (bestComboValue - targetValue)
+		# Support loop no longer gated behind a flip check
+		for support in supports:
+			var comboValue = character.value + support.value
+			if comboValue > bestComboValue:
+				bestComboValue = comboValue
+		
+		var margin = bestComboValue - targetValue
 		
 		if margin > 0 and margin < bestMargin:
 			bestMargin = margin
 			bestCharacter = character
-		elif margin <= 0 and _is_better_score(bestComboValue, bestFallbackValue):
+		elif margin <= 0 and bestComboValue > bestFallbackValue:
 			bestFallbackValue = bestComboValue
 			bestFallbackCharacter = character
 	
@@ -83,7 +83,6 @@ func _find_minimum_winning_card(characters: Array, supports: Array, targetValue:
 
 func choose_support_card(opponent_hand, opponent_character, player_character, _opponent_health = 99, _player_health = 99):
 	var currentDiff = opponent_character.value - player_character.value
-	var effectiveDiff = _effective_diff(currentDiff)
 	
 	var eligible = []
 	for support in opponent_hand:
@@ -93,24 +92,23 @@ func choose_support_card(opponent_hand, opponent_character, player_character, _o
 	if eligible.is_empty():
 		return null
 	
-	if effectiveDiff > 0:
+	if currentDiff > 0:
 		return null
 	
-	if not isFlipScriptActive:
-		var candidates = []
-		for support in eligible:
-			if support.cardKey in DEFENSIVE_CARDS:
-				continue
-			var score = float(support.value)
-			if support.cardKey in RISKY_CARDS:
-				score *= 0.6
-			var resultingMargin = currentDiff + score
-			if resultingMargin > 0:
-				candidates.append({"support": support, "margin": resultingMargin})
-		
-		if not candidates.is_empty():
-			candidates.sort_custom(func(a, b): return a.margin < b.margin)
-			return candidates[0].support
+	var candidates = []
+	for support in eligible:
+		if support.cardKey in DEFENSIVE_CARDS:
+			continue
+		var score = float(support.value)
+		if support.cardKey in RISKY_CARDS:
+			score *= 0.6
+		var resultingMargin = currentDiff + score
+		if resultingMargin > 0:
+			candidates.append({"support": support, "margin": resultingMargin})
+	
+	if not candidates.is_empty():
+		candidates.sort_custom(func(a, b): return a.margin < b.margin)
+		return candidates[0].support
 	
 	for support in eligible:
 		if support.cardKey == "Retreat":

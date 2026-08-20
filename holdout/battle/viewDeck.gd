@@ -13,6 +13,8 @@ const SUBHEADER_FONT_PATH = "res://core/fonts/SF-Pro-Display-Semibold.otf"
 @onready var contentContainer = $viewPanel/ScrollContainer/VBoxContainer
 @onready var cardDatabase = preload("res://core/database.gd")
 
+var simulatedInfectionCounts: Dictionary = {}
+
 @onready var soundPlayer = $AudioStreamPlayer2D
 
 var drawSounds = [
@@ -46,6 +48,7 @@ func open_deck_view(deckCaller = null):
 	_play_draw_sound()
 	
 	activeDeckReference = deckCaller
+	simulatedInfectionCounts.clear()
 	
 	if stickyHeader:
 		stickyHeader.queue_free()
@@ -63,11 +66,11 @@ func open_deck_view(deckCaller = null):
 			$viewPanel/background.add_theme_stylebox_override("panel", style)
 			
 			if%battleManager.battleEngine.has_modifier(Database.Modifier.INFECTED_DECK):
-				deckData = cardDatabase.infectedHeavyCharacterDeck.duplicate()
+				deckData = Database.build_run_deck(cardDatabase.infectedHeavyCharacterDeck)
 			elif%battleManager.battleEngine.has_modifier(Database.Modifier.HUMANITY_RESTORED):
-				deckData = cardDatabase.humanityRestoredCharacterDeck.duplicate()
+				deckData = Database.build_run_deck(cardDatabase.humanityRestoredCharacterDeck)
 			else:
-				deckData = cardDatabase.standardCharacterDeck.duplicate()
+				deckData = Database.build_run_deck(cardDatabase.standardCharacterDeck)
 			_populate_character_deck(deckData)
 		
 		elif deckCaller.name == "supportDeck":
@@ -75,11 +78,11 @@ func open_deck_view(deckCaller = null):
 			$viewPanel/background.add_theme_stylebox_override("panel", style)
 			
 			if%battleManager.battleEngine.has_modifier(Database.Modifier.INFECTED_DECK):
-				deckData = cardDatabase.infectedHeavySupportDeck.duplicate()
+				deckData = Database.build_run_deck(cardDatabase.infectedHeavySupportDeck)
 			elif%battleManager.battleEngine.has_modifier(Database.Modifier.HUMANITY_RESTORED):
-				deckData = cardDatabase.humanityRestoredSupportDeck.duplicate()
+				deckData = Database.build_run_deck(cardDatabase.humanityRestoredSupportDeck)
 			else:
-				deckData = cardDatabase.standardSupportDeck.duplicate()
+				deckData = Database.build_run_deck(cardDatabase.standardSupportDeck)
 			_populate_support_deck(deckData)
 	
 	show()
@@ -121,6 +124,12 @@ func close_deck_view():
 	activeDeckReference = null
 	isViewDeckActive = false
 	$overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
+	for child in contentContainer.get_children():
+		child.queue_free()
+	if stickyHeader:
+		stickyHeader.queue_free()
+		stickyHeader = null
 
 func _populate_character_deck(deckArray: Array):
 	_add_deck_header("Character Deck", deckArray.size())
@@ -171,11 +180,10 @@ func _add_visual_card(key, grid, isCharacter):
 	
 	elif not isCharacter and cardDatabase.SUPPORTS.has(key):
 		var data = cardDatabase.SUPPORTS[key]
-		card.value = data[0]
-		card.type = data[1]
-		card.role = data[2]
-		card.nameText = data[4]
-		if data.size() > 5: card.perkDescription = data[5]
+		card.value = data["Value"]
+		card.type = data["Type"]
+		card.nameText = data["CardText"]
+		if data.size() > 5: card.perkDescription = data["PerkText"]
 		card.faction = "Support" 
 		card.get_node("icons/faction").hide()
 	
@@ -185,6 +193,20 @@ func _add_visual_card(key, grid, isCharacter):
 	
 	if card.has_node("Area2D"): card.get_node("Area2D").queue_free()
 	if card.has_method("update_visuals"): card.update_visuals()
+	
+	if isCharacter:
+		var totalInfectedMarks = 0
+		if HoldoutStats.masterPermanentCardMarks.has("infected"):
+			totalInfectedMarks = HoldoutStats.masterPermanentCardMarks["infected"].get(key, 0)
+			
+		var visualMarksUsed = simulatedInfectionCounts.get(key, 0)
+		
+		if visualMarksUsed < totalInfectedMarks:
+			card.set_infected(true, false, true)
+			simulatedInfectionCounts[key] = visualMarksUsed + 1
+		
+		if HoldoutStats.is_hunted(key):
+			card.get_node("icons/hunted").modulate.a = 1
 	
 	if card is Control: card.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	

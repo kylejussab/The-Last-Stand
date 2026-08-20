@@ -1,4 +1,4 @@
-[gd_scene load_steps=104 format=3 uid="uid://btdd4ppvwtnvy"]
+[gd_scene load_steps=107 format=3 uid="uid://btdd4ppvwtnvy"]
 
 [ext_resource type="Script" uid="uid://bmorqef62jko2" path="res://core/menus/mainMenu.gd" id="1_l7wge"]
 [ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://core/fonts/SF-Pro-Display-Black.otf" id="2_3d1i7"]
@@ -79,6 +79,9 @@
 [ext_resource type="Texture2D" uid="uid://ben5wi8yqr143" path="res://core/menus/explodedCard/WLF/Abby 3.png" id="54_i28h7"]
 [ext_resource type="Texture2D" uid="uid://ctpi34vlnw81y" path="res://core/menus/explodedCard/WLF/Abby 2.png" id="55_jmmhi"]
 [ext_resource type="Texture2D" uid="uid://deh61a5r48o77" path="res://core/menus/explodedCard/WLF/Abby 1.png" id="56_jdjgq"]
+[ext_resource type="PackedScene" uid="uid://cfsumnxjlq1dy" path="res://holdout/tutorial/holdoutTutorial.tscn" id="65_5rmu4"]
+[ext_resource type="PackedScene" uid="uid://h2gtjb3ry55q" path="res://holdout/tutorial/onStart/holdoutTutorialOnStart.tscn" id="66_6tvjv"]
+[ext_resource type="Texture2D" uid="uid://cei73hrd1leqm" path="res://holdout/outro/icons/mods/Forsaken Honor.png" id="80_inwd2"]
 
 [sub_resource type="FontVariation" id="FontVariation_y35fp"]
 base_font = ExtResource("3_48ign")
@@ -201,13 +204,11 @@ offset_bottom = 1050.0
 [node name="Fungus 1" type="Sprite2D" parent="mainBackground"]
 position = Vector2(59.000008, -207)
 rotation = -2.073451
-scale = Vector2(0.334, 0.334)
 texture = ExtResource("4_3ut01")
 
 [node name="Fungus 2" type="Sprite2D" parent="mainBackground"]
 position = Vector2(369.00003, 1581.0001)
 rotation = -1.8151424
-scale = Vector2(0.334, 0.334)
 texture = ExtResource("4_3ut01")
 
 [node name="Infected" type="Control" parent="mainBackground"]
@@ -219,62 +220,62 @@ mouse_filter = 2
 
 [node name="Background 5" type="Sprite2D" parent="mainBackground/Infected"]
 position = Vector2(1370, 730)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("3_wnp8d")
 
 [node name="Background 4" type="Sprite2D" parent="mainBackground/Infected"]
 position = Vector2(1370, 705)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("4_apun0")
 
 [node name="Background 3" type="Sprite2D" parent="mainBackground/Infected"]
 position = Vector2(1370, 680)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("5_3ut01")
 
 [node name="Background 2" type="Sprite2D" parent="mainBackground/Infected"]
 position = Vector2(1370, 680)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("6_hib5h")
 
 [node name="Background 1" type="Sprite2D" parent="mainBackground/Infected"]
 position = Vector2(1370, 655)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("7_jprvy")
 
 [node name="Clicker 7" type="Sprite2D" parent="mainBackground/Infected"]
 position = Vector2(1370, 505)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("4_fm4j0")
 
 [node name="Clicker 6" type="Sprite2D" parent="mainBackground/Infected"]
 position = Vector2(1370, 480)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("5_mskd6")
 
 [node name="Clicker 5" type="Sprite2D" parent="mainBackground/Infected"]
 position = Vector2(1370, 455)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("6_h5ho6")
 
 [node name="Clicker 4" type="Sprite2D" parent="mainBackground/Infected"]
 position = Vector2(1370, 430)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("7_wnp8d")
 
 [node name="Clicker 3" type="Sprite2D" parent="mainBackground/Infected"]
 position = Vector2(1370, 405)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("8_apun0")
 
 [node name="Clicker 2" type="Sprite2D" parent="mainBackground/Infected"]
 position = Vector2(1370, 380)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("9_3ut01")
 
 [node name="Clicker 1" type="Sprite2D" parent="mainBackground/Infected"]
 position = Vector2(1370, 355)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("10_hib5h")
 
 [node name="Firefly" type="Control" parent="mainBackground"]
@@ -286,52 +287,52 @@ mouse_filter = 2
 
 [node name="Background 5" type="Sprite2D" parent="mainBackground/Firefly"]
 position = Vector2(1370, 730)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("16_ncccr")
 
 [node name="Background 4" type="Sprite2D" parent="mainBackground/Firefly"]
 position = Vector2(1370, 705)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("17_bpm02")
 
 [node name="Background 3" type="Sprite2D" parent="mainBackground/Firefly"]
 position = Vector2(1370, 680)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("18_ee13i")
 
 [node name="Background 2" type="Sprite2D" parent="mainBackground/Firefly"]
 position = Vector2(1370, 655)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("19_gna0j")
 
 [node name="Background 1" type="Sprite2D" parent="mainBackground/Firefly"]
 position = Vector2(1370, 630)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("20_5dob7")
 
 [node name="Marlene 5" type="Sprite2D" parent="mainBackground/Firefly"]
 position = Vector2(1370, 480)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("21_foup7")
 
 [node name="Marlene 4" type="Sprite2D" parent="mainBackground/Firefly"]
 position = Vector2(1370, 455)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("22_nhrh6")
 
 [node name="Marlene 3" type="Sprite2D" parent="mainBackground/Firefly"]
 position = Vector2(1370, 430)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("23_1vy03")
 
 [node name="Marlene 2" type="Sprite2D" parent="mainBackground/Firefly"]
 position = Vector2(1370, 405)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("24_8xhpk")
 
 [node name="Marlene 1" type="Sprite2D" parent="mainBackground/Firefly"]
 position = Vector2(1370, 380)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("25_4ricv")
 
 [node name="Jackson" type="Control" parent="mainBackground"]
@@ -343,52 +344,52 @@ mouse_filter = 2
 
 [node name="Background 5" type="Sprite2D" parent="mainBackground/Jackson"]
 position = Vector2(1370, 730)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("26_sssjr")
 
 [node name="Background 4" type="Sprite2D" parent="mainBackground/Jackson"]
 position = Vector2(1370, 705)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("27_j0gk1")
 
 [node name="Background 3" type="Sprite2D" parent="mainBackground/Jackson"]
 position = Vector2(1370, 680)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("28_n1yf7")
 
 [node name="Background 2" type="Sprite2D" parent="mainBackground/Jackson"]
 position = Vector2(1370, 655)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("29_b3856")
 
 [node name="Background 1" type="Sprite2D" parent="mainBackground/Jackson"]
 position = Vector2(1370, 630)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("30_6y6dx")
 
 [node name="Tommy 5" type="Sprite2D" parent="mainBackground/Jackson"]
 position = Vector2(1370, 480)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("31_clwq4")
 
 [node name="Tommy 4" type="Sprite2D" parent="mainBackground/Jackson"]
 position = Vector2(1370, 455)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("32_in1cc")
 
 [node name="Tommy 3" type="Sprite2D" parent="mainBackground/Jackson"]
 position = Vector2(1370, 430)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("33_vkth7")
 
 [node name="Tommy 2" type="Sprite2D" parent="mainBackground/Jackson"]
 position = Vector2(1370, 405)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("34_jfqov")
 
 [node name="Tommy 1" type="Sprite2D" parent="mainBackground/Jackson"]
 position = Vector2(1370, 380)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("35_3di16")
 
 [node name="Seraphite" type="Control" parent="mainBackground"]
@@ -400,57 +401,57 @@ mouse_filter = 2
 
 [node name="Background 5" type="Sprite2D" parent="mainBackground/Seraphite"]
 position = Vector2(1370, 730)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("36_lmnnb")
 
 [node name="Background 4" type="Sprite2D" parent="mainBackground/Seraphite"]
 position = Vector2(1370, 705)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("37_3knly")
 
 [node name="Background 3" type="Sprite2D" parent="mainBackground/Seraphite"]
 position = Vector2(1370, 680)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("38_7ounc")
 
 [node name="Background 2" type="Sprite2D" parent="mainBackground/Seraphite"]
 position = Vector2(1370, 655)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("39_jxok3")
 
 [node name="Background 1" type="Sprite2D" parent="mainBackground/Seraphite"]
 position = Vector2(1370, 630)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("40_63ad3")
 
 [node name="Yara 5" type="Sprite2D" parent="mainBackground/Seraphite"]
 position = Vector2(1370, 480)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("41_cbtt8")
 
 [node name="Yara 4" type="Sprite2D" parent="mainBackground/Seraphite"]
 position = Vector2(1370, 455)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("42_ekspt")
 
 [node name="Yara 3" type="Sprite2D" parent="mainBackground/Seraphite"]
 position = Vector2(1370, 430)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("43_sjx0n")
 
 [node name="Yara 2" type="Sprite2D" parent="mainBackground/Seraphite"]
 position = Vector2(1370, 405)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("44_majf0")
 
 [node name="Yara 1" type="Sprite2D" parent="mainBackground/Seraphite"]
 position = Vector2(1370, 380)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("45_388yq")
 
 [node name="Foreground 1" type="Sprite2D" parent="mainBackground/Seraphite"]
 position = Vector2(1370, 230)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("46_at2tn")
 
 [node name="WLF" type="Control" parent="mainBackground"]
@@ -462,52 +463,52 @@ mouse_filter = 2
 
 [node name="Background 5" type="Sprite2D" parent="mainBackground/WLF"]
 position = Vector2(1370, 730)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("47_at2tn")
 
 [node name="Background 4" type="Sprite2D" parent="mainBackground/WLF"]
 position = Vector2(1370, 705)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("48_qwbec")
 
 [node name="Background 3" type="Sprite2D" parent="mainBackground/WLF"]
 position = Vector2(1370, 680)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("49_3eyph")
 
 [node name="Background 2" type="Sprite2D" parent="mainBackground/WLF"]
 position = Vector2(1370, 655)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("50_vmwbh")
 
 [node name="Background 1" type="Sprite2D" parent="mainBackground/WLF"]
 position = Vector2(1370, 630)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("51_qqsaw")
 
 [node name="Abby 5" type="Sprite2D" parent="mainBackground/WLF"]
 position = Vector2(1370, 480)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("52_3e4g2")
 
 [node name="Abby 4" type="Sprite2D" parent="mainBackground/WLF"]
 position = Vector2(1370, 455)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("53_pyty3")
 
 [node name="Abby 3" type="Sprite2D" parent="mainBackground/WLF"]
 position = Vector2(1370, 430)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("54_i28h7")
 
 [node name="Abby 2" type="Sprite2D" parent="mainBackground/WLF"]
 position = Vector2(1370, 405)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("55_jmmhi")
 
 [node name="Abby 1" type="Sprite2D" parent="mainBackground/WLF"]
 position = Vector2(1370, 380)
-scale = Vector2(0.334, 0.334)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("56_jdjgq")
 
 [node name="Darkener" type="ColorRect" parent="mainBackground"]
@@ -779,12 +780,12 @@ offset_bottom = 40.0
 
 [node name="Background" type="Sprite2D" parent="holdoutButtonContainer"]
 position = Vector2(1350, 540)
-scale = Vector2(0.24, 0.24)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("6_tlicg")
 
 [node name="Foreground" type="Sprite2D" parent="holdoutButtonContainer"]
 position = Vector2(800, 540)
-scale = Vector2(0.24, 0.24)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("7_808lr")
 
 [node name="Heading" type="RichTextLabel" parent="holdoutButtonContainer"]
@@ -906,6 +907,12 @@ text = "STATISTICS"
 alignment = 0
 
 [node name="cardViewerMenu" parent="." instance=ExtResource("10_808lr")]
+visible = false
+
+[node name="HoldoutTutorialMenu" parent="." instance=ExtResource("65_5rmu4")]
+visible = false
+
+[node name="HoldoutTutorialOnStart" parent="." instance=ExtResource("66_6tvjv")]
 visible = false
 
 [node name="StatisticsMenu" type="Control" parent="."]
@@ -1292,9 +1299,9 @@ offset_bottom = 359.0
 [node name="Icon" type="Sprite2D" parent="StatisticsMenu/accolades/AnalysisParalysis"]
 modulate = Color(0.17254902, 0.17254902, 0.17254902, 1)
 position = Vector2(10, 0)
-scale = Vector2(0.086, 0.086)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("8_d7xfv")
-offset = Vector2(729.5, 729.5)
+offset = Vector2(125, 125)
 
 [node name="Label" type="RichTextLabel" parent="StatisticsMenu/accolades/AnalysisParalysis"]
 layout_mode = 1
@@ -1327,9 +1334,9 @@ offset_bottom = 359.0
 [node name="Icon" type="Sprite2D" parent="StatisticsMenu/accolades/Brawler"]
 modulate = Color(0.17254902, 0.17254902, 0.17254902, 1)
 position = Vector2(10, 0)
-scale = Vector2(0.086, 0.086)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("9_6aseq")
-offset = Vector2(729.5, 729.5)
+offset = Vector2(125, 125)
 
 [node name="Label" type="RichTextLabel" parent="StatisticsMenu/accolades/Brawler"]
 layout_mode = 1
@@ -1362,9 +1369,9 @@ offset_bottom = 359.0
 [node name="Icon" type="Sprite2D" parent="StatisticsMenu/accolades/Executioner"]
 modulate = Color(0.17254902, 0.17254902, 0.17254902, 1)
 position = Vector2(10, 0)
-scale = Vector2(0.086, 0.086)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("10_tlicg")
-offset = Vector2(729.5, 729.5)
+offset = Vector2(125, 125)
 
 [node name="Label" type="RichTextLabel" parent="StatisticsMenu/accolades/Executioner"]
 layout_mode = 1
@@ -1397,9 +1404,9 @@ offset_bottom = 359.0
 [node name="Icon" type="Sprite2D" parent="StatisticsMenu/accolades/GiantSlayer"]
 modulate = Color(0.17254902, 0.17254902, 0.17254902, 1)
 position = Vector2(10, 0)
-scale = Vector2(0.086, 0.086)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("11_808lr")
-offset = Vector2(729.5, 729.5)
+offset = Vector2(125, 125)
 
 [node name="Label" type="RichTextLabel" parent="StatisticsMenu/accolades/GiantSlayer"]
 layout_mode = 1
@@ -1432,9 +1439,9 @@ offset_bottom = 654.0
 [node name="Icon" type="Sprite2D" parent="StatisticsMenu/accolades/OldWounds"]
 modulate = Color(0.17254902, 0.17254902, 0.17254902, 1)
 position = Vector2(10, 0)
-scale = Vector2(0.086, 0.086)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("12_uwljm")
-offset = Vector2(729.5, 729.5)
+offset = Vector2(125, 125)
 
 [node name="Label" type="RichTextLabel" parent="StatisticsMenu/accolades/OldWounds"]
 layout_mode = 1
@@ -1467,9 +1474,9 @@ offset_bottom = 654.0
 [node name="Icon" type="Sprite2D" parent="StatisticsMenu/accolades/Purist"]
 modulate = Color(0.17254902, 0.17254902, 0.17254902, 1)
 position = Vector2(10, 0)
-scale = Vector2(0.086, 0.086)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("13_1anpv")
-offset = Vector2(729.5, 729.5)
+offset = Vector2(125, 125)
 
 [node name="Label" type="RichTextLabel" parent="StatisticsMenu/accolades/Purist"]
 layout_mode = 1
@@ -1502,9 +1509,9 @@ offset_bottom = 654.0
 [node name="Icon" type="Sprite2D" parent="StatisticsMenu/accolades/QuickDraw"]
 modulate = Color(0.17254902, 0.17254902, 0.17254902, 1)
 position = Vector2(10, 0)
-scale = Vector2(0.086, 0.086)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("14_3wx87")
-offset = Vector2(729.5, 729.5)
+offset = Vector2(125, 125)
 
 [node name="Label" type="RichTextLabel" parent="StatisticsMenu/accolades/QuickDraw"]
 layout_mode = 1
@@ -1537,9 +1544,9 @@ offset_bottom = 654.0
 [node name="Icon" type="Sprite2D" parent="StatisticsMenu/accolades/Relentless"]
 modulate = Color(0.17254902, 0.17254902, 0.17254902, 1)
 position = Vector2(10, 0)
-scale = Vector2(0.086, 0.086)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("15_5p8yk")
-offset = Vector2(729.5, 729.5)
+offset = Vector2(125, 125)
 
 [node name="Label" type="RichTextLabel" parent="StatisticsMenu/accolades/Relentless"]
 layout_mode = 1
@@ -1572,9 +1579,9 @@ offset_bottom = 949.0
 [node name="Icon" type="Sprite2D" parent="StatisticsMenu/accolades/RubberDuck"]
 modulate = Color(0.17254902, 0.17254902, 0.17254902, 1)
 position = Vector2(10, 0)
-scale = Vector2(0.086, 0.086)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("16_un3av")
-offset = Vector2(729.5, 729.5)
+offset = Vector2(125, 125)
 
 [node name="Label" type="RichTextLabel" parent="StatisticsMenu/accolades/RubberDuck"]
 layout_mode = 1
@@ -1607,9 +1614,9 @@ offset_bottom = 949.0
 [node name="Icon" type="Sprite2D" parent="StatisticsMenu/accolades/SpeedDemon"]
 modulate = Color(0.17254902, 0.17254902, 0.17254902, 1)
 position = Vector2(10, 0)
-scale = Vector2(0.086, 0.086)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("17_dtd21")
-offset = Vector2(729.5, 729.5)
+offset = Vector2(125, 125)
 
 [node name="Label" type="RichTextLabel" parent="StatisticsMenu/accolades/SpeedDemon"]
 layout_mode = 1
@@ -1642,9 +1649,9 @@ offset_bottom = 949.0
 [node name="Icon" type="Sprite2D" parent="StatisticsMenu/accolades/ThrillSeeker"]
 modulate = Color(0.17254902, 0.17254902, 0.17254902, 1)
 position = Vector2(10, 0)
-scale = Vector2(0.086, 0.086)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("18_q6vq2")
-offset = Vector2(729.5, 729.5)
+offset = Vector2(125, 125)
 
 [node name="Label" type="RichTextLabel" parent="StatisticsMenu/accolades/ThrillSeeker"]
 layout_mode = 1
@@ -1677,9 +1684,9 @@ offset_bottom = 949.0
 [node name="Icon" type="Sprite2D" parent="StatisticsMenu/accolades/Untouchable"]
 modulate = Color(0.17254902, 0.17254902, 0.17254902, 1)
 position = Vector2(10, 0)
-scale = Vector2(0.086, 0.086)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("19_7xrpc")
-offset = Vector2(729.5, 729.5)
+offset = Vector2(125, 125)
 
 [node name="Label" type="RichTextLabel" parent="StatisticsMenu/accolades/Untouchable"]
 layout_mode = 1
@@ -1709,21 +1716,21 @@ offset_bottom = 40.0
 
 [node name="1" type="Sprite2D" parent="StatisticsMenu/mvps"]
 position = Vector2(189, 719)
-scale = Vector2(0.082, 0.082)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("20_ud0v7")
-offset = Vector2(729.5, 729.5)
+offset = Vector2(125, 125)
 
 [node name="2" type="Sprite2D" parent="StatisticsMenu/mvps"]
 position = Vector2(319, 719)
-scale = Vector2(0.082, 0.082)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("20_ud0v7")
-offset = Vector2(729.5, 729.5)
+offset = Vector2(125, 125)
 
 [node name="3" type="Sprite2D" parent="StatisticsMenu/mvps"]
 position = Vector2(189, 849)
-scale = Vector2(0.082, 0.082)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("20_ud0v7")
-offset = Vector2(729.5, 729.5)
+offset = Vector2(125, 125)
 
 [node name="label" type="RichTextLabel" parent="StatisticsMenu/mvps"]
 layout_mode = 1
@@ -1752,21 +1759,21 @@ offset_bottom = 40.0
 
 [node name="1" type="Sprite2D" parent="StatisticsMenu/modifiers"]
 position = Vector2(587, 719)
-scale = Vector2(0.082, 0.082)
-texture = ExtResource("20_ud0v7")
-offset = Vector2(729.5, 729.5)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("80_inwd2")
+offset = Vector2(125, 125)
 
 [node name="2" type="Sprite2D" parent="StatisticsMenu/modifiers"]
 position = Vector2(717, 719)
-scale = Vector2(0.082, 0.082)
-texture = ExtResource("20_ud0v7")
-offset = Vector2(729.5, 729.5)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("80_inwd2")
+offset = Vector2(125, 125)
 
 [node name="3" type="Sprite2D" parent="StatisticsMenu/modifiers"]
 position = Vector2(587, 849)
-scale = Vector2(0.082, 0.082)
-texture = ExtResource("20_ud0v7")
-offset = Vector2(729.5, 729.5)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("80_inwd2")
+offset = Vector2(125, 125)
 
 [node name="label" type="RichTextLabel" parent="StatisticsMenu/modifiers"]
 layout_mode = 1
@@ -1881,7 +1888,7 @@ theme_override_colors/default_color = Color(0.17254902, 0.17254902, 0.17254902, 
 theme_override_fonts/normal_font = SubResource("FontVariation_uwljm")
 theme_override_font_sizes/normal_font_size = 18
 bbcode_enabled = true
-text = "Pre-Alpha v0.5.0"
+text = "Pre-Alpha v0.5.1"
 
 [node name="pauseIcon" type="Node2D" parent="."]
 visible = false
@@ -1889,7 +1896,7 @@ z_index = 202
 
 [node name="image" type="Sprite2D" parent="pauseIcon"]
 position = Vector2(1800, 1040)
-scale = Vector2(0.05, 0.05)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("7_ldpc3")
 
 [node name="text" type="RichTextLabel" parent="pauseIcon"]
@@ -1919,7 +1926,7 @@ z_index = 202
 
 [node name="image" type="Sprite2D" parent="holdIcon"]
 position = Vector2(1675, 1040)
-scale = Vector2(-0.05, 0.05)
+scale = Vector2(-0.5, 0.5)
 texture = ExtResource("7_ldpc3")
 
 [node name="text" type="RichTextLabel" parent="holdIcon"]
@@ -1965,6 +1972,7 @@ vertical_alignment = 1
 [connection signal="hold_complete" from="holdoutButtonContainer/NewButton" to="." method="_on_new_button_hold_complete"]
 [connection signal="mouse_entered" from="holdoutButtonContainer/NewButton" to="." method="_on_new_button_mouse_entered"]
 [connection signal="mouse_exited" from="holdoutButtonContainer/NewButton" to="." method="_on_new_button_mouse_exited"]
+[connection signal="pressed" from="holdoutButtonContainer/NewButton" to="." method="_on_new_button_pressed"]
 [connection signal="mouse_entered" from="holdoutButtonContainer/ContinueButton" to="." method="_on_continue_button_mouse_entered"]
 [connection signal="mouse_exited" from="holdoutButtonContainer/ContinueButton" to="." method="_on_continue_button_mouse_exited"]
 [connection signal="pressed" from="holdoutButtonContainer/ContinueButton" to="." method="_on_continue_button_pressed"]

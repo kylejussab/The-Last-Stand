@@ -1,20 +1,24 @@
-[gd_scene load_steps=37 format=3 uid="uid://bn88i42vic2bw"]
+[gd_scene load_steps=42 format=3 uid="uid://bn88i42vic2bw"]
 
 [ext_resource type="Script" uid="uid://df6vntpyt6v25" path="res://core/cards/opponentCard.gd" id="1_6ngam"]
 [ext_resource type="Texture2D" uid="uid://cbgv0l1d6fl7k" path="res://core/cards/art/CardBackBlank.png" id="2_4jfu0"]
 [ext_resource type="Texture2D" uid="uid://8huw5jf2orc0" path="res://core/cards/art/CardDust.png" id="2_eh2lv"]
-[ext_resource type="Texture2D" uid="uid://xm6j3gsou8ve" path="res://core/cards/art/ExampleCard.png" id="3_3qk15"]
 [ext_resource type="FontFile" uid="uid://cb6rqhjiq6408" path="res://core/fonts/SF-Pro-Display-Black.otf" id="4_3qk15"]
 [ext_resource type="Texture2D" uid="uid://ucjtxpq82kyw" path="res://holdout/modifiers/icons/Forsaken Honor.png" id="4_fgn7q"]
+[ext_resource type="Texture2D" uid="uid://cpp10iltpeo5o" path="res://core/cards/art/Jackson.png" id="4_m3iyu"]
 [ext_resource type="Texture2D" uid="uid://d4kwo20uewt85" path="res://core/cards/art/BlackCard.png" id="4_uqoa2"]
 [ext_resource type="Texture2D" uid="uid://bvx2xo56idmcx" path="res://core/cards/icons/Crafty.png" id="5_6rjld"]
 [ext_resource type="Texture2D" uid="uid://bbax35agbq4ku" path="res://core/menus/ui/GunTrigger.png" id="5_ndf7d"]
+[ext_resource type="Texture2D" uid="uid://dw6yc7ls312q4" path="res://core/cards/art/Infected.png" id="5_tkh5l"]
 [ext_resource type="Texture2D" uid="uid://dgdk6y2h230rb" path="res://core/cards/icons/Defensive.png" id="6_fgn7q"]
 [ext_resource type="Texture2D" uid="uid://je1qiwc7rlit" path="res://core/menus/ui/GunBottom.png" id="6_n0hst"]
 [ext_resource type="Texture2D" uid="uid://ckyjgdo1fykjj" path="res://core/cards/icons/Jackson.png" id="7_eh2lv"]
 [ext_resource type="Texture2D" uid="uid://bssdu3ahjvkw8" path="res://core/menus/ui/GunTop.png" id="7_vrdlr"]
 [ext_resource type="FontFile" uid="uid://di1dchl37cfhu" path="res://core/fonts/SF-Pro-Display-Semibold.otf" id="10_fgn7q"]
 [ext_resource type="Animation" uid="uid://dem7f0dxaa6wf" path="res://core/menus/ui/backfire.res" id="13_0yvlp"]
+[ext_resource type="Texture2D" uid="uid://d22oxtkx7mtq4" path="res://core/cards/huntedIcons/Hunted.png" id="13_pser6"]
+[ext_resource type="Texture2D" uid="uid://dup3hq3n5d2g1" path="res://core/cards/huntedIcons/Skull.png" id="15_sr4yt"]
+[ext_resource type="Texture2D" uid="uid://bmkfsxhe5k3qn" path="res://core/cards/huntedIcons/Crosshair.png" id="16_amnr3"]
 [ext_resource type="Texture2D" uid="uid://dv5yo07fmt2kj" path="res://core/cards/icons/Aggressive.png" id="16_vrdlr"]
 [ext_resource type="Texture2D" uid="uid://dnmti070qcnfn" path="res://core/cards/icons/Firefly.png" id="17_0yvlp"]
 [ext_resource type="Texture2D" uid="uid://churihytq1wme" path="res://holdout/arena/ui/Backfire.png" id="19_m3iyu"]
@@ -348,6 +352,90 @@ tracks/25/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 0)]
 }
+tracks/26/type = "value"
+tracks/26/imported = false
+tracks/26/enabled = true
+tracks/26/path = NodePath("huntedAnimationParts/crosshair:position")
+tracks/26/interp = 1
+tracks/26/loop_wrap = true
+tracks/26/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-35, 20)]
+}
+tracks/27/type = "value"
+tracks/27/imported = false
+tracks/27/enabled = true
+tracks/27/path = NodePath("huntedAnimationParts/crosshair:modulate")
+tracks/27/interp = 1
+tracks/27/loop_wrap = true
+tracks/27/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/28/type = "value"
+tracks/28/imported = false
+tracks/28/enabled = true
+tracks/28/path = NodePath("huntedAnimationParts/crosshair:scale")
+tracks/28/interp = 1
+tracks/28/loop_wrap = true
+tracks/28/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.1, 0.1)]
+}
+tracks/29/type = "value"
+tracks/29/imported = false
+tracks/29/enabled = true
+tracks/29/path = NodePath("huntedAnimationParts/skull:position")
+tracks/29/interp = 1
+tracks/29/loop_wrap = true
+tracks/29/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/30/type = "value"
+tracks/30/imported = false
+tracks/30/enabled = true
+tracks/30/path = NodePath("huntedAnimationParts/skull:scale")
+tracks/30/interp = 1
+tracks/30/loop_wrap = true
+tracks/30/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.1, 0.1)]
+}
+tracks/31/type = "value"
+tracks/31/imported = false
+tracks/31/enabled = true
+tracks/31/path = NodePath("huntedAnimationParts/skull:modulate")
+tracks/31/interp = 1
+tracks/31/loop_wrap = true
+tracks/31/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/32/type = "value"
+tracks/32/imported = false
+tracks/32/enabled = true
+tracks/32/path = NodePath("icons/hunted:modulate")
+tracks/32/interp = 1
+tracks/32/loop_wrap = true
+tracks/32/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
 
 [sub_resource type="Animation" id="Animation_kg30u"]
 resource_name = "cardFlip"
@@ -444,6 +532,94 @@ tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
 "times": PackedFloat32Array(0, 0.16, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_hto5k"]
+resource_name = "hunt"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("huntedAnimationParts/crosshair:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.4, 0.6, 0.7, 0.8, 1.2, 1.5),
+"transitions": PackedFloat32Array(1, 5, 1, 5, 1, 1, 1, 5),
+"update": 0,
+"values": [Vector2(-35, 20), Vector2(25, -32), Vector2(27, -34), Vector2(35, 14), Vector2(38, 15), Vector2(0, 0), Vector2(0, 0), Vector2(-55, 60)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("huntedAnimationParts/crosshair:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 1.4, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("huntedAnimationParts/crosshair:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.8, 0.9, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0.1, 0.1), Vector2(0.1, 0.1), Vector2(0.12, 0.12), Vector2(0.1, 0.1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("huntedAnimationParts/skull:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1.2, 1.5),
+"transitions": PackedFloat32Array(1, 1, 5),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 0), Vector2(-55, 60)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("huntedAnimationParts/skull:scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.1, 0.1)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("huntedAnimationParts/skull:modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.8, 0.9, 1.4, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("icons/hunted:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 1.45, 1.5),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
@@ -712,6 +888,7 @@ _data = {
 &"RESET": SubResource("Animation_sy11y"),
 &"backfire": ExtResource("13_0yvlp"),
 &"cardFlip": SubResource("Animation_kg30u"),
+&"hunt": SubResource("Animation_hto5k"),
 &"modifierIndicator": SubResource("Animation_eh2lv"),
 &"showCharacterTooltip": SubResource("Animation_tkh5l"),
 &"showPerk": SubResource("Animation_4jfu0"),
@@ -761,7 +938,12 @@ texture = ExtResource("2_4jfu0")
 
 [node name="image" type="Sprite2D" parent="."]
 scale = Vector2(0.2, 0.2)
-texture = ExtResource("3_3qk15")
+texture = ExtResource("4_m3iyu")
+
+[node name="infectedImage" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("5_tkh5l")
 
 [node name="backfireIcon" type="Node2D" parent="."]
 modulate = Color(1, 1, 1, 0)
@@ -857,10 +1039,29 @@ position = Vector2(-58.5, -43.5)
 scale = Vector2(0.095, 0.095)
 texture = ExtResource("6_fgn7q")
 
+[node name="hunted" type="Sprite2D" parent="icons"]
+modulate = Color(1, 1, 1, 0)
+position = Vector2(-58.5, 60)
+scale = Vector2(0.095, 0.095)
+texture = ExtResource("13_pser6")
+
 [node name="faction" type="Sprite2D" parent="icons"]
 position = Vector2(-58.5, 88.4)
 scale = Vector2(0.12, 0.12)
 texture = ExtResource("7_eh2lv")
+
+[node name="huntedAnimationParts" type="Node2D" parent="."]
+
+[node name="skull" type="Sprite2D" parent="huntedAnimationParts"]
+modulate = Color(1, 1, 1, 0)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("15_sr4yt")
+
+[node name="crosshair" type="Sprite2D" parent="huntedAnimationParts"]
+modulate = Color(1, 1, 1, 0)
+position = Vector2(-35, 20)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("16_amnr3")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

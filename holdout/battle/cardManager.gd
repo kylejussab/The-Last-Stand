@@ -170,6 +170,9 @@ func highlight_card(card, hovered: bool):
 	
 	if hovered:
 		if !AccessibilityData.animationsDisabled:
+			var tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+			tween.tween_property(card, "scale", Vector2(1.35, 1.35), 0.15)
+		else:
 			card.scale = Vector2(1.35, 1.35)
 		
 		if canShowPerk and !draggedCard:
@@ -197,6 +200,9 @@ func highlight_card(card, hovered: bool):
 				await animationPlayer.animation_finished
 		
 		if !AccessibilityData.animationsDisabled:
+			var tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+			tween.tween_property(card, "scale", Vector2(1, 1), 0.15)
+		else:
 			card.scale = Vector2(1, 1)
 		
 		if canShowPerk:

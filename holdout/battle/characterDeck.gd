@@ -17,7 +17,8 @@ func _ready() -> void:
 	cardDatabaseReference = preload("res://core/database.gd")
 
 func draw_card() -> Tween:
-	var cardDrawn = deck[0]
+	var pick = _pick_next_character_card()
+	var cardDrawn = pick["key"]
 	deck.erase(cardDrawn)
 	
 	$RichTextLabel.text = str(deck.size())
@@ -28,6 +29,9 @@ func draw_card() -> Tween:
 	
 	newCard.get_node("AnimationPlayer").play("cardFlip")
 	AudioManager.play_random_card_draw()
+	
+	if pick["forced"]:
+		_show_forced_draw_indicator(newCard, tween)
 	
 	return tween
 
@@ -59,6 +63,9 @@ func reshuffle_from_discards(discardedCards):
 			continue
 		
 		processedNodes.append(card)
+		
+		if card.gotInfected and card.permanentInfection:
+			HoldoutStats.add_permanent_mark("infected", card.cardKey, true)
 		
 		deck.append(card.cardKey)
 		
@@ -109,6 +116,11 @@ func _create_card_instance(cardKey: String, scenePath: String, isPlayer: bool = 
 	if data.size() > 5:
 		newCard.perkDescription = data[5]
 	
+	if isPlayer and %battleManager.allegianceHandler:
+		var allegianceSpawnBonus = %battleManager.allegianceHandler.get_spawn_bonus(newCard.faction)
+		if allegianceSpawnBonus != 0:
+			newCard.value += allegianceSpawnBonus
+	
 	if %battleManager.battleEngine.has_modifier(Database.Modifier.LOUD_NOISE) and "Stealthy" in newCard.role and isPlayer:
 		var roles = Array(newCard.role.split("/"))
 		
@@ -126,6 +138,15 @@ func _create_card_instance(cardKey: String, scenePath: String, isPlayer: bool = 
 	if%battleManager.battleEngine.has_modifier(Database.Modifier.LONE_WOLF) and isPlayer:
 		newCard.value *= 1.5
 	
+	if HoldoutStats.is_hunted(cardKey):
+		newCard.isHunted = true
+		newCard.get_node("icons/hunted").modulate.a = 1
+		if not isPlayer:
+			newCard.value -= 2
+	
+	if %battleManager.battleEngine.has_modifier(Database.Modifier.HOMOGENIZATION) and newCard.value <= 3:
+		newCard.value += 2
+	
 	newCard.get_node("value").text = str(newCard.value)
 	newCard.get_node("name").text = newCard.nameText
 	
@@ -137,7 +158,7 @@ func _create_card_instance(cardKey: String, scenePath: String, isPlayer: bool = 
 	var iconsNode = newCard.get_node("icons")
 	var factionPath = "res://core/cards/icons/" + newCard.faction + ".png" 
 	iconsNode.get_node("faction").texture = load(factionPath)
-
+	
 	var perkList = newCard.role.split("/") if newCard.role else []
 	var activePerks = []
 	for perk in perkList:
@@ -157,6 +178,9 @@ func _create_card_instance(cardKey: String, scenePath: String, isPlayer: bool = 
 	
 	newCard.update_visuals()
 	
+	if HoldoutStats.consume_permanent_mark("infected", cardKey):
+		newCard.set_infected(true, false, true)
+	
 	$"../cardManager".add_child(newCard)
 	return newCard
 
@@ -164,7 +188,8 @@ func spawn_top_card_node() -> Node2D:
 	if deck.is_empty():
 		return null
 	
-	var cardDrawn = deck[0]
+	var pick = _pick_next_character_card()
+	var cardDrawn = pick["key"]
 	deck.erase(cardDrawn)
 	
 	$RichTextLabel.text = str(deck.size())
@@ -174,7 +199,33 @@ func spawn_top_card_node() -> Node2D:
 	newCard.get_node("AnimationPlayer").play("cardFlip")
 	AudioManager.play_random_card_draw()
 	
+	if pick["forced"]:
+		_show_forced_draw_indicator(newCard, null)
+	
 	return newCard
+
+func _pick_next_character_card() -> Dictionary:
+	var handler = %battleManager.allegianceHandler
+	if handler:
+		var forcedFaction = handler.get_forced_draw_faction()
+		if forcedFaction != "":
+			for key in deck:
+				if cardDatabaseReference.CHARACTERS[key][2] == forcedFaction:
+					handler.clear_forced_draw()
+					return {"key": key, "forced": true}
+			handler.clear_forced_draw()
+	return {"key": deck[0], "forced": false}
+
+func _show_forced_draw_indicator(card: Node2D, tween: Tween) -> void:
+	if tween:
+		await tween.finished
+	if not is_instance_valid(card):
+		return
+	card.get_node("ModifierIndicator").texture = load("res://holdout/allegiances/icons/Whistle.png")
+	if card.get_node("AnimationPlayer").is_playing():
+		card.get_node("AnimationPlayer").queue("modifierIndicator")
+	else:
+		card.get_node("AnimationPlayer").play("modifierIndicator")
 
 func apply_card_accessibility_changes():
 	var card_manager = $"../cardManager"

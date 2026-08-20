@@ -18,6 +18,7 @@ enum Winner { TIE, PLAYER, OPPONENT }
 var lastRoundWinner: int = Winner.TIE
 var isPlayerThinking: bool = false
 var currentThinkTime: float = 0.0
+var cachedSupportStarter: int = Actor.Type.PLAYER
 
 func _process(delta: float) -> void:
 	if isRoundActive:
@@ -62,6 +63,7 @@ func _recalculate_limits() -> void:
 	var hasSupplyLine = has_modifier(Database.Modifier.SUPPLY_LINE)
 	var hasBlackMarket = has_modifier(Database.Modifier.BLACK_MARKET)
 	var hasSeveredSupply = has_modifier(Database.Modifier.SEVERED_SUPPLY)
+	var hasWarChest = has_modifier(Database.Modifier.WAR_CHEST)
 	
 	if hasVolatileHand:
 		minCardsForReshuffle = 6
@@ -93,6 +95,9 @@ func _recalculate_limits() -> void:
 	# Black Market's slower replenish takes priority over Supply Line's faster one
 	if hasBlackMarket and hasSupplyLine:
 		roundsTillSupportDraw = 4
+	
+	if hasWarChest:
+		opponentStartingSupportCards += 1
 
 # --- SUPPORT BLOCKING ---
 var _blockedSupportSide: int = Actor.Type.NONE
@@ -128,9 +133,7 @@ func remove_modifier(modifierId: int) -> void:
 	modifier_toggled.emit(modifierId, false)
 
 func get_support_starter() -> int:
-	if has_modifier(Database.Modifier.FRONT_RUNNER):
-		return Actor.Type.OPPONENT
-	return whoStartedRound
+	return cachedSupportStarter
 
 func get_stacked_odds_bonus() -> int:
 	if not has_modifier(Database.Modifier.STACKED_ODDS):
@@ -174,15 +177,14 @@ func check_guerrilla_restriction(cardFaction: String, cardRoles: String) -> bool
 func process_combat_stats(playerTotal: int, opponentTotal: int, playerKey: String, opponentKey: String) -> Dictionary:
 	var damage = abs(playerTotal - opponentTotal)
 	var combatWinner = Winner.TIE
-	var isFlipScript = has_modifier(Database.Modifier.FLIP_SCRIPT)
 	
 	# Update Dominance
 	if (playerTotal - opponentTotal) > HoldoutStats.highestDominance:
 		HoldoutStats.highestDominance = (playerTotal - opponentTotal)
 		
 	# Determine Winner & Update Streaks
-	var playerWins = playerTotal < opponentTotal if isFlipScript else playerTotal > opponentTotal
-	var opponentWins = opponentTotal < playerTotal if isFlipScript else opponentTotal > playerTotal
+	var playerWins = playerTotal > opponentTotal
+	var opponentWins = opponentTotal > playerTotal
 	
 	if playerWins:
 		combatWinner = Winner.PLAYER
@@ -212,7 +214,6 @@ func process_combat_stats(playerTotal: int, opponentTotal: int, playerKey: Strin
 	# Check Complex Modifiers
 	var triggerCalculatedRisk = (has_modifier(Database.Modifier.CALCULATED_RISK) and combatWinner == Winner.PLAYER and damage == 1)
 	var triggerCalculatedRiskLoss = (has_modifier(Database.Modifier.CALCULATED_RISK) and combatWinner == Winner.OPPONENT and damage == 1)
-	var triggerDeepWounds = (has_modifier(Database.Modifier.DEEP_WOUNDS) and combatWinner == Winner.OPPONENT and damage >= 5)
 	
 	var overExertionBonus = 0
 	if has_modifier(Database.Modifier.OVER_EXERTION) and playerTotal > 10:
@@ -223,7 +224,6 @@ func process_combat_stats(playerTotal: int, opponentTotal: int, playerKey: Strin
 		"damage": damage,
 		"triggerCalculatedRisk": triggerCalculatedRisk,
 		"triggerCalculatedRiskLoss": triggerCalculatedRiskLoss,
-		"triggerDeepWounds": triggerDeepWounds,
 		"overExertionBonus": overExertionBonus
 	}
 
@@ -251,7 +251,9 @@ func start_new_round(isAlwaysFirst: bool, roundsPlayed: int) -> void:
 	else:
 		whoStartedRound = Actor.Type.PLAYER
 		set_phase(RoundStage.PLAYER_CHARACTER)
-		
+	
+	cachedSupportStarter = Actor.Type.OPPONENT if has_modifier(Database.Modifier.FRONT_RUNNER) else whoStartedRound
+	
 	isRoundActive = true
 
 func player_played_character() -> void:
@@ -304,41 +306,3 @@ func load_engine_save_dict(data: Dictionary) -> void:
 	var saved_mods = data.get("activeModifierIds", [])
 	for mod_id in saved_mods:
 		add_modifier(int(mod_id))
-
-# --- TUTORIAL ---
-signal tutorial_step_changed(newStep: int)
-var tutorialStep: int = 0
-
-func setup_tutorial_state() -> void:
-	whoStartedRound = Actor.Type.PLAYER
-	set_phase(RoundStage.PLAYER_CHARACTER) 
-	isRoundActive = true
-
-func set_tutorial_step(step: int) -> void:
-	tutorialStep = step
-	tutorial_step_changed.emit(tutorialStep)
-
-func get_allowed_tutorial_cards(step: int) -> Array:
-	match step:
-		1: return ["Marlene"]
-		3: return ["Li"]
-		4: return ["Resilience"]
-		5: return ["Dina"]
-		_: return []
-
-func is_tutorial_lock_enforced(step: int) -> bool:
-	return step >= 1 and step <= 5
-
-func get_forced_ai_moves(step: int) -> Dictionary:
-	var moves = {"character": "", "support": ""}
-	
-	match step:
-		2:
-			moves.character = "Runner"
-		3:
-			moves.character = "Tommy"
-		5:
-			moves.character = "SeraphiteInitiate"
-			moves.support = "ScavengedParts"
-			
-	return moves

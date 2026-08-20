@@ -6,6 +6,7 @@ extends Node2D
 @onready var storyButtonContainer = $storyButtonContainer
 @onready var holdoutButtonContainer = $holdoutButtonContainer
 @onready var holdoutStatsContainer = $StatisticsMenu
+@onready var holdoutTutorialContainer = $HoldoutTutorialMenu
 @onready var cardViewerContainer = $cardViewerMenu
 
 # Background sprites
@@ -40,6 +41,8 @@ func _ready() -> void:
 	startingHoldoutForegroundPosition = holdoutFg.position
 	$versionNumber.hide()
 	
+	$holdoutButtonContainer/NewButton.set_hold_enabled(!GameStats.showHoldoutTutorial)
+	
 	optionsMenu.options_exited.connect(_on_options_menu_exited)
 	
 	setup_button_sounds(mainButtonContainer)
@@ -63,6 +66,7 @@ func _ready() -> void:
 	
 	if OS.has_feature("web"):
 		$mainButtonContainer/QuitButton.hide()
+
 
 func pulse_text():
 	var pulse = create_tween().set_loops()
@@ -119,6 +123,24 @@ func _input(event: InputEvent) -> void:
 			await Curtain.fade_in(0.25)
 			
 			holdoutStatsContainer.hide()
+			
+			holdoutButtonContainer.show()
+			holdoutButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
+			Curtain.fade_out(0.25)
+		elif currentNavigation == "HoldoutTutorial":
+			currentNavigation = "Holdout"
+			await Curtain.fade_in(0.25)
+			
+			holdoutTutorialContainer.hide()
+			
+			holdoutButtonContainer.show()
+			holdoutButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
+			Curtain.fade_out(0.25)
+		elif currentNavigation == "HoldoutTutorialOnStart":
+			currentNavigation = "Holdout"
+			await Curtain.fade_in(0.25)
+			
+			$HoldoutTutorialOnStart.hide()
 			
 			holdoutButtonContainer.show()
 			holdoutButtonContainer.process_mode = Node.PROCESS_MODE_INHERIT
@@ -193,12 +215,28 @@ func _on_holdout_button_pressed() -> void:
 	Curtain.fade_out(0.75)
 
 func _on_new_button_mouse_entered() -> void:
-	$holdIcon.show()
+	if !GameStats.showHoldoutTutorial:
+		$holdIcon.show()
 	_start_parallax_effect()
 
 func _on_new_button_mouse_exited() -> void:
 	$holdIcon.hide()
 	_stop_parallax_effect()
+
+func _on_new_button_pressed() -> void: # This is exclusively used for the very first time holdout is played
+	if !GameStats.showHoldoutTutorial:
+		return
+	
+	holdoutButtonContainer.process_mode = Node.PROCESS_MODE_DISABLED
+	currentNavigation = "HoldoutTutorialOnStart"
+	
+	await Curtain.fade_in(1.0)
+	$HoldoutTutorialOnStart.reset()
+	
+	holdoutButtonContainer.hide()
+	$HoldoutTutorialOnStart.show()
+	
+	Curtain.fade_out(1.0)
 
 func _on_new_button_hold_complete() -> void:
 	GameStats.gameMode = GameStats.Mode.HOLDOUT
@@ -236,15 +274,17 @@ func _on_tutorial_button_mouse_entered() -> void:
 func _on_tutorial_button_mouse_exited() -> void:
 	_stop_parallax_effect()
 
-func _on_tutorial_button_pressed() -> void:
-	AudioManager.play_button_click()
-	AudioManager.stop_music(2.5) 
+func _on_tutorial_button_pressed(fadeTime: float = 0.25) -> void:
+	holdoutButtonContainer.process_mode = Node.PROCESS_MODE_DISABLED
+	currentNavigation = "HoldoutTutorial"
 	
-	GameStats.gameMode = GameStats.Mode.HOLDOUT_TUTORIAL 
+	await Curtain.fade_in(fadeTime)
+	holdoutTutorialContainer.reset()
 	
-	Curtain.change_scene("res://scenes/holdoutGame.tscn", 1.0, 0.75) # wait .75 seconds while the screen is black for scene load
+	holdoutButtonContainer.hide()
+	holdoutTutorialContainer.show()
 	
-	AudioManager.start_background_playlist()
+	Curtain.fade_out(fadeTime)
 
 func _on_statistics_button_pressed() -> void:
 	holdoutButtonContainer.process_mode = Node.PROCESS_MODE_DISABLED
@@ -456,9 +496,14 @@ func _update_stats_screen() -> void:
 			modNode.modulate = Color("8c8c8c")
 
 func _format_time(time: float) -> String:
-	var minutes = int(time / 60)
+	var hours = int(time / 3600)
+	var minutes = int(time / 60) % 60
 	var seconds = int(time) % 60
-	return "%02d:%02d" % [minutes, seconds]
+	
+	if hours > 0:
+		return "%02d:%02d:%02d" % [hours, minutes, seconds]
+	else:
+		return "%02d:%02d" % [minutes, seconds]
 
 # Accolade hover functionality
 func _place_and_populate_tooltip(parent: Control, xOffset: float = -45.0, yOffset: float = -108.0) -> void:

@@ -1,7 +1,8 @@
 extends Node2D
 
 const CARD_WIDTH = 180
-const HAND_Y_POSITION = 0 #It was 120 to see the opponents cards
+const HAND_Y_POSITION = 0 # It was 120 to see the opponents cards
+const REVEALED_Y_POSITION = 120
 const DEFAULT_CARD_MOVE_SPEED = 0.1
 
 var opponentHand: Array = []
@@ -37,10 +38,13 @@ func calculate_card_position(index):
 	var cardPosition = centerScreenX + index * CARD_WIDTH - offset / 2.0
 	return cardPosition
 
+func calculate_card_y(card) -> float:
+	return REVEALED_Y_POSITION if card.get_meta("isRevealed", false) else HAND_Y_POSITION
+
 func update_hand_positions(speed):
 	for i in range(opponentHand.size()):
-		var newPosition = Vector2(calculate_card_position(i), HAND_Y_POSITION)
 		var card = opponentHand[i]
+		var newPosition = Vector2(calculate_card_position(i), calculate_card_y(card))
 		card.handPosition = newPosition
 		
 		animate_card_to_position(card, newPosition, speed)

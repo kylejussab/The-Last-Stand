@@ -8,7 +8,7 @@ func calculate_perk_value(_thisCard, thisHand, otherCard) -> int:
 			toAdd += 3
 		
 	for ally in thisHand:
-		if ally.faction == "WLF":
+		if ally.matches_faction("WLF"):
 			toAdd += 1
 			
 	return toAdd

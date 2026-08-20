@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cw1kj4xxki0vi"
-path="res://.godot/imported/ViewHistoryText.png-2bb3e3277789f964d3b7627bfe2d701c.ctex"
+path.s3tc="res://.godot/imported/ViewHistoryText.png-2bb3e3277789f964d3b7627bfe2d701c.s3tc.ctex"
+path.etc2="res://.godot/imported/ViewHistoryText.png-2bb3e3277789f964d3b7627bfe2d701c.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://core/cards/art/ViewHistoryText.png"
-dest_files=["res://.godot/imported/ViewHistoryText.png-2bb3e3277789f964d3b7627bfe2d701c.ctex"]
+dest_files=["res://.godot/imported/ViewHistoryText.png-2bb3e3277789f964d3b7627bfe2d701c.s3tc.ctex", "res://.godot/imported/ViewHistoryText.png-2bb3e3277789f964d3b7627bfe2d701c.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

@@ -6,11 +6,68 @@ static var currentOpponent: Actor.Avatar
 static var currentBattleSeed: int = 0
 static var replayedRound: bool = false
 static var currentRoundDuration: float = 0.0
+static var totalRunDuration: float = 0.0
 static var opponentList: Array = []
 static var playerHealthValue: int
 static var activeModifiers: Array = []
 static var lastOfferedModifierIds: Array = [] # Used for weighted randomness with modifier selection
 static var lastOfferedOpponentModifierIds: Array = []
+
+static var activeAllegiance: Dictionary = {} # Empty means "no allegiance chosen yet" (round 1 case)
+static var lastOfferedAllegianceIds: Array = [] # Used for weighted randomness with allegiance selection
+
+static var lastOfferedRemovalIds: Array = []
+static var deckAdjustments: Dictionary = {}
+static var whoeversNeededApplied: bool = false
+
+static var permanentCardMarks: Dictionary = {}
+static var masterPermanentCardMarks: Dictionary = {} # Tracks true run state for viewDeck
+
+static func add_permanent_mark(markType: String, cardKey: String, isReshuffle: bool = false) -> void:
+	if not permanentCardMarks.has(markType):
+		permanentCardMarks[markType] = {}
+	permanentCardMarks[markType][cardKey] = permanentCardMarks[markType].get(cardKey, 0) + 1
+	
+	if not isReshuffle:
+		if not masterPermanentCardMarks.has(markType):
+			masterPermanentCardMarks[markType] = {}
+		masterPermanentCardMarks[markType][cardKey] = masterPermanentCardMarks[markType].get(cardKey, 0) + 1
+
+static func consume_permanent_mark(markType: String, cardKey: String, isPermanentRemoval: bool = false) -> bool:
+	if not permanentCardMarks.has(markType):
+		return false
+	var counts: Dictionary = permanentCardMarks[markType]
+	if counts.get(cardKey, 0) <= 0:
+		return false
+	counts[cardKey] -= 1
+	if counts[cardKey] <= 0:
+		counts.erase(cardKey)
+		
+	if isPermanentRemoval and masterPermanentCardMarks.has(markType):
+		var masterCounts: Dictionary = masterPermanentCardMarks[markType]
+		if masterCounts.get(cardKey, 0) > 0:
+			masterCounts[cardKey] -= 1
+			if masterCounts[cardKey] <= 0:
+				masterCounts.erase(cardKey)
+				
+	return true
+
+static func has_permanent_mark(markType: String, cardKey: String) -> bool:
+	return permanentCardMarks.has(markType) and permanentCardMarks[markType].get(cardKey, 0) > 0
+
+static func register_new_master_mark(markType: String, cardKey: String) -> void:
+	if not masterPermanentCardMarks.has(markType):
+		masterPermanentCardMarks[markType] = {}
+	masterPermanentCardMarks[markType][cardKey] = masterPermanentCardMarks[markType].get(cardKey, 0) + 1
+
+static var huntedCharacters: Dictionary = {}
+
+static func mark_hunted(cardKey: String) -> void:
+	huntedCharacters[cardKey] = true
+
+static func is_hunted(cardKey: String) -> bool:
+	return huntedCharacters.get(cardKey, false)
+
 enum Rank { S, A, B, C, D, F }
 const RankRequirements = {Rank.S: 440, Rank.A: 300, Rank.B: 220, Rank.C: 160, Rank.D: 80, Rank.F: 0}
 static var currentRank: Rank = Rank.F
@@ -126,6 +183,7 @@ static func count_time_played(delta: float):
 static func reset_for_new_run():
 	numberOfWins = 0
 	totalRunRations = 0
+	totalRunDuration = 0.0
 	
 	GameStats.holdoutRunsAttempted += 1
 	
@@ -135,6 +193,14 @@ static func reset_for_new_run():
 	currentRunRations = 0
 	replayedRound = false
 	currentRank = Rank.F
+	
+	activeAllegiance = {}
+	lastOfferedAllegianceIds.clear()
+	deckAdjustments.clear()
+	whoeversNeededApplied = false
+	permanentCardMarks.clear()
+	masterPermanentCardMarks.clear()
+	huntedCharacters.clear()
 	
 	start_new_run_log()
 	
@@ -254,10 +320,18 @@ static func get_save_dict() -> Dictionary:
 		"currentOpponent": currentOpponent,
 		"currentBattleSeed": currentBattleSeed,
 		"currentRoundDuration": currentRoundDuration,
+		"totalRunDuration": totalRunDuration,
 		"opponentList": opponentList,
 		"playerHealthValue": playerHealthValue,
 		"playerHealthAtRoundStart": playerHealthAtRoundStart,
 		"activeModifiers": activeModifiers,
+		"activeAllegiance": activeAllegiance,
+		"lastOfferedAllegianceIds": lastOfferedAllegianceIds,
+		"deckAdjustments": deckAdjustments,
+		"whoeversNeededApplied": whoeversNeededApplied,
+		"permanentCardMarks": permanentCardMarks,
+		"masterPermanentCardMarks": masterPermanentCardMarks,
+		"huntedCharacters": huntedCharacters,
 		"currentRank": currentRank,
 		"numberOfWins": numberOfWins,
 		"roundsPlayed": roundsPlayed,
@@ -281,6 +355,7 @@ static func load_save_dict(data: Dictionary) -> void:
 	
 	currentBattleSeed = data["currentBattleSeed"]
 	currentRoundDuration = data["currentRoundDuration"]
+	totalRunDuration = data.get("totalRunDuration", 0.0)
 	opponentList = data["opponentList"]
 	playerHealthValue = int(data["playerHealthValue"])
 	playerHealthAtRoundStart = int(data["playerHealthAtRoundStart"])
@@ -297,6 +372,37 @@ static func load_save_dict(data: Dictionary) -> void:
 			mod["amount"] = int(mod["amount"])
 			
 		activeModifiers.append(mod)
+	
+	activeAllegiance = data.get("activeAllegiance", {})
+	if not activeAllegiance.is_empty():
+		activeAllegiance["id"] = int(activeAllegiance["id"])
+		activeAllegiance["tier"] = int(activeAllegiance["tier"])
+	
+	lastOfferedAllegianceIds.clear()
+	for id in data.get("lastOfferedAllegianceIds", []):
+		lastOfferedAllegianceIds.append(int(id))
+	
+	deckAdjustments.clear()
+	for key in data.get("deckAdjustments", {}):
+		deckAdjustments[key] = int(data["deckAdjustments"][key])
+	
+	whoeversNeededApplied = data.get("whoeversNeededApplied", false)
+	
+	permanentCardMarks.clear()
+	for markType in data.get("permanentCardMarks", {}):
+		permanentCardMarks[markType] = {}
+		for cardKey in data["permanentCardMarks"][markType]:
+			permanentCardMarks[markType][cardKey] = int(data["permanentCardMarks"][markType][cardKey])
+	
+	masterPermanentCardMarks.clear()
+	for markType in data.get("masterPermanentCardMarks", {}):
+		masterPermanentCardMarks[markType] = {}
+		for cardKey in data["masterPermanentCardMarks"][markType]:
+			masterPermanentCardMarks[markType][cardKey] = int(data["masterPermanentCardMarks"][markType][cardKey])
+	
+	huntedCharacters.clear()
+	for key in data.get("huntedCharacters", {}):
+		huntedCharacters[key] = true
 	
 	numberOfWins = int(data["numberOfWins"])
 	roundsPlayed = int(data["roundsPlayed"])

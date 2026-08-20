@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cgvi3djkaa3fl"
-path="res://.godot/imported/Alley.png-0d4c1f0eda876ee0f66e3cf7c8b22c17.ctex"
+path.s3tc="res://.godot/imported/Alley.png-0d4c1f0eda876ee0f66e3cf7c8b22c17.s3tc.ctex"
+path.etc2="res://.godot/imported/Alley.png-0d4c1f0eda876ee0f66e3cf7c8b22c17.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://core/ai/backgrounds/Alley.png"
-dest_files=["res://.godot/imported/Alley.png-0d4c1f0eda876ee0f66e3cf7c8b22c17.ctex"]
+dest_files=["res://.godot/imported/Alley.png-0d4c1f0eda876ee0f66e3cf7c8b22c17.s3tc.ctex", "res://.godot/imported/Alley.png-0d4c1f0eda876ee0f66e3cf7c8b22c17.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://uygdc5jkx1sy"
-path="res://.godot/imported/Tommy 2.png-6422a43dd23e4cd22780b84d6c25ecc5.ctex"
+path.s3tc="res://.godot/imported/Tommy 2.png-6422a43dd23e4cd22780b84d6c25ecc5.s3tc.ctex"
+path.etc2="res://.godot/imported/Tommy 2.png-6422a43dd23e4cd22780b84d6c25ecc5.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://core/menus/explodedCard/Jackson/Tommy 2.png"
-dest_files=["res://.godot/imported/Tommy 2.png-6422a43dd23e4cd22780b84d6c25ecc5.ctex"]
+dest_files=["res://.godot/imported/Tommy 2.png-6422a43dd23e4cd22780b84d6c25ecc5.s3tc.ctex", "res://.godot/imported/Tommy 2.png-6422a43dd23e4cd22780b84d6c25ecc5.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

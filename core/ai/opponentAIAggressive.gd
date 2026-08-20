@@ -16,7 +16,7 @@ func play_character_card(opponentHand, _playerHand, _playerPlayedCard = null, _p
 	
 	var highest = characters[0]
 	for card in characters:
-		if _is_better_score(card.value, highest.value):
+		if card.value > highest.value:
 			highest = card
 	
 	if randf() < 0.7:
@@ -40,18 +40,13 @@ func choose_support_card(opponent_hand, opponent_character, player_character, op
 	if eligible.is_empty():
 		return null
 	
-	var effectiveDiff = _effective_diff(currentDiff)
-
-	if effectiveDiff >= 4:
+	if currentDiff >= 4:
 		return null
 
-	if effectiveDiff <= -4 and opponent_health <= 25:
+	if currentDiff <= -4 and opponent_health <= 25:
 		for support in eligible:
 			if support.cardKey in DEFENSIVE_CARDS:
 				return support
-
-	if isFlipScriptActive:
-		return null 
 
 	var scored = []
 	for support in eligible:

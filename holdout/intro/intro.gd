@@ -13,13 +13,20 @@ var lineSpacing: float = 80.0
 var widthAmplitude: float = 160.0
 var heightAmplitude: float = 75.0
 var orbitSpeed: float = 9.0
-var targetScale: float = 0.05
+var targetScale: float = 0.5
 var peelDelay: float = 0.15
 
 var delayBeforeTransition: float = 4.5
 var transitionDuration: float = 1.4
 var moveDistance: float = 700.0
 
+var iconTextures: Array[String] = [
+	"res://holdout/intro/Opponent.png",
+	"res://holdout/intro/Allegiance.png",
+	"res://holdout/intro/Modifier.png",
+	"res://holdout/intro/Removal.png",
+	"res://holdout/intro/Opponent.png"
+]
 
 func _ready() -> void:
 	if SaveManager.isLoadingSave:
@@ -31,6 +38,8 @@ func _ready() -> void:
 		hide()
 		set_process(false)
 		return
+	
+	%HoldoutHub.call_deferred("_prepare_hub_data")
 	
 	_run_intro_sequence()
 	_trigger_transition()
@@ -68,7 +77,7 @@ func _run_intro_sequence() -> void:
 func _spawn_and_pop_in() -> void:
 	for i in range(numberOfIcons):
 		var icon = Sprite2D.new()
-		icon.texture = preload("res://holdout/intro/Opponent.png")
+		icon.texture = load(iconTextures[i])
 		infinityContainer.add_child(icon)
 		icons.append(icon)
 		
@@ -127,11 +136,8 @@ func _trigger_transition() -> void:
 	
 	AudioManager.play_whoosh(true)
 	
-	isOrbiting = false
-	%HoldoutHub.show()
-	%HoldoutHub._setup_hub()
-	
 	_transition_to_game()
+	
 	var transitionTween = create_tween().set_parallel(true)
 	
 	transitionTween.tween_property(infinityContainer, "position:y", infinityContainer.position.y - moveDistance, transitionDuration).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT).set_delay(0.15)
@@ -139,6 +145,8 @@ func _trigger_transition() -> void:
 	transitionTween.tween_property($ColorRect, "modulate:a", 0.0, 0.5)
 	
 	await transitionTween.finished
+	
+	isOrbiting = false
 	infinityContainer.hide()
 
 

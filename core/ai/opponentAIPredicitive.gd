@@ -155,7 +155,7 @@ func _predict_player_card(opponentHand: Array) -> PredictedCard:
 
 func _counter_card(characters, supports, opponentHand, targetCard):
 	var bestCharacter = characters[0]
-	var maxCounterScore = _worst_score()
+	var maxCounterScore = -1.0
 	
 	for character in characters:
 		var counterScore = character.value
@@ -166,16 +166,15 @@ func _counter_card(characters, supports, opponentHand, targetCard):
 					counterScore += character.perk.calculate_perk_value(character, opponentHand, targetCard)
 				"endRound", "lateEndRound":
 					var bestEndBonus = character.perk.calculate_end_perk_value(character, null, targetCard, null, opponentHand)
-					if not isFlipScriptActive:
-						for support in supports:
-							var bonus = character.perk.calculate_end_perk_value(character, support, targetCard, null, opponentHand)
-							if bonus > bestEndBonus:
-								bestEndBonus = bonus
+					for support in supports:
+						var bonus = character.perk.calculate_end_perk_value(character, support, targetCard, null, opponentHand)
+						if bonus > bestEndBonus:
+							bestEndBonus = bonus
 					counterScore += bestEndBonus
 				"calculationRound":
 					counterScore += character.perk.calculate_after_calculation_perk_value(character, opponentHand, 0, 1)
 		
-		if _is_better_score(counterScore, maxCounterScore):
+		if counterScore > maxCounterScore:
 			maxCounterScore = counterScore
 			bestCharacter = character
 	
@@ -183,20 +182,19 @@ func _counter_card(characters, supports, opponentHand, targetCard):
 
 func _play_balanced(characters, supports):
 	var bestCharacter = characters[0]
-	var maxComboValue = _worst_score()
+	var maxComboValue = -1.0
 	
 	for character in characters:
 		var bestSupportScore = 0.0
-		if not isFlipScriptActive:
-			for support in supports:
-				var score = float(support.value)
-				if support.cardKey in RISKY_CARDS:
-					score *= 0.6
-				if score > bestSupportScore:
-					bestSupportScore = score
+		for support in supports:
+			var score = float(support.value)
+			if support.cardKey in RISKY_CARDS:
+				score *= 0.6
+			if score > bestSupportScore:
+				bestSupportScore = score
 		
 		var comboValue = character.value + bestSupportScore
-		if _is_better_score(comboValue, maxComboValue):
+		if comboValue > maxComboValue:
 			maxComboValue = comboValue
 			bestCharacter = character
 	
@@ -217,18 +215,13 @@ func choose_support_card(opponent_hand, opponent_character, player_character, op
 	if eligible.is_empty():
 		return null
 	
-	var effectiveDiff = _effective_diff(currentDiff)
-	
-	if effectiveDiff >= 4:
+	if currentDiff >= 4:
 		return null
 	
-	if effectiveDiff <= -4 and opponent_health <= 25:
+	if currentDiff <= -4 and opponent_health <= 25:
 		for support in eligible:
 			if support.cardKey in DEFENSIVE_CARDS:
 				return support
-	
-	if isFlipScriptActive:
-		return null
 	
 	var bestSupport = null
 	var bestBlendedScore = -INF

@@ -124,3 +124,12 @@ func play_damage_effect(who: Actor.Type, value: int) -> Signal:
 func show_end_turn_button(visibility: bool = true) -> void:
 	%EndTurnButton.visible = visibility
 	%EndTurnButton.disabled = !visibility
+
+
+func _on_current_allegiance_mouse_entered() -> void:
+	AudioManager.play_card_hover()
+	$background/currentAllegiance/AnimationPlayer.play("showAllegianceDescription")
+
+func _on_current_allegiance_mouse_exited() -> void:
+	AudioManager.play_card_hover()
+	$background/currentAllegiance/AnimationPlayer.play("showAllegianceDescription", -1, -2.0, true)

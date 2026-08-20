@@ -42,6 +42,7 @@ const CHARACTERS = { # Value, Type, Faction, Class, Card Name Text, Perk Text
 	"Bill": [4, "Character", "Jackson", "Crafty", "BILL", "+4 if the played support card has a backfire chance"],
 	"Jessie": [5, "Character", "Jackson", "Defensive", "JESSIE", "-1 to opponent, if opposing card is Aggressive"],
 	"Shimmer": [2, "Character", "Jackson", "Defensive", "SHIMMER", "+3 if Ellie or Dina in hand"],
+	"JacksonScout": [3, "Character", "Jackson", "Survivor", "SCOUT", "Counts as any named companion for Jackson character perks"],
 	
 	# New / altered cards based on humanity restored modifier
 	"JoelSmuggler": [6, "Character", "Smuggler", "Aggressive", "JOEL", "+2 if opposing card is Aggressive or Defensive or Survivor"],
@@ -197,6 +198,7 @@ const HOLDOUT_PERKS = {
 	"Li": "res://holdout/perks/liPerk.gd",
 	"SeraphiteBrute": "res://holdout/perks/seraphiteBrutePerk.gd",
 	"Shimmer": "res://holdout/perks/shimmerPerk.gd",
+	"JacksonScout": "res://holdout/perks/jacksonScoutPerk.gd",
 	
 	"JoelSmuggler": "res://holdout/perks/joelSmugglerPerk.gd",
 	"BillSmuggler": "res://holdout/perks/billPerk.gd",
@@ -253,6 +255,14 @@ var AVATARS = {
 		"backgroundPath": "res://core/ai/backgrounds/",
 		"playstyle": "Aggressive"
 	},
+	Actor.Avatar.KNEEL: {
+		"name": "Kneel Downman",
+		"description": "Alpha Dog",
+		"health": "%02d" % 20,
+		"headPath": "res://core/ai/heads/",
+		"backgroundPath": "res://core/ai/backgrounds/",
+		"playstyle": "Balanced"
+	},
 	Actor.Avatar.RHEA: {
 		"name": "Rhea",
 		"description": "Matriarch",
@@ -260,14 +270,6 @@ var AVATARS = {
 		"headPath": "res://core/ai/heads/",
 		"backgroundPath": "res://core/ai/backgrounds/",
 		"playstyle": "Attrition"
-	},
-	Actor.Avatar.UCKMANN: {
-		"name": "Dr Uckmann",
-		"description": "Dog Director",
-		"health": "%02d" % 20,
-		"headPath": "res://core/ai/heads/",
-		"backgroundPath": "res://core/ai/backgrounds/",
-		"playstyle": "Balanced"
 	},
 	Actor.Avatar.ALLEY: {
 		"name": "Alley Ross",
@@ -301,7 +303,7 @@ var AVATARS = {
 		"backgroundPath": "res://core/ai/backgrounds/",
 		"playstyle": "Predictive"
 	}
-}
+} 
 
 const OPPONENT_HEALTH_AMOUNTS: Array[int] = [
 	13, # Round 1
@@ -329,37 +331,45 @@ func get_avatar_head_texture(path: String) -> Texture2D:
 func clear_avatar_cache():
 	avatarHeadTextures.clear()
 
-const JUNE_OPPONENTS = [Actor.Avatar.ETHAN, Actor.Avatar.UCKMANN, Actor.Avatar.ALLEY, Actor.Avatar.MIRA, Actor.Avatar.RHEA]
+const JUNE_OPPONENTS = [Actor.Avatar.ETHAN, Actor.Avatar.KNEEL, Actor.Avatar.ALLEY, Actor.Avatar.MIRA, Actor.Avatar.RHEA]
 
-enum Modifier { REDUCED_HAND, VOLATILE_HAND, CALCULATED_RISK, DEEP_WOUNDS, HEAVY_HITTER, GUERRILLA_TACTICS, BLACK_MARKET, SLOW_BLEED, BAITED_DEFENSE, LOUD_NOISE, DESPERATE_MEASURES, OVER_EXERTION, INFECTED_DECK, HUMANITY_RESTORED, FRONT_RUNNER, FORSAKEN_HONOR, STACKED_ODDS, LONE_WOLF, PSYCHO_MANIA, SUPPLY_LINE, CARD_ROT, FRIENDLY_FIRE, BLIND_EYE, SEVERED_SUPPLY, GAMBLER, VAMPIRIC, DO_NOTHING, DEAD_WEIGHT, FLIP_SCRIPT, ENDURE }
+enum Modifier { 
+	STUBBORN_RESOLVE, HEAVY_HITTER, PSYCHO_MANIA, BLACK_MARKET, LOUD_NOISE, DEEP_WOUNDS, SLOW_GROWTH, VOLATILE_HAND, 
+	DESPERATE_MEASURES, CALCULATED_RISK, OVER_EXERTION, INFECTED_DECK, HUMANITY_RESTORED, FRONT_RUNNER, BAITED_DEFENSE, 
+	FRIENDLY_FIRE, STACKED_ODDS, CARD_ROT, FORSAKEN_HONOR, LONE_WOLF, SUPPLY_LINE, ALL_OR_NOTHING, 
+	GUERRILLA_TACTICS, SEVERED_SUPPLY, DO_NOTHING, WAR_CHEST, RUSTY_GEAR, IRON_SKIN, 
+	REDUCED_HAND, VAMPIRIC, GAMBLER, BLIND_EYE, DEAD_WEIGHT, ENDURE, HOMOGENIZATION 
+}
 
 const MODIFIERS = {
-	Modifier.VOLATILE_HAND: {
-		"id": Modifier.VOLATILE_HAND,
-		"name": "Volatile Hand",
-		"description": "Every 2 rounds, all your character cards are discarded and redrawn.",
-		"icon": "res://holdout/modifiers/icons/Volatile Hand.png",
+	# Tier 1s
+	
+	Modifier.STUBBORN_RESOLVE: {
+		"id": Modifier.STUBBORN_RESOLVE,
+		"name": "Stubborn Resolve",
+		"description": "Your played character card can't be reduced below its base value.",
+		"icon": "res://holdout/modifiers/icons/Stubborn Resolve.png",
 		"tier": 1,
 		"multiplier": 0.05,
-		"duration": 3,
-	},
-	Modifier.DEEP_WOUNDS: {
-		"id": Modifier.DEEP_WOUNDS,
-		"name": "Deep Wounds",
-		"description": "Losing by 5+ deals +2 damage, but your next played character gains +3.",
-		"icon": "res://holdout/modifiers/icons/Deep Wounds.png",
-		"tier": 1,
-		"multiplier": 0.10,
-		"duration": 3,
+		"duration": 2,
 	},
 	Modifier.HEAVY_HITTER: {
 		"id": Modifier.HEAVY_HITTER,
 		"name": "Heavy Hitter",
-		"description": "Playing a 5+ base value character deals +2 damage on win, but you take +1 on loss.",
+		"description": "Playing a 5+ base value character deals +2 damage on win.",
 		"icon": "res://holdout/modifiers/icons/Heavy Hitter.png",
 		"tier": 1,
-		"multiplier": 0.10, 
+		"multiplier": 0.05, 
 		"duration": 3,
+	},
+	Modifier.PSYCHO_MANIA: {
+		"id": Modifier.PSYCHO_MANIA,
+		"name": "Psycho-mania",
+		"description": "Whenever a backfire triggers, a random card in your hand gains +2 value.",
+		"icon": "res://holdout/modifiers/icons/Psycho Mania.png",
+		"tier": 1,
+		"multiplier": 0.10,
+		"duration": 2,
 	},
 	Modifier.BLACK_MARKET: {
 		"id": Modifier.BLACK_MARKET,
@@ -370,24 +380,53 @@ const MODIFIERS = {
 		"multiplier": 0.10,
 		"duration": 1,
 	},
-	Modifier.SLOW_BLEED: {
-		"id": Modifier.SLOW_BLEED,
-		"name": "Slow Bleed",
-		"description": "Every other round, lose 1 health, but gain +1 to a random character card in hand.",
-		"icon": "res://holdout/modifiers/icons/Slow Bleed.png",
-		"tier": 1,
-		"multiplier": 0.15,
-		"duration": 3,
-		"amount": 1,
-	},
 	Modifier.LOUD_NOISE: {
 		"id": Modifier.LOUD_NOISE,
 		"name": "Loud Noise",
 		"description": "All your stealth cards become aggressive and all converted cards gain +2 value.",
 		"icon": "res://holdout/modifiers/icons/Loud Noise.png",
 		"tier": 1,
-		"multiplier": 0.15,
+		"multiplier": 0.10,
 		"duration": 2,
+	},
+	Modifier.DEEP_WOUNDS: {
+		"id": Modifier.DEEP_WOUNDS,
+		"name": "Deep Wounds",
+		"description": "If a round ends with a margin of 5 or more, your next played character gains +3.",
+		"icon": "res://holdout/modifiers/icons/Deep Wounds.png",
+		"tier": 1,
+		"multiplier": 0.10,
+		"duration": 2,
+	},
+	Modifier.SLOW_GROWTH: {
+		"id": Modifier.SLOW_GROWTH,
+		"name": "Slow Growth",
+		"description": "Every other round, a random character card in your hand gains +1.",
+		"icon": "res://holdout/modifiers/icons/Slow Growth.png",
+		"tier": 1,
+		"multiplier": 0.10,
+		"duration": 1,
+	},
+	Modifier.VOLATILE_HAND: {
+		"id": Modifier.VOLATILE_HAND,
+		"name": "Volatile Hand",
+		"description": "Every 2 rounds, all your character cards are discarded and redrawn.",
+		"icon": "res://holdout/modifiers/icons/Volatile Hand.png",
+		"tier": 1,
+		"multiplier": 0.15,
+		"duration": 1,
+	},
+	
+	# Tier 2s
+	
+	Modifier.DESPERATE_MEASURES: {
+		"id": Modifier.DESPERATE_MEASURES,
+		"name": "Desperate Measures",
+		"description": "Your support cards never backfire.",
+		"icon": "res://holdout/modifiers/icons/Desperate Measures.png",
+		"tier": 2,
+		"multiplier": 0.15,
+		"duration": 1,
 	},
 	Modifier.CALCULATED_RISK: {
 		"id": Modifier.CALCULATED_RISK,
@@ -396,25 +435,7 @@ const MODIFIERS = {
 		"icon": "res://holdout/modifiers/icons/Calculated Risk.png",
 		"tier": 2,
 		"multiplier": 0.20,
-		"duration": 4,
-	},
-	Modifier.BAITED_DEFENSE: {
-		"id": Modifier.BAITED_DEFENSE,
-		"name": "Baited Defense",
-		"description": "Defensive cards become 4 value. Losing with one steals the opponent's card.",
-		"icon": "res://holdout/modifiers/icons/Baited Defense.png",
-		"tier": 2,
-		"multiplier": 0.20,
-		"duration": 2,
-	},
-	Modifier.DESPERATE_MEASURES: {
-		"id": Modifier.DESPERATE_MEASURES,
-		"name": "Desperate Measures",
-		"description": "Support cards never backfire. Take +1 damage whenever you play one.",
-		"icon": "res://holdout/modifiers/icons/Desperate Measures.png",
-		"tier": 2,
-		"multiplier": 0.25,
-		"duration": 1,
+		"duration": 3,
 	},
 	Modifier.OVER_EXERTION: {
 		"id": Modifier.OVER_EXERTION,
@@ -422,8 +443,8 @@ const MODIFIERS = {
 		"description": "Deal +1 bonus damage for each point your characters final value exceeds 10.",
 		"icon": "res://holdout/modifiers/icons/Over Exertion.png",
 		"tier": 2,
-		"multiplier": 0.25,
-		"duration": 3,
+		"multiplier": 0.20,
+		"duration": 2,
 	},
 	Modifier.INFECTED_DECK: {
 		"id": Modifier.INFECTED_DECK,
@@ -449,18 +470,29 @@ const MODIFIERS = {
 		"description": "You start every character phase, but go second every support phase.",
 		"icon": "res://holdout/modifiers/icons/Front Runner.png",
 		"tier": 2,
+		"multiplier": 0.25,
+		"duration": 2,
+	},
+	Modifier.BAITED_DEFENSE: {
+		"id": Modifier.BAITED_DEFENSE,
+		"name": "Baited Defense",
+		"description": "Defensive cards become 4 value. Losing with one steals the opponent's card.",
+		"icon": "res://holdout/modifiers/icons/Baited Defense.png",
+		"tier": 2,
 		"multiplier": 0.30,
 		"duration": 2,
 	},
-	Modifier.FORSAKEN_HONOR: {
-		"id": Modifier.FORSAKEN_HONOR,
-		"name": "Forsaken Honor",
-		"description": "Lose 10 health. Your card’s faction and type are hidden from the opponent.",
-		"icon": "res://holdout/modifiers/icons/Forsaken Honor.png",
+	
+	# Tier 3s
+	
+	Modifier.FRIENDLY_FIRE: {
+		"id": Modifier.FRIENDLY_FIRE,
+		"name": "Friendly Fire",
+		"description": "Your card's value is halved if factions match, but gains +2 if your hand has all different factions.",
+		"icon": "res://holdout/modifiers/icons/Friendly Fire.png",
 		"tier": 3,
 		"multiplier": 0.35,
-		"duration": 2,
-		"healthCost": 10,
+		"duration": 1,
 	},
 	Modifier.STACKED_ODDS: {
 		"id": Modifier.STACKED_ODDS,
@@ -471,14 +503,24 @@ const MODIFIERS = {
 		"multiplier": 0.35,
 		"duration": 2,
 	},
-	Modifier.PSYCHO_MANIA: {
-		"id": Modifier.PSYCHO_MANIA,
-		"name": "Psycho-mania",
-		"description": "Whenever a backfire triggers, a random card in your hand gains +2 value.",
-		"icon": "res://holdout/modifiers/icons/Psycho Mania.png",
+	Modifier.CARD_ROT: {
+		"id": Modifier.CARD_ROT,
+		"name": "Card Rot",
+		"description": "Characters lose 1 value per round held past round 3. Rotted value is dealt as bonus damage on win.",
+		"icon": "res://holdout/modifiers/icons/Card Rot.png",
 		"tier": 3,
 		"multiplier": 0.35,
-		"duration": 2,
+		"duration": 1,
+	},
+	Modifier.FORSAKEN_HONOR: {
+		"id": Modifier.FORSAKEN_HONOR,
+		"name": "Forsaken Honor",
+		"description": "Lose 10 health. Your card’s faction and type are hidden from the opponent.",
+		"icon": "res://holdout/modifiers/icons/Forsaken Honor.png",
+		"tier": 3,
+		"multiplier": 0.40,
+		"duration": 1,
+		"healthCost": 10,
 	},
 	Modifier.LONE_WOLF: {
 		"id": Modifier.LONE_WOLF,
@@ -495,38 +537,21 @@ const MODIFIERS = {
 		"description": "Your hand contains only support cards. Your character is auto played from the deck.",
 		"icon": "res://holdout/modifiers/icons/Supply Line.png",
 		"tier": 3,
+		"multiplier": 0.40,
+		"duration": 1,
+	},
+	Modifier.ALL_OR_NOTHING: {
+		"id": Modifier.ALL_OR_NOTHING,
+		"name": "All or Nothing",
+		"description": "The damage to be dealt at round end is doubled.",
+		"icon": "res://holdout/modifiers/icons/All or Nothing.png",
+		"tier": 3,
 		"multiplier": 0.45,
-		"duration": 1,
-	},
-	Modifier.FRIENDLY_FIRE: {
-		"id": Modifier.FRIENDLY_FIRE,
-		"name": "Friendly Fire",
-		"description": "Your card's value is halved if factions match, but gains +2 if your hand has all different factions.",
-		"icon": "res://holdout/modifiers/icons/Friendly Fire.png",
-		"tier": 3,
-		"multiplier": 0.50,
-		"duration": 1,
-	},
-	Modifier.REDUCED_HAND: {
-		"id": Modifier.REDUCED_HAND,
-		"name": "Reduced Hand",
-		"description": "Your maximum hand size is reduced to 6.",
-		"icon": "res://holdout/modifiers/icons/Reduced Hand.png",
-		"tier": 3,
-		"multiplier": 0.55,
-		"duration": 2,
-	},
-	Modifier.CARD_ROT: {
-		"id": Modifier.CARD_ROT,
-		"name": "Card Rot",
-		"description": "Characters lose 1 value per round held past round 3. Rotted value is dealt as bonus damage on win.",
-		"icon": "res://holdout/modifiers/icons/Card Rot.png",
-		"tier": 3,
-		"multiplier": 0.60,
 		"duration": 1,
 	},
 	
 	# Opponent Modifiers
+	
 	Modifier.GUERRILLA_TACTICS: {
 		"id": Modifier.GUERRILLA_TACTICS,
 		"name": "Guerrilla Tactics",
@@ -545,21 +570,59 @@ const MODIFIERS = {
 		"multiplier": 0.0,
 		"duration": 1,
 	},
-	Modifier.VAMPIRIC: {
-		"id": Modifier.VAMPIRIC,
-		"name": "Vampiric",
-		"description": "Whenever the opponent wins a round by 3 or more, they heal by 3.",
-		"icon": "res://holdout/modifiers/icons/Vampiric.png",
-		"tier": 9,
-		"multiplier": 0.0,
-		"duration": 1,
-	},
 	Modifier.DO_NOTHING: {
 		"id": Modifier.DO_NOTHING,
 		"name": "Do Nothing",
 		"description": "This modifier has no effect.",
 		"icon": "res://holdout/modifiers/icons/Do Nothing.png",
 		"tier": 9,
+		"multiplier": 0.0,
+		"duration": 1,
+	},
+	Modifier.WAR_CHEST: {
+		"id": Modifier.WAR_CHEST,
+		"name": "War Chest",
+		"description": "The opponent starts the battle with one extra support card.",
+		"icon": "res://holdout/modifiers/icons/War Chest.png",
+		"tier": 9,
+		"multiplier": 0.0,
+		"duration": 1,
+	},
+	Modifier.RUSTY_GEAR: {
+		"id": Modifier.RUSTY_GEAR,
+		"name": "Rusty Gear",
+		"description": "Your support cards' value is reduced by 1.",
+		"icon": "res://holdout/modifiers/icons/Rusty Gear.png",
+		"tier": 9,
+		"multiplier": 0.0,
+		"duration": 1,
+	},
+	Modifier.IRON_SKIN: {
+		"id": Modifier.IRON_SKIN,
+		"name": "Iron Skin",
+		"description": "Opponent character values can't be reduced below 0.",
+		"icon": "res://holdout/modifiers/icons/Iron Skin.png",
+		"tier": 9,
+		"multiplier": 0.0,
+		"duration": 1,
+	},
+	
+	
+	Modifier.REDUCED_HAND: {
+		"id": Modifier.REDUCED_HAND,
+		"name": "Reduced Hand",
+		"description": "Your maximum hand size is reduced to 6.",
+		"icon": "res://holdout/modifiers/icons/Reduced Hand.png",
+		"tier": 8,
+		"multiplier": 0.0,
+		"duration": 1,
+	},
+	Modifier.VAMPIRIC: {
+		"id": Modifier.VAMPIRIC,
+		"name": "Vampiric",
+		"description": "Whenever the opponent wins a round by 3 or more, they heal by 3.",
+		"icon": "res://holdout/modifiers/icons/Vampiric.png",
+		"tier": 8,
 		"multiplier": 0.0,
 		"duration": 1,
 	},
@@ -577,15 +640,6 @@ const MODIFIERS = {
 		"name": "Blind Eye",
 		"description": "Every opponent card played has a 40% chance to be played face-down.",
 		"icon": "res://holdout/modifiers/icons/Blind Eye.png",
-		"tier": 8,
-		"multiplier": 0.0,
-		"duration": 1,
-	},
-	Modifier.FLIP_SCRIPT: {
-		"id": Modifier.FLIP_SCRIPT,
-		"name": "Flip the Script",
-		"description": "The player with the LOWEST final card value wins the round.",
-		"icon": "res://holdout/modifiers/icons/Flip the Script.png",
 		"tier": 8,
 		"multiplier": 0.0,
 		"duration": 1,
@@ -608,9 +662,451 @@ const MODIFIERS = {
 		"multiplier": 0.0,
 		"duration": 1,
 	},
+	Modifier.HOMOGENIZATION: {
+		"id": Modifier.HOMOGENIZATION,
+		"name": "Homogenization",
+		"description": "Character cards below value 4 gain +2.",
+		"icon": "res://holdout/modifiers/icons/Homogenization.png",
+		"tier": 8,
+		"multiplier": 0.0,
+		"duration": 1,
+	},
 }
 
-const standardCharacterDeck = [
+enum Allegiance { 
+	COMMON_CAUSE, JUST_CARGO, THE_RIGHT_PEOPLE, WHATEVER_IT_TAKES, DIVIDED_LOYALTIES, SCAVENGERS_DUE, NECESSARY_COMPROMISE, THE_LIGHT, UNLIKELY_ALLIES,
+	NECROTIC_FEEDBACK, INFECTION, FUNGAL_GROWTH, FRENZIED_STATE, MUTATION_CHAIN, HORDE_MENTALITY, BLOATER_PLATING, CORDYCEPS_BRAIN_INFECTION, VIOLENT_OUTBREAK,
+	PATROL_ROUTE, ONE_OF_OURS, SHARED_SUPPLIES, DEBT_REPAID, FUTURE_DAYS, KEEP_MOVING, WHOEVERS_NEEDED, FOUND_FAMILY, PRACTICAL_WISDOM,
+	FALSE_COLORS, WHISTLE, FAITH_NETWORK, THE_PROPHECY, WOUNDED_PREY, SPLIT_ALLEGIANCE, DARK_VEILING, DOCTRINE_RESTRAINT, NESTED_SIN,
+	KILL_ORDER, SWEEP, COMBAT_INTEL, MANHUNT, SCENT_TRAIL, WOLF_TERRITORY, EXECUTED, WAR, NO_SAFE_HAVEN
+}
+
+const ALLEGIANCE_HANDLERS = {
+	Allegiance.COMMON_CAUSE: "res://holdout/allegiances/commonCauseHandler.gd",
+	Allegiance.JUST_CARGO: "res://holdout/allegiances/justCargoHandler.gd",
+	Allegiance.THE_RIGHT_PEOPLE: "res://holdout/allegiances/theRightPeopleHandler.gd",
+	Allegiance.WHATEVER_IT_TAKES: "res://holdout/allegiances/whateverItTakesHandler.gd",
+	Allegiance.DIVIDED_LOYALTIES: "res://holdout/allegiances/dividedLoyaltiesHandler.gd",
+	Allegiance.SCAVENGERS_DUE: "res://holdout/allegiances/scavengersDueHandler.gd",
+	Allegiance.NECESSARY_COMPROMISE: "res://holdout/allegiances/necessaryCompromiseHandler.gd",
+	Allegiance.THE_LIGHT: "res://holdout/allegiances/theLightHandler.gd",
+	Allegiance.UNLIKELY_ALLIES: "res://holdout/allegiances/unlikelyAlliesHandler.gd",
+	
+	Allegiance.NECROTIC_FEEDBACK: "res://holdout/allegiances/necroticFeedbackHandler.gd",
+	Allegiance.INFECTION: "res://holdout/allegiances/infectionHandler.gd",
+	Allegiance.FUNGAL_GROWTH: "res://holdout/allegiances/fungalGrowthHandler.gd",
+	# Allegiance.FRENZIED_STATE lives directly in card.gd
+	Allegiance.MUTATION_CHAIN: "res://holdout/allegiances/mutationChainHandler.gd",
+	Allegiance.HORDE_MENTALITY: "res://holdout/allegiances/hordeMentalityHandler.gd",
+	# Allegiance.BLOATER_PLATING lives directly in card.gd in modify_value
+	Allegiance.CORDYCEPS_BRAIN_INFECTION: "res://holdout/allegiances/cordycepsBrainInfectionHandler.gd",
+	Allegiance.VIOLENT_OUTBREAK: "res://holdout/allegiances/violentOutbreakHandler.gd",
+	
+	Allegiance.PATROL_ROUTE: "res://holdout/allegiances/patrolRouteHandler.gd",
+	Allegiance.ONE_OF_OURS: "res://holdout/allegiances/oneOfOursHandler.gd",
+	Allegiance.SHARED_SUPPLIES: "res://holdout/allegiances/sharedSuppliesHandler.gd",
+	Allegiance.DEBT_REPAID: "res://holdout/allegiances/debtRepaidHandler.gd",
+	Allegiance.FUTURE_DAYS: "res://holdout/allegiances/futureDaysHandler.gd",
+	Allegiance.KEEP_MOVING: "res://holdout/allegiances/keepMovingHandler.gd",
+	# Allegiance.WHOEVERS_NEEDED Handled in HoldoutHub set_arena_data function
+	Allegiance.FOUND_FAMILY: "res://holdout/allegiances/foundFamilyHandler.gd",
+	Allegiance.PRACTICAL_WISDOM: "res://holdout/allegiances/practicalWisdomHandler.gd",
+	
+	Allegiance.FALSE_COLORS: "res://holdout/allegiances/falseColorsHandler.gd",
+	Allegiance.WHISTLE: "res://holdout/allegiances/whistleHandler.gd",
+	Allegiance.FAITH_NETWORK: "res://holdout/allegiances/faithNetworkHandler.gd",
+	Allegiance.THE_PROPHECY: "res://holdout/allegiances/theProphecyHandler.gd",
+	Allegiance.WOUNDED_PREY: "res://holdout/allegiances/woundedPreyHandler.gd",
+	# Allegiance.SPLIT_ALLEGIANCE lives directly in card.gd (value bonus + is_named_companion helper)
+	# Allegiance.DARK_VEILING lives directly in holdoutBattle.gd (role masking on opponent's perk checks)
+	# Allegiance.DOCTRINE_RESTRAINT handled in holdoutBattle.gd and perk base classes
+	Allegiance.NESTED_SIN: "res://holdout/allegiances/nestedSinHandler.gd",
+	
+	Allegiance.KILL_ORDER: "res://holdout/allegiances/killOrderHandler.gd",
+	Allegiance.SWEEP: "res://holdout/allegiances/sweepHandler.gd",
+	Allegiance.COMBAT_INTEL: "res://holdout/allegiances/combatIntelHandler.gd",
+	Allegiance.MANHUNT: "res://holdout/allegiances/manhuntHandler.gd",
+	Allegiance.SCENT_TRAIL: "res://holdout/allegiances/scentTrailHandler.gd",
+	Allegiance.WOLF_TERRITORY: "res://holdout/allegiances/wolfTerritoryHandler.gd",
+	Allegiance.EXECUTED: "res://holdout/allegiances/executedHandler.gd",
+	Allegiance.WAR: "res://holdout/allegiances/warHandler.gd",
+	Allegiance.NO_SAFE_HAVEN: "res://holdout/allegiances/noSafeHavenHandler.gd",
+}
+
+const ALLEGIANCES = {
+	# Firefly
+	Allegiance.COMMON_CAUSE: {
+		"id": Allegiance.COMMON_CAUSE,
+		"name": "Common Cause",
+		"description": "Played Fireflies get +1 per Firefly in hand. Winning grants +2 to all Fireflies in hand.",
+		"icon": "res://holdout/allegiances/icons/Common Cause.png",
+		"tier": 1,
+		"faction": "Firefly",
+	},
+	Allegiance.JUST_CARGO: {
+		"id": Allegiance.JUST_CARGO,
+		"name": "Just Cargo",
+		"description": "A played Firefly gets +1 value for each card type in your hand that it does not share.",
+		"icon": "res://holdout/allegiances/icons/Just Cargo.png",
+		"tier": 1,
+		"faction": "Firefly",
+	},
+	Allegiance.THE_RIGHT_PEOPLE: {
+		"id": Allegiance.THE_RIGHT_PEOPLE,
+		"name": "The Right People",
+		"description": "When you play a Firefly, choose a faction in hand. Cards in hand of that faction gain +3 value.",
+		"icon": "res://holdout/allegiances/icons/The Right People.png",
+		"tier": 1,
+		"faction": "Firefly",
+	},
+	Allegiance.WHATEVER_IT_TAKES: {
+		"id": Allegiance.WHATEVER_IT_TAKES,
+		"name": "Whatever It Takes",
+		"description": "When you play a Firefly, choose a faction in hand. Randomly copy a perk from that faction.",
+		"icon": "res://holdout/allegiances/icons/Whatever It Takes.png",
+		"tier": 2,
+		"faction": "Firefly",
+	},
+	Allegiance.DIVIDED_LOYALTIES: {
+		"id": Allegiance.DIVIDED_LOYALTIES,
+		"name": "Divided Loyalties",
+		"description": "Played Fireflies use the highest base value among non-Firefly cards in hand, if higher.",
+		"icon": "res://holdout/allegiances/icons/Divided Loyalties.png",
+		"tier": 2,
+		"faction": "Firefly",
+	},
+	Allegiance.SCAVENGERS_DUE: {
+		"id": Allegiance.SCAVENGERS_DUE,
+		"name": "Scavenger's Due",
+		"description": "Playing a Firefly draws 1 support card if hand size limit is not reached.",
+		"icon": "res://holdout/allegiances/icons/Scavengers Due.png",
+		"tier": 2,
+		"faction": "Firefly",
+	},
+	Allegiance.NECESSARY_COMPROMISE: {
+		"id": Allegiance.NECESSARY_COMPROMISE,
+		"name": "Necessary Compromise",
+		"description": "Firefly perks trigger automatically without meeting their condition.",
+		"icon": "res://holdout/allegiances/icons/Necessary Compromise.png",
+		"tier": 3,
+		"faction": "Firefly",
+	},
+	Allegiance.THE_LIGHT: {
+		"id": Allegiance.THE_LIGHT,
+		"name": "The Light",
+		"description": "Playing a Firefly card gives +2 value to all character cards in hand.",
+		"icon": "res://holdout/allegiances/icons/The Light.png",
+		"tier": 3,
+		"faction": "Firefly",
+	},
+	Allegiance.UNLIKELY_ALLIES: {
+		"id": Allegiance.UNLIKELY_ALLIES,
+		"name": "Unlikely Allies",
+		"description": "Once per battle, playing a Firefly lets you choose a faction in hand. Those cards gain +3 this battle.",
+		"icon": "res://holdout/allegiances/icons/Unlikely Allies.png",
+		"tier": 3,
+		"faction": "Firefly",
+	},
+	
+	# Infected
+	Allegiance.NECROTIC_FEEDBACK: {
+		"id": Allegiance.NECROTIC_FEEDBACK,
+		"name": "Necrotic Feedback",
+		"description": "Winning a round with an Infected card deals 2 additional damage to the opponent.",
+		"icon": "res://holdout/allegiances/icons/Necrotic Feedback.png",
+		"tier": 1,
+		"faction": "Infected",
+	},
+	Allegiance.INFECTION: {
+		"id": Allegiance.INFECTION,
+		"name": "Infection",
+		"description": "When an Infected card wins, temporarily infect a random card in your hand for the round.",
+		"icon": "res://holdout/allegiances/icons/Infection.png",
+		"tier": 1,
+		"faction": "Infected",
+	},
+	Allegiance.FUNGAL_GROWTH: {
+		"id": Allegiance.FUNGAL_GROWTH,
+		"name": "Fungal Growth",
+		"description": "If you win a round, every Infected card in your hand gains +1.",
+		"icon": "res://holdout/allegiances/icons/Fungal Growth.png",
+		"tier": 1,
+		"faction": "Infected",
+	},
+	Allegiance.FRENZIED_STATE: {
+		"id": Allegiance.FRENZIED_STATE,
+		"name": "Frenzied State",
+		"description": "Infected cards with base value 3 or less get +2 value.",
+		"icon": "res://holdout/allegiances/icons/Frenzied State.png",
+		"tier": 2,
+		"faction": "Infected",
+	},
+	Allegiance.MUTATION_CHAIN: {
+		"id": Allegiance.MUTATION_CHAIN,
+		"name": "Mutation Chain",
+		"description": "Playing an Infected card gives +3 to earlier infection stages in your hand.",
+		"icon": "res://holdout/allegiances/icons/Mutation Chain.png",
+		"tier": 2,
+		"faction": "Infected",
+	},
+	Allegiance.HORDE_MENTALITY: {
+		"id": Allegiance.HORDE_MENTALITY,
+		"name": "Horde Mentality",
+		"description": "Played Infected cards get +2 per infected card in hand.",
+		"icon": "res://holdout/allegiances/icons/Horde Mentality.png",
+		"tier": 2,
+		"faction": "Infected",
+	},
+	Allegiance.BLOATER_PLATING: {
+		"id": Allegiance.BLOATER_PLATING,
+		"name": "Bloater Plating",
+		"description": "Infected cards are immune to all negative value changes.",
+		"icon": "res://holdout/allegiances/icons/Bloater Plating.png",
+		"tier": 3,
+		"faction": "Infected",
+	},
+	Allegiance.CORDYCEPS_BRAIN_INFECTION: {
+		"id": Allegiance.CORDYCEPS_BRAIN_INFECTION,
+		"name": "Cordyceps Brain Infection",
+		"description": "Winning with an Infected card deals 50% extra damage.",
+		"icon": "res://holdout/allegiances/icons/CBI.png",
+		"tier": 3,
+		"faction": "Infected",
+	},
+	Allegiance.VIOLENT_OUTBREAK: {
+		"id": Allegiance.VIOLENT_OUTBREAK,
+		"name": "Violent Outbreak",
+		"description": "When an Infected card wins, infect a random card in your hand for the rest of the run.",
+		"icon": "res://holdout/allegiances/icons/Violent Outbreak.png",
+		"tier": 3,
+		"faction": "Infected",
+	},
+	
+	# Jackson
+	Allegiance.PATROL_ROUTE: {
+		"id": Allegiance.PATROL_ROUTE,
+		"name": "Patrol Route",
+		"description": "Playing a Jackson card reveals a random card in the opponent’s hand.",
+		"icon": "res://holdout/allegiances/icons/Patrol Route.png",
+		"tier": 1,
+		"faction": "Jackson",
+	},
+	Allegiance.ONE_OF_OURS: {
+		"id": Allegiance.ONE_OF_OURS,
+		"name": "One of Ours",
+		"description": "If the opponent plays a Jackson card, steal it at round end with -2 value.",
+		"icon": "res://holdout/allegiances/icons/One of Ours.png",
+		"tier": 1,
+		"faction": "Jackson",
+	},
+	Allegiance.SHARED_SUPPLIES: {
+		"id": Allegiance.SHARED_SUPPLIES,
+		"name": "Shared Supplies",
+		"description": "Playing a Jackson card with a non backfire support gives a random card in hand +2.",
+		"icon": "res://holdout/allegiances/icons/Shared Supplies.png",
+		"tier": 1,
+		"faction": "Jackson",
+	},
+	Allegiance.DEBT_REPAID: {
+		"id": Allegiance.DEBT_REPAID,
+		"name": "Debt Repaid",
+		"description": "Any named companion perk adds the value to both the played card and the companion in hand.",
+		"icon": "res://holdout/allegiances/icons/Debt Repaid.png",
+		"tier": 2,
+		"faction": "Jackson",
+	},
+	Allegiance.FUTURE_DAYS: {
+		"id": Allegiance.FUTURE_DAYS,
+		"name": "Future Days",
+		"description": "If a Jackson card wins it is returned to hand at -1 value rather than discarded.",
+		"icon": "res://holdout/allegiances/icons/Future Days.png",
+		"tier": 2,
+		"faction": "Jackson",
+	},
+	Allegiance.KEEP_MOVING: {
+		"id": Allegiance.KEEP_MOVING,
+		"name": "Keep Moving",
+		"description": "Playing a Jackson character grants +1 for each consecutive round you've played one.",
+		"icon": "res://holdout/allegiances/icons/Keep Moving.png",
+		"tier": 2,
+		"faction": "Jackson",
+	},
+	Allegiance.WHOEVERS_NEEDED: {
+		"id": Allegiance.WHOEVERS_NEEDED,
+		"name": "Whoever's Needed",
+		"description": "Adds 3 Jackson Scouts to the deck. Scouts count as any named companion.",
+		"icon": "res://holdout/allegiances/icons/Whoevers Needed.png",
+		"tier": 3,
+		"faction": "Jackson",
+	},
+	Allegiance.FOUND_FAMILY: {
+		"id": Allegiance.FOUND_FAMILY,
+		"name": "Found Family",
+		"description": "When you play a Jackson character, each Jackson character in your hand gains +3 value.",
+		"icon": "res://holdout/allegiances/icons/Found Family.png",
+		"tier": 3,
+		"faction": "Jackson",
+	},
+	Allegiance.PRACTICAL_WISDOM: {
+		"id": Allegiance.PRACTICAL_WISDOM,
+		"name": "Practical Wisdom",
+		"description": "Supports never backfire if the played character is from Jackson.",
+		"icon": "res://holdout/allegiances/icons/Practical Wisdom.png",
+		"tier": 3,
+		"faction": "Jackson",
+	},
+	
+	# Seraphite
+	Allegiance.FALSE_COLORS: {
+		"id": Allegiance.FALSE_COLORS,
+		"name": "False Colors",
+		"description": "Seraphites act as any faction, gaining +1 for each unique faction in your hand.",
+		"icon": "res://holdout/allegiances/icons/False Colors.png",
+		"tier": 1,
+		"faction": "Seraphite",
+	},
+	Allegiance.WHISTLE: {
+		"id": Allegiance.WHISTLE,
+		"name": "Whistle",
+		"description": "If you win with a Seraphite, your next character draw will be a Seraphite if there is one in the deck.",
+		"icon": "res://holdout/allegiances/icons/Whistle.png",
+		"tier": 1,
+		"faction": "Seraphite",
+	},
+	Allegiance.FAITH_NETWORK: {
+		"id": Allegiance.FAITH_NETWORK,
+		"name": "Faith Network",
+		"description": "At round end, if you hold at least two Seraphite cards, a random Seraphite in your hand gains +1.",
+		"icon": "res://holdout/allegiances/icons/Faith Network.png",
+		"tier": 1,
+		"faction": "Seraphite",
+	},
+	Allegiance.THE_PROPHECY: {
+		"id": Allegiance.THE_PROPHECY,
+		"name": "The Prophecy",
+		"description": "While holding The Prophet, played Seraphites add 25% of their value to a random non-Prophet card.",
+		"icon": "res://holdout/allegiances/icons/The Prophecy.png",
+		"tier": 2,
+		"faction": "Seraphite",
+	},
+	Allegiance.WOUNDED_PREY: {
+		"id": Allegiance.WOUNDED_PREY,
+		"name": "Wounded Prey",
+		"description": "Winning with a Seraphite traps the opponent's character in play next round at half value.",
+		"icon": "res://holdout/allegiances/icons/Wounded Prey.png",
+		"tier": 2,
+		"faction": "Seraphite",
+	},
+	Allegiance.SPLIT_ALLEGIANCE: {
+		"id": Allegiance.SPLIT_ALLEGIANCE,
+		"name": "Split Allegiance",
+		"description": "Lev and Yara gain +2 and count as any named companion.",
+		"icon": "res://holdout/allegiances/icons/Split Allegiance.png",
+		"tier": 2,
+		"faction": "Seraphite",
+	},
+	Allegiance.DARK_VEILING: {
+		"id": Allegiance.DARK_VEILING,
+		"name": "Dark Veiling",
+		"description": "Your Seraphite cards cannot be targeted by opponent perks that check for card type.",
+		"icon": "res://holdout/allegiances/icons/Dark Veiling.png",
+		"tier": 3,
+		"faction": "Seraphite",
+	},
+	Allegiance.DOCTRINE_RESTRAINT: {
+		"id": Allegiance.DOCTRINE_RESTRAINT,
+		"name": "Doctrine of Restraint",
+		"description": "When a Seraphite card wins, the opponent's next played character gets -2 value and a 50% perk backfire chance.",
+		"icon": "res://holdout/allegiances/icons/Doctrine of Restraint.png",
+		"tier": 3,
+		"faction": "Seraphite",
+	},
+	Allegiance.NESTED_SIN: {
+		"id": Allegiance.NESTED_SIN,
+		"name": "Nested Sin",
+		"description": "Playing a Seraphite with a hand of entirely Seraphites grants the played card +4 value.",
+		"icon": "res://holdout/allegiances/icons/Nested Sin.png",
+		"tier": 3,
+		"faction": "Seraphite",
+	},
+	
+	# WLF
+	Allegiance.KILL_ORDER: {
+		"id": Allegiance.KILL_ORDER,
+		"name": "Kill Order",
+		"description": "Played WLF characters gain +2 value if the opposing card is Seraphite or Infected.",
+		"icon": "res://holdout/allegiances/icons/Kill Order.png",
+		"tier": 1,
+		"faction": "WLF",
+	},
+	Allegiance.SWEEP: {
+		"id": Allegiance.SWEEP,
+		"name": "Sweep",
+		"description": "Playing a WLF character deals 2 direct damage if a WLF was played last round.",
+		"icon": "res://holdout/allegiances/icons/Sweep.png",
+		"tier": 1,
+		"faction": "WLF",
+	},
+	Allegiance.COMBAT_INTEL: {
+		"id": Allegiance.COMBAT_INTEL,
+		"name": "Combat Intel",
+		"description": "If you win a round, a random WLF character in your hand gains +1.",
+		"icon": "res://holdout/allegiances/icons/Combat Intel.png",
+		"tier": 1,
+		"faction": "WLF",
+	},
+	Allegiance.MANHUNT: {
+		"id": Allegiance.MANHUNT,
+		"name": "Manhunt",
+		"description": "Enables Hunted. Hunting an opponent's card gives a random card in your hand +2.",
+		"icon": "res://holdout/allegiances/icons/Manhunt.png",
+		"tier": 2,
+		"faction": "WLF",
+	},
+	Allegiance.SCENT_TRAIL: {
+		"id": Allegiance.SCENT_TRAIL,
+		"name": "Scent Trail",
+		"description": "Enables Hunted. Hunting or defeating a Hunted card reveals one of the opponent's cards.",
+		"icon": "res://holdout/allegiances/icons/Scent Trail.png",
+		"tier": 2,
+		"faction": "WLF",
+	},
+	Allegiance.WOLF_TERRITORY: {
+		"id": Allegiance.WOLF_TERRITORY,
+		"name": "Wolf Territory",
+		"description": "At the end of the round, discard all Infected and Seraphite cards from your hand.",
+		"icon": "res://holdout/allegiances/icons/Wolf Territory.png",
+		"tier": 2,
+		"faction": "WLF",
+	},
+	Allegiance.EXECUTED: {
+		"id": Allegiance.EXECUTED,
+		"name": "Executed",
+		"description": "Enables Hunted. If an opponent's Hunted card loses a round, it is permanently removed.",
+		"icon": "res://holdout/allegiances/icons/Executed.png",
+		"tier": 3,
+		"faction": "WLF",
+	},
+	Allegiance.WAR: {
+		"id": Allegiance.WAR,
+		"name": "War",
+		"description": "Enables Hunted. The hunted status can now be applied to opposing cards of any faction except WLF.",
+		"icon": "res://holdout/allegiances/icons/War.png",
+		"tier": 3,
+		"faction": "WLF",
+	},
+	Allegiance.NO_SAFE_HAVEN: {
+		"id": Allegiance.NO_SAFE_HAVEN,
+		"name": "No Safe Haven",
+		"description": "Opposing Infected and Seraphite character perks will not activate.",
+		"icon": "res://holdout/allegiances/icons/No Safe Haven.png",
+		"tier": 3,
+		"faction": "WLF",
+	},
+}
+
+
+const standardCharacterDeck = [  
 	"Runner", "Runner", "Runner", "Runner",
 	"Stalker", "Stalker", "Stalker",
 	"FireflySoldier", "FireflySoldier", "FireflySoldier",
@@ -620,7 +1116,7 @@ const standardCharacterDeck = [
 	
 	"Clicker", "Clicker",
 	"Shambler",
-	"Emily", "Lev", "Yara",
+	"Emily", "Yara", "Lev",
 	"Nora", "Manny", "Alice", "Li",
 	"Bill", "Dina", "Jessie", "Tommy", "TommyFirefly", "Shimmer",
 	"Riley", "Eugene", "Malik",
@@ -742,54 +1238,33 @@ const humanityRestoredSupportDeck = [
 	"SupplyCache", "SupplyCache"
 ]
 
-const tutorialCharacterDeck = [
-	"Dina", "Tommy", "Marlene", "Runner", "Li", "FireflySoldier", "Clicker",
+# Builds a deck for the current run: takes one of the base deck consts and applies any player-driven adjustments
+func build_run_deck(baseDeck: Array) -> Array:
+	var deck: Array = baseDeck.duplicate()
+	var isCharacterDeck = not baseDeck.is_empty() and CHARACTERS.has(baseDeck[0])
 	
+	for cardKey in HoldoutStats.deckAdjustments:
+		var count: int = HoldoutStats.deckAdjustments[cardKey]
+		if count == 0:
+			continue
+		
+		var keyBelongsToCharacterDeck = CHARACTERS.has(cardKey)
+		if keyBelongsToCharacterDeck != isCharacterDeck:
+			continue
+		
+		if count < 0:
+			var remaining = -count
+			while remaining > 0:
+				var idx = deck.find(cardKey)
+				if idx == -1:
+					break
+				deck.remove_at(idx)
+				remaining -= 1
+		elif count > 0:
+			for i in range(count):
+				deck.append(cardKey)
 	
-	"SeraphiteInitiate", "TheProphet", "Runner", "Ellie", "Shimmer",
-	"Isaac", "WLFSoldier", "Stalker",
-	"FireflySoldier",
-	"WLFSoldier", "Stalker",
-	"SeraphiteBrute", "SeraphiteBrute",
-	"SeraphiteInitiate",
-	"Runner",
-	
-	"Clicker", "FireflySoldier",
-	"Shambler",
-	"Emily", "Lev", "Yara",
-	"Nora", "Manny", "Alice",
-	"Bill", "Jessie", "TommyFirefly", 
-	"Riley", "Eugene", "Malik",
-	
-	"Joel",
-	
-	"Abby",
-	"Stalker",
-	"Runner",
-	"RatKing",
-]
-
-const tutorialSupportDeck = [
-	"Brick", "ScavengedParts", "Resilience", "Bottle", "TrainingManual", "SmokeBomb", "Retreat", "Bottle",
-	
-	"Rage",
-	"Brick", "Bottle", "ScavengedParts",
-	"Supplements", "Supplements",
-	"SupplyCache", "SupplyCache",
-	
-	"MedKit", "MedKit",
-	"SmokeBomb", "SmokeBomb",
-	"ScavengedParts", "Silencer",
-	"ReinforcedMelee", "ReinforcedMelee",
-	"TrainingManual",
-	"Retreat",
-	"Resilience",
-	"ShotgunShells",
-	
-	"Molotov",
-	"Rage",
-	"TrapMine", "TrapMine",
-]
+	return deck
 
 const CARD_VIEWER_DESCRIPTIONS = {
 	"Abby": "The WLF's top soldier. She excels in fights with brute force, and has spent years turning herself into a weapon in the pursuit of vengeance.\n\nRivalries: Ellie, Emily, Joel, Rat King.",

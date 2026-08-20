@@ -8,6 +8,7 @@ var FACTION_ICON_SCALE = 0.12
 var PERK_ICON_ONE_Y_POSITION = -66
 var PERK_ICON_TWO_Y_POSITION = -43.5
 var PERK_LINE_Y_SIZE = 15
+var HUNTED_ICON_Y_POSITION = 60
 
 const KEYWORD_ICONS = {
 	"Aggressive": "res://core/cards/icons/Aggressive.png",
@@ -34,15 +35,72 @@ var value: int
 var role: String
 var faction: String
 var perk
+var borrowedPerk = null
 var perkValueAtRoundEnd
 var canBePlayed: bool
 var perkDescription: String
 var perkValueAppliedMidRound: int = 0
+var isNullified: bool = false
 var parity: String
+var gotInfected: bool = false
+var permanentInfection: bool = false
+var frenzyBonusApplied: bool = false
+var splitAllegianceBonusApplied: bool = false
+var isDoctrineBackfired: bool = false
+var isHunted: bool = false
+
+var roundStartValue: int = 0
+var hasRoundSnapshot: bool = false
+
+var originalFaction: String = ""
+
+var _isGuardingCollision: bool = false
+var _preAnimationCollisionState: bool = false
+const GUARDED_ANIMATIONS = ["modifierIndicator", "cardFlip", "backfire", "lock"]
 
 func _ready() -> void:
 	if get_parent().has_method("connect_card_signals"):
 		get_parent().connect_card_signals(self)
+	
+	if has_node("AnimationPlayer"):
+		$AnimationPlayer.animation_started.connect(_evaluate_collision_guard)
+		$AnimationPlayer.animation_finished.connect(_evaluate_collision_guard)
+		$AnimationPlayer.current_animation_changed.connect(_evaluate_collision_guard)
+	
+	if has_node("image") and has_node("infectedImage"):
+		$image.visibility_changed.connect(_on_image_visibility_changed)
+		$infectedImage.visible = $image.visible
+
+func _evaluate_collision_guard(_animName: String = "") -> void:
+	if not has_node("Area2D/CollisionShape2D"):
+		return
+	
+	var animPlayer = $AnimationPlayer
+	var needs_guard = false
+	
+	if animPlayer.is_playing() and animPlayer.current_animation in GUARDED_ANIMATIONS:
+		needs_guard = true
+	
+	if not needs_guard:
+		for q_anim in animPlayer.get_queue():
+			if q_anim in GUARDED_ANIMATIONS:
+				needs_guard = true
+				break
+	
+	if needs_guard:
+		if not _isGuardingCollision:
+			_preAnimationCollisionState = $Area2D/CollisionShape2D.disabled
+			_isGuardingCollision = true
+		$Area2D/CollisionShape2D.disabled = true
+	else:
+		if _isGuardingCollision:
+			_isGuardingCollision = false
+			$Area2D/CollisionShape2D.disabled = _preAnimationCollisionState
+
+
+func _on_image_visibility_changed() -> void:
+	if has_node("infectedImage"):
+		$infectedImage.visible = $image.visible
 
 func update_visuals():
 	_apply_accessibility_settings()
@@ -69,11 +127,16 @@ func update_visuals():
 		var perkOne = $icons.get_node("perk1")
 		var perkTwo = $icons.get_node("perk2")
 		
+		var hunted = $icons.get_node("hunted")
+		
 		perkOne.scale = Vector2(PERK_ICON_SCALE, PERK_ICON_SCALE)
 		perkOne.position = Vector2(-58.5, PERK_ICON_ONE_Y_POSITION)
 		
 		perkTwo.scale = Vector2(PERK_ICON_SCALE, PERK_ICON_SCALE)
 		perkTwo.position = Vector2(-58.5, PERK_ICON_TWO_Y_POSITION)
+		
+		hunted.scale = Vector2(PERK_ICON_SCALE, PERK_ICON_SCALE)
+		hunted.position = Vector2(-58.5, HUNTED_ICON_Y_POSITION)
 		
 		if $icons.has_node("faction"):
 			$icons.get_node("faction").scale = Vector2(FACTION_ICON_SCALE, FACTION_ICON_SCALE)
@@ -118,6 +181,7 @@ func _apply_accessibility_settings():
 			PERK_ICON_SCALE = 0.095
 			PERK_ICON_ONE_Y_POSITION = -66
 			PERK_ICON_TWO_Y_POSITION = -43.5
+			HUNTED_ICON_Y_POSITION = 65
 			FACTION_ICON_SCALE = 0.12
 			PERK_LINE_Y_SIZE = 15
 		AccessibilityData.CardUISize.MEDIUM:
@@ -127,6 +191,7 @@ func _apply_accessibility_settings():
 			PERK_ICON_SCALE = 0.117
 			PERK_ICON_ONE_Y_POSITION = -61
 			PERK_ICON_TWO_Y_POSITION = -33.5
+			HUNTED_ICON_Y_POSITION = 60
 			FACTION_ICON_SCALE = 0.145
 			PERK_LINE_Y_SIZE = 17.5
 		AccessibilityData.CardUISize.LARGE:
@@ -136,6 +201,7 @@ func _apply_accessibility_settings():
 			PERK_ICON_SCALE = 0.15
 			PERK_ICON_ONE_Y_POSITION = -56
 			PERK_ICON_TWO_Y_POSITION = -28.5
+			HUNTED_ICON_Y_POSITION = 55
 			FACTION_ICON_SCALE = 0.17
 			PERK_LINE_Y_SIZE = 20
 
@@ -168,6 +234,9 @@ func _update_art_style():
 		$image.texture = load(premiumPath)
 	else:
 		$image.texture = load(fallbackPath)
+	
+	if has_node("infectedImage") and gotInfected:
+		$infectedImage.texture = _load_infected_texture(safeFaction)
 	
 	var targetColor = Color.WHITE
 	
@@ -235,7 +304,15 @@ func modify_value(amount: int) -> void:
 	if amount == 0:
 		return
 	
+	var previousValue = value
 	value += amount
+	
+	if amount < 0 and _has_iron_skin() and value < 0:
+		value = 0
+	
+	var actualDelta = value - previousValue
+	if actualDelta == 0:
+		return
 	
 	var isFaceDown = true
 	if has_node("image") and get_node("image").visible:
@@ -248,18 +325,30 @@ func modify_value(amount: int) -> void:
 	
 	var animationPlayer = get_node("AnimationPlayer")
 	
+	if amount < 0 and value == 0 and (previousValue + amount) < 0:
+		get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Iron Skin.png")
+		if animationPlayer.is_playing():
+			animationPlayer.queue("modifierIndicator")
+		else:
+			animationPlayer.play("modifierIndicator")
+	
 	if not animationPlayer.animation_started.is_connected(_when_animation_starts):
 		animationPlayer.animation_started.connect(_when_animation_starts)
 	
-	var stringSign = "+" if amount >= 0 else "" 
+	var stringSign = "+" if actualDelta >= 0 else "" 
 	
-	get_node("perk").text = stringSign + str(amount)
+	get_node("perk").text = stringSign + str(actualDelta)
 	
 	if animationPlayer.is_playing():
 		animationPlayer.queue("showPerk")
 	else:
 		animationPlayer.play("showPerk")
 
+func _has_iron_skin() -> bool:
+	for m in HoldoutStats.activeModifiers:
+		if m.get("id") == Database.Modifier.IRON_SKIN:
+			return true
+	return false
 
 func _when_animation_starts(animationName: String):
 	if animationName == "showPerk":
@@ -277,6 +366,81 @@ func _updateCardValue():
 		value,
 		0.5
 	)
+
+func _load_infected_texture(safeFaction: String) -> Texture2D:
+	var premiumPath = "res://core/cards/art/premium/infected/" + cardKey + "Card.png"
+	var fallbackPath = "res://core/cards/art/infected/" + safeFaction + ".png"
+	
+	if ResourceLoader.exists(premiumPath):
+		return load(premiumPath)
+	return load(fallbackPath)
+
+
+func _can_be_infected() -> bool:
+	return type == "Character" and faction != "Infected" and faction != "Support"
+
+func set_infected(infected: bool, animate: bool = true, permanent: bool = false) -> void:
+	if infected:
+		if not _can_be_infected() or gotInfected:
+			return
+		
+		gotInfected = true
+		permanentInfection = permanent
+		originalFaction = faction
+		faction = "Infected"
+		
+		_update_faction_icon("Infected")
+		
+		if has_node("infectedImage"):
+			$infectedImage.texture = _load_infected_texture(faction if faction != "" else "Support")
+		
+		if animate:
+			pass
+		
+		if has_node("infectedImage"):
+			if animate:
+				var tween = create_tween()
+				tween.tween_property($infectedImage, "modulate:a", 1.0, 0.4)
+			else:
+				$infectedImage.modulate.a = 1.0
+	else:
+		if not gotInfected:
+			return
+		
+		gotInfected = false
+		permanentInfection = false
+		faction = originalFaction
+		originalFaction = ""
+		
+		_update_faction_icon(faction)
+		
+		if has_node("infectedImage"):
+			if animate:
+				var tween = create_tween()
+				tween.tween_property($infectedImage, "modulate:a", 0.0, 0.4)
+			else:
+				$infectedImage.modulate.a = 0.0
+
+func _update_faction_icon(newFaction: String) -> void:
+	if not has_node("icons/faction"):
+		return
+	
+	if newFaction in KEYWORD_ICONS:
+		$icons.get_node("faction").texture = load(_get_card_icon_path(newFaction))
+
+func matches_faction(targetFaction: String) -> bool:
+	if faction == targetFaction:
+		return true
+	if faction == "Seraphite" and HoldoutStats.activeAllegiance.get("id") == Database.Allegiance.FALSE_COLORS:
+		return true
+	return false
+
+func is_named_companion(key: String) -> bool:
+	if cardKey == key:
+		return true
+	if cardKey in ["Lev", "Yara"] and HoldoutStats.activeAllegiance.get("id") == Database.Allegiance.SPLIT_ALLEGIANCE:
+		return true
+	return false
 
 # Tooltips
 func _populate_character_tooltip():

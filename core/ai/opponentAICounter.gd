@@ -36,7 +36,7 @@ func play_character_card(opponentHand, _playerHand, playerPlayedCard = null, _pl
 
 func _play_counter(characters, supports, opponentHand, playerCard):
 	var bestCharacter = characters[0]
-	var maxCounterScore = _worst_score()
+	var maxCounterScore = -1.0
 	
 	for character in characters:
 		var counterScore = character.value
@@ -47,16 +47,15 @@ func _play_counter(characters, supports, opponentHand, playerCard):
 					counterScore += character.perk.calculate_perk_value(character, opponentHand, playerCard)
 				"endRound", "lateEndRound":
 					var bestEndBonus = character.perk.calculate_end_perk_value(character, null, playerCard, null, opponentHand)
-					if not isFlipScriptActive:
-						for support in supports:
-							var bonus = character.perk.calculate_end_perk_value(character, support, playerCard, null, opponentHand)
-							if bonus > bestEndBonus:
-								bestEndBonus = bonus
+					for support in supports:
+						var bonus = character.perk.calculate_end_perk_value(character, support, playerCard, null, opponentHand)
+						if bonus > bestEndBonus:
+							bestEndBonus = bonus
 					counterScore += bestEndBonus
 				"calculationRound":
 					counterScore += character.perk.calculate_after_calculation_perk_value(character, opponentHand, 0, 1)
 		
-		if _is_better_score(counterScore, maxCounterScore):
+		if counterScore > maxCounterScore:
 			maxCounterScore = counterScore
 			bestCharacter = character
 	
@@ -96,18 +95,13 @@ func choose_support_card(opponent_hand, opponent_character, player_character, op
 	if eligible.is_empty():
 		return null
 	
-	var effectiveDiff = _effective_diff(currentDiff)
-	
-	if effectiveDiff >= 4:
+	if currentDiff >= 4:
 		return null
 	
-	if effectiveDiff <= -4 and opponent_health <= 25:
+	if currentDiff <= -4 and opponent_health <= 25:
 		for support in eligible:
 			if support.cardKey in DEFENSIVE_CARDS:
 				return support
-	
-	if isFlipScriptActive:
-		return null  # ceiling/discount/matchup-weight all only reward raising the AI's own value
 	
 	var bestSupport = null
 	var bestBlendedScore = -INF
