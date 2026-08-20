@@ -1951,10 +1951,14 @@ func _load_game_from_snapshot() -> void:
 	
 	# Show active allegiance
 	if not HoldoutStats.activeAllegiance.is_empty():
+		var hub = get_node_or_null("%HoldoutHub")
+		if not hub:
+			hub = $"../HoldoutHub"
+		
 		$"../arena/background/currentAllegiance/Name".text = HoldoutStats.activeAllegiance.name
 		$"../arena/background/currentAllegiance/Icon".texture = load(HoldoutStats.activeAllegiance.icon)
-		$"../arena/background/currentAllegiance/Description".text = HoldoutStats.activeAllegiance.description
-		$"../arena/background/currentAllegiance/Tier".text = HoldoutStats.activeAllegiance.faction + " Tier " + str(HoldoutStats.activeAllegiance.tier)
+		$"../arena/background/currentAllegiance/Description".text = hub._colorize_faction_terms(HoldoutStats.activeAllegiance.description)
+		$"../arena/background/currentAllegiance/Tier".text = hub._colorize_faction_terms(HoldoutStats.activeAllegiance.faction + " Tier " + str(HoldoutStats.activeAllegiance.tier))
 		
 		var colors: Array = FACTION_FUNGUS_COLORS.get(HoldoutStats.activeAllegiance.faction, ["ffffff", "ffffff", "ffffff"])
 		$"../arena/background/currentAllegiance/2".modulate = Color(colors[1])

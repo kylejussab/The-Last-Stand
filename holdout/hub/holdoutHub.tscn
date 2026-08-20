@@ -236,6 +236,7 @@ mouse_filter = 2
 theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_fonts/normal_font = SubResource("FontVariation_qoiux")
 theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
 text = "Faction Tier 9"
 horizontal_alignment = 2
 vertical_alignment = 1
@@ -250,6 +251,7 @@ mouse_filter = 2
 theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_fonts/normal_font = SubResource("FontVariation_qoiux")
 theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
 text = "Allegiance Description"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -402,6 +404,7 @@ mouse_filter = 2
 theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_fonts/normal_font = SubResource("FontVariation_qoiux")
 theme_override_font_sizes/normal_font_size = 20
+bbcode_enabled = true
 text = "Modifier Description
 Modifier Description
 Modifier Description"
@@ -506,6 +509,7 @@ mouse_filter = 2
 theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_fonts/normal_font = SubResource("FontVariation_qoiux")
 theme_override_font_sizes/normal_font_size = 20
+bbcode_enabled = true
 text = "Modifier Description
 Modifier Description
 "
@@ -610,6 +614,7 @@ mouse_filter = 2
 theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_fonts/normal_font = SubResource("FontVariation_qoiux")
 theme_override_font_sizes/normal_font_size = 20
+bbcode_enabled = true
 text = "Modifier Description
 Modifier Description
 Modifier Description
@@ -746,6 +751,7 @@ mouse_filter = 2
 theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_fonts/normal_font = SubResource("FontVariation_qoiux")
 theme_override_font_sizes/normal_font_size = 20
+bbcode_enabled = true
 text = "Allegiance Description
 Allegiance Description
 Allegiance Description
@@ -761,6 +767,7 @@ offset_bottom = 370.0
 mouse_filter = 2
 theme_override_fonts/normal_font = SubResource("FontVariation_5ny4g")
 theme_override_font_sizes/normal_font_size = 20
+bbcode_enabled = true
 text = "Allegiance Tier 9"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -852,6 +859,7 @@ mouse_filter = 2
 theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_fonts/normal_font = SubResource("FontVariation_qoiux")
 theme_override_font_sizes/normal_font_size = 20
+bbcode_enabled = true
 text = "Allegiance Description
 Allegiance Description
 Allegiance Description
@@ -867,6 +875,7 @@ offset_bottom = 370.0
 mouse_filter = 2
 theme_override_fonts/normal_font = SubResource("FontVariation_5ny4g")
 theme_override_font_sizes/normal_font_size = 20
+bbcode_enabled = true
 text = "Allegiance Tier 9"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -958,6 +967,7 @@ mouse_filter = 2
 theme_override_colors/default_color = Color(0.29803923, 0.29803923, 0.29803923, 1)
 theme_override_fonts/normal_font = SubResource("FontVariation_qoiux")
 theme_override_font_sizes/normal_font_size = 20
+bbcode_enabled = true
 text = "Allegiance Description
 Allegiance Description
 Allegiance Description
@@ -973,6 +983,7 @@ offset_bottom = 370.0
 mouse_filter = 2
 theme_override_fonts/normal_font = SubResource("FontVariation_5ny4g")
 theme_override_font_sizes/normal_font_size = 20
+bbcode_enabled = true
 text = "Allegiance Tier 9"
 horizontal_alignment = 1
 vertical_alignment = 1

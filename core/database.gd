@@ -449,7 +449,7 @@ const MODIFIERS = {
 	Modifier.INFECTED_DECK: {
 		"id": Modifier.INFECTED_DECK,
 		"name": "Infected Deck",
-		"description": "Your deck contains significantly more infected cards.",
+		"description": "Your deck contains significantly more Infected cards.",
 		"icon": "res://holdout/modifiers/icons/Infected Deck.png",
 		"tier": 2,
 		"multiplier": 0.25,

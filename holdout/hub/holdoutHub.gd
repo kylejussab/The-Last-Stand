@@ -388,8 +388,8 @@ func _get_selected_allegiance() -> Dictionary:
 func _set_arena_allegiance_ui() -> void:
 	$"../background/currentAllegiance/Name".text = HoldoutStats.activeAllegiance.name
 	$"../background/currentAllegiance/Icon".texture = load(HoldoutStats.activeAllegiance.icon)
-	$"../background/currentAllegiance/Description".text = HoldoutStats.activeAllegiance.description
-	$"../background/currentAllegiance/Tier".text = HoldoutStats.activeAllegiance.faction + " Tier " + str(HoldoutStats.activeAllegiance.tier)
+	$"../background/currentAllegiance/Description".text = _colorize_faction_terms(HoldoutStats.activeAllegiance.description)
+	$"../background/currentAllegiance/Tier".text = _colorize_faction_terms(HoldoutStats.activeAllegiance.faction + " Tier " + str(HoldoutStats.activeAllegiance.tier))
 	
 	var colors: Array = FACTION_FUNGUS_COLORS.get(HoldoutStats.activeAllegiance.faction, ["ffffff", "ffffff", "ffffff"])
 	$"../background/currentAllegiance/2".modulate = Color(colors[1])
@@ -414,6 +414,14 @@ func _reset_internal_data() -> void:
 	tierOneModifier = null
 	tierTwoModifier = null
 	tierThreeModifier = null
+
+func _colorize_faction_terms(text: String) -> String:
+	var result := text
+	for faction in FACTION_FUNGUS_COLORS.keys():
+		if result.find(faction) != -1:
+			var color: String = FACTION_FUNGUS_COLORS[faction][0]
+			result = result.replace(faction, "[color=#%s]%s[/color]" % [color, faction])
+	return result
 
 # Opponent 
 func _setup_opponent_container() -> void:
@@ -466,8 +474,8 @@ func _setup_opponent_container() -> void:
 	if HoldoutStats.activeAllegiance:
 		$CurrentAllegiance/Box/Icon.texture = load(HoldoutStats.activeAllegiance.icon)
 		$CurrentAllegiance/Box/Name.text = HoldoutStats.activeAllegiance.name
-		$CurrentAllegiance/Box/Tier.text = HoldoutStats.activeAllegiance.faction + " Tier " + str(HoldoutStats.activeAllegiance.tier)
-		$CurrentAllegiance/Box/Description.text = HoldoutStats.activeAllegiance.description
+		$CurrentAllegiance/Box/Tier.text = _colorize_faction_terms(HoldoutStats.activeAllegiance.faction + " Tier " + str(HoldoutStats.activeAllegiance.tier))
+		$CurrentAllegiance/Box/Description.text = _colorize_faction_terms(HoldoutStats.activeAllegiance.description)
 		var colors: Array = FACTION_FUNGUS_COLORS.get(HoldoutStats.activeAllegiance.faction, ["ffffff", "ffffff", "ffffff"])
 		$"CurrentAllegiance/2".modulate = Color(colors[1])
 		$"CurrentAllegiance/3".modulate = Color(colors[2])
@@ -992,10 +1000,9 @@ func _select_modifiers() -> void:
 
 func _update_slot_ui(modifier: Dictionary, slot: Control) -> void:
 	slot.get_node("Name").text = modifier.name
-	slot.get_node("Description").text = modifier.description
+	slot.get_node("Description").text = _colorize_faction_terms(modifier.description)
 	slot.get_node("Multiplier").text = "+ " + str(modifier.multiplier) + "x"
 	slot.get_node("Duration").text = str(modifier.duration) + " Game" + ("s" if modifier.duration > 1 else "")
-	pass
 
 func _pick_weighted_modifier(tierPool: Array) -> Dictionary:
 	if tierPool.is_empty(): 
@@ -1470,8 +1477,8 @@ func _pick_weighted_allegiance(pool: Array) -> Dictionary:
 
 func _update_allegiance_slot_ui(allegiance: Dictionary, slot: Control) -> void:
 	slot.get_node("Name").text = allegiance.name
-	slot.get_node("Description").text = allegiance.description
-	slot.get_node("Tier").text = str(allegiance.faction) + " Tier " + str(allegiance.tier)
+	slot.get_node("Description").text = _colorize_faction_terms(allegiance.description)
+	slot.get_node("Tier").text = _colorize_faction_terms(str(allegiance.faction) + " Tier " + str(allegiance.tier))
 
 func _get_allegiance_slots() -> Array:
 	return [allegianceSlotOne, allegianceSlotTwo, allegianceSlotThree]
