@@ -49,6 +49,9 @@ var splitAllegianceBonusApplied: bool = false
 var isDoctrineBackfired: bool = false
 var isHunted: bool = false
 
+var roundStartValue: int = 0
+var hasRoundSnapshot: bool = false
+
 var originalFaction: String = ""
 
 var _isGuardingCollision: bool = false
@@ -301,7 +304,15 @@ func modify_value(amount: int) -> void:
 	if amount == 0:
 		return
 	
+	var previousValue = value
 	value += amount
+	
+	if amount < 0 and _has_iron_skin() and value < 0:
+		value = 0
+	
+	var actualDelta = value - previousValue
+	if actualDelta == 0:
+		return
 	
 	var isFaceDown = true
 	if has_node("image") and get_node("image").visible:
@@ -314,18 +325,30 @@ func modify_value(amount: int) -> void:
 	
 	var animationPlayer = get_node("AnimationPlayer")
 	
+	if amount < 0 and value == 0 and (previousValue + amount) < 0:
+		get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Iron Skin.png")
+		if animationPlayer.is_playing():
+			animationPlayer.queue("modifierIndicator")
+		else:
+			animationPlayer.play("modifierIndicator")
+	
 	if not animationPlayer.animation_started.is_connected(_when_animation_starts):
 		animationPlayer.animation_started.connect(_when_animation_starts)
 	
-	var stringSign = "+" if amount >= 0 else "" 
+	var stringSign = "+" if actualDelta >= 0 else "" 
 	
-	get_node("perk").text = stringSign + str(amount)
+	get_node("perk").text = stringSign + str(actualDelta)
 	
 	if animationPlayer.is_playing():
 		animationPlayer.queue("showPerk")
 	else:
 		animationPlayer.play("showPerk")
 
+func _has_iron_skin() -> bool:
+	for m in HoldoutStats.activeModifiers:
+		if m.get("id") == Database.Modifier.IRON_SKIN:
+			return true
+	return false
 
 func _when_animation_starts(animationName: String):
 	if animationName == "showPerk":

@@ -333,11 +333,26 @@ func clear_avatar_cache():
 
 const JUNE_OPPONENTS = [Actor.Avatar.ETHAN, Actor.Avatar.KNEEL, Actor.Avatar.ALLEY, Actor.Avatar.MIRA, Actor.Avatar.RHEA]
 
-enum Modifier { REDUCED_HAND, VOLATILE_HAND, CALCULATED_RISK, DEEP_WOUNDS, HEAVY_HITTER, GUERRILLA_TACTICS, BLACK_MARKET, SLOW_BLEED, BAITED_DEFENSE, LOUD_NOISE, DESPERATE_MEASURES, OVER_EXERTION, INFECTED_DECK, HUMANITY_RESTORED, FRONT_RUNNER, FORSAKEN_HONOR, STACKED_ODDS, LONE_WOLF, PSYCHO_MANIA, SUPPLY_LINE, CARD_ROT, FRIENDLY_FIRE, BLIND_EYE, SEVERED_SUPPLY, GAMBLER, VAMPIRIC, DO_NOTHING, DEAD_WEIGHT, FLIP_SCRIPT, ENDURE }
+enum Modifier { 
+	STUBBORN_RESOLVE, HEAVY_HITTER, PSYCHO_MANIA, BLACK_MARKET, LOUD_NOISE, DEEP_WOUNDS, SLOW_GROWTH, VOLATILE_HAND, 
+	DESPERATE_MEASURES, CALCULATED_RISK, OVER_EXERTION, INFECTED_DECK, HUMANITY_RESTORED, FRONT_RUNNER, BAITED_DEFENSE, 
+	FRIENDLY_FIRE, STACKED_ODDS, CARD_ROT, FORSAKEN_HONOR, LONE_WOLF, SUPPLY_LINE, ALL_OR_NOTHING, 
+	GUERRILLA_TACTICS, SEVERED_SUPPLY, DO_NOTHING, WAR_CHEST, RUSTY_GEAR, IRON_SKIN, 
+	REDUCED_HAND, VAMPIRIC, GAMBLER, BLIND_EYE, DEAD_WEIGHT, ENDURE, HOMOGENIZATION 
+}
 
 const MODIFIERS = {
 	# Tier 1s
 	
+	Modifier.STUBBORN_RESOLVE: {
+		"id": Modifier.STUBBORN_RESOLVE,
+		"name": "Stubborn Resolve",
+		"description": "Your played character card can't be reduced below its base value.",
+		"icon": "res://holdout/modifiers/icons/Stubborn Resolve.png",
+		"tier": 1,
+		"multiplier": 0.05,
+		"duration": 2,
+	},
 	Modifier.HEAVY_HITTER: {
 		"id": Modifier.HEAVY_HITTER,
 		"name": "Heavy Hitter",
@@ -377,21 +392,20 @@ const MODIFIERS = {
 	Modifier.DEEP_WOUNDS: {
 		"id": Modifier.DEEP_WOUNDS,
 		"name": "Deep Wounds",
-		"description": "Losing by 5+ deals +2 damage, but your next played character gains +3.",
+		"description": "If a round ends with a margin of 5 or more, your next played character gains +3.",
 		"icon": "res://holdout/modifiers/icons/Deep Wounds.png",
 		"tier": 1,
 		"multiplier": 0.10,
 		"duration": 2,
 	},
-	Modifier.SLOW_BLEED: {
-		"id": Modifier.SLOW_BLEED,
-		"name": "Slow Bleed",
-		"description": "Every other round, lose 1 health, but gain +1 to a random character card in hand.",
-		"icon": "res://holdout/modifiers/icons/Slow Bleed.png",
+	Modifier.SLOW_GROWTH: {
+		"id": Modifier.SLOW_GROWTH,
+		"name": "Slow Growth",
+		"description": "Every other round, a random character card in your hand gains +1.",
+		"icon": "res://holdout/modifiers/icons/Slow Growth.png",
 		"tier": 1,
 		"multiplier": 0.10,
 		"duration": 1,
-		"amount": 1,
 	},
 	Modifier.VOLATILE_HAND: {
 		"id": Modifier.VOLATILE_HAND,
@@ -526,6 +540,15 @@ const MODIFIERS = {
 		"multiplier": 0.40,
 		"duration": 1,
 	},
+	Modifier.ALL_OR_NOTHING: {
+		"id": Modifier.ALL_OR_NOTHING,
+		"name": "All or Nothing",
+		"description": "The damage to be dealt at round end is doubled.",
+		"icon": "res://holdout/modifiers/icons/All or Nothing.png",
+		"tier": 3,
+		"multiplier": 0.45,
+		"duration": 1,
+	},
 	
 	# Opponent Modifiers
 	
@@ -547,20 +570,38 @@ const MODIFIERS = {
 		"multiplier": 0.0,
 		"duration": 1,
 	},
-	Modifier.VAMPIRIC: {
-		"id": Modifier.VAMPIRIC,
-		"name": "Vampiric",
-		"description": "Whenever the opponent wins a round by 3 or more, they heal by 3.",
-		"icon": "res://holdout/modifiers/icons/Vampiric.png",
-		"tier": 9,
-		"multiplier": 0.0,
-		"duration": 1,
-	},
 	Modifier.DO_NOTHING: {
 		"id": Modifier.DO_NOTHING,
 		"name": "Do Nothing",
 		"description": "This modifier has no effect.",
 		"icon": "res://holdout/modifiers/icons/Do Nothing.png",
+		"tier": 9,
+		"multiplier": 0.0,
+		"duration": 1,
+	},
+	Modifier.WAR_CHEST: {
+		"id": Modifier.WAR_CHEST,
+		"name": "War Chest",
+		"description": "The opponent starts the battle with one extra support card.",
+		"icon": "res://holdout/modifiers/icons/War Chest.png",
+		"tier": 9,
+		"multiplier": 0.0,
+		"duration": 1,
+	},
+	Modifier.RUSTY_GEAR: {
+		"id": Modifier.RUSTY_GEAR,
+		"name": "Rusty Gear",
+		"description": "Your support cards' value is reduced by 1.",
+		"icon": "res://holdout/modifiers/icons/Rusty Gear.png",
+		"tier": 9,
+		"multiplier": 0.0,
+		"duration": 1,
+	},
+	Modifier.IRON_SKIN: {
+		"id": Modifier.IRON_SKIN,
+		"name": "Iron Skin",
+		"description": "Opponent character values can't be reduced below 0.",
+		"icon": "res://holdout/modifiers/icons/Iron Skin.png",
 		"tier": 9,
 		"multiplier": 0.0,
 		"duration": 1,
@@ -572,6 +613,15 @@ const MODIFIERS = {
 		"name": "Reduced Hand",
 		"description": "Your maximum hand size is reduced to 6.",
 		"icon": "res://holdout/modifiers/icons/Reduced Hand.png",
+		"tier": 8,
+		"multiplier": 0.0,
+		"duration": 1,
+	},
+	Modifier.VAMPIRIC: {
+		"id": Modifier.VAMPIRIC,
+		"name": "Vampiric",
+		"description": "Whenever the opponent wins a round by 3 or more, they heal by 3.",
+		"icon": "res://holdout/modifiers/icons/Vampiric.png",
 		"tier": 8,
 		"multiplier": 0.0,
 		"duration": 1,
@@ -608,6 +658,15 @@ const MODIFIERS = {
 		"name": "Endure",
 		"description": "The opponent will not be defeated by damage. You win on the first instance of deck out.",
 		"icon": "res://holdout/modifiers/icons/Endure.png",
+		"tier": 8,
+		"multiplier": 0.0,
+		"duration": 1,
+	},
+	Modifier.HOMOGENIZATION: {
+		"id": Modifier.HOMOGENIZATION,
+		"name": "Homogenization",
+		"description": "Character cards below value 4 gain +2.",
+		"icon": "res://holdout/modifiers/icons/Homogenization.png",
 		"tier": 8,
 		"multiplier": 0.0,
 		"duration": 1,
@@ -1047,7 +1106,7 @@ const ALLEGIANCES = {
 }
 
 
-const standardCharacterDeck = [ 
+const standardCharacterDeck = [  
 	"Runner", "Runner", "Runner", "Runner",
 	"Stalker", "Stalker", "Stalker",
 	"FireflySoldier", "FireflySoldier", "FireflySoldier",

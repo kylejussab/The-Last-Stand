@@ -63,6 +63,7 @@ func _recalculate_limits() -> void:
 	var hasSupplyLine = has_modifier(Database.Modifier.SUPPLY_LINE)
 	var hasBlackMarket = has_modifier(Database.Modifier.BLACK_MARKET)
 	var hasSeveredSupply = has_modifier(Database.Modifier.SEVERED_SUPPLY)
+	var hasWarChest = has_modifier(Database.Modifier.WAR_CHEST)
 	
 	if hasVolatileHand:
 		minCardsForReshuffle = 6
@@ -94,6 +95,9 @@ func _recalculate_limits() -> void:
 	# Black Market's slower replenish takes priority over Supply Line's faster one
 	if hasBlackMarket and hasSupplyLine:
 		roundsTillSupportDraw = 4
+	
+	if hasWarChest:
+		opponentStartingSupportCards += 1
 
 # --- SUPPORT BLOCKING ---
 var _blockedSupportSide: int = Actor.Type.NONE
@@ -210,7 +214,6 @@ func process_combat_stats(playerTotal: int, opponentTotal: int, playerKey: Strin
 	# Check Complex Modifiers
 	var triggerCalculatedRisk = (has_modifier(Database.Modifier.CALCULATED_RISK) and combatWinner == Winner.PLAYER and damage == 1)
 	var triggerCalculatedRiskLoss = (has_modifier(Database.Modifier.CALCULATED_RISK) and combatWinner == Winner.OPPONENT and damage == 1)
-	var triggerDeepWounds = (has_modifier(Database.Modifier.DEEP_WOUNDS) and combatWinner == Winner.OPPONENT and damage >= 5)
 	
 	var overExertionBonus = 0
 	if has_modifier(Database.Modifier.OVER_EXERTION) and playerTotal > 10:
@@ -221,7 +224,6 @@ func process_combat_stats(playerTotal: int, opponentTotal: int, playerKey: Strin
 		"damage": damage,
 		"triggerCalculatedRisk": triggerCalculatedRisk,
 		"triggerCalculatedRiskLoss": triggerCalculatedRiskLoss,
-		"triggerDeepWounds": triggerDeepWounds,
 		"overExertionBonus": overExertionBonus
 	}
 

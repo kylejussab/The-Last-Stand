@@ -144,6 +144,9 @@ func _create_card_instance(cardKey: String, scenePath: String, isPlayer: bool = 
 		if not isPlayer:
 			newCard.value -= 2
 	
+	if %battleManager.battleEngine.has_modifier(Database.Modifier.HOMOGENIZATION) and newCard.value <= 3:
+		newCard.value += 2
+	
 	newCard.get_node("value").text = str(newCard.value)
 	newCard.get_node("name").text = newCard.nameText
 	

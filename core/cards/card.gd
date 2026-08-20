@@ -51,6 +51,9 @@ var splitAllegianceBonusApplied: bool = false
 var isDoctrineBackfired: bool = false
 var isHunted: bool = false
 
+var roundStartValue: int = 0
+var hasRoundSnapshot: bool = false
+
 var handPosition: Vector2
 var _isGuardingCollision: bool = false
 var _preAnimationCollisionState: bool = false
@@ -97,6 +100,12 @@ func _evaluate_collision_guard(_animName: String = "") -> void:
 			_isGuardingCollision = false
 			$Area2D/CollisionShape2D.disabled = _preAnimationCollisionState
 
+func snapshot_round_start_value() -> void:
+	roundStartValue = value
+	hasRoundSnapshot = true
+
+func clear_round_snapshot() -> void:
+	hasRoundSnapshot = false
 
 func update_visuals():
 	_apply_accessibility_settings()
@@ -314,19 +323,39 @@ func modify_value(amount: int) -> void:
 			animationPlayer.play("modifierIndicator")
 		return
 	
+	var previousValue = value
 	value += amount
+	
+	if amount < 0 and hasRoundSnapshot and _has_stubborn_resolve() and value < roundStartValue:
+		value = roundStartValue
+		get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Stubborn Resolve.png")
+		if animationPlayer.is_playing():
+			animationPlayer.queue("modifierIndicator")
+		else:
+			animationPlayer.play("modifierIndicator")
+	
+	var actualDelta = value - previousValue
 	
 	if not animationPlayer.animation_started.is_connected(_when_animation_starts):
 		animationPlayer.animation_started.connect(_when_animation_starts)
 	
-	var stringSign = "+" if amount >= 0 else "" 
+	if actualDelta == 0:
+		return
 	
-	get_node("perk").text = stringSign + str(amount)
+	var stringSign = "+" if actualDelta >= 0 else "" 
+	
+	get_node("perk").text = stringSign + str(actualDelta)
 	
 	if animationPlayer.is_playing():
 		animationPlayer.queue("showPerk")
 	else:
 		animationPlayer.play("showPerk")
+
+func _has_stubborn_resolve() -> bool:
+	for m in HoldoutStats.activeModifiers:
+		if m.get("id") == Database.Modifier.STUBBORN_RESOLVE:
+			return true
+	return false
 
 func _when_animation_starts(animationName: String):
 	if animationName == "showPerk":

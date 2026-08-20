@@ -76,7 +76,7 @@ func move_card_back_to_deck(card):
 	await tween.finished
 
 # Privates
-func _create_card_instance(cardKey: String, scenePath: String, _isPlayer: bool = false) -> Node2D:
+func _create_card_instance(cardKey: String, scenePath: String, isPlayer: bool = false) -> Node2D:
 	var cardScene = load(scenePath)
 	var newCard = cardScene.instantiate()
 	
@@ -92,6 +92,9 @@ func _create_card_instance(cardKey: String, scenePath: String, _isPlayer: bool =
 	newCard.nameText = data.CardText
 	newCard.perkDescription = data.PerkText
 	newCard.faction = "Support"
+	
+	if isPlayer and %battleManager.battleEngine.has_modifier(Database.Modifier.RUSTY_GEAR):
+		newCard.value = newCard.value - 1
 	
 	newCard.get_node("value").text = str(newCard.value)
 	newCard.get_node("name").text = newCard.nameText
