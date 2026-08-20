@@ -390,7 +390,6 @@ func _on_player_support_played(card: Node2D) -> void:
 		playerSupportCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Desperate Measures.png")
 		playerSupportCard.get_node("AnimationPlayer").queue("modifierIndicator")
 		await _await_card_animation(playerSupportCard, "modifierIndicator")
-		await _deal_damage(Actor.Type.PLAYER, 1)
 	
 	if not handled:
 		await _apply_player_support(playerSupportCard, opponentCharacterCard, playerCharacterCard)
@@ -1394,12 +1393,6 @@ func _handle_opponent_win(damage: int, triggerDeepWounds: bool, triggerCalculate
 			opponentCharacterCard.get_node("AnimationPlayer").queue("modifierIndicator")
 			battleEngine.log_action("System. Calculated Risk modifier activated. You took 3 additional damage.")
 			await _deal_damage(Actor.Type.PLAYER, 3)
-		
-		if battleEngine.has_modifier(Database.Modifier.HEAVY_HITTER) and playerCharacterCard.value >= 5:
-			playerCharacterCard.get_node("ModifierIndicator").texture = load("res://holdout/modifiers/icons/Heavy Hitter.png")
-			playerCharacterCard.get_node("AnimationPlayer").queue("modifierIndicator")
-			battleEngine.log_action("System. Heavy Hitter modifier activated. You took 2 additional damage.")
-			await _deal_damage(Actor.Type.PLAYER, 2)
 		
 		if battleEngine.has_modifier(Database.Modifier.VAMPIRIC) and damage >= 3:
 			var opponentName: String = Actor.Avatar.keys()[HoldoutStats.currentOpponent].capitalize()
