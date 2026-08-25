@@ -56,6 +56,7 @@ func _recalculate_limits() -> void:
 	startingSupportCards = 2
 	roundsTillSupportDraw = 3
 	roundsTillSupportDrawOpponent = 3
+	opponentStartingSupportCards = 2
 	
 	var hasReducedHand = has_modifier(Database.Modifier.REDUCED_HAND)
 	var hasVolatileHand = has_modifier(Database.Modifier.VOLATILE_HAND)
@@ -97,7 +98,7 @@ func _recalculate_limits() -> void:
 		roundsTillSupportDraw = 4
 	
 	if hasWarChest:
-		opponentStartingSupportCards += 1
+		opponentStartingSupportCards = 3
 
 # --- SUPPORT BLOCKING ---
 var _blockedSupportSide: int = Actor.Type.NONE

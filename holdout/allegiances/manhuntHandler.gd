@@ -16,6 +16,9 @@ func on_round_resolved(winningCard: Node2D, winningHand: Array, losingCard: Node
 	
 	await battle.get_tree().create_timer(0.5).timeout
 	
+	winningCard.get_node("ModifierIndicator").texture = load("res://holdout/allegiances/icons/Manhunt.png")
+	winningCard.get_node("AnimationPlayer").queue("modifierIndicator")
+	
 	target.get_node("ModifierIndicator").texture = load("res://holdout/allegiances/icons/Manhunt.png")
 	target.get_node("AnimationPlayer").queue("modifierIndicator")
 	

@@ -116,6 +116,7 @@ func _predict_player_card(opponentHand: Array) -> PredictedCard:
 				roleWeights[role] += weight
 	
 	var bestCardData = null
+	var bestCardKey: String
 	var bestScore = -1.0
 	
 	for cardKey in livePool:
@@ -139,14 +140,17 @@ func _predict_player_card(opponentHand: Array) -> PredictedCard:
 		if score > bestScore:
 			bestScore = score
 			bestCardData = cardData
+			bestCardKey = cardKey
 	
 	var prediction = PredictedCard.new()
 	
 	if bestCardData == null:
+		prediction.cardKey = ""
 		prediction.faction = ""
 		prediction.role = ""
 		prediction.value = 4
 	else:
+		prediction.cardKey = bestCardKey
 		prediction.faction = bestCardData[2]
 		prediction.role = bestCardData[3]
 		prediction.value = bestCardData[0]
@@ -264,6 +268,7 @@ func _calculate_max_support_value(support, character) -> float:
 			return support.value
 
 class PredictedCard extends RefCounted:
+	var cardKey: String = ""
 	var faction: String = ""
 	var role: String = ""
 	var value: int = 0

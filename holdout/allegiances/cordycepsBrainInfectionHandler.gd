@@ -8,7 +8,7 @@ func on_round_resolved(winningCard: Node2D, _winningHand: Array, _losingCard: No
 	if damage <= 0:
 		return
 	
-	var bonusDamage = int(damage * 0.5)
+	var bonusDamage = int(ceil(damage * 0.5))
 	if bonusDamage <= 0:
 		return
 	

@@ -236,7 +236,7 @@ func show_hub() -> void:
 	const DEBUG_SKIP_HUB: bool = false
 	
 	if DEBUG_SKIP_HUB:
-		HoldoutStats.activeAllegiance = Database.ALLEGIANCES[Database.Allegiance.WHATEVER_IT_TAKES]
+		HoldoutStats.activeAllegiance = Database.ALLEGIANCES[Database.Allegiance.ONE_OF_OURS]
 		_set_arena_allegiance_ui()
 		
 		if selectedOpponentModifier:
@@ -437,8 +437,16 @@ func _colorize_faction_terms(text: String) -> String:
 	var regex := RegEx.new()
 	for faction in FACTION_FUNGUS_COLORS.keys():
 		var color: String = FACTION_FUNGUS_COLORS[faction][0]
-		regex.compile("\\b(%ss?)\\b" % faction)
+		var pattern := ""
+		
+		if faction == "Firefly":
+			pattern = "\\b(Firefly|Fireflies)\\b"
+		else:
+			pattern = "\\b(%ss?)\\b" % faction
+			
+		regex.compile(pattern)
 		result = regex.sub(result, "[color=#%s]$1[/color]" % color, true)
+		
 	return result
 
 # Opponent 

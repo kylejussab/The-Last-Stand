@@ -1,6 +1,6 @@
 extends AllegianceHandler
 
-const VALUE_PENALTY = -2
+const VALUE_PENALTY = 0
 
 func on_round_end(_playerCharacterCard: Node2D, _playerHand: Array, opponentCharacterCard: Node2D, _opponentHand: Array) -> Dictionary:
 	if not is_instance_valid(opponentCharacterCard):

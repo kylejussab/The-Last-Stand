@@ -593,7 +593,7 @@ const MODIFIERS = {
 	Modifier.RUSTY_GEAR: {
 		"id": Modifier.RUSTY_GEAR,
 		"name": "Rusty Gear",
-		"description": "Your support cards' value is reduced by 1.",
+		"description": "All your support card values are reduced by 1.",
 		"icon": "res://holdout/modifiers/icons/Rusty Gear.png",
 		"tier": 9,
 		"multiplier": 0.0,
@@ -667,7 +667,7 @@ const MODIFIERS = {
 	Modifier.HOMOGENIZATION: {
 		"id": Modifier.HOMOGENIZATION,
 		"name": "Homogenization",
-		"description": "Character cards below value 4 gain +2.",
+		"description": "All character cards below value 4 gain +2.",
 		"icon": "res://holdout/modifiers/icons/Homogenization.png",
 		"tier": 8,
 		"multiplier": 0.0,
@@ -899,7 +899,7 @@ const ALLEGIANCES = {
 	Allegiance.ONE_OF_OURS: {
 		"id": Allegiance.ONE_OF_OURS,
 		"name": "One of Ours",
-		"description": "If the opponent plays a Jackson card, steal it at round end with -2 value.",
+		"description": "If the opponent plays a Jackson card, steal it at round end.",
 		"icon": "res://holdout/allegiances/icons/One of Ours.png",
 		"tier": 1,
 		"faction": "Jackson",
