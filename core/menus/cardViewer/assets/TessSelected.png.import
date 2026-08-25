@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dw0d2ybns06yw"
-path="res://.godot/imported/TessSelected.png-75544881031c7b8fa5c2ddbd92b3038e.ctex"
+path.s3tc="res://.godot/imported/TessSelected.png-75544881031c7b8fa5c2ddbd92b3038e.s3tc.ctex"
+path.etc2="res://.godot/imported/TessSelected.png-75544881031c7b8fa5c2ddbd92b3038e.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://core/menus/cardViewer/assets/TessSelected.png"
-dest_files=["res://.godot/imported/TessSelected.png-75544881031c7b8fa5c2ddbd92b3038e.ctex"]
+dest_files=["res://.godot/imported/TessSelected.png-75544881031c7b8fa5c2ddbd92b3038e.s3tc.ctex", "res://.godot/imported/TessSelected.png-75544881031c7b8fa5c2ddbd92b3038e.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

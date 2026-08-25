@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://liiv7emiij7q"
-path="res://.godot/imported/JerryUnselected.png-7d30dcbea302234b9f8c06f5b8aa3618.ctex"
+path.s3tc="res://.godot/imported/JerryUnselected.png-7d30dcbea302234b9f8c06f5b8aa3618.s3tc.ctex"
+path.etc2="res://.godot/imported/JerryUnselected.png-7d30dcbea302234b9f8c06f5b8aa3618.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://core/menus/cardViewer/assets/JerryUnselected.png"
-dest_files=["res://.godot/imported/JerryUnselected.png-7d30dcbea302234b9f8c06f5b8aa3618.ctex"]
+dest_files=["res://.godot/imported/JerryUnselected.png-7d30dcbea302234b9f8c06f5b8aa3618.s3tc.ctex", "res://.godot/imported/JerryUnselected.png-7d30dcbea302234b9f8c06f5b8aa3618.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

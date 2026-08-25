@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://3j2v4hrfw8gy"
-path="res://.godot/imported/sliderGrabber.png-c796caa5b26917dc2b5942eca3a1c0bc.ctex"
+path.s3tc="res://.godot/imported/sliderGrabber.png-c796caa5b26917dc2b5942eca3a1c0bc.s3tc.ctex"
+path.etc2="res://.godot/imported/sliderGrabber.png-c796caa5b26917dc2b5942eca3a1c0bc.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://core/menus/subcomponents/sliderGrabber.png"
-dest_files=["res://.godot/imported/sliderGrabber.png-c796caa5b26917dc2b5942eca3a1c0bc.ctex"]
+dest_files=["res://.godot/imported/sliderGrabber.png-c796caa5b26917dc2b5942eca3a1c0bc.s3tc.ctex", "res://.godot/imported/sliderGrabber.png-c796caa5b26917dc2b5942eca3a1c0bc.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

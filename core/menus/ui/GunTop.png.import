@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bssdu3ahjvkw8"
-path="res://.godot/imported/GunTop.png-4faca0046e8420798f586e2188bb0e7d.ctex"
+path.s3tc="res://.godot/imported/GunTop.png-4faca0046e8420798f586e2188bb0e7d.s3tc.ctex"
+path.etc2="res://.godot/imported/GunTop.png-4faca0046e8420798f586e2188bb0e7d.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://core/menus/ui/GunTop.png"
-dest_files=["res://.godot/imported/GunTop.png-4faca0046e8420798f586e2188bb0e7d.ctex"]
+dest_files=["res://.godot/imported/GunTop.png-4faca0046e8420798f586e2188bb0e7d.s3tc.ctex", "res://.godot/imported/GunTop.png-4faca0046e8420798f586e2188bb0e7d.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

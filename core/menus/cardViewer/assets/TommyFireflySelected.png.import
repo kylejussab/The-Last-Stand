@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ccg7mh5hwnmcp"
-path="res://.godot/imported/TommyFireflySelected.png-8a3c95d90fde61b6876bbb6ae06488bf.ctex"
+path.s3tc="res://.godot/imported/TommyFireflySelected.png-8a3c95d90fde61b6876bbb6ae06488bf.s3tc.ctex"
+path.etc2="res://.godot/imported/TommyFireflySelected.png-8a3c95d90fde61b6876bbb6ae06488bf.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://core/menus/cardViewer/assets/TommyFireflySelected.png"
-dest_files=["res://.godot/imported/TommyFireflySelected.png-8a3c95d90fde61b6876bbb6ae06488bf.ctex"]
+dest_files=["res://.godot/imported/TommyFireflySelected.png-8a3c95d90fde61b6876bbb6ae06488bf.s3tc.ctex", "res://.godot/imported/TommyFireflySelected.png-8a3c95d90fde61b6876bbb6ae06488bf.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

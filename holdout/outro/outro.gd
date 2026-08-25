@@ -342,7 +342,7 @@ static func get_final_accolade() -> Dictionary:
 	if HoldoutStats.multiplierTotal == 1.0:
 		earned.append(HoldoutStats.ACCOLADES["Purist"])
 	
-	if HoldoutStats.longestThinkTime >= 30.0 and HoldoutStats.numberOfWins > 0:
+	if HoldoutStats.longestThinkTime >= 90.0 and HoldoutStats.numberOfWins > 0:
 		earned.append(HoldoutStats.ACCOLADES["AnalysisParalysis"])
 		
 	var supportCount: int = 0

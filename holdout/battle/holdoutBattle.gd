@@ -1582,7 +1582,10 @@ func _apply_guerrilla_tactics_restrictions() -> void:
 		for card in cardsToLock:
 			card.canBePlayed = false
 			_animate_card_lock(card)
-		await get_tree().create_timer(0.5).timeout
+			
+		if cardsToLock.size() > 0:
+			await _await_card_animation(cardsToLock[-1], "lock")
+			
 		for card in playerHand:
 			if card.type == "Character":
 				card.canBePlayed = true
@@ -1599,20 +1602,28 @@ func _apply_guerrilla_tactics_restrictions() -> void:
 
 func _animate_card_lock(card):
 	if card.get_node("lockIcon/top").modulate.a < 0.9:
-		card.get_node("AnimationPlayer").queue("lock")
+		var anim = card.get_node("AnimationPlayer")
+		anim.clear_queue()
+		anim.play("lock") 
+		
 		card.get_node("Area2D/CollisionShape2D").disabled = true
+		
 		await get_tree().create_timer(0.35).timeout
-		AudioManager.play_card_lock()
+		if is_instance_valid(card):
+			AudioManager.play_card_lock()
 
 func _animate_card_unlock(card):
 	if card.get_node("lockIcon/top").modulate.a > 0.1:
 		var anim = card.get_node("AnimationPlayer")
-		if anim.is_playing():
-			await anim.animation_finished
+		
+		anim.clear_queue() 
 		anim.play_backwards("lock")
 		card.get_node("Area2D/CollisionShape2D").disabled = false
+		
 		await get_tree().create_timer(0.35).timeout
-		AudioManager.play_card_lock()
+		if is_instance_valid(card):
+			AudioManager.play_card_lock()
+
 
 func _check_old_wounds_accolade() -> void:
 	if HoldoutStats.RIVALRIES.has(playerCharacterCard.cardKey):

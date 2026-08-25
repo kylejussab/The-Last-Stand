@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://clo7wek888x2b"
-path="res://.godot/imported/AbbyFireflySelected.png-aa47452ca63bc5b04f372c12960c82e5.ctex"
+path.s3tc="res://.godot/imported/AbbyFireflySelected.png-aa47452ca63bc5b04f372c12960c82e5.s3tc.ctex"
+path.etc2="res://.godot/imported/AbbyFireflySelected.png-aa47452ca63bc5b04f372c12960c82e5.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://core/menus/cardViewer/assets/AbbyFireflySelected.png"
-dest_files=["res://.godot/imported/AbbyFireflySelected.png-aa47452ca63bc5b04f372c12960c82e5.ctex"]
+dest_files=["res://.godot/imported/AbbyFireflySelected.png-aa47452ca63bc5b04f372c12960c82e5.s3tc.ctex", "res://.godot/imported/AbbyFireflySelected.png-aa47452ca63bc5b04f372c12960c82e5.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

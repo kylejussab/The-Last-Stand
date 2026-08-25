@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://t3bgruteq7mf"
-path="res://.godot/imported/MelUnselected.png-428dbbe2472cc4508c4dfb0d18ddb0cc.ctex"
+path.s3tc="res://.godot/imported/MelUnselected.png-428dbbe2472cc4508c4dfb0d18ddb0cc.s3tc.ctex"
+path.etc2="res://.godot/imported/MelUnselected.png-428dbbe2472cc4508c4dfb0d18ddb0cc.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://core/menus/cardViewer/assets/MelUnselected.png"
-dest_files=["res://.godot/imported/MelUnselected.png-428dbbe2472cc4508c4dfb0d18ddb0cc.ctex"]
+dest_files=["res://.godot/imported/MelUnselected.png-428dbbe2472cc4508c4dfb0d18ddb0cc.s3tc.ctex", "res://.godot/imported/MelUnselected.png-428dbbe2472cc4508c4dfb0d18ddb0cc.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

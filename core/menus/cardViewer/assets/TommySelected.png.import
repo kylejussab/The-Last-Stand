@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dkdd2yyq571j1"
-path="res://.godot/imported/TommySelected.png-ae70f95ebd1126e4eab2cd9efc533a67.ctex"
+path.s3tc="res://.godot/imported/TommySelected.png-ae70f95ebd1126e4eab2cd9efc533a67.s3tc.ctex"
+path.etc2="res://.godot/imported/TommySelected.png-ae70f95ebd1126e4eab2cd9efc533a67.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://core/menus/cardViewer/assets/TommySelected.png"
-dest_files=["res://.godot/imported/TommySelected.png-ae70f95ebd1126e4eab2cd9efc533a67.ctex"]
+dest_files=["res://.godot/imported/TommySelected.png-ae70f95ebd1126e4eab2cd9efc533a67.s3tc.ctex", "res://.godot/imported/TommySelected.png-ae70f95ebd1126e4eab2cd9efc533a67.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

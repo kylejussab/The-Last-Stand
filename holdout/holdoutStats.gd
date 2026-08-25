@@ -126,7 +126,7 @@ const ACCOLADES = {
 	"AnalysisParalysis": {
 		"id": "AnalysisParalysis",
 		"title": "Analysis Paralysis", 
-		"description": "Spend over 30 seconds on a single turn without playing a card."
+		"description": "Spend over 90 seconds on a single turn without playing a card."
 	},
 	"RubberDuck": {
 		"id": "RubberDuck",

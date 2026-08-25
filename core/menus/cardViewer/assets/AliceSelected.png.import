@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cthwk81n2fcjf"
-path="res://.godot/imported/AliceSelected.png-923ef6587235e12893c99ad8422af0ec.ctex"
+path.s3tc="res://.godot/imported/AliceSelected.png-923ef6587235e12893c99ad8422af0ec.s3tc.ctex"
+path.etc2="res://.godot/imported/AliceSelected.png-923ef6587235e12893c99ad8422af0ec.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://core/menus/cardViewer/assets/AliceSelected.png"
-dest_files=["res://.godot/imported/AliceSelected.png-923ef6587235e12893c99ad8422af0ec.ctex"]
+dest_files=["res://.godot/imported/AliceSelected.png-923ef6587235e12893c99ad8422af0ec.s3tc.ctex", "res://.godot/imported/AliceSelected.png-923ef6587235e12893c99ad8422af0ec.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

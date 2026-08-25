@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://58bfuwnnb6la"
-path="res://.godot/imported/MariaUnselected.png-e12dd0ea8b1b8423b2fa2792d4af10c4.ctex"
+path.s3tc="res://.godot/imported/MariaUnselected.png-e12dd0ea8b1b8423b2fa2792d4af10c4.s3tc.ctex"
+path.etc2="res://.godot/imported/MariaUnselected.png-e12dd0ea8b1b8423b2fa2792d4af10c4.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://core/menus/cardViewer/assets/MariaUnselected.png"
-dest_files=["res://.godot/imported/MariaUnselected.png-e12dd0ea8b1b8423b2fa2792d4af10c4.ctex"]
+dest_files=["res://.godot/imported/MariaUnselected.png-e12dd0ea8b1b8423b2fa2792d4af10c4.s3tc.ctex", "res://.godot/imported/MariaUnselected.png-e12dd0ea8b1b8423b2fa2792d4af10c4.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bsq6f58ug3k74"
-path="res://.godot/imported/BillUnselected.png-1ea6ba0d2249f4c46f9943caaa7a0520.ctex"
+path.s3tc="res://.godot/imported/BillUnselected.png-1ea6ba0d2249f4c46f9943caaa7a0520.s3tc.ctex"
+path.etc2="res://.godot/imported/BillUnselected.png-1ea6ba0d2249f4c46f9943caaa7a0520.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://core/menus/cardViewer/assets/BillUnselected.png"
-dest_files=["res://.godot/imported/BillUnselected.png-1ea6ba0d2249f4c46f9943caaa7a0520.ctex"]
+dest_files=["res://.godot/imported/BillUnselected.png-1ea6ba0d2249f4c46f9943caaa7a0520.s3tc.ctex", "res://.godot/imported/BillUnselected.png-1ea6ba0d2249f4c46f9943caaa7a0520.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

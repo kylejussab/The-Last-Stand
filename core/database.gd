@@ -320,6 +320,17 @@ const OPPONENT_HEALTH_AMOUNTS: Array[int] = [
 	36  # Round 12 and beyond
 ]
 
+#demo health amounts
+#const OPPONENT_HEALTH_AMOUNTS: Array[int] = [
+	#10, 
+	#14, 
+	#18, 
+	#22, 
+	#26, 
+	#30
+#]
+# end of demo health amounts
+
 var avatarHeadTextures = {}
 
 func get_avatar_head_texture(path: String) -> Texture2D:
@@ -343,7 +354,6 @@ enum Modifier {
 
 const MODIFIERS = {
 	# Tier 1s
-	
 	Modifier.STUBBORN_RESOLVE: {
 		"id": Modifier.STUBBORN_RESOLVE,
 		"name": "Stubborn Resolve",
@@ -419,7 +429,6 @@ const MODIFIERS = {
 	},
 	
 	# Tier 2s
-	
 	Modifier.DESPERATE_MEASURES: {
 		"id": Modifier.DESPERATE_MEASURES,
 		"name": "Desperate Measures",
@@ -1120,7 +1129,6 @@ const ALLEGIANCES = {
 	},
 }
 
-
 const standardCharacterDeck = [  
 	"Runner", "Runner", "Runner", "Runner",
 	"Stalker", "Stalker", "Stalker",
@@ -1163,6 +1171,39 @@ const standardSupportDeck = [
 	"Rage",
 	"TrapMine", "TrapMine",
 ]
+
+# This is the demo version of the standard decks
+#const standardCharacterDeck = [
+	#"Runner", "Runner",
+	#"Stalker",
+	#"FireflySoldier", "FireflySoldier",
+	#"Clicker",
+	#"Shambler",
+	#"RatKing",
+	#"Joel",
+	#"Ellie",
+	#"Dina",
+	#"Tommy",
+	#"Bill",
+	#"Jessie",
+	#"Marlene",
+	#"TommyFirefly",
+	#"Eugene",
+	#"Riley"
+#]
+#
+#const standardSupportDeck = [
+	#"Brick",
+	#"Bottle",
+	#"Rage", "Rage",
+	#"ScavengedParts", "ScavengedParts",
+	#"Supplements", "Supplements",
+	#"SupplyCache",
+	#"ReinforcedMelee", "ReinforcedMelee", "ReinforcedMelee",
+	#"ShotgunShells",
+	#"TrapMine"
+#]
+# End of demo decks
 
 const infectedHeavyCharacterDeck = [
 	"Runner", "Runner", "Runner", "Runner", "Runner", "Runner",

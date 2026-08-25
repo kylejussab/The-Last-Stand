@@ -240,7 +240,7 @@ func show_hub() -> void:
 		_set_arena_allegiance_ui()
 		
 		if selectedOpponentModifier:
-			%battleManager.add_modifier(Database.Modifier.SEVERED_SUPPLY, true)
+			%battleManager.add_modifier(Database.Modifier.GUERRILLA_TACTICS, true)
 		
 		GameStats.gameMode = GameStats.Mode.HOLDOUT
 		%battleManager.initialize_game()

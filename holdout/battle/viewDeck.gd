@@ -65,24 +65,40 @@ func open_deck_view(deckCaller = null):
 			style.bg_color = Color(0.0, 0.0, 0.0, 1.0)
 			$viewPanel/background.add_theme_stylebox_override("panel", style)
 			
-			if%battleManager.battleEngine.has_modifier(Database.Modifier.INFECTED_DECK):
-				deckData = Database.build_run_deck(cardDatabase.infectedHeavyCharacterDeck)
-			elif%battleManager.battleEngine.has_modifier(Database.Modifier.HUMANITY_RESTORED):
-				deckData = Database.build_run_deck(cardDatabase.humanityRestoredCharacterDeck)
-			else:
-				deckData = Database.build_run_deck(cardDatabase.standardCharacterDeck)
+			# Grab the actual remaining draw pile
+			if "deck" in deckCaller:
+				deckData = deckCaller.deck.duplicate()
+			
+			# Add the opponent's character cards back into the visual pool
+			if is_instance_valid(%battleManager):
+				for card in %battleManager.opponentHand:
+					if is_instance_valid(card) and card.type == "Character":
+						deckData.append(card.cardKey)
+						
+				var oppChar = %battleManager.opponentCharacterCard
+				if is_instance_valid(oppChar) and not oppChar.get_meta("isRevealed", true):
+					deckData.append(oppChar.cardKey)
+			
 			_populate_character_deck(deckData)
 		
 		elif deckCaller.name == "supportDeck":
 			style.bg_color = Color(0.07, 0.07, 0.07, 1.0)
 			$viewPanel/background.add_theme_stylebox_override("panel", style)
 			
-			if%battleManager.battleEngine.has_modifier(Database.Modifier.INFECTED_DECK):
-				deckData = Database.build_run_deck(cardDatabase.infectedHeavySupportDeck)
-			elif%battleManager.battleEngine.has_modifier(Database.Modifier.HUMANITY_RESTORED):
-				deckData = Database.build_run_deck(cardDatabase.humanityRestoredSupportDeck)
-			else:
-				deckData = Database.build_run_deck(cardDatabase.standardSupportDeck)
+			# Grab the actual remaining draw pile
+			if "deck" in deckCaller:
+				deckData = deckCaller.deck.duplicate()
+				
+			# Add the opponent's support cards back into the visual pool
+			if is_instance_valid(%battleManager):
+				for card in %battleManager.opponentHand:
+					if is_instance_valid(card) and card.type == "Support":
+						deckData.append(card.cardKey)
+						
+				var oppSupp = %battleManager.opponentSupportCard
+				if is_instance_valid(oppSupp) and not oppSupp.get_meta("isRevealed", true):
+					deckData.append(oppSupp.cardKey)
+					
 			_populate_support_deck(deckData)
 	
 	show()
@@ -303,7 +319,7 @@ func _add_deck_header(titleText: String, count: int):
 	headerRow.add_child(countLabel)
 	
 	var subHeader = Label.new()
-	subHeader.text = "Note: This is the full deck list, not the current draw pile"
+	subHeader.text = "Note: Some of these cards may be in the opponent's hand."
 	subHeader.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 	subHeader.add_theme_font_size_override("font_size", 12)
 	subHeader.mouse_filter = Control.MOUSE_FILTER_IGNORE

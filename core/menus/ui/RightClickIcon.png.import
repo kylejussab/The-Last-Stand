@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://be0aihjd72rmo"
-path="res://.godot/imported/RightClickIcon.png-62b8c42dd7b73441a28329d85a690d97.ctex"
+path.s3tc="res://.godot/imported/RightClickIcon.png-62b8c42dd7b73441a28329d85a690d97.s3tc.ctex"
+path.etc2="res://.godot/imported/RightClickIcon.png-62b8c42dd7b73441a28329d85a690d97.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://core/menus/ui/RightClickIcon.png"
-dest_files=["res://.godot/imported/RightClickIcon.png-62b8c42dd7b73441a28329d85a690d97.ctex"]
+dest_files=["res://.godot/imported/RightClickIcon.png-62b8c42dd7b73441a28329d85a690d97.s3tc.ctex", "res://.godot/imported/RightClickIcon.png-62b8c42dd7b73441a28329d85a690d97.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0

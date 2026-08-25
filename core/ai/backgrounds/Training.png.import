@@ -3,23 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b6460dhr645sy"
-path.s3tc="res://.godot/imported/Training.png-af8fd461966fdbd82fc348d5a03a5b4b.s3tc.ctex"
-path.etc2="res://.godot/imported/Training.png-af8fd461966fdbd82fc348d5a03a5b4b.etc2.ctex"
+path="res://.godot/imported/Training.png-af8fd461966fdbd82fc348d5a03a5b4b.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc", "etc2_astc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://core/ai/backgrounds/Training.png"
-dest_files=["res://.godot/imported/Training.png-af8fd461966fdbd82fc348d5a03a5b4b.s3tc.ctex", "res://.godot/imported/Training.png-af8fd461966fdbd82fc348d5a03a5b4b.etc2.ctex"]
+dest_files=["res://.godot/imported/Training.png-af8fd461966fdbd82fc348d5a03a5b4b.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
-compress/lossy_quality=0.7
+compress/lossy_quality=0.9
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1

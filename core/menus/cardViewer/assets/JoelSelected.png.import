@@ -3,19 +3,21 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dekfyg54nacxt"
-path="res://.godot/imported/JoelSelected.png-b9e0b5a14a5c18fdb7f45287ab404084.ctex"
+path.s3tc="res://.godot/imported/JoelSelected.png-b9e0b5a14a5c18fdb7f45287ab404084.s3tc.ctex"
+path.etc2="res://.godot/imported/JoelSelected.png-b9e0b5a14a5c18fdb7f45287ab404084.etc2.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://core/menus/cardViewer/assets/JoelSelected.png"
-dest_files=["res://.godot/imported/JoelSelected.png-b9e0b5a14a5c18fdb7f45287ab404084.ctex"]
+dest_files=["res://.godot/imported/JoelSelected.png-b9e0b5a14a5c18fdb7f45287ab404084.s3tc.ctex", "res://.godot/imported/JoelSelected.png-b9e0b5a14a5c18fdb7f45287ab404084.etc2.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
