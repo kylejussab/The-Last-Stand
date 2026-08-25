@@ -87,7 +87,7 @@ func _spawn_and_pop_in() -> void:
 		
 		_update_line_positions(i + 1, 0.4)
 		
-		AudioManager.play_card_hover()
+		AudioManager.play_pop()
 		
 		var pop_tween = create_tween().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 		pop_tween.tween_property(icon, "scale", Vector2(targetScale, targetScale), 0.4)
